@@ -6,6 +6,6 @@ https://docs.google.com/spreadsheets/d/1cA-ldx-M_ppxSicxjL06BmAjhoNi5I55M5BugoUB
 
 Pull project and then: 
 
-$ npm install
+$ npm install . 
 $ npm start
 
