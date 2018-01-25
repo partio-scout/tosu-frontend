@@ -1,0 +1,25 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "name": "Vartiokokous",
+      "organizer_name": "vartio",
+      "organizer_id": 1,
+      "date": "2018-02-15T18:30:00+02:00"
+    },
+    {
+      "id": 2,
+      "name": "Vartiokokous",
+      "organizer_name": "vartio",
+      "organizer_id": 1,
+      "date": "2018-02-22T18:30:00+02:00"
+    },
+    {
+      "id": 3,
+      "name": "Leiri",
+      "organizer_name": "lippukunta",
+      "organizer_id": 2,
+      "date": "2018-02-23T18:30:00+02:00"
+    }
+  ]
+}
