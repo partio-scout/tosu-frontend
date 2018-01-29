@@ -12,8 +12,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom && npm install &&s npm server start",
+    "test": "x npm install &&s npm server start && react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "server": "json-server -p3001 db.json"
+    "server": "json-server -p3001 db.json",
+    "travis": "npm test"
   }
 }
