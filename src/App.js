@@ -28,7 +28,7 @@ class App extends Component {
     return (
       <MuiThemeProvider>
       <div className="App">
-        Ohtupartio
+        <h1>Ohtupartio</h1>
         <NewEvent />
         <ListEvents events={this.state.events}/>
       </div>
