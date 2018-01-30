@@ -6,7 +6,6 @@ import TextField from "material-ui/TextField";
 import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
 
-
 /**
  * Dialogs can be nested. This example opens a Date Picker from within a Dialog.
  */
@@ -36,7 +35,10 @@ export default class NewEvent extends React.Component {
 
     const data = {
       eventTitle: this.state.eventTitle,
-      eventDate: this.state.eventDate,
+      eventStartDate: this.state.eventStartDate,
+      eventStartTime: this.state.eventStartTime,
+      eventEndDate: this.state.eventEndDate,
+      eventEndTime: this.state.eventEndTime,
       eventType: this.state.eventType,
       eventInformation: this.state.eventInformation,
 
@@ -57,25 +59,25 @@ export default class NewEvent extends React.Component {
       .then(response => console.log("Success:", response));
   };
 
-  handleStartDate = (event) => {
+  handleStartDate = event => {
     this.setState({
       eventStartDate: event.target.value
     });
   };
 
-  handleStartTime = (event) => {
+  handleStartTime = event => {
     this.setState({
       eventStartTime: event.target.value
     });
   };
 
-  handleEndDate = (event) => {
+  handleEndDate = event => {
     this.setState({
       eventEndDate: event.target.value
     });
   };
 
-  handleEndTime = (event) => {
+  handleEndTime = event => {
     this.setState({
       eventEndTime: event.target.value
     });

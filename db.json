@@ -47,6 +47,18 @@
       "organizerName": "Partio",
       "organizerId": 2,
       "id": 7
+    },
+    {
+      "eventTitle": "Seikkailuretki",
+      "eventStartDate": "2018-12-12",
+      "eventStartTime": "12:00",
+      "eventEndDate": "2018-12-12",
+      "eventEndTime": "20:00",
+      "eventType": "retki",
+      "eventInformation": "Retki paikkaan x",
+      "organizerName": "Partio",
+      "organizerId": 2,
+      "id": 8
     }
   ]
 }
