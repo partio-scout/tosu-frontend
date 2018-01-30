@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import ListEvents from './components/ListEvents'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import NewEvent from './components/NewEvent';
 
 class App extends Component {
   constructor() {
@@ -24,10 +26,13 @@ class App extends Component {
   render() {
 
     return (
+      <MuiThemeProvider>
       <div className="App">
         Ohtupartio
-        <ListEvents events={this.state.events}/>>
+        <NewEvent />
+        <ListEvents events={this.state.events}/>
       </div>
+      </MuiThemeProvider>
     );
   }
 }
