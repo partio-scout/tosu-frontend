@@ -26,6 +26,27 @@ export default class NewEvent extends React.Component {
 
   handleClose = () => {
     this.setState({ open: false });
+
+    const data = {
+      eventTitle: this.state.eventTitle,
+      eventDate: this.state.eventDate,
+      eventType: this.state.eventType,
+      eventInformation: this.state.eventInformation,
+
+      //TODO kirjautuneen käyttäjän yhdistäminen eventiin"
+      organizerName: "Partio",
+      organizerId: 2
+    }
+
+    fetch('http://localhost:3001/events', {
+      method: 'POST',
+      body: JSON.stringify(data), 
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    }).then(res => res.json())
+    .catch(error => console.error('Error:', error))
+    .then(response => console.log('Success:', response));
   };
 
   handleDate = (event, date) => {
