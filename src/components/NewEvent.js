@@ -14,7 +14,6 @@ import MenuItem from "material-ui/MenuItem";
 export default class NewEvent extends React.Component {
   state = {
     open: false,
-    value: 1,
     eventTitle: "",
     eventDate: "",
     eventType: "",
@@ -29,7 +28,30 @@ export default class NewEvent extends React.Component {
     this.setState({ open: false });
   };
 
-  handleChange = (event, index, value) => this.setState({ value });
+  handleDate = (event, date) => {
+    this.setState({
+      eventDate: date
+    })
+  }
+
+  handleTitle = (event) => {
+    console.log(event)
+    this.setState({
+      eventTitle: event.target.value
+    })
+  }
+
+  handleType = (event, index, type) => { 
+    this.setState({ 
+      eventType: type
+     })
+  };
+
+  handleInformation = (event) => {
+    this.setState({
+      eventInformation: event.target.value
+    })
+  }
 
   render() {
     const actions = [
@@ -51,20 +73,29 @@ export default class NewEvent extends React.Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-          <DatePicker hintText="Valitse päivämäärä" />
-          <TextField hintText="Tapahtuman nimi" />
+          <DatePicker hintText="Valitse päivämäärä" onChange={this.handleDate} />
+          <TextField hintText="Tapahtuman nimi" onChange={this.handleTitle} />
           <br />
           <SelectField
             floatingLabelText="Tapahtuman tyyppi"
-            value={this.state.value}
-            onChange={this.handleChange}
+            value={this.state.eventType}
+            onChange={this.handleType}
           >
-            <MenuItem value={1} primaryText="Kokous" />
-            <MenuItem value={2} primaryText="Leiri" />
-            <MenuItem value={3} primaryText="Retki" />
-            <MenuItem value={4} primaryText="Vaellus" />
-            <MenuItem value={5} primaryText="Muu" />
+            <MenuItem value={"kokous"} primaryText="Kokous" />
+            <MenuItem value={"leiri"} primaryText="Leiri" />
+            <MenuItem value={"retki"} primaryText="Retki" />
+            <MenuItem value={"vaellus"} primaryText="Vaellus" />
+            <MenuItem value={"muu tapahtuma"} primaryText="Muu tapahtuma" />
           </SelectField>
+
+          <TextField
+            hintText="Message Field"
+            floatingLabelText="Lisätietoja" 
+            onChange={this.handleInformation}
+            multiLine={true}
+            rows={2}
+          />
+          <br />
         </Dialog>
       </div>
     );
