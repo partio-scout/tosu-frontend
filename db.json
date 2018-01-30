@@ -7,7 +7,8 @@
       "eventInformation": "",
       "organizerName": "vartio",
       "organizerId": 1,
-      "eventDate": "2018-02-15T18:30:00+02:00"
+      "eventStartDate": "2018-02-15T18:30:00+02:00",
+      "eventEndDate": ""
     },
     {
       "id": 2,
@@ -16,7 +17,8 @@
       "eventInformation": "",
       "organizerName": "vartio",
       "organizerId": 1,
-      "eventDate": "2018-02-22T18:30:00+02:00"
+      "eventStartDate": "2018-02-22T18:30:00+02:00",
+      "eventEndDate": ""
     },
     {
       "id": 3,
@@ -25,25 +27,26 @@
       "eventInformation": "",
       "organizerName": "lippukunta",
       "organizerId": 2,
-      "eventDate": "2018-02-23T18:30:00+02:00"
+      "eventStartDate": "2018-02-23T18:30:00+02:00",
+      "eventEndDate": ""
     },
     {
       "id": 4,
       "eventTitle": "Metsäretki",
-      "eventDate": "2018-01-03T22:00:00.000Z",
+      "eventStartDate": "2018-01-03T22:00:00.000Z",
+      "eventEndDate": "",
       "eventType": "retki",
       "eventInformation": "Hauska retki metsään",
       "organizerName": "Partio",
       "organizerId": 2
     },
     {
-      "eventTitle": "Hieno retki",
-      "eventDate": "2018-01-17T22:00:00.000Z",
-      "eventType": "retki",
-      "eventInformation": "Jee jee retki jee jee jee",
+      "eventTitle": "Kokous",
+      "eventType": "kokous",
+      "eventInformation": "Kokous on paikassa x",
       "organizerName": "Partio",
       "organizerId": 2,
-      "id": 5
+      "id": 7
     }
   ]
 }
