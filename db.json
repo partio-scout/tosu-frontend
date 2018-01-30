@@ -2,24 +2,63 @@
   "events": [
     {
       "id": 1,
-      "name": "Vartiokokous",
-      "organizer_name": "vartio",
-      "organizer_id": 1,
-      "date": "2018-02-15T18:30:00+02:00"
+      "eventTitle": "Vartiokokous",
+      "eventType": "kokous",
+      "eventInformation": "",
+      "organizerName": "vartio",
+      "organizerId": 1,
+      "eventStartDate": "2018-02-15T18:30:00+02:00",
+      "eventEndDate": ""
     },
     {
       "id": 2,
-      "name": "Vartiokokous",
-      "organizer_name": "vartio",
-      "organizer_id": 1,
-      "date": "2018-02-22T18:30:00+02:00"
+      "eventTitle": "Vartiokokous",
+      "eventType": "kokous",
+      "eventInformation": "",
+      "organizerName": "vartio",
+      "organizerId": 1,
+      "eventStartDate": "2018-02-22T18:30:00+02:00",
+      "eventEndDate": ""
     },
     {
       "id": 3,
-      "name": "Leiri",
-      "organizer_name": "lippukunta",
-      "organizer_id": 2,
-      "date": "2018-02-23T18:30:00+02:00"
+      "eventTitle": "Leiri",
+      "eventType": "leiri",
+      "eventInformation": "",
+      "organizerName": "lippukunta",
+      "organizerId": 2,
+      "eventStartDate": "2018-02-23T18:30:00+02:00",
+      "eventEndDate": ""
+    },
+    {
+      "id": 4,
+      "eventTitle": "Metsäretki",
+      "eventStartDate": "2018-01-03T22:00:00.000Z",
+      "eventEndDate": "",
+      "eventType": "retki",
+      "eventInformation": "Hauska retki metsään",
+      "organizerName": "Partio",
+      "organizerId": 2
+    },
+    {
+      "eventTitle": "Kokous",
+      "eventType": "kokous",
+      "eventInformation": "Kokous on paikassa x",
+      "organizerName": "Partio",
+      "organizerId": 2,
+      "id": 7
+    },
+    {
+      "eventTitle": "Seikkailuretki",
+      "eventStartDate": "2018-12-12",
+      "eventStartTime": "12:00",
+      "eventEndDate": "2018-12-12",
+      "eventEndTime": "20:00",
+      "eventType": "retki",
+      "eventInformation": "Retki paikkaan x",
+      "organizerName": "Partio",
+      "organizerId": 2,
+      "id": 8
     }
   ]
 }
