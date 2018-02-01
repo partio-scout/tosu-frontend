@@ -48,38 +48,62 @@ const findTaskgroups = taskgroupIDs => {
 
 const taskgroups = findTaskgroups(taskgroupIDs);
 
-const findSubtaskgroups = (taskgroup) => {
-  let subtaskgroups = []
-  for (let i in taskgroups) {
-    if (taskgroups[i].taskgroups.length !== 0) {
-      subtaskgroups = subtaskgroups.concat({owner: taskgroups[i].guid}, {taskgroups: (findTaskgroups(Object.values(taskgroups[i].taskgroups)))})
-    } 
+// Hae alitaskgroupit
+const findSubtaskgroups = taskgroup => {
+  let subtaskgroups = [];
+  if (taskgroup.taskgroups) {
+    if (taskgroup.taskgroups.length !== 0) {
+      subtaskgroups = findTaskgroups(Object.values(taskgroup.taskgroups));
+    }
   }
 
-  return subtaskgroups
-}
+  return subtaskgroups;
+};
 
-const subtaskgroups = findSubtaskgroups(taskgroups)
+// Hae yksittäiset aktiviteetit
 
 const findTasks = taskIDs => {
-  const tasks = taskIDs.map(taskID => normalizedData.entities.tasks[taskID])
-  return tasks
-}
+  const tasks = taskIDs.map(taskID => normalizedData.entities.tasks[taskID]);
+  return tasks;
+};
 
-const getActivities = (taskgroups) =>{
-  for(let i in taskgroups) {
-    console.log(taskgroups[i].title)
-    const subtaskgroups = findSubtaskgroups(taskgroups[i])
+// Tulosta kaikki yhden ryhmän aktiviteettikategoriat ja aktiviteetit
+
+const getActivities = (taskgroups, activities) => {
+  for (let i in taskgroups) {
+    activities = activities.concat("<li>", taskgroups[i].title, "<ul>");
+
+
+    const subtaskgroups = findSubtaskgroups(taskgroups[i]);
+    
+    if (subtaskgroups.length !== 0) {
+     activities = getActivities(subtaskgroups, activities);
+    }
+
+    const tasks = findTasks(Object.values(taskgroups[i].tasks));
+
+    for (let j in tasks) {
+      activities = activities.concat("<li>", tasks[j].title, "</li>");
+    }
+
+    activities = activities.concat("</ul></li>");
   }
 
-}
+  return activities;
+};
 
-const activities = getActivities(taskgroups)
+let activities = "<ul>";
+const activitiesString = getActivities(taskgroups, activities);
+activities = activities.concat("</ul>");
+
+function createHtml() {
+  return { __html: activitiesString };
+}
 
 const Activities = () => (
   <div>
     <h3>{tarpojat.title}</h3>
-    <pre>{activities}</pre>
+    <div dangerouslySetInnerHTML={createHtml()} />
   </div>
 );
 
