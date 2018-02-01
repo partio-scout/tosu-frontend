@@ -5,6 +5,7 @@
   "dependencies": {
     "json-server": "^0.12.1",
     "material-ui": "^0.20.0",
+    "normalizr": "^3.2.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.0"
