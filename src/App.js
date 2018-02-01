@@ -3,7 +3,8 @@ import "./App.css";
 import ListEvents from "./components/ListEvents";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import NewEvent from "./components/NewEvent";
-import Activities from "./components/Activities"
+import Activities from "./components/Activities";
+import activitiesData from "./partio.json";
 
 class App extends Component {
   constructor() {
@@ -25,15 +26,13 @@ class App extends Component {
   }
 
   render() {
-
     return (
       <MuiThemeProvider>
         <div className="App">
           <h1>Ohtupartio</h1>
           <NewEvent />
           <ListEvents events={this.state.events} />
-          <Activities />
-          
+          <Activities data={activitiesData} />
         </div>
       </MuiThemeProvider>
     );
