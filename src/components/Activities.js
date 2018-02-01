@@ -80,7 +80,7 @@ export default class Activities extends React.Component {
       return tasks;
     };
 
-    // Tulosta kaikki yhden ryhmän aktiviteettikategoriat ja aktiviteetit
+    // Luo String kaikista taskgroupeista, subtaskgroupeista ja taskeista
 
     const getActivities = (taskgroups, activities) => {
       for (let i in taskgroups) {
@@ -105,9 +105,12 @@ export default class Activities extends React.Component {
     };
 
     let activities = "<ul>";
+
+    // Hae aktiviteettitiedot merkkijonona
     const activitiesString = getActivities(taskgroups, activities);
     activities = activities.concat("</ul>");
 
+    // Muunna merkkijono HTML:ksi renderöintiä varten (ei paras ratkaisu)
     function createHtml() {
       return { __html: activitiesString };
     }
