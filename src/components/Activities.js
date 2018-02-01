@@ -1,35 +1,42 @@
 import React from "react";
 import { normalize, schema } from "normalizr";
 
+const createSchemas = () => {
+  // Luo skeemat JSON datan normalisointia varten
+  const taskSchema = new schema.Entity("tasks", {}, { idAttribute: "guid" });
+
+  const taskgroupSchema = new schema.Entity(
+    "taskgroups",
+    { tasks: [taskSchema] },
+    { idAttribute: "guid" }
+  );
+
+  taskgroupSchema.define({ taskgroups: [taskgroupSchema] });
+
+  const agegroupSchema = new schema.Entity(
+    "agegroups",
+    {
+      taskgroups: [taskgroupSchema]
+    },
+    { idAttribute: "guid" }
+  );
+
+  const programSchema = new schema.Entity(
+    "programs",
+    {
+      agegroups: [agegroupSchema]
+    },
+    { idAttribute: "guid" }
+  );
+
+  const programListSchema = new schema.Array(programSchema);
+
+  return programListSchema;
+};
+
 export default class Activities extends React.Component {
   render() {
-    const taskSchema = new schema.Entity("tasks", {}, { idAttribute: "guid" });
-
-    const taskgroupSchema = new schema.Entity(
-      "taskgroups",
-      { tasks: [taskSchema] },
-      { idAttribute: "guid" }
-    );
-
-    taskgroupSchema.define({ taskgroups: [taskgroupSchema] });
-
-    const agegroupSchema = new schema.Entity(
-      "agegroups",
-      {
-        taskgroups: [taskgroupSchema]
-      },
-      { idAttribute: "guid" }
-    );
-
-    const programSchema = new schema.Entity(
-      "programs",
-      {
-        agegroups: [agegroupSchema]
-      },
-      { idAttribute: "guid" }
-    );
-
-    const programListSchema = new schema.Array(programSchema);
+    const programListSchema = createSchemas();
 
     const normalizedData = normalize(
       this.props.data.program,
