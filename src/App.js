@@ -5,6 +5,7 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import NewEvent from "./components/NewEvent";
 import Activities from "./components/Activities";
 import activitiesData from "./partio.json";
+import Appbar from "./components/AppBar"
 
 class App extends Component {
   constructor() {
@@ -27,14 +28,19 @@ class App extends Component {
 
   render() {
     return (
-      <MuiThemeProvider>
         <div className="App">
-          <h1>Ohtupartio</h1>
-          <NewEvent />
-          <ListEvents events={this.state.events} />
-          <Activities data={activitiesData} />
+          <MuiThemeProvider>
+            <Appbar/>
+              <div className="content">
+                <h2>Events</h2>
+                <NewEvent />
+                <ListEvents events={this.state.events} />
+                <h2>Activities</h2>
+                <Activities data={activitiesData} />
+              </div>
+            </MuiThemeProvider>
         </div>
-      </MuiThemeProvider>
+      
     );
   }
 }
