@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./App.css";
 import ListEvents from "./components/ListEvents";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import NewEvent from "./components/NewEvent";
@@ -30,14 +29,16 @@ class App extends Component {
     return (
         <div className="App">
           <MuiThemeProvider>
-            <Appbar/>
-              <div className="content">
-                <h2>Events</h2>
-                <NewEvent />
-                <ListEvents events={this.state.events} />
-                <h2>Activities</h2>
-                <Activities data={activitiesData} />
-              </div>
+            <div style={{height: '40px'}}> 
+              <Appbar/>
+            </div>
+            <div className="content">
+              <h2>Events</h2>
+              <NewEvent />
+              <ListEvents events={this.state.events} />
+              <h2>Activities</h2>
+              <Activities data={activitiesData} />
+            </div>
             </MuiThemeProvider>
         </div>
       
