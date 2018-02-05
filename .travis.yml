@@ -1,18 +1,20 @@
----
+addons:
+  ssh_known_hosts: 34.243.147.82
 sudo: required
 dist: trusty
 language: node_js
 node_js:
-  # LTS version
-  - "8.0"
+- '8.0'
 cache:
   directories:
-    - node_modules
+  - node_modules
+before_install:
+  - .scripts/install.sh
 install:
-  - npm install
+- npm install
 before_script:
-  - export CI=false
-after_success:
-  - bash .scripts/deploy.sh
+- export CI=false
+after_script:
+- bash .scripts/deploy.sh
 notifications:
-    slack: ohtupartio:9Fqci61YwcZE8Wj25AzaV2ID
+  slack: ohtupartio:9Fqci61YwcZE8Wj25AzaV2ID
