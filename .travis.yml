@@ -9,7 +9,7 @@ cache:
   directories:
   - node_modules
 before_install:
-  - .scripts/install.sh
+  - bash .scripts/install.sh
 install:
 - npm install
 before_script:
