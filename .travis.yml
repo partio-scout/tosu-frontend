@@ -12,5 +12,7 @@ install:
   - npm install
 before_script:
   - export CI=false
+after_success:
+  - bash .script/deploy.sh
 notifications:
     slack: ohtupartio:9Fqci61YwcZE8Wj25AzaV2ID
