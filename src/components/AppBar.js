@@ -7,7 +7,7 @@ import AppBar from 'material-ui/AppBar';
  */
 const Appbar = () => (
   <AppBar
-    style={{position: "fixed"}}
+    style={{position: "fixed", height: '40px'}}
     title="Partio"
     iconClassNameRight="muidocs-icon-navigation-expand-more"
   />

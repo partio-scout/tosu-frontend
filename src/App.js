@@ -29,9 +29,7 @@ class App extends Component {
     return (
         <div className="App">
           <MuiThemeProvider>
-            <div style={{height: '40px'}}> 
-              <Appbar/>
-            </div>
+            <Appbar/>
             <div className="content">
               <h2>Events</h2>
               <NewEvent />
