@@ -10,5 +10,10 @@ App {
 }
 
 .content {
-  padding: 30px
+  padding: 60px
+}
+
+#title_image {
+  height: 50px;
+  margin: 10px 0px 10px;
 }
