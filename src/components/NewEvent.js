@@ -153,6 +153,7 @@ export default class NewEvent extends React.Component {
 
           <TextField hintText="Tapahtuman nimi" onChange={this.handleTitle} />
           <br />
+          
           <SelectField
             floatingLabelText="Tapahtuman tyyppi"
             value={this.state.eventType}
@@ -165,7 +166,7 @@ export default class NewEvent extends React.Component {
             <MenuItem value={"muu tapahtuma"} primaryText="Muu tapahtuma" />
           </SelectField>
           <TextField
-            hintText="Message Field"
+            hintText="Lisätietoja"
             floatingLabelText="Lisätietoja"
             onChange={this.handleInformation}
             multiLine={true}
