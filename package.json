@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "json-server": "^0.12.1",
     "material-ui": "^0.20.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -14,7 +13,6 @@
     "build": "react-scripts build",
     "test": "npm install && react-scripts test --env=jsdom && npm run server &",
     "eject": "react-scripts eject",
-    "server": "json-server -p3001 db.json",
     "travis": "npm test"
   }
 }
