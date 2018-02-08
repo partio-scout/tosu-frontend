@@ -46,7 +46,7 @@ export default class NewEvent extends React.Component {
     console.log(data);
 
     fetch(
-      "https://cors-anywhere.herokuapp.com/http://suunnittelu.partio-ohjelma.fi:3001/events",
+      "https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
