@@ -14,5 +14,7 @@ ssh deploy@$IP -p $PORT <<EOF
     rm -rf /var/www/html
     cp -a /var/www/tosu-frontend/build/. /var/www/html/
     sudo service tosu-backend start
+    cd ..
+    rm -rf tosu-frontend
 EOF
 
