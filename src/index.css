@@ -1,5 +1,19 @@
+html,
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  height: 100%;
+}
+
+App {
+  padding-top: 20px
+}
+
+.content {
+  padding: 60px
+}
+
+#title_image {
+  height: 50px;
+  margin: 10px 0px 10px;
 }

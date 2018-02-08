@@ -13,13 +13,13 @@ import MenuItem from "material-ui/MenuItem";
 export default class NewEvent extends React.Component {
   state = {
     open: false,
-    eventTitle: "",
-    eventStartDate: "",
-    eventStartTime: "",
-    eventEndDate: "",
-    eventEndTime: "",
-    eventType: "",
-    eventInformation: ""
+    title: "",
+    startDate: "",
+    startTime: "",
+    endDate: "",
+    endTime: "",
+    type: "",
+    information: ""
   };
 
   handleOpen = () => {
@@ -34,26 +34,25 @@ export default class NewEvent extends React.Component {
     this.setState({ open: false });
 
     const data = {
-      eventTitle: this.state.eventTitle,
-      eventStartDate: this.state.eventStartDate,
-      eventStartTime: this.state.eventStartTime,
-      eventEndDate: this.state.eventEndDate,
-      eventEndTime: this.state.eventEndTime,
-      eventType: this.state.eventType,
-      eventInformation: this.state.eventInformation,
-
-      //TODO kirjautuneen käyttäjän yhdistäminen eventiin"
-      organizerName: "Partio",
-      organizerId: 2
+      title: this.state.title,
+      startDate: this.state.startDate,
+      startTime: this.state.startTime,
+      endDate: this.state.endDate,
+      endTime: this.state.endTime,
+      type: this.state.type,
+      information: this.state.information
     };
 
-    fetch("http://localhost:3001/events", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: new Headers({
-        "Content-Type": "application/json"
-      })
-    })
+    console.log(data);
+
+    fetch(
+      "https://cors-anywhere.herokuapp.com/http://suunnittelu.partio-ohjelma.fi:3001/events",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      }
+    )
       .then(res => res.json())
       .catch(error => console.error("Error:", error))
       .then(response => console.log("Success:", response));
@@ -61,44 +60,44 @@ export default class NewEvent extends React.Component {
 
   handleStartDate = event => {
     this.setState({
-      eventStartDate: event.target.value
+      startDate: event.target.value
     });
   };
 
   handleStartTime = event => {
     this.setState({
-      eventStartTime: event.target.value
+      startTime: event.target.value
     });
   };
 
   handleEndDate = event => {
     this.setState({
-      eventEndDate: event.target.value
+      endDate: event.target.value
     });
   };
 
   handleEndTime = event => {
     this.setState({
-      eventEndTime: event.target.value
+      endTime: event.target.value
     });
   };
 
   handleTitle = event => {
     console.log(event);
     this.setState({
-      eventTitle: event.target.value
+      title: event.target.value
     });
   };
 
   handleType = (event, index, type) => {
     this.setState({
-      eventType: type
+      type: type
     });
   };
 
   handleInformation = event => {
     this.setState({
-      eventInformation: event.target.value
+      information: event.target.value
     });
   };
 
@@ -153,9 +152,10 @@ export default class NewEvent extends React.Component {
 
           <TextField hintText="Tapahtuman nimi" onChange={this.handleTitle} />
           <br />
+          
           <SelectField
             floatingLabelText="Tapahtuman tyyppi"
-            value={this.state.eventType}
+            value={this.state.type}
             onChange={this.handleType}
           >
             <MenuItem value={"kokous"} primaryText="Kokous" />
@@ -165,7 +165,7 @@ export default class NewEvent extends React.Component {
             <MenuItem value={"muu tapahtuma"} primaryText="Muu tapahtuma" />
           </SelectField>
           <TextField
-            hintText="Message Field"
+            hintText="Lisätietoja"
             floatingLabelText="Lisätietoja"
             onChange={this.handleInformation}
             multiLine={true}
