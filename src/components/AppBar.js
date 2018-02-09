@@ -8,7 +8,7 @@ import AppBar from 'material-ui/AppBar';
 const Appbar = () => (
   <AppBar
     style={{position: "fixed", height: '70px'}}
-    title={<img id="title_image" src="partio_logo_cmyk_valkoinen.png" />}
+    title={<img id="title_image" src="partio_logo_cmyk_valkoinen.png" alt="partion logo" />}
     
     iconClassNameRight="muidocs-icon-navigation-expand-more"
   />

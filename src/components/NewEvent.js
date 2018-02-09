@@ -164,6 +164,7 @@ export default class NewEvent extends React.Component {
             <MenuItem value={"vaellus"} primaryText="Vaellus" />
             <MenuItem value={"muu tapahtuma"} primaryText="Muu tapahtuma" />
           </SelectField>
+          <br />
           <TextField
             hintText="Lisätietoja"
             floatingLabelText="Lisätietoja"
