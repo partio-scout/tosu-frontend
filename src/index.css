@@ -17,3 +17,7 @@ App {
   height: 50px;
   margin: 10px 0px 10px;
 }
+
+ul.events {
+  list-style-type: none;
+}
