@@ -27,9 +27,10 @@ class App extends Component {
 
   render() {
     return (
-        <div className="App">
-          <MuiThemeProvider>
-            <Appbar/>
+      <div className="App">
+        <MuiThemeProvider>
+          <div id="container">
+            <Appbar />
             <div className="content">
               <h2>Events</h2>
               <NewEvent />
@@ -37,9 +38,10 @@ class App extends Component {
               <h2>Activities</h2>
               <Activities data={activitiesData} />
             </div>
-            </MuiThemeProvider>
-        </div>
-      
+          </div>
+        </MuiThemeProvider>
+      </div>
+
     );
   }
 }

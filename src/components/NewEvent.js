@@ -5,10 +5,17 @@ import RaisedButton from "material-ui/RaisedButton";
 import TextField from "material-ui/TextField";
 import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
+import { TextValidator, ValidatorForm, DateValidator, TimeValidator, SelectValidator } from 'react-material-ui-form-validator';
+
 
 /**
  * Dialogs can be nested. This example opens a Date Picker from within a Dialog.
  */
+const errorStyle = {
+  position: 'absolute',
+  marginBottom: '-22px',
+  color: 'red',
+};
 
 export default class NewEvent extends React.Component {
   state = {
@@ -22,16 +29,29 @@ export default class NewEvent extends React.Component {
     information: ""
   };
 
+  
+
   handleOpen = () => {
     this.setState({ open: true });
   };
 
   handleClose = () => {
-    this.setState({ open: false });
+    this.setState({ 
+      open: false,
+      title: "",
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
+      type: "",
+      information: ""
+    });
   };
 
   handleCloseAndSend = () => {
-    this.setState({ open: false });
+    this.setState({ 
+      open: false
+    });
 
     const data = {
       title: this.state.title,
@@ -58,27 +78,27 @@ export default class NewEvent extends React.Component {
       .then(response => console.log("Success:", response));
   };
 
-  handleStartDate = event => {
+  handleStartDate = (event, date) => {
     this.setState({
-      startDate: event.target.value
+      startDate: date
     });
   };
 
-  handleStartTime = event => {
+  handleStartTime = (event, date) => {
     this.setState({
-      startTime: event.target.value
+      startTime: date
     });
   };
 
-  handleEndDate = event => {
+  handleEndDate = (event, date) => {
     this.setState({
-      endDate: event.target.value
+      endDate: date
     });
   };
 
-  handleEndTime = event => {
+  handleEndTime = (event, date) => {
     this.setState({
-      endTime: event.target.value
+      endTime: date
     });
   };
 
@@ -105,10 +125,10 @@ export default class NewEvent extends React.Component {
     const actions = [
       <FlatButton label="Peruuta" primary={true} onClick={this.handleClose} />,
       <FlatButton
+        type="submit"
         label="Tallenna"
         primary={true}
         keyboardFocused={true}
-        onClick={this.handleCloseAndSend}
       />
     ];
 
@@ -117,53 +137,81 @@ export default class NewEvent extends React.Component {
         <RaisedButton label="Uusi tapahtuma" onClick={this.handleOpen} />
         <Dialog
           title="Luo uusi tapahtuma"
-          actions={actions}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
           autoScrollBodyContent={true}
         >
-          <p>Aloitus päivämäärä ja aika</p>
-          <TextField
+          <ValidatorForm
+            ref="form"
+            onSubmit={this.handleCloseAndSend}
+            onError={errors => console.log(errors)}
+          >
+          <p>Aloituspäivämäärä ja aika</p>
+          <DateValidator 
             type="date"
             name="startDate"
-            value={this.state.eventStartDate}
+            value={this.state.startDate}
             onChange={this.handleStartDate}
+            validators={['required']}
+            errorMessages={['Päivämäärä vaaditaan']}
           />
-          <TextField
-            type="time"
+          <TimeValidator
+            floatingLabelText="Tapahtuman alkamisaika"
+            format="24hr"
             name="startTime"
-            value={this.state.time}
+            value={this.state.startTime}
             onChange={this.handleStartTime}
+            validators={['required']}
+            errorMessages={['Aloitusaika vaaditaan']}
           />
-          <p>Lopetus päivämäärä ja aika</p>
-          <TextField
+          <p>Lopetuspäivämäärä ja aika</p>
+          <DateValidator 
             type="date"
             name="endDate"
-            value={this.state.eventEndDate}
+            value={this.state.endDate}
             onChange={this.handleEndDate}
+            validators={['required']}
+            errorMessages={['Päivämäärä vaaditaan']}
           />
-          <TextField
-            type="time"
+          <TimeValidator 
+            floatingLabelText="Tapahtuman loppumisaika"
+            format="24hr"
             name="endTime"
-            value={this.state.eventEndTime}
+            value={this.state.endTime}
             onChange={this.handleEndTime}
+            validators={['required']}
+            errorMessages={['Loppumisaika vaaditaan']}
           />
-
-          <TextField hintText="Tapahtuman nimi" onChange={this.handleTitle} />
           <br />
-          
-          <SelectField
+          <TextValidator
+            floatingLabelText="Tapahtuman nimi"
+            name="nimi"
+            value={this.state.title}
+            hintText="Tapahtuman nimi" 
+            onChange={this.handleTitle} 
+            validators={['required']}
+            errorMessages={['Tapahtuman nimi vaaditaan']}
+            errorStyle={errorStyle}
+          />
+          <br />
+          <SelectValidator 
+            name="tyyppi"
             floatingLabelText="Tapahtuman tyyppi"
             value={this.state.type}
             onChange={this.handleType}
+            validators={['required']}
+            errorMessages={['Tapahtuman tyyppi vaaditaan']}
           >
+          
             <MenuItem value={"kokous"} primaryText="Kokous" />
             <MenuItem value={"leiri"} primaryText="Leiri" />
             <MenuItem value={"retki"} primaryText="Retki" />
             <MenuItem value={"vaellus"} primaryText="Vaellus" />
             <MenuItem value={"muu tapahtuma"} primaryText="Muu tapahtuma" />
-          </SelectField>
+          </SelectValidator>
+          <br />
+          
           <TextField
             hintText="Lisätietoja"
             floatingLabelText="Lisätietoja"
@@ -172,6 +220,8 @@ export default class NewEvent extends React.Component {
             rows={2}
           />
           <br />
+          {actions}
+          </ValidatorForm>
         </Dialog>
       </div>
     );
