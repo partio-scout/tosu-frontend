@@ -4,7 +4,7 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import NewEvent from "./components/NewEvent";
 import Activities from "./components/Activities";
 import activitiesData from "./partio.json";
-import Appbar from "./components/AppBar"
+import Appbar from "./components/AppBar";
 
 class App extends Component {
   constructor() {
@@ -16,12 +16,18 @@ class App extends Component {
   }
 
   getEvents = () => {
-    fetch("https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events")
+    fetch(
+      "https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events"
+    )
       .then(res => res.json())
       .then(data => this.setState({ events: data }));
   };
 
   componentWillMount() {
+    this.getEvents();
+  }
+
+  updateEvents = () => {
     this.getEvents();
   }
 
@@ -33,7 +39,7 @@ class App extends Component {
             <Appbar />
             <div className="content">
               <h2>Events</h2>
-              <NewEvent />
+              <NewEvent updateEvents={this.updateEvents} />
               <ListEvents events={this.state.events} />
               <h2>Activities</h2>
               <Activities data={activitiesData} />
@@ -41,7 +47,6 @@ class App extends Component {
           </div>
         </MuiThemeProvider>
       </div>
-
     );
   }
 }
