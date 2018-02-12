@@ -92,6 +92,15 @@ export default class NewEvent extends React.Component {
         }
       }
 
+      if (this.state.repeatFrequency === 3) {
+        if (i !== 0) {
+          startDate = moment(startDate).add(i, "months");
+          endDate = moment(endDate).add(i, "months");
+          console.log(startDate);
+          console.log(endDate);
+        }
+      }
+
       startDate = moment(startDate).format("YYYY-MM-DD");
       endDate = moment(endDate).format("YYYY-MM-DD");
 
