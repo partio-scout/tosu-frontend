@@ -20,7 +20,9 @@ class App extends Component {
       "https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events"
     )
       .then(res => res.json())
-      .then(data => this.setState({ events: data }));
+      .then(data => this.setState({ events: data })
+     
+    );
   };
 
   componentWillMount() {
