@@ -18,7 +18,9 @@ class App extends Component {
   getEvents = () => {
     fetch("https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events")
       .then(res => res.json())
-      .then(data => this.setState({ events: data }));
+      .then(data => this.setState({ events: data })
+     
+    );
   };
 
   componentWillMount() {

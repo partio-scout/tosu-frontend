@@ -94,6 +94,15 @@ export default class NewEvent extends React.Component {
 
       if (this.state.repeatFrequency === 3) {
         if (i !== 0) {
+          startDate = moment(startDate).add(i*14, "days");
+          endDate = moment(endDate).add(i*14, "days");
+          console.log(startDate);
+          console.log(endDate);
+        }
+      }
+
+      if (this.state.repeatFrequency === 4) {
+        if (i !== 0) {
           startDate = moment(startDate).add(i, "months");
           endDate = moment(endDate).add(i, "months");
           console.log(startDate);
@@ -306,9 +315,10 @@ export default class NewEvent extends React.Component {
               <MenuItem value={0} primaryText="Kerran" />
               <MenuItem value={1} primaryText="Päivittäin" />
               <MenuItem value={2} primaryText="Viikottain" />
-              <MenuItem value={3} primaryText="Kuukausittain (esim. 12. pvä)" />
+              <MenuItem value={3} primaryText="Joka toinen viikko" />
+              <MenuItem value={4} primaryText="Kuukausittain (esim. 12. pvä)" />
               <MenuItem
-                value={4}
+                value={5}
                 primaryText="Kuukausittain (esim. 2. maanantai)"
               />
             </SelectValidator>
