@@ -94,8 +94,8 @@ export default class NewEvent extends React.Component {
 
       if (this.state.repeatFrequency === 3) {
         if (i !== 0) {
-          startDate = moment(startDate).add(i*14, "days");
-          endDate = moment(endDate).add(i*14, "days");
+          startDate = moment(startDate).add(i * 14, "days");
+          endDate = moment(endDate).add(i * 14, "days");
           console.log(startDate);
           console.log(endDate);
         }
@@ -142,7 +142,10 @@ export default class NewEvent extends React.Component {
       )
         .then(res => res.json())
         .catch(error => console.error("Error:", error))
-        .then(response => console.log("Success:", response));
+        .then(response => {
+          console.log("Success:", response);
+          this.handleClose();
+        });
     }
   };
 
