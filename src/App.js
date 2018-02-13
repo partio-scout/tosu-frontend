@@ -20,9 +20,22 @@ class App extends Component {
       "https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events"
     )
       .then(res => res.json())
-      .then(data => this.setState({ events: data })
-     
-    );
+      .then(data => this.setState({ events: data }))
+      .catch(error => {
+        console.log(error);
+        this.setState({
+          events: [{
+            title: "Backend not working, fake data to prevent error",
+            startDate: "2018-02-06",
+            startTime: "11:43",
+            endDate: "2018-02-09",
+            endTime: "13:43",
+            type: "kokous",
+            information: "oooooo",
+            id: "1"
+          }]
+        });
+      });
   };
 
   componentWillMount() {
@@ -31,7 +44,7 @@ class App extends Component {
 
   updateEvents = () => {
     this.getEvents();
-  }
+  };
 
   render() {
     return (
