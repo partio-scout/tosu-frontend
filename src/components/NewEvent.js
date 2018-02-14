@@ -26,10 +26,18 @@ export default class NewEvent extends React.Component {
   };
 
   componentWillMount() {
-    ValidatorForm.addValidationRule('isLater', (value) => {
-      if (value < this.state.startDate) {
+    ValidatorForm.addValidationRule('dateIsLater', (value) => {
+      if (value.setHours(0,0,0,0) < this.state.startDate.setHours(0,0,0,0)) {
         return false;
-      } else if(this.state.startDate == this.state.endDate && value < this.state.endTime) {
+      } 
+      return true;
+    });
+    ValidatorForm.addValidationRule('timeIsLater', (value) => {
+      if(this.state.startDate.setHours(0,0,0,0) == this.state.endDate.setHours(0,0,0,0) && moment(value).format("HH:mm") < moment(this.state.startTime).format("HH:mm")) {
+        console.log(this.state.startDate)
+        console.log(this.state.endDate)
+        console.log(moment(value).format("HH:mm"))
+        console.log(moment(this.state.startTime).format("HH:mm"))
         return false;
       }
       return true;
@@ -183,7 +191,7 @@ export default class NewEvent extends React.Component {
               name="endDate"
               value={this.state.endDate}
               onChange={this.handleEndDate}
-              validators={['required', 'isLater']}
+              validators={['required', 'dateIsLater']}
               errorMessages={['Päivämäärä vaaditaan', 'Päättymishetki ei voi olla aiemmin kuin alkamishetki!']}
             />
             <TimeValidator
@@ -192,7 +200,7 @@ export default class NewEvent extends React.Component {
               name="endTime"
               value={this.state.endTime}
               onChange={this.handleEndTime}
-              validators={['required', 'isLater']}
+              validators={['required', 'timeIsLater']}
               errorMessages={['Loppumisaika vaaditaan', 'Päättymishetki ei voi olla aiemmin kuin alkamishetki!']}
             />
             <br />
