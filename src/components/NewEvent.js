@@ -40,7 +40,7 @@ export default class NewEvent extends React.Component {
       if (value < this.state.startDate) {
         return false;
       } else if (
-        this.state.startDate == this.state.endDate &&
+        this.state.startDate === this.state.endDate &&
         value < this.state.endTime
       ) {
         return false;
@@ -122,15 +122,15 @@ export default class NewEvent extends React.Component {
         type: this.state.type,
         information: this.state.information
       };
-      const d = moment(this.state.startDate);
-      const h = moment(this.state.startTime);
-      const startDateSimple = moment([
-        d.year(),
-        d.month(),
-        d.date(),
-        h.hours(),
-        h.minutes()
-      ]);
+      // const d = moment(this.state.startDate);
+      // const h = moment(this.state.startTime);
+      // const startDateSimple = moment([
+      //   d.year(),
+      //   d.month(),
+      //   d.date(),
+      //   h.hours(),
+      //   h.minutes()
+      // ]);
 
       fetch(
         "https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events",
