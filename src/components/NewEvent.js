@@ -36,6 +36,7 @@ export default class NewEvent extends React.Component {
   };
 
   componentWillMount() {
+<<<<<<< HEAD
     ValidatorForm.addValidationRule("isLater", value => {
       if (value < this.state.startDate) {
         return false;
@@ -43,6 +44,16 @@ export default class NewEvent extends React.Component {
         this.state.startDate === this.state.endDate &&
         value < this.state.endTime
       ) {
+=======
+    ValidatorForm.addValidationRule('dateIsLater', (value) => {
+      if (value.setHours(0,0,0,0) < this.state.startDate.setHours(0,0,0,0)) {
+        return false;
+      } 
+      return true;
+    });
+    ValidatorForm.addValidationRule('timeIsLater', (value) => {
+      if(this.state.startDate.setHours(0,0,0,0) == this.state.endDate.setHours(0,0,0,0) && moment(value).format("HH:mm") < moment(this.state.startTime).format("HH:mm")) {
+>>>>>>> b7ec318515ee908e8847396f978be701bd733943
         return false;
       }
       return true;
@@ -274,11 +285,16 @@ export default class NewEvent extends React.Component {
               name="endDate"
               value={this.state.endDate}
               onChange={this.handleEndDate}
+<<<<<<< HEAD
               validators={["required", "isLater"]}
               errorMessages={[
                 "Päivämäärä vaaditaan",
                 "Päättymishetki ei voi olla aiemmin kuin alkamishetki!"
               ]}
+=======
+              validators={['required', 'dateIsLater']}
+              errorMessages={['Päivämäärä vaaditaan', 'Päättymishetki ei voi olla aiemmin kuin alkamishetki!']}
+>>>>>>> b7ec318515ee908e8847396f978be701bd733943
             />
             <TimeValidator
               floatingLabelText="Tapahtuman loppumisaika"
@@ -286,11 +302,16 @@ export default class NewEvent extends React.Component {
               name="endTime"
               value={this.state.endTime}
               onChange={this.handleEndTime}
+<<<<<<< HEAD
               validators={["required", "isLater"]}
               errorMessages={[
                 "Loppumisaika vaaditaan",
                 "Päättymishetki ei voi olla aiemmin kuin alkamishetki!"
               ]}
+=======
+              validators={['required', 'timeIsLater']}
+              errorMessages={['Loppumisaika vaaditaan', 'Päättymishetki ei voi olla aiemmin kuin alkamishetki!']}
+>>>>>>> b7ec318515ee908e8847396f978be701bd733943
             />
             <br />
             <Checkbox

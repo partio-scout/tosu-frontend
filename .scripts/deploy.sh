@@ -3,8 +3,8 @@ set -x
 eval "$(ssh-agent -s)"
 chmod 600 ~/.travis/id_rsa
 ssh-add ~/.travis/id_rsa
-if [[ $TRAVIS_BRANCH = 'master' ]]
-    ssh deploy@$IP -p $PORT <<EOF
+ssh deploy@$IP -p $PORT <<EOF
+    if [[ $TRAVIS_BRANCH = 'master' ]]        
         cd /var/www/
         git clone https://github.com/partio-scout/tosu-frontend.git
         cd tosu-frontend
@@ -16,5 +16,6 @@ if [[ $TRAVIS_BRANCH = 'master' ]]
         sudo service tosu-backend start
         cd ..
         rm -rf tosu-frontend
-    EOF
-fi
+    fi
+EOF
+
