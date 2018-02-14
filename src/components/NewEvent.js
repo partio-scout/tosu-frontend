@@ -34,10 +34,6 @@ export default class NewEvent extends React.Component {
     });
     ValidatorForm.addValidationRule('timeIsLater', (value) => {
       if(this.state.startDate.setHours(0,0,0,0) == this.state.endDate.setHours(0,0,0,0) && moment(value).format("HH:mm") < moment(this.state.startTime).format("HH:mm")) {
-        console.log(this.state.startDate)
-        console.log(this.state.endDate)
-        console.log(moment(value).format("HH:mm"))
-        console.log(moment(this.state.startTime).format("HH:mm"))
         return false;
       }
       return true;
