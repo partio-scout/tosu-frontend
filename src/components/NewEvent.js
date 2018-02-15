@@ -13,6 +13,7 @@ import {
   SelectValidator
 } from "react-material-ui-form-validator";
 import moment from "moment";
+import FrequentEventsHandler from '../utils/FrequentEventsHandler'
 
 const errorStyle = {
   position: "absolute",
@@ -36,14 +37,13 @@ export default class NewEvent extends React.Component {
   };
 
   componentWillMount() {
-    ValidatorForm.addValidationRule('dateIsLater', (value) => {
-      if (value.setHours(0,0,0,0) < this.state.startDate.setHours(0,0,0,0)) {
+    ValidatorForm.addValidationRule("isLater", value => {
+      if (value < this.state.startDate) {
         return false;
-      } 
-      return true;
-    });
-    ValidatorForm.addValidationRule('timeIsLater', (value) => {
-      if(this.state.startDate.setHours(0,0,0,0) == this.state.endDate.setHours(0,0,0,0) && moment(value).format("HH:mm") < moment(this.state.startTime).format("HH:mm")) {
+      } else if (
+        this.state.startDate === this.state.endDate &&
+        value < this.state.endTime
+      ) {
         return false;
       }
       return true;
@@ -72,44 +72,8 @@ export default class NewEvent extends React.Component {
       open: false
     });
     for (let i = 0; i < this.state.repeatCount; i++) {
-      let startDate = this.state.startDate;
-      let endDate = this.state.endDate;
-
-      if (this.state.repeatFrequency === 1) {
-        if (i !== 0) {
-          startDate = moment(startDate).add(i, "days");
-          endDate = moment(endDate).add(i, "days");
-          console.log(startDate);
-          console.log(endDate);
-        }
-      }
-
-      if (this.state.repeatFrequency === 2) {
-        if (i !== 0) {
-          startDate = moment(startDate).add(i, "weeks");
-          endDate = moment(endDate).add(i, "weeks");
-          console.log(startDate);
-          console.log(endDate);
-        }
-      }
-
-      if (this.state.repeatFrequency === 3) {
-        if (i !== 0) {
-          startDate = moment(startDate).add(i * 14, "days");
-          endDate = moment(endDate).add(i * 14, "days");
-          console.log(startDate);
-          console.log(endDate);
-        }
-      }
-
-      if (this.state.repeatFrequency === 4) {
-        if (i !== 0) {
-          startDate = moment(startDate).add(i, "months");
-          endDate = moment(endDate).add(i, "months");
-          console.log(startDate);
-          console.log(endDate);
-        }
-      }
+      let startDate = FrequentEventsHandler(this.state.startDate, this.state.repeatFrequency, i)
+      let endDate = FrequentEventsHandler(this.state.endDate, this.state.repeatFrequency, i)
 
       startDate = moment(startDate).format("YYYY-MM-DD");
       endDate = moment(endDate).format("YYYY-MM-DD");
@@ -140,14 +104,14 @@ export default class NewEvent extends React.Component {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
         }
-    )
-      .then(res => res.json())
-      .catch(error => console.error("Error:", error))
-      .then(response => {
-        console.log("Success:", response) 
-        this.handleClose();
-        this.props.updateEvents()
-      });
+      )
+        .then(res => res.json())
+        .catch(error => console.error("Error:", error))
+        .then(response => {
+          console.log("Success:", response);
+          this.handleClose();
+          this.props.updateEvents();
+        });
     }
   };
 
@@ -275,8 +239,11 @@ export default class NewEvent extends React.Component {
               name="endDate"
               value={this.state.endDate}
               onChange={this.handleEndDate}
-              validators={['required', 'dateIsLater']}
-              errorMessages={['Päivämäärä vaaditaan', 'Päättymishetki ei voi olla aiemmin kuin alkamishetki!']}
+              validators={["required", "isLater"]}
+              errorMessages={[
+                "Päivämäärä vaaditaan",
+                "Päättymishetki ei voi olla aiemmin kuin alkamishetki!"
+              ]}
             />
             <TimeValidator
               floatingLabelText="Tapahtuman loppumisaika"
@@ -284,8 +251,11 @@ export default class NewEvent extends React.Component {
               name="endTime"
               value={this.state.endTime}
               onChange={this.handleEndTime}
-              validators={['required', 'timeIsLater']}
-              errorMessages={['Loppumisaika vaaditaan', 'Päättymishetki ei voi olla aiemmin kuin alkamishetki!']}
+              validators={["required", "isLater"]}
+              errorMessages={[
+                "Loppumisaika vaaditaan",
+                "Päättymishetki ei voi olla aiemmin kuin alkamishetki!"
+              ]}
             />
             <br />
             <Checkbox
