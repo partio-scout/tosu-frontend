@@ -1,8 +1,6 @@
 import moment from 'moment'
 
 const handleFrequentEvent = (date, repeatFrequency, i) => {
-
-console.log('OG date:', date)
   // Repeat every day
   if (repeatFrequency === 1) {
     if (i !== 0) {
@@ -31,7 +29,6 @@ console.log('OG date:', date)
     }
   }
 
-  console.log("New date: ", date)
   return date
 }
 
