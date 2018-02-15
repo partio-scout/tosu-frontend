@@ -62,65 +62,92 @@ export default class NewEvent extends React.Component {
       startTime: '',
       endDate: '',
       endTime: '',
+      checked: false,
+      repeatCount: 1,
+      repeatFrequency: 0,
       type: '',
       information: ''
     })
+  }
+
+  sendPostRequest = data => {
+    return fetch(
+      'https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }
+    )
+      .then(res => res.json())
+      .catch(error => console.error('Error:', error))
   }
 
   handleCloseAndSend = () => {
     this.setState({
       open: false
     })
-    for (let i = 0; i < this.state.repeatCount; i++) {
-      let startDate = FrequentEventsHandler(
-        this.state.startDate,
-        this.state.repeatFrequency,
-        i
-      )
-      let endDate = FrequentEventsHandler(
-        this.state.endDate,
-        this.state.repeatFrequency,
-        i
-      )
 
-      startDate = moment(startDate).format('YYYY-MM-DD')
-      endDate = moment(endDate).format('YYYY-MM-DD')
+    let startDate = this.state.startDate
+    let endDate = this.state.endDate
 
-      const data = {
-        title: this.state.title,
-        startDate: startDate,
-        startTime: moment(this.state.startTime).format('HH:mm'),
-        endDate: endDate,
-        endTime: moment(this.state.endTime).format('HH:mm'),
-        type: this.state.type,
-        information: this.state.information
-      }
-      // const d = moment(this.state.startDate);
-      // const h = moment(this.state.startTime);
-      // const startDateSimple = moment([
-      //   d.year(),
-      //   d.month(),
-      //   d.date(),
-      //   h.hours(),
-      //   h.minutes()
-      // ]);
+    const data = {
+      title: this.state.title,
+      startDate: moment(startDate).format('YYYY-MM-DD'),
+      startTime: moment(this.state.startTime).format('HH:mm'),
+      endDate: moment(endDate).format('YYYY-MM-DD'),
+      endTime: moment(this.state.endTime).format('HH:mm'),
+      type: this.state.type,
+      information: this.state.information
+    }
 
-      fetch(
-        'https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
+    // Send POST request for first event.
+    // If event is repeating, wait for response to get groupID and then send rest of the POST requests
+    this.sendPostRequest(data)
+      .then(response => {
+        if (this.state.checked) {
+          for (let i = 1; i < this.state.repeatCount; i++) {
+            let newStartDate = FrequentEventsHandler(
+              startDate,
+              this.state.repeatFrequency,
+              i
+            ).format('YYYY-MM-DD')
+
+            let newEndDate = FrequentEventsHandler(
+              endDate,
+              this.state.repeatFrequency,
+              i
+            ).format('YYYY-MM-DD')
+
+            console.log('Response:', response)
+
+            const newData = {
+              title: data.title,
+              startDate: newStartDate,
+              startTime: data.startTime,
+              endDate: newEndDate,
+              endTime: data.endTime,
+              type: data.type,
+              information: data.information
+            }
+
+            console.log('Data: ', newData)
+
+            this.sendPostRequest(newData).then(() => {
+              if (i === this.state.repeatCount - 1) {
+                this.handleClose()
+                this.props.updateEvents()
+              }
+            })
+          }
         }
-      )
-        .then(res => res.json())
-        .catch(error => console.error('Error:', error))
-        .then(response => {
-          console.log('Success:', response)
+      })
+      .then(() => {
+        if (!this.state.checked) {
           this.handleClose()
           this.props.updateEvents()
-        })
-    }
+        }
+      })
   }
 
   handleStartDate = (event, date) => {

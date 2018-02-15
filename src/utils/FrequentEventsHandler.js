@@ -1,13 +1,12 @@
-import React from 'react'
-import moment from "moment";
-
+import moment from 'moment'
 
 const handleFrequentEvent = (date, repeatFrequency, i) => {
+
+console.log('OG date:', date)
   // Repeat every day
   if (repeatFrequency === 1) {
     if (i !== 0) {
       date = moment(date).add(i, 'days')
-      console.log(date)
     }
   }
 
@@ -15,16 +14,13 @@ const handleFrequentEvent = (date, repeatFrequency, i) => {
   if (repeatFrequency === 2) {
     if (i !== 0) {
       date = moment(date).add(i, 'weeks')
-      console.log(date)
     }
   }
 
-
-// Repeat every other week
+  // Repeat every other week
   if (repeatFrequency === 3) {
     if (i !== 0) {
       date = moment(date).add(i * 14, 'days')
-      console.log(date)
     }
   }
 
@@ -32,10 +28,10 @@ const handleFrequentEvent = (date, repeatFrequency, i) => {
   if (repeatFrequency === 4) {
     if (i !== 0) {
       date = moment(date).add(i, 'months')
-      console.log(date)
     }
   }
 
+  console.log("New date: ", date)
   return date
 }
 
