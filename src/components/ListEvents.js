@@ -5,13 +5,14 @@ export default class ListEvents extends React.Component {
     
     render() {
         let listOfEvents = this.props.events.map((event, id) => 
-        <li key={id}><EventCard event={event} /></li>
+        <EventCard event={event} />
         )
 
         return (
-            <ul className="events">
+            <div>
+            <br />
                 {listOfEvents}
-            </ul>
+            </div>
         )
     }
 }

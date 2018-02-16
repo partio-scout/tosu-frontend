@@ -5,6 +5,7 @@
   "dependencies": {
     "material-ui": "^0.20.0",
     "moment": "^2.20.1",
+    "moment-with-locales-es6": "^2.18.1",
     "normalizr": "^3.2.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -17,5 +18,12 @@
     "test": "npm install && react-scripts test --env=jsdom && npm run server &",
     "eject": "react-scripts eject",
     "travis": "npm test"
+  },
+  "devDependencies": {
+    "eslint": "^4.17.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.6.1"
   }
 }
