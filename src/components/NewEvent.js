@@ -90,7 +90,8 @@ export default class NewEvent extends React.Component {
 
     let startDate = this.state.startDate
     let endDate = this.state.endDate
-
+    console.log(startDate)
+    console.log(endDate)
     const data = {
       title: this.state.title,
       startDate: moment(startDate).format('YYYY-MM-DD'),

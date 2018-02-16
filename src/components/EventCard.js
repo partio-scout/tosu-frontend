@@ -1,39 +1,57 @@
 import React from "react";
 import {
   Card,
-  //CardActions,
+  CardActions,
   CardHeader,
-  //CardMedia,
-  //CardTitle,
+  CardTitle,
   CardText
 } from "material-ui/Card";
+import moment from 'moment-with-locales-es6'
+import FlatButton from 'material-ui/FlatButton'
 
-const EventCard = ({ event }) => (
-  <Card>
-    <CardHeader
-      title={event.title}
-      //subtitle={event.startDate}
-      subtitle="päivämäärät, alku ja loppu"
-      actAsExpander={true}
-      showExpandableButton={true}
-    />
-    <CardText expandable={true}>
-      Tänne sitten muut tiedot, vähän kuten eventin luomisessa.
-      <br />
-      <br />
-      Vähän alemmaksi sitten aktiviteettien lisääminen hakuineen jne.
-      <br />
-      <br />
-      Ja aktiviteetteja voisi sitten siirrellä näppärästi näiden välillä, kun
-      ovat kaikki näkyvissä.
-      <br />
-      <br />
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec mattis
-      pretium massa. Aliquam erat volutpat. Nulla facilisi. Donec vulputate
-      interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque. Aliquam
-      dui mauris, mattis quis lacus id, pellentesque lobortis odio.1
-    </CardText>
-  </Card>
-);
+export default class EventCard extends React.Component {
 
-export default EventCard;
+  constructor(props) {
+    super(props)
+    this.state = {
+      expanded: false
+    }
+  }
+
+  handleExpandChange = (expanded) => {
+    this.setState({expanded: expanded});
+  }
+
+  handleReduce = () => {
+    this.setState({expanded: false})
+  }
+ 
+  render() { 
+    const event = this.props.event
+    console.log(event.startDate)
+    moment.locale('fr')
+    const title = this.state.expanded ? '' : event.title 
+    const subtitle = this.state.expanded ? '' : moment(event.startDate, "YYYY-MM-DD").locale('fi').format('ddd D. MMMM YYYY') + ' ' + event.startTime
+    return (
+      <Card expanded={this.state.expanded} onExpandChange={this.handleExpandChange}>
+        <CardHeader
+        title={title}
+        subtitle={subtitle}
+        // subtitle="päivämäärät, alku ja loppu"
+        actAsExpander={true}
+        showExpandableButton={true}
+        />
+        <CardTitle title={event.title} subtitle="Lokaatio?" expandable={true} />
+        <CardText expandable={true}>
+        <p className='eventTimes'><span>{event.type} alkaa:</span> {moment(event.startDate).format('D.M.YYYY')} kello {event.startTime}</p>
+        <p className='eventTimes'><span>{event.type} päättyy:</span> {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}</p>
+        <p>{event.information}</p>
+        <p>Aktiviteetit:</p>
+        <CardActions>
+          <FlatButton label="Sulje" primary={true} fullWidth={true} onClick={this.handleReduce} />
+        </CardActions>
+        </CardText>
+    </Card>
+    )
+  }
+}

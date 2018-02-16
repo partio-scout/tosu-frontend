@@ -10,7 +10,7 @@ App {
 }
 
 .content {
-  padding: 60px
+  padding: 70px 10px 50px;
 }
 
 #title_image {
@@ -20,4 +20,12 @@ App {
 
 ul.events {
   list-style-type: none;
+}
+
+p.eventTimes::first-letter {
+  text-transform: uppercase;
+}
+
+p.eventTimes > span {
+  font-weight: bold
 }

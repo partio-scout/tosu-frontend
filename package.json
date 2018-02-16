@@ -5,6 +5,7 @@
   "dependencies": {
     "material-ui": "^0.20.0",
     "moment": "^2.20.1",
+    "moment-with-locales-es6": "^2.18.1",
     "normalizr": "^3.2.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
