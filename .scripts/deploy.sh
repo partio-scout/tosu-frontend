@@ -18,7 +18,7 @@ ssh deploy@$IP -p $PORT <<EOF
         sudo service tosu-backend start
         cd ..
         rm -rf tosu-frontend
-	echo "Frontside ollie!"
+	echo "Frontside ollie running!"
     fi
 EOF
 
