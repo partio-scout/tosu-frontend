@@ -8,6 +8,25 @@ import {
 } from "material-ui/Card";
 import moment from 'moment-with-locales-es6'
 import FlatButton from 'material-ui/FlatButton'
+import Avatar from 'material-ui/Avatar';
+import Chip from 'material-ui/Chip';
+import FontIcon from 'material-ui/FontIcon';
+import SvgIconFace from 'material-ui/svg-icons/action/face';
+import {blue300, indigo900} from 'material-ui/styles/colors';
+
+const styles = {
+  chip: {
+    margin: 4,
+  },
+  wrapper: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+};
+
+function handleRequestDelete() {
+  alert('Yritit poistaa aktiviteetin. Toimintoa ei vielä tueta.');
+}
 
 export default class EventCard extends React.Component {
 
@@ -43,12 +62,25 @@ export default class EventCard extends React.Component {
         />
         <CardTitle title={event.title} subtitle="Lokaatio?" expandable={true} />
         <CardText expandable={true}>
+        <FlatButton label="Muokkaa" secondary={true} className='buttonRight' />
         <p className='eventTimes'><span>{event.type} alkaa:</span> {moment(event.startDate).format('D.M.YYYY')} kello {event.startTime}</p>
         <p className='eventTimes'><span>{event.type} päättyy:</span> {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}</p>
         <p>{event.information}</p>
         <p>Aktiviteetit:</p>
+        <Chip
+          backgroundColor={blue300}
+          onRequestDelete={handleRequestDelete}
+          style={styles.chip}
+        >
+          <Avatar size={32} color={blue300} backgroundColor={indigo900}>
+            P
+          </Avatar>
+          Aktiviteetti
+        </Chip>
+        <br />
+        <p>Täällä haetaan aktiviteetteja ja lisätään niitä tapahtumaan</p>
         <CardActions>
-          <FlatButton label="Sulje" primary={true} fullWidth={true} onClick={this.handleReduce} />
+          <FlatButton label="Sulje" primary={true} onClick={this.handleReduce} fullWidth={true}/>
         </CardActions>
         </CardText>
     </Card>

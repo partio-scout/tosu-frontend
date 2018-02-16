@@ -29,3 +29,7 @@ p.eventTimes::first-letter {
 p.eventTimes > span {
   font-weight: bold
 }
+
+.buttonRight {
+  float: right
+}
