@@ -1,25 +1,25 @@
-import React from 'react'
-import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
-import RaisedButton from 'material-ui/RaisedButton'
-import TextField from 'material-ui/TextField'
-import MenuItem from 'material-ui/MenuItem'
-import Checkbox from 'material-ui/Checkbox'
+import React from 'react';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+import MenuItem from 'material-ui/MenuItem';
+import Checkbox from 'material-ui/Checkbox';
 import {
   TextValidator,
   ValidatorForm,
   DateValidator,
   TimeValidator,
   SelectValidator
-} from 'react-material-ui-form-validator'
-import moment from 'moment'
-import FrequentEventsHandler from '../utils/FrequentEventsHandler'
+} from 'react-material-ui-form-validator';
+import moment from 'moment';
+import FrequentEventsHandler from '../utils/FrequentEventsHandler';
 
 const errorStyle = {
   position: 'absolute',
   marginBottom: '-22px',
   color: 'red'
-}
+};
 
 export default class NewEvent extends React.Component {
   state = {
@@ -34,26 +34,25 @@ export default class NewEvent extends React.Component {
     repeatFrequency: 0,
     type: '',
     information: ''
-  }
+  };
 
   componentWillMount() {
-    ValidatorForm.addValidationRule('dateIsLater', value => {
+    ValidatorForm.addValidationRule('isLater', value => {
       if (value < this.state.startDate) {
-        return false
-      } 
-      return true
-    })
-    ValidatorForm.addValidationRule('timeIsLater', value => {
-      if (this.state.startDate.setHours(0,0,0,0) == this.state.endDate.setHours(0,0,0,0) && value < this.state.startTime) {
-        return false
+        return false;
+      } else if (
+        this.state.startDate === this.state.endDate &&
+        value < this.state.endTime
+      ) {
+        return false;
       }
-      return true
-    })
+      return true;
+    });
   }
 
   handleOpen = () => {
-    this.setState({ open: true })
-  }
+    this.setState({ open: true });
+  };
 
   handleClose = () => {
     this.setState({
@@ -68,11 +67,11 @@ export default class NewEvent extends React.Component {
       repeatFrequency: 0,
       type: '',
       information: ''
-    })
-  }
+    });
+  };
 
-  sendPostRequest = data => {
-    return fetch(
+  sendPostRequest = data =>
+    fetch(
       'https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events',
       {
         method: 'POST',
@@ -81,18 +80,15 @@ export default class NewEvent extends React.Component {
       }
     )
       .then(res => res.json())
-      .catch(error => console.error('Error:', error))
-  }
+      .catch(error => console.error('Error:', error));
 
   handleCloseAndSend = () => {
     this.setState({
       open: false
-    })
+    });
 
-    let startDate = this.state.startDate
-    let endDate = this.state.endDate
-    console.log(startDate)
-    console.log(endDate)
+    const { startDate, endDate } = this.state;
+
     const data = {
       title: this.state.title,
       startDate: moment(startDate).format('YYYY-MM-DD'),
@@ -101,27 +97,27 @@ export default class NewEvent extends React.Component {
       endTime: moment(this.state.endTime).format('HH:mm'),
       type: this.state.type,
       information: this.state.information
-    }
+    };
 
     // Send POST request for first event.
     // If event is repeating, wait for response to get groupID and then send rest of the POST requests
     this.sendPostRequest(data)
       .then(response => {
         if (this.state.checked) {
-          for (let i = 1; i < this.state.repeatCount; i++) {
-            let newStartDate = FrequentEventsHandler(
+          for (let i = 1; i < this.state.repeatCount; i += 1) {
+            const newStartDate = FrequentEventsHandler(
               startDate,
               this.state.repeatFrequency,
               i
-            ).format('YYYY-MM-DD')
+            ).format('YYYY-MM-DD');
 
-            let newEndDate = FrequentEventsHandler(
+            const newEndDate = FrequentEventsHandler(
               endDate,
               this.state.repeatFrequency,
               i
-            ).format('YYYY-MM-DD')
+            ).format('YYYY-MM-DD');
 
-            console.log('Response:', response)
+            console.log('Response:', response);
 
             const newData = {
               title: data.title,
@@ -131,50 +127,50 @@ export default class NewEvent extends React.Component {
               endTime: data.endTime,
               type: data.type,
               information: data.information
-            }
+            };
 
-            console.log('Data: ', newData)
+            console.log('Data: ', newData);
 
             this.sendPostRequest(newData).then(() => {
               if (i === this.state.repeatCount - 1) {
-                this.handleClose()
-                this.props.updateEvents()
+                this.handleClose();
+                this.props.updateEvents();
               }
-            })
+            });
           }
         }
       })
       .then(() => {
         if (!this.state.checked) {
-          this.handleClose()
-          this.props.updateEvents()
+          this.handleClose();
+          this.props.updateEvents();
         }
-      })
-  }
+      });
+  };
 
   handleStartDate = (event, date) => {
     this.setState({
       startDate: date
-    })
-  }
+    });
+  };
 
   handleStartTime = (event, date) => {
     this.setState({
       startTime: date
-    })
-  }
+    });
+  };
 
   handleEndDate = (event, date) => {
     this.setState({
       endDate: date
-    })
-  }
+    });
+  };
 
   handleEndTime = (event, date) => {
     this.setState({
       endTime: date
-    })
-  }
+    });
+  };
 
   updateCheck() {
     this.setState(oldState => {
@@ -182,60 +178,60 @@ export default class NewEvent extends React.Component {
         this.setState({
           repeatCount: 1,
           repeatFrequency: 0
-        })
+        });
       }
       return {
         checked: !oldState.checked
-      }
-    })
+      };
+    });
   }
 
   handleRepeatCount = event => {
     this.setState({
       repeatCount: event.target.value
-    })
-  }
+    });
+  };
 
   handleFrequency = (event, index, repeatFrequency) => {
     this.setState({
-      repeatFrequency: repeatFrequency
-    })
-  }
+      repeatFrequency
+    });
+  };
 
   handleTitle = event => {
     this.setState({
       title: event.target.value
-    })
-  }
+    });
+  };
 
   handleType = (event, index, type) => {
     this.setState({
-      type: type
-    })
-  }
+      type
+    });
+  };
 
   handleInformation = event => {
     this.setState({
       information: event.target.value
-    })
-  }
+    });
+  };
 
   render() {
     const actions = [
       <FlatButton
         key="cancelButton"
         label="Peruuta"
-        primary={true}
+        primary
         onClick={this.handleClose}
       />,
       <FlatButton
         key="submitButton"
         type="submit"
         label="Tallenna"
-        primary={true}
-        keyboardFocused={true}
+        primary
+        keyboardFocused
       />
-    ]
+    ];
 
     return (
       <div>
@@ -245,10 +241,10 @@ export default class NewEvent extends React.Component {
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
-          autoScrollBodyContent={true}
+          autoScrollBodyContent
         >
           <ValidatorForm
-            ref="form"
+            ref={() => "form"}
             onSubmit={this.handleCloseAndSend}
             onError={errors => console.log(errors)}
           >
@@ -276,7 +272,7 @@ export default class NewEvent extends React.Component {
               name="endDate"
               value={this.state.endDate}
               onChange={this.handleEndDate}
-              validators={['required', 'dateIsLater']}
+              validators={['required', 'isLater']}
               errorMessages={[
                 'Päivämäärä vaaditaan',
                 'Päättymishetki ei voi olla aiemmin kuin alkamishetki!'
@@ -288,7 +284,7 @@ export default class NewEvent extends React.Component {
               name="endTime"
               value={this.state.endTime}
               onChange={this.handleEndTime}
-              validators={['required', 'timeIsLater']}
+              validators={['required', 'isLater']}
               errorMessages={[
                 'Loppumisaika vaaditaan',
                 'Päättymishetki ei voi olla aiemmin kuin alkamishetki!'
@@ -353,11 +349,11 @@ export default class NewEvent extends React.Component {
               validators={['required']}
               errorMessages={['Tapahtuman tyyppi vaaditaan']}
             >
-              <MenuItem value={'kokous'} primaryText="Kokous" />
-              <MenuItem value={'leiri'} primaryText="Leiri" />
-              <MenuItem value={'retki'} primaryText="Retki" />
-              <MenuItem value={'vaellus'} primaryText="Vaellus" />
-              <MenuItem value={'muu tapahtuma'} primaryText="Muu tapahtuma" />
+              <MenuItem value="kokous" primaryText="Kokous" />
+              <MenuItem value="leiri" primaryText="Leiri" />
+              <MenuItem value="retki" primaryText="Retki" />
+              <MenuItem value="vaellus" primaryText="Vaellus" />
+              <MenuItem value="muu tapahtuma" primaryText="Muu tapahtuma" />
             </SelectValidator>
             <br />
 
@@ -365,7 +361,7 @@ export default class NewEvent extends React.Component {
               hintText="Lisätietoja"
               floatingLabelText="Lisätietoja"
               onChange={this.handleInformation}
-              multiLine={true}
+              multiLine
               rows={2}
             />
             <br />
@@ -373,6 +369,6 @@ export default class NewEvent extends React.Component {
           </ValidatorForm>
         </Dialog>
       </div>
-    )
+    );
   }
 }

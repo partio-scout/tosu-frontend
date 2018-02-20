@@ -1,22 +1,26 @@
-import React, { Component } from 'react'
-import ListEvents from './components/ListEvents'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import NewEvent from './components/NewEvent'
-import Activities from './components/Activities'
-import Appbar from './components/AppBar'
-import activitiesData from './partio.json'
+import React, { Component } from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import ListEvents from './components/ListEvents';
+import NewEvent from './components/NewEvent';
+import Activities from './components/Activities';
+import Appbar from './components/AppBar';
+import activitiesData from './partio.json';
 
 class App extends Component {
   constructor() {
-    super()
+    super();
     this.state = {
       events: [{}],
       activities: undefined
-    }
-    this.getEvents = this.getEvents.bind(this)
-    this.getActivities = this.getActivities.bind(this)
+    };
+    this.getEvents = this.getEvents.bind(this);
+    this.getActivities = this.getActivities.bind(this);
   }
 
+  componentDidMount() {
+    this.getEvents();
+    this.getActivities();
+  }
   getEvents = () => {
     fetch(
       'https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events'
@@ -24,7 +28,7 @@ class App extends Component {
       .then(res => res.json())
       .then(data => this.setState({ events: data }))
       .catch(error => {
-        console.log(error)
+        console.log(error);
         this.setState({
           events: [
             {
@@ -38,9 +42,9 @@ class App extends Component {
               id: '1'
             }
           ]
-        })
-      })
-  }
+        });
+      });
+  };
 
   getActivities = () => {
     fetch(
@@ -50,25 +54,20 @@ class App extends Component {
       .then(data => {
         this.setState({
           activities: data
-        })
+        });
       })
       .catch(error => {
-        console.log('Error: ', error)
-        //Jos tietoja ei saada haettua, hae tiedot staattisesta JSON-tiedostosta
+        console.log('Error: ', error);
+        // Jos tietoja ei saada haettua, hae tiedot staattisesta JSON-tiedostosta
         this.setState({
           activities: activitiesData
-        })
-      })
-  }
-
-  componentDidMount() {
-    this.getEvents()
-    this.getActivities()
-  }
+        });
+      });
+  };
 
   updateEvents = () => {
-    this.getEvents()
-  }
+    this.getEvents();
+  };
 
   render() {
     return (
@@ -86,8 +85,8 @@ class App extends Component {
           </div>
         </MuiThemeProvider>
       </div>
-    )
+    );
   }
 }
 
-export default App
+export default App;

@@ -1,18 +1,17 @@
 import React from 'react';
 import EventCard from './EventCard';
 
-export default class ListEvents extends React.Component {
-    
-    render() {
-        let listOfEvents = this.props.events.map((event, id) => 
-        <EventCard event={event} />
-        )
+const ListEvents = (props) => {
+  const listOfEvents = props.events.map((event) => 
+    <EventCard key={event.id ? event.id : 0} event={event} />
+  );
 
-        return (
-            <div>
-            <br />
-                {listOfEvents}
-            </div>
-        )
-    }
-}
+  return (
+    <div>
+      <br />
+      {listOfEvents}
+    </div>
+  );
+};
+
+export default ListEvents
