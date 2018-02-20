@@ -84,7 +84,7 @@ const activitiesArray = fetchedActivities => {
   // Luo Array kaikista taskgroupeista, subtaskgroupeista ja taskeista
 
   const getActivities = (taskgroups, activities) => {
-    let foundActivities;
+    let foundActivities = [];
     for (let i = 0; i < taskgroups.length; i += 1) {
       const subtaskgroups = findSubtaskgroups(taskgroups[i]);
 
