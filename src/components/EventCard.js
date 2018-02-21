@@ -11,7 +11,8 @@ import FlatButton from 'material-ui/FlatButton';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import { blue300, indigo900 } from 'material-ui/styles/colors';
-import activitiesArray from './Activities';
+import ActivitySearch from './SearchBar';
+import {activitiesArray} from './Activities'
 
 // import FontIcon from 'material-ui/FontIcon';
 // import SvgIconFace from 'material-ui/svg-icons/action/face';
@@ -34,6 +35,11 @@ export default class EventCard extends React.Component {
     };
   }
 
+  componentWillMount() {
+    console.log("testi",this.props)
+    
+  }
+
   handleRequestDelete = () => {
     alert('Yritit poistaa aktiviteetin. Toimintoa ei vielä tueta.');
   }
@@ -46,7 +52,11 @@ export default class EventCard extends React.Component {
     this.setState({ expanded: false });
   };
 
+  
+  
   render() {
+    const data = activitiesArray(this.props.fetchedActivities)
+
     const event = this.props.event;
     console.log(event.startDate);
     moment.locale('fr');
@@ -99,6 +109,7 @@ export default class EventCard extends React.Component {
           </Chip>
           <br />
           <p>Täällä haetaan aktiviteetteja ja lisätään niitä tapahtumaan</p>
+          <ActivitySearch dataSource={data} event={this.props.event}/>
           <CardActions>
             <FlatButton
               label="Sulje"

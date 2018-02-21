@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "match-sorter": "^2.2.0",
     "material-ui": "^0.20.0",
+    "material-ui-search-bar": "^0.4.1",
     "moment": "^2.20.1",
     "moment-with-locales-es6": "^2.18.1",
     "normalizr": "^3.2.4",
