@@ -1,6 +1,7 @@
 import React from 'react';
 import { normalize, schema } from 'normalizr';
 
+
 const createSchemas = () => {
   // Luo skeemat JSON datan normalisointia varten
   const taskSchema = new schema.Entity('tasks', {}, { idAttribute: 'guid' });

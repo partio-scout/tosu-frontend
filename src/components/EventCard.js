@@ -11,7 +11,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import { blue300, indigo900 } from 'material-ui/styles/colors';
-import activitiesArray from './Activities';
+import ActivitySearch from './SearchBar';
 
 // import FontIcon from 'material-ui/FontIcon';
 // import SvgIconFace from 'material-ui/svg-icons/action/face';
@@ -30,7 +30,8 @@ export default class EventCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false
+      expanded: false,
+      dataSource: []
     };
   }
 
@@ -45,6 +46,12 @@ export default class EventCard extends React.Component {
   handleReduce = () => {
     this.setState({ expanded: false });
   };
+
+  updateDataSource = (dataSource) => {
+    this.setState({
+      dataSource: dataSource
+    })
+  }
 
   render() {
     const event = this.props.event;
@@ -99,6 +106,8 @@ export default class EventCard extends React.Component {
           </Chip>
           <br />
           <p>Täällä haetaan aktiviteetteja ja lisätään niitä tapahtumaan</p>
+          <ActivitySearch dataSource={this.state.dataSource}
+           updateDataSource={this.updateDataSource}/>
           <CardActions>
             <FlatButton
               label="Sulje"
