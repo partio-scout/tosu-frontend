@@ -109,7 +109,7 @@ export default class EventCard extends React.Component {
           </Chip>
           <br />
           <p>Täällä haetaan aktiviteetteja ja lisätään niitä tapahtumaan</p>
-          <ActivitySearch dataSource={data}/>
+          <ActivitySearch dataSource={data} event={this.props.event}/>
           <CardActions>
             <FlatButton
               label="Sulje"
