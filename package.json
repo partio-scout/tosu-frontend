@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "match-sorter": "^2.2.0",
     "material-ui": "^0.20.0",
     "material-ui-search-bar": "^0.4.1",
     "moment": "^2.20.1",
