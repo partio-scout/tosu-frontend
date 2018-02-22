@@ -70,7 +70,18 @@ export default class NewEvent extends React.Component {
     });
   };
 
-  sendPostRequest = data =>
+  sendGroupIdPostRequest = () =>
+    fetch(
+      'https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/eventgroup',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      }
+    )
+      .then(res => res.json())
+      .catch(error => console.error('Error in groupId POST:', error));
+
+  sendEventPostRequest = data =>
     fetch(
       'https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events',
       {
@@ -80,7 +91,7 @@ export default class NewEvent extends React.Component {
       }
     )
       .then(res => res.json())
-      .catch(error => console.error('Error:', error));
+      .catch(error => console.error('Error in event POST:', error));
 
   handleCloseAndSend = () => {
     this.setState({
@@ -89,63 +100,62 @@ export default class NewEvent extends React.Component {
 
     const { startDate, endDate } = this.state;
 
-    const data = {
-      title: this.state.title,
-      startDate: moment(startDate).format('YYYY-MM-DD'),
-      startTime: moment(this.state.startTime).format('HH:mm'),
-      endDate: moment(endDate).format('YYYY-MM-DD'),
-      endTime: moment(this.state.endTime).format('HH:mm'),
-      type: this.state.type,
-      information: this.state.information
-    };
+    if (!this.state.checked) {
+      const data = {
+        title: this.state.title,
+        startDate: moment(startDate).format('YYYY-MM-DD'),
+        startTime: moment(this.state.startTime).format('HH:mm'),
+        endDate: moment(endDate).format('YYYY-MM-DD'),
+        endTime: moment(this.state.endTime).format('HH:mm'),
+        type: this.state.type,
+        information: this.state.information
+      };
 
-    // Send POST request for first event.
-    // If event is repeating, wait for response to get groupID and then send rest of the POST requests
-    this.sendPostRequest(data)
-      .then(response => {
-        if (this.state.checked) {
-          for (let i = 1; i < this.state.repeatCount; i += 1) {
-            const newStartDate = FrequentEventsHandler(
-              startDate,
-              this.state.repeatFrequency,
-              i
-            ).format('YYYY-MM-DD');
-
-            const newEndDate = FrequentEventsHandler(
-              endDate,
-              this.state.repeatFrequency,
-              i
-            ).format('YYYY-MM-DD');
-
-            console.log('Response:', response);
-
-            const newData = {
-              title: data.title,
-              startDate: newStartDate,
-              startTime: data.startTime,
-              endDate: newEndDate,
-              endTime: data.endTime,
-              type: data.type,
-              information: data.information
-            };
-
-            console.log('Data: ', newData);
-
-            this.sendPostRequest(newData).then(() => {
-              if (i === this.state.repeatCount - 1) {
-                this.handleClose();
-                this.props.updateEvents();
-              }
-            });
-          }
-        }
-      })
-      .then(() => {
+      this.sendEventPostRequest(data).then(() => {
         if (!this.state.checked) {
           this.handleClose();
           this.props.updateEvents();
         }
       });
+    } else {
+      // Send POST first to create new GroupId and then use id from response to create group of events. ß
+      this.sendGroupIdPostRequest().then(response => {
+        console.log('GroupID response', response);
+
+        for (let i = 0; i < this.state.repeatCount; i += 1) {
+          const newStartDate = FrequentEventsHandler(
+            this.state.startDate,
+            this.state.repeatFrequency,
+            i
+          ).format('YYYY-MM-DD');
+
+          const newEndDate = FrequentEventsHandler(
+            this.state.endDate,
+            this.state.repeatFrequency,
+            i
+          ).format('YYYY-MM-DD');
+
+          const data = {
+            title: this.state.title,
+            startDate: newStartDate,
+            startTime: moment(this.state.startTime).format('HH:mm'),
+            endDate: newEndDate,
+            endTime: moment(this.state.endTime).format('HH:mm'),
+            type: this.state.type,
+            information: this.state.information,
+            groupId: response.groupId
+          };
+
+          console.log('Data', data);
+          this.sendEventPostRequest(data).then(() => {
+            if (i === this.state.repeatCount-1) {
+              this.handleClose();
+              this.props.updateEvents();
+            }
+          });
+        }
+      });
+    }
   };
 
   handleStartDate = (event, date) => {
@@ -244,7 +254,7 @@ export default class NewEvent extends React.Component {
           autoScrollBodyContent
         >
           <ValidatorForm
-            ref={() => "form"}
+            ref={() => 'form'}
             onSubmit={this.handleCloseAndSend}
             onError={errors => console.log(errors)}
           >
