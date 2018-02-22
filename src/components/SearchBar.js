@@ -1,6 +1,7 @@
 import React from 'react';
 import SearchBar from 'material-ui-search-bar';
 import matchSorter from 'match-sorter';
+import FlatButton from 'material-ui/FlatButton';
 
 export default class ActivitySearch extends React.Component {
   constructor(props) {
@@ -23,6 +24,34 @@ export default class ActivitySearch extends React.Component {
     });
   };
 
+  saveActivityToEvent = () => {
+    if (this.state.selectedActivity) {
+      console.log(this.props);
+
+      const data = {
+        information: this.state.selectedActivity[0].guid
+      };
+
+      console.log('Tallenna aktiviteetti', data);
+
+      fetch(
+        `https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events/${
+          this.props.event.id
+        }/activities`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        }
+      )
+        .then(res => res.json())
+        .then(res => console.log('Response ', res))
+        .catch(error => console.error('Error:', error));
+    } else {
+      console.log('Ei valittua aktiviteettia');
+    }
+  };
+
   render() {
     return (
       <div>
@@ -42,6 +71,20 @@ export default class ActivitySearch extends React.Component {
             maxWidth: 800
           }}
         />
+        <div>
+          <p>
+            {' '}
+            Valittu aktiviteetti:{' '}
+            {this.state.selectedActivity
+              ? this.state.selectedActivity[0].title
+              : 'Ei valittu'}
+          </p>
+          <FlatButton
+            label="Tallenna aktiviteetti"
+            primary={true}
+            onClick={this.saveActivityToEvent}
+          />
+        </div>
       </div>
     );
   }
