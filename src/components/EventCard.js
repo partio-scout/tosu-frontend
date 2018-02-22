@@ -33,10 +33,6 @@ export default class EventCard extends React.Component {
     };
   }
 
-  componentWillMount() {
-    console.log('testi', this.props);
-  }
-
   handleExpandChange = expanded => {
     this.setState({ expanded });
   };
@@ -49,7 +45,7 @@ export default class EventCard extends React.Component {
     const data = activitiesArray(this.props.fetchedActivities);
 
     const event = this.props.event;
-    console.log(event);
+
     moment.locale('fr');
     const title = this.state.expanded ? '' : event.title;
     const subtitle = this.state.expanded

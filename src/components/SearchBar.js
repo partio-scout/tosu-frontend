@@ -26,8 +26,6 @@ export default class ActivitySearch extends React.Component {
 
   saveActivityToEvent = () => {
     if (this.state.selectedActivity) {
-      console.log(this.props);
-
       const data = {
         information: this.state.selectedActivity[0].guid
       };

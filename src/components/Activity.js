@@ -14,12 +14,11 @@ const handleRequestDelete = () => {
 };
 
 const Activity = props => {
-  console.log(props);
   if (props.eventActivities.length !== 0) {
     const rows = props.eventActivities.map(activity => {
 
     const act = props.dataSource.filter(a => a.guid === activity.information)
-    console.log("Act", act)
+
     return(  <Chip
         backgroundColor={blue300}
         onRequestDelete={handleRequestDelete}
