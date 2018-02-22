@@ -111,6 +111,8 @@ export default class NewEvent extends React.Component {
         information: this.state.information
       };
 
+      console.log("Data", data)
+
       this.sendEventPostRequest(data).then(() => {
         if (!this.state.checked) {
           this.handleClose();

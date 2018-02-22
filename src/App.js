@@ -11,7 +11,7 @@ class App extends Component {
     super();
     this.state = {
       events: [{}],
-      activities: undefined
+      activities: activitiesData
     };
     this.getEvents = this.getEvents.bind(this);
     this.getActivities = this.getActivities.bind(this);
