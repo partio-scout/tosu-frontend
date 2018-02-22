@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 const handleFrequentEvent = (date, repeatFrequency, i) => {
-  let newDate;
+  let newDate = moment(date);
 
   // Repeat every day
   if (repeatFrequency === 1) {
