@@ -120,8 +120,6 @@ export default class NewEvent extends React.Component {
     } else {
       // Send POST first to create new GroupId and then use id from response to create group of events. ß
       this.sendGroupIdPostRequest().then(response => {
-        console.log('GroupID response', response);
-
         for (let i = 0; i < this.state.repeatCount; i += 1) {
           const newStartDate = FrequentEventsHandler(
             this.state.startDate,
@@ -146,9 +144,8 @@ export default class NewEvent extends React.Component {
             groupId: response.groupId
           };
 
-          console.log('Data', data);
           this.sendEventPostRequest(data).then(() => {
-            if (i === this.state.repeatCount-1) {
+            if (i === this.state.repeatCount - 1) {
               this.handleClose();
               this.props.updateEvents();
             }

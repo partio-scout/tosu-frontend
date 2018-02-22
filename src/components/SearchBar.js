@@ -5,7 +5,6 @@ import matchSorter from 'match-sorter';
 export default class ActivitySearch extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       dataSource: props.dataSource,
       selectedActivity: null
@@ -21,7 +20,7 @@ export default class ActivitySearch extends React.Component {
   updateDatasource = data => {
     this.setState({
       dataSource: data
-    })
+    });
   };
 
   render() {
