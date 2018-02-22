@@ -8,11 +8,9 @@ import {
 } from 'material-ui/Card';
 import moment from 'moment-with-locales-es6';
 import FlatButton from 'material-ui/FlatButton';
-import Avatar from 'material-ui/Avatar';
-import Chip from 'material-ui/Chip';
-import { blue300, indigo900 } from 'material-ui/styles/colors';
 import ActivitySearch from './SearchBar';
 import { activitiesArray } from './Activities';
+import Activity from './Activity';
 
 // import FontIcon from 'material-ui/FontIcon';
 // import SvgIconFace from 'material-ui/svg-icons/action/face';
@@ -39,10 +37,6 @@ export default class EventCard extends React.Component {
     console.log('testi', this.props);
   }
 
-  handleRequestDelete = () => {
-    alert('Yritit poistaa aktiviteetin. Toimintoa ei vielä tueta.');
-  };
-
   handleExpandChange = expanded => {
     this.setState({ expanded });
   };
@@ -55,7 +49,7 @@ export default class EventCard extends React.Component {
     const data = activitiesArray(this.props.fetchedActivities);
 
     const event = this.props.event;
-
+    console.log(event);
     moment.locale('fr');
     const title = this.state.expanded ? '' : event.title;
     const subtitle = this.state.expanded
@@ -94,16 +88,7 @@ export default class EventCard extends React.Component {
           </p>
           <p>{event.information}</p>
           <p>Aktiviteetit:</p>
-          <Chip
-            backgroundColor={blue300}
-            onRequestDelete={this.handleRequestDelete}
-            style={styles.chip}
-          >
-            <Avatar size={32} color={blue300} backgroundColor={indigo900}>
-              P
-            </Avatar>
-            Aktiviteetti
-          </Chip>
+          <Activity eventActivities={event.activities} dataSource={data}/>
           <br />
           <p>Täällä haetaan aktiviteetteja ja lisätään niitä tapahtumaan</p>
           <ActivitySearch dataSource={data} event={this.props.event} />
