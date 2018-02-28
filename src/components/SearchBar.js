@@ -27,7 +27,7 @@ export default class ActivitySearch extends React.Component {
   saveActivityToEvent = () => {
     if (this.state.selectedActivity) {
       const data = {
-        guid: this.state.selectedActivity[0].guid
+        information: this.state.selectedActivity[0].guid
       };
 
       console.log('Tallenna aktiviteetti', data);
@@ -43,15 +43,7 @@ export default class ActivitySearch extends React.Component {
         }
       )
         .then(res => res.json())
-        .then(res =>
-          this.props.updateActivities({ id: res.id, information: res.guid })
-        )
-        .then(
-          this.setState({
-            dataSource: this.props.dataSource,
-            selectedActivity: null
-          })
-        )
+        .then(res => console.log('Response ', res))
         .catch(error => console.error('Error:', error));
     } else {
       console.log('Ei valittua aktiviteettia');
@@ -67,11 +59,12 @@ export default class ActivitySearch extends React.Component {
             const data = matchSorter(this.props.dataSource, value, {
               keys: ['title']
             });
+            if (data.length === 1) {
+              this.updateSelectedActivity(data);
+            }
             return this.updateDatasource(data);
           }}
-          onRequestSearch={() =>
-            this.updateSelectedActivity(this.state.dataSource)
-          }
+          onRequestSearch={() => {}}
           style={{
             margin: '0 auto',
             maxWidth: 800
