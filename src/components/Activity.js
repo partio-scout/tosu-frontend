@@ -9,8 +9,21 @@ const styles = {
   }
 };
 
-const handleRequestDelete = () => {
-  alert('Yritit poistaa aktiviteetin. Toimintoa ei vielä tueta.');
+const handleRequestDelete = (activity, props) => {
+  console.log("Delete activity", activity)
+
+  fetch(
+    `https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/activities/${
+      activity.id
+    }`,
+    {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' }
+    }
+  )
+    .then(res => res.json())
+    .then(props.updateAfterDelete(activity))
+    .catch(error => console.error('Error:', error));
 };
 
 const Activity = props => {
@@ -21,7 +34,7 @@ const Activity = props => {
       return (
         <Chip
           backgroundColor={blue300}
-          onRequestDelete={handleRequestDelete}
+          onRequestDelete={() => handleRequestDelete(activity, props)}
           style={styles.chip}
           key={activity.information}
         >

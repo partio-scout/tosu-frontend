@@ -43,11 +43,19 @@ export default class EventCard extends React.Component {
   };
 
   updateActivities = activity => {
-    console.log('Update activities');
     this.setState({
       activities: this.state.activities.concat(activity)
     });
-    console.log('Aktiviteetit:', this.state.activities);
+  };
+
+  updateAfterDelete = activity => {
+    const index = this.state.activities.indexOf(activity);
+    const activitiesAfterDelete = this.state.activities;
+    activitiesAfterDelete.splice(index, 1);
+
+    this.setState({
+      activities: activitiesAfterDelete
+    });
   };
 
   deleteEvent = () => {
@@ -70,7 +78,7 @@ export default class EventCard extends React.Component {
   render() {
     const data = activitiesArray(this.props.fetchedActivities);
 
-    const event = this.props.event;
+    const { event } = this.props;
 
     moment.locale('fr');
     const title = this.state.expanded ? '' : event.title;
@@ -116,7 +124,11 @@ export default class EventCard extends React.Component {
           </p>
           <p>{event.information}</p>
           <p>Aktiviteetit:</p>
-          <Activity eventActivities={this.state.activities} dataSource={data} />
+          <Activity
+            eventActivities={this.state.activities}
+            dataSource={data}
+            updateAfterDelete={this.updateAfterDelete}
+          />
           <br />
           <p>Täällä haetaan aktiviteetteja ja lisätään niitä tapahtumaan</p>
           <ActivitySearch
