@@ -27,7 +27,7 @@ export default class ActivitySearch extends React.Component {
   saveActivityToEvent = () => {
     if (this.state.selectedActivity) {
       const data = {
-        information: this.state.selectedActivity[0].guid
+        guid: this.state.selectedActivity[0].guid
       };
 
       console.log('Tallenna aktiviteetti', data);
@@ -43,7 +43,15 @@ export default class ActivitySearch extends React.Component {
         }
       )
         .then(res => res.json())
-        .then(res => console.log('Response ', res))
+        .then(res =>
+          this.props.updateActivities({ id: res.id, information: res.guid })
+        )
+        .then(
+          this.setState({
+            dataSource: this.props.dataSource,
+            selectedActivity: null
+          })
+        )
         .catch(error => console.error('Error:', error));
     } else {
       console.log('Ei valittua aktiviteettia');
