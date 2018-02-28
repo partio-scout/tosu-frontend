@@ -157,6 +157,12 @@ export default class NewEvent extends React.Component {
     }
   };
 
+  handleNewEventFormChange = (event) => {
+    console.log("Event name", event.target.name)
+    console.log("Event value", event.target.value)
+    this.setState({ [event.target.name]: event.target.value })
+  }
+
   handleStartDate = (event, date) => {
     this.setState({
       startDate: date
@@ -271,7 +277,7 @@ export default class NewEvent extends React.Component {
               format="24hr"
               name="startTime"
               value={this.state.startTime}
-              onChange={this.handleStartTime}
+              onChange={this.handleNewEventFormChange}
               validators={['required']}
               errorMessages={['Aloitusaika vaaditaan']}
             />
@@ -312,7 +318,7 @@ export default class NewEvent extends React.Component {
               name="repeatCount"
               value={this.state.repeatCount}
               hintText="Toistuvien tapahtumien määrä"
-              onChange={this.handleRepeatCount}
+              onChange={this.handleNewEventFormChange}
               disabled={!this.state.checked}
               validators={['maxNumber:55']}
               errorMessages={[
@@ -341,17 +347,17 @@ export default class NewEvent extends React.Component {
 
             <TextValidator
               floatingLabelText="Tapahtuman nimi"
-              name="nimi"
+              name="title"
               value={this.state.title}
               hintText="Tapahtuman nimi"
-              onChange={this.handleTitle}
+              onChange={this.handleNewEventFormChange}
               validators={['required']}
               errorMessages={['Tapahtuman nimi vaaditaan']}
               errorStyle={errorStyle}
             />
             <br />
             <SelectValidator
-              name="tyyppi"
+              name="type"
               floatingLabelText="Tapahtuman tyyppi"
               value={this.state.type}
               onChange={this.handleType}
@@ -369,7 +375,8 @@ export default class NewEvent extends React.Component {
             <TextField
               hintText="Lisätietoja"
               floatingLabelText="Lisätietoja"
-              onChange={this.handleInformation}
+              name="information"
+              onChange={this.handleNewEventFormChange}
               multiLine
               rows={2}
             />
