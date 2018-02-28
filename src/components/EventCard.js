@@ -50,6 +50,23 @@ export default class EventCard extends React.Component {
     console.log('Aktiviteetit:', this.state.activities);
   };
 
+  deleteEvent = () => {
+    fetch(
+      `https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events/${
+        this.props.event.id
+      }`,
+      {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+      }
+    )
+      .then(res => res.json())
+      .then(res => {
+        this.props.fetchEvents();
+      })
+      .catch(error => console.error('Error in deleting single event:', error));
+  };
+
   render() {
     const data = activitiesArray(this.props.fetchedActivities);
 
@@ -82,6 +99,12 @@ export default class EventCard extends React.Component {
             label="Muokkaa"
             secondary={true}
             className="buttonRight"
+          />
+          <FlatButton
+            label="Poista"
+            secondary={true}
+            className="buttonRight"
+            onClick={this.deleteEvent}
           />
           <p className="eventTimes">
             <span>{event.type} alkaa:</span>{' '}

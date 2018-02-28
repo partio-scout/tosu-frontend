@@ -1,11 +1,15 @@
 import React from 'react';
 import EventCard from './EventCard';
 
-const ListEvents = (props) => {
-  const listOfEvents = props.events.map((event) => 
-    <EventCard key={event.id ? event.id : 0} event={event}
-     fetchedActivities={props.fetchedActivities} />
-  );
+const ListEvents = props => {
+  const listOfEvents = props.events.map(event => (
+    <EventCard
+      key={event.id ? event.id : 0}
+      event={event}
+      fetchedActivities={props.fetchedActivities}
+      fetchEvents={props.fetchEvents}
+    />
+  ));
 
   return (
     <div>
@@ -15,4 +19,4 @@ const ListEvents = (props) => {
   );
 };
 
-export default ListEvents
+export default ListEvents;

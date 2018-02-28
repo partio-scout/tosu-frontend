@@ -78,7 +78,7 @@ class App extends Component {
             <div className="content">
               <h2>Events</h2>
               <NewEvent updateEvents={this.updateEvents} />
-              <ListEvents events={this.state.events}
+              <ListEvents events={this.state.events} fetchEvents={this.getEvents}
               fetchedActivities={this.state.activities} />
               <h2>Activities</h2>
               <Activities fetchedActivities={this.state.activities} />
