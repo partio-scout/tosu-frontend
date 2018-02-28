@@ -16,27 +16,26 @@ const handleRequestDelete = () => {
 const Activity = props => {
   if (props.eventActivities.length !== 0) {
     const rows = props.eventActivities.map(activity => {
+      const act = props.dataSource.filter(a => a.guid === activity.information);
 
-    const act = props.dataSource.filter(a => a.guid === activity.information)
-
-    return(  <Chip
-        backgroundColor={blue300}
-        onRequestDelete={handleRequestDelete}
-        style={styles.chip}
-        key={activity.information}
-      >
-        <Avatar size={32} color={blue300} backgroundColor={indigo900}>
-          P
-        </Avatar>
-        {act[0].title}
-      </Chip>
-    )
+      return (
+        <Chip
+          backgroundColor={blue300}
+          onRequestDelete={handleRequestDelete}
+          style={styles.chip}
+          key={activity.information}
+        >
+          <Avatar size={32} color={blue300} backgroundColor={indigo900}>
+            P
+          </Avatar>
+          {act[0].title}
+        </Chip>
+      );
     });
 
     return rows;
-  } else {
-    return <p>Ei aktiviteetteja valittuna</p>;
   }
+  return <p>Ei aktiviteetteja valittuna</p>;
 };
 
 export default Activity;

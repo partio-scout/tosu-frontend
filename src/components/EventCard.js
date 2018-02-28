@@ -29,7 +29,8 @@ export default class EventCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false
+      expanded: false,
+      activities: props.event.activities
     };
   }
 
@@ -39,6 +40,14 @@ export default class EventCard extends React.Component {
 
   handleReduce = () => {
     this.setState({ expanded: false });
+  };
+
+  updateActivities = activity => {
+    console.log('Update activities');
+    this.setState({
+      activities: this.state.activities.concat(activity)
+    });
+    console.log('Aktiviteetit:', this.state.activities);
   };
 
   render() {
@@ -84,10 +93,14 @@ export default class EventCard extends React.Component {
           </p>
           <p>{event.information}</p>
           <p>Aktiviteetit:</p>
-          <Activity eventActivities={event.activities} dataSource={data}/>
+          <Activity eventActivities={this.state.activities} dataSource={data} />
           <br />
           <p>Täällä haetaan aktiviteetteja ja lisätään niitä tapahtumaan</p>
-          <ActivitySearch dataSource={data} event={this.props.event} />
+          <ActivitySearch
+            dataSource={data}
+            event={this.props.event}
+            updateActivities={this.updateActivities}
+          />
           <CardActions>
             <FlatButton
               label="Sulje"
