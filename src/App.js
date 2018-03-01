@@ -74,7 +74,7 @@ class App extends Component {
       <div className="App">
         <MuiThemeProvider>
           <div id="container">
-            <Appbar />
+            <Appbar activities={this.state.activities}/>
             <div className="content">
               <h2>Events</h2>
               <NewEvent updateEvents={this.updateEvents} />
