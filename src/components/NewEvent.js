@@ -248,7 +248,6 @@ export default class NewEvent extends React.Component {
       />
     ];
     const minDate = moment().utcOffset(120).toDate()
-    console.log('utc-kokeilu', minDate)
     return (
       <div>
         <RaisedButton label="Uusi tapahtuma" onClick={this.handleOpen} />
