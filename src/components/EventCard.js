@@ -80,7 +80,7 @@ export default class EventCard extends React.Component {
 
     const { event } = this.props;
 
-    moment.locale('fr');
+    moment.locale('fi');
     const title = this.state.expanded ? '' : event.title;
     const subtitle = this.state.expanded
       ? ''
