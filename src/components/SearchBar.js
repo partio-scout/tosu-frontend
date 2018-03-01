@@ -44,6 +44,12 @@ export default class ActivitySearch extends React.Component {
       )
         .then(res => res.json())
         .then(res => this.props.updateActivities(res))
+        .then(
+          this.setState({
+            dataSource: this.props.dataSource,
+            selectedActivity: null
+          })
+        )
         .catch(error => console.error('Error:', error));
     } else {
       console.log('Ei valittua aktiviteettia');
