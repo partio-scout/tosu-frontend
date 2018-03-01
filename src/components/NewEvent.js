@@ -158,8 +158,8 @@ export default class NewEvent extends React.Component {
   };
 
   handleNewEventFormChange = (event) => {
-    console.log("Event name", event.target.name)
-    console.log("Event value", event.target.value)
+    //console.log("Event name", event.target.name)
+    //console.log("Event value", event.target.value)
     this.setState({ [event.target.name]: event.target.value })
   }
 
@@ -247,7 +247,7 @@ export default class NewEvent extends React.Component {
         keyboardFocused
       />
     ];
-
+    const minDate = moment().utcOffset(120).toDate()
     return (
       <div>
         <RaisedButton label="Uusi tapahtuma" onClick={this.handleOpen} />
@@ -267,6 +267,10 @@ export default class NewEvent extends React.Component {
             <DateValidator
               type="date"
               name="startDate"
+              mode="landscape"
+              autoOk={true}
+              minDate={minDate}
+              cancelLabel="Peruuta"
               value={this.state.startDate}
               onChange={this.handleStartDate}
               validators={['required']}
@@ -276,8 +280,10 @@ export default class NewEvent extends React.Component {
               floatingLabelText="Tapahtuman alkamisaika"
               format="24hr"
               name="startTime"
+              cancelLabel="Peruuta"
+              autoOk={true}
               value={this.state.startTime}
-              onChange={this.handleNewEventFormChange}
+              onChange={this.handleEndTime}
               validators={['required']}
               errorMessages={['Aloitusaika vaaditaan']}
             />
@@ -285,6 +291,10 @@ export default class NewEvent extends React.Component {
             <DateValidator
               type="date"
               name="endDate"
+              mode="landscape"
+              autoOk={true}
+              minDate={minDate}
+              cancelLabel="Peruuta"
               value={this.state.endDate}
               onChange={this.handleEndDate}
               validators={['required', 'isLater']}
@@ -297,6 +307,8 @@ export default class NewEvent extends React.Component {
               floatingLabelText="Tapahtuman loppumisaika"
               format="24hr"
               name="endTime"
+              cancelLabel="Peruuta"
+              autoOk={true}
               value={this.state.endTime}
               onChange={this.handleEndTime}
               validators={['required', 'isLater']}
