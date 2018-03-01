@@ -111,7 +111,7 @@ export default class NewEvent extends React.Component {
         information: this.state.information
       };
 
-      console.log("Data", data)
+      console.log('Data', data);
 
       this.sendEventPostRequest(data).then(() => {
         if (!this.state.checked) {
@@ -157,11 +157,9 @@ export default class NewEvent extends React.Component {
     }
   };
 
-  handleNewEventFormChange = (event) => {
-    //console.log("Event name", event.target.name)
-    //console.log("Event value", event.target.value)
-    this.setState({ [event.target.name]: event.target.value })
-  }
+  handleNewEventFormChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
 
   handleStartDate = (event, date) => {
     this.setState({
@@ -247,7 +245,9 @@ export default class NewEvent extends React.Component {
         keyboardFocused
       />
     ];
-    const minDate = moment().utcOffset(120).toDate()
+    const minDate = moment()
+      .utcOffset(120)
+      .toDate();
     return (
       <div>
         <RaisedButton label="Uusi tapahtuma" onClick={this.handleOpen} />
@@ -283,7 +283,7 @@ export default class NewEvent extends React.Component {
               cancelLabel="Peruuta"
               autoOk={true}
               value={this.state.startTime}
-              onChange={this.handleEndTime}
+              onChange={this.handleStartTime}
               validators={['required']}
               errorMessages={['Aloitusaika vaaditaan']}
             />

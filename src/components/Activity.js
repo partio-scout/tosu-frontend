@@ -10,7 +10,7 @@ const styles = {
 };
 
 const handleRequestDelete = (activity, props) => {
-  console.log("Delete activity", activity)
+  console.log('Delete activity', activity);
 
   fetch(
     `https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/activities/${
@@ -29,14 +29,22 @@ const handleRequestDelete = (activity, props) => {
 const Activity = props => {
   if (props.eventActivities.length !== 0) {
     const rows = props.eventActivities.map(activity => {
-      const act = props.dataSource.filter(a => a.guid === activity.information);
+
+      // VÄLIAIKAINEN KORJAUS, KUNNES BACKEND EI PALAUTA VIRHEELLISTÄ JSONIA
+      let act;
+      if (activity.guid) {
+        act = props.dataSource.filter(a => a.guid === activity.guid);
+      } else {
+        act = props.dataSource.filter(a => a.guid === activity.information);
+      }
+      // VÄLIAIKAINEN KORJAUS ^^^^
 
       return (
         <Chip
           backgroundColor={blue300}
           onRequestDelete={() => handleRequestDelete(activity, props)}
           style={styles.chip}
-          key={activity.information}
+          key={activity.id}
         >
           <Avatar size={32} color={blue300} backgroundColor={indigo900}>
             P

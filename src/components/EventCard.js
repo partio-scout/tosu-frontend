@@ -43,6 +43,7 @@ export default class EventCard extends React.Component {
   };
 
   updateActivities = activity => {
+    console.log("Update", activity)
     this.setState({
       activities: this.state.activities.concat(activity)
     });
