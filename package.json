@@ -15,7 +15,8 @@
     "react-dom": "^16.2.0",
     "react-material-ui-form-validator": "^1.1.0",
     "react-scripts": "1.1.0",
-    "react-select": "^1.2.1"
+    "react-select": "^1.2.1",
+    "react-sticky": "^6.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
