@@ -172,7 +172,7 @@ export default class NewEvent extends React.Component {
   handleStartTime = (event, date) => {
     this.setState({
       startTime: date,
-      endTime: moment(date).add(1, 'h')
+      endTime: new Date( moment(date).add(1, 'h'))
     });
   };
 
@@ -268,9 +268,7 @@ export default class NewEvent extends React.Component {
           >
             <p>Aloituspäivämäärä ja aika</p>
             <DateValidator
-              type="date"
               name="startDate"
-              mode="landscape"
               autoOk={true}
               minDate={minDate}
               cancelLabel="Peruuta"
@@ -292,9 +290,7 @@ export default class NewEvent extends React.Component {
             />
             <p>Lopetuspäivämäärä ja aika</p>
             <DateValidator
-              type="date"
               name="endDate"
-              mode="landscape"
               autoOk={true}
               minDate={minDate}
               cancelLabel="Peruuta"
