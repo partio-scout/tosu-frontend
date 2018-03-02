@@ -2,6 +2,8 @@ import React from 'react';
 import SearchBar from 'material-ui-search-bar';
 import matchSorter from 'match-sorter';
 import FlatButton from 'material-ui/FlatButton';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 export default class ActivitySearch extends React.Component {
   constructor(props) {
@@ -12,9 +14,10 @@ export default class ActivitySearch extends React.Component {
     };
   }
 
-  updateSelectedActivity = activity => {
+  updateSelectedActivity = selectedActivity => {
+    console.log("Update selected activity", selectedActivity)
     this.setState({
-      selectedActivity: activity
+      selectedActivity
     });
   };
 
@@ -27,7 +30,7 @@ export default class ActivitySearch extends React.Component {
   saveActivityToEvent = () => {
     if (this.state.selectedActivity) {
       const data = {
-        guid: this.state.selectedActivity[0].guid
+        guid: this.state.selectedActivity.value
       };
 
       console.log('Tallenna aktiviteetti', data);
@@ -56,33 +59,40 @@ export default class ActivitySearch extends React.Component {
     }
   };
 
+  handleChange = selectedActivity => {
+    this.setState({ selectedActivity });
+    console.log(`Selected: ${selectedActivity.label}`);
+  };
+
   render() {
+    const { selectedActivity } = this.state;
+
+    const value = selectedActivity && selectedActivity.value;
+
     return (
       <div>
-        <SearchBar
-          dataSource={this.state.dataSource.map(activity => activity.title)}
-          onChange={value => {
-            const data = matchSorter(this.props.dataSource, value, {
-              keys: ['title'],
-              threshold: matchSorter.rankings.MATCHES
-            });
-            if (data.length === 1) {
-              this.updateSelectedActivity(data);
-            }
-            return this.updateDatasource(data);
+        <Select
+          name="form-field-name"
+          value={value}
+          onChange={this.handleChange}
+          filterOptions={(options, filter) => {
+            const sorterOptions = { keys: ['label'] };
+            return matchSorter(options, filter, sorterOptions);
           }}
-          onRequestSearch={() => {}}
-          style={{
-            margin: '0 auto',
-            maxWidth: 800
-          }}
+          options={this.state.dataSource.map(activity => {
+            let obj = {};
+            obj = { value: activity.guid, label: activity.title };
+            return obj;
+          })}
         />
+
+
         <div>
           <p>
             {' '}
             Valittu aktiviteetti:{' '}
             {this.state.selectedActivity
-              ? this.state.selectedActivity[0].title
+              ? this.state.selectedActivity.label
               : 'Ei valittu'}
           </p>
           <FlatButton
