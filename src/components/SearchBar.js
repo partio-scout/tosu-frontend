@@ -69,9 +69,6 @@ export default class ActivitySearch extends React.Component {
     const { selectedActivity } = this.state;
 
     const value = selectedActivity && selectedActivity.value;
-
-    console.log('Data source', this.props.dataSource);
-
     return (
       <div>
         <Select
