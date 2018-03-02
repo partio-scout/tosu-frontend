@@ -8,7 +8,6 @@ const styles = {
     margin: 4
   }
 };
-
 const handleRequestDelete = (activity, props) => {
   console.log('Delete activity', activity);
 
@@ -27,11 +26,8 @@ const handleRequestDelete = (activity, props) => {
 };
 
 const Activity = props => {
-  console.log("Activity props", props)
   if (props.dataSource !== undefined && props.eventActivities.length !== 0) {
-  
     const rows = props.eventActivities.map(activity => {
-
       // VÄLIAIKAINEN KORJAUS, KUNNES BACKEND EI PALAUTA VIRHEELLISTÄ JSONIA
       let act;
       if (activity.guid) {

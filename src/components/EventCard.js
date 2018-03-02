@@ -7,29 +7,18 @@ import {
   CardText
 } from 'material-ui/Card';
 import moment from 'moment-with-locales-es6';
+import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import ActivitySearch from './SearchBar';
 import { activitiesArray } from './Activities';
 import Activity from './Activity';
-
-// import FontIcon from 'material-ui/FontIcon';
-// import SvgIconFace from 'material-ui/svg-icons/action/face';
-
-const styles = {
-  chip: {
-    margin: 4
-  },
-  wrapper: {
-    display: 'flex',
-    flexWrap: 'wrap'
-  }
-};
 
 export default class EventCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       expanded: false,
+      open: false,
       activities: props.event.activities
     };
   }
@@ -43,7 +32,7 @@ export default class EventCard extends React.Component {
   };
 
   updateActivities = activity => {
-    console.log("Update", activity)
+    console.log('Update', activity);
     this.setState({
       activities: this.state.activities.concat(activity)
     });
@@ -70,10 +59,41 @@ export default class EventCard extends React.Component {
       }
     )
       .then(res => res.json())
-      .then(res => {
+      .then(() => {
+        this.handleClose();
         this.props.fetchEvents();
       })
       .catch(error => console.error('Error in deleting single event:', error));
+  };
+
+  deleteEventGroup = () => {
+    fetch(
+      `https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/eventgroup/${
+        this.props.event.groupId
+      }`,
+      {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+      }
+    )
+      .then(res => res.json())
+      .then(() => {
+        this.handleClose();
+        this.props.fetchEvents();
+      })
+      .catch(error => console.error('Error in deleting event group:', error));
+  };
+
+  handleDelete = () => {
+    this.handleOpen();
+  };
+
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
   };
 
   render() {
@@ -90,6 +110,42 @@ export default class EventCard extends React.Component {
           .format('ddd D. MMMM YYYY') +
         ' ' +
         event.startTime;
+
+    let actions = [];
+    if (event.groupId) {
+      actions = [
+        <FlatButton
+          label="Peruuta"
+          primary={true}
+          onClick={this.handleClose}
+        />,
+
+        <FlatButton
+          label="Poista tämä tapahtuma"
+          primary={true}
+          onClick={this.deleteEvent}
+        />,
+        <FlatButton
+          label="Poista toistuvat tapahtumat"
+          primary={true}
+          onClick={this.deleteEventGroup}
+        />
+      ];
+    } else {
+      actions = [
+        <FlatButton
+          label="Peruuta"
+          primary={true}
+          onClick={this.handleClose}
+        />,
+        <FlatButton
+          label="Poista tapahtuma"
+          primary={true}
+          onClick={this.deleteEvent}
+        />
+      ];
+    }
+
     return (
       <Card
         expanded={this.state.expanded}
@@ -113,8 +169,18 @@ export default class EventCard extends React.Component {
             label="Poista"
             secondary={true}
             className="buttonRight"
-            onClick={this.deleteEvent}
+            onClick={this.handleDelete}
           />
+
+          <Dialog
+            actions={actions}
+            modal={false}
+            open={this.state.open}
+            onRequestClose={this.handleClose}
+          >
+            Poistetaanko tapahtuma {event.title}?
+          </Dialog>
+
           <p className="eventTimes">
             <span>{event.type} alkaa:</span>{' '}
             {moment(event.startDate).format('D.M.YYYY')} kello {event.startTime}
