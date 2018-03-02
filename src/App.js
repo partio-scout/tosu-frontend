@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { StickyContainer, Sticky } from 'react-sticky';
 import ListEvents from './components/ListEvents';
 import NewEvent from './components/NewEvent';
 import Activities from './components/Activities';
@@ -71,21 +72,30 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <StickyContainer className="App">
         <MuiThemeProvider>
           <div id="container">
-            <Appbar activities={this.state.activities}/>
             <div className="content">
-              <h2>Events</h2>
+              <h2 style={{ 'margin-top': '120px' }}>Events</h2>
               <NewEvent updateEvents={this.updateEvents} />
-              <ListEvents events={this.state.events} fetchEvents={this.getEvents}
-              fetchedActivities={this.state.activities} />
+              <ListEvents
+                events={this.state.events}
+                fetchEvents={this.getEvents}
+                fetchedActivities={this.state.activities}
+              />
               <h2>Activities</h2>
               <Activities fetchedActivities={this.state.activities} />
             </div>
+            <Sticky>
+              {({ style }) => (
+                <header style={style}>
+                  <Appbar activities={this.state.activities} />
+                </header>
+              )}
+            </Sticky>
           </div>
         </MuiThemeProvider>
-      </div>
+      </StickyContainer>
     );
   }
 }

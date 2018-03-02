@@ -1,9 +1,10 @@
 import React from 'react';
 import SearchBar from 'material-ui-search-bar';
 import matchSorter from 'match-sorter';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import { white } from 'material-ui/styles/colors';
 
 export default class ActivitySearch extends React.Component {
   constructor(props) {
@@ -15,7 +16,7 @@ export default class ActivitySearch extends React.Component {
   }
 
   updateSelectedActivity = selectedActivity => {
-    console.log("Update selected activity", selectedActivity)
+    console.log('Update selected activity', selectedActivity);
     this.setState({
       selectedActivity
     });
@@ -69,6 +70,8 @@ export default class ActivitySearch extends React.Component {
 
     const value = selectedActivity && selectedActivity.value;
 
+    console.log('Data source', this.props.dataSource);
+
     return (
       <div>
         <Select
@@ -86,7 +89,6 @@ export default class ActivitySearch extends React.Component {
           })}
         />
 
-
         <div>
           <p>
             {' '}
@@ -95,7 +97,7 @@ export default class ActivitySearch extends React.Component {
               ? this.state.selectedActivity.label
               : 'Ei valittu'}
           </p>
-          <FlatButton
+          <RaisedButton
             label="Tallenna aktiviteetti"
             primary={true}
             onClick={this.saveActivityToEvent}
