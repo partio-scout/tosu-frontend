@@ -12,6 +12,7 @@ import FlatButton from 'material-ui/FlatButton';
 import ActivitySearch from './SearchBar';
 import { activitiesArray } from './Activities';
 import Activity from './Activity';
+import { API_ROOT } from '../api-config';
 
 export default class EventCard extends React.Component {
   constructor(props) {
@@ -49,10 +50,7 @@ export default class EventCard extends React.Component {
   };
 
   deleteEvent = () => {
-    fetch(
-      `https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events/${
-        this.props.event.id
-      }`,
+    fetch(`${API_ROOT}/events/${this.props.event.id}`,
       {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' }
@@ -67,10 +65,7 @@ export default class EventCard extends React.Component {
   };
 
   deleteEventGroup = () => {
-    fetch(
-      `https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/eventgroup/${
-        this.props.event.groupId
-      }`,
+    fetch(`${API_ROOT}/eventgroup/${this.props.event.groupId}`,
       {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' }
@@ -106,10 +101,10 @@ export default class EventCard extends React.Component {
     const subtitle = this.state.expanded
       ? ''
       : moment(event.startDate, 'YYYY-MM-DD')
-          .locale('fi')
-          .format('ddd D. MMMM YYYY') +
-        ' ' +
-        event.startTime;
+        .locale('fi')
+        .format('ddd D. MMMM YYYY') +
+      ' ' +
+      event.startTime;
 
     let actions = [];
     if (event.groupId) {

@@ -2,6 +2,7 @@ import React from 'react';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import { blue300, indigo900 } from 'material-ui/styles/colors';
+import { API_ROOT } from '../api-config';
 
 const styles = {
   chip: {
@@ -11,10 +12,7 @@ const styles = {
 const handleRequestDelete = (activity, props) => {
   console.log('Delete activity', activity);
 
-  fetch(
-    `https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/activities/${
-      activity.id
-    }`,
+  fetch(`${API_ROOT}/activities/${activity.id}`,
     {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' }

@@ -3,6 +3,7 @@ import matchSorter from 'match-sorter';
 import RaisedButton from 'material-ui/RaisedButton';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import { API_ROOT } from '../api-config';
 
 export default class ActivitySearch extends React.Component {
   constructor(props) {
@@ -34,10 +35,7 @@ export default class ActivitySearch extends React.Component {
 
       console.log('Tallenna aktiviteetti', data);
 
-      fetch(
-        `https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events/${
-          this.props.event.id
-        }/activities`,
+      fetch(`${API_ROOT}/events/${this.props.event.id}/activities`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
