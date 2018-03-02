@@ -76,7 +76,7 @@ class App extends Component {
         <MuiThemeProvider>
           <div id="container">
             <div className="content">
-              <h2 style={{ 'margin-top': '120px' }}>Events</h2>
+              <h2 style={{ marginTop: 120 }}>Events</h2>
               <NewEvent updateEvents={this.updateEvents} />
               <ListEvents
                 events={this.state.events}

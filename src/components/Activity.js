@@ -8,7 +8,6 @@ const styles = {
     margin: 4
   }
 };
-
 const handleRequestDelete = (activity, props) => {
   console.log('Delete activity', activity);
 

@@ -8,24 +8,10 @@ import {
 } from 'material-ui/Card';
 import moment from 'moment-with-locales-es6';
 import Dialog from 'material-ui/Dialog';
-import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import ActivitySearch from './SearchBar';
 import { activitiesArray } from './Activities';
 import Activity from './Activity';
-
-// import FontIcon from 'material-ui/FontIcon';
-// import SvgIconFace from 'material-ui/svg-icons/action/face';
-
-const styles = {
-  chip: {
-    margin: 4
-  },
-  wrapper: {
-    display: 'flex',
-    flexWrap: 'wrap'
-  }
-};
 
 export default class EventCard extends React.Component {
   constructor(props) {

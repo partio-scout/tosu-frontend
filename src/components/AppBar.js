@@ -1,5 +1,4 @@
 import React from 'react';
-import AppBar from 'material-ui/AppBar';
 import ActivitySearch from './SearchBar';
 import { activitiesArray } from './Activities';
 

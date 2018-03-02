@@ -1,10 +1,8 @@
 import React from 'react';
-import SearchBar from 'material-ui-search-bar';
 import matchSorter from 'match-sorter';
 import RaisedButton from 'material-ui/RaisedButton';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import { white } from 'material-ui/styles/colors';
 
 export default class ActivitySearch extends React.Component {
   constructor(props) {
