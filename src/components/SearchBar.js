@@ -63,7 +63,8 @@ export default class ActivitySearch extends React.Component {
           dataSource={this.state.dataSource.map(activity => activity.title)}
           onChange={value => {
             const data = matchSorter(this.props.dataSource, value, {
-              keys: ['title']
+              keys: ['title'],
+              threshold: matchSorter.rankings.MATCHES
             });
             if (data.length === 1) {
               this.updateSelectedActivity(data);
