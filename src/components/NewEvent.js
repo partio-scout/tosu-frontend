@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
+import { API_ROOT } from '../api-config';
 import {
   TextValidator,
   ValidatorForm,
@@ -72,8 +73,7 @@ export default class NewEvent extends React.Component {
   };
 
   sendGroupIdPostRequest = () =>
-    fetch(
-      'https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/eventgroup',
+    fetch(`${API_ROOT}/eventgroup`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
@@ -83,8 +83,7 @@ export default class NewEvent extends React.Component {
       .catch(error => console.error('Error in groupId POST:', error));
 
   sendEventPostRequest = data =>
-    fetch(
-      'https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events',
+  fetch(`${API_ROOT}/events`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

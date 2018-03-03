@@ -6,6 +6,7 @@ import NewEvent from './components/NewEvent';
 import Activities from './components/Activities';
 import Appbar from './components/AppBar';
 import activitiesData from './partio.json';
+import { API_ROOT } from './api-config';
 
 class App extends Component {
   constructor() {
@@ -23,9 +24,7 @@ class App extends Component {
     this.getActivities();
   }
   getEvents = () => {
-    fetch(
-      'https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/events'
-    )
+    fetch(`${API_ROOT}/events`)
       .then(res => res.json())
       .then(data => this.setState({ events: data }))
       .catch(error => {
@@ -48,9 +47,7 @@ class App extends Component {
   };
 
   getActivities = () => {
-    fetch(
-      'https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001/pofdata'
-    )
+    fetch(`${API_ROOT}/pofdata`)
       .then(res => res.json())
       .then(data => {
         this.setState({
