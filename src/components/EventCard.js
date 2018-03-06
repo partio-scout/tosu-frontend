@@ -12,7 +12,10 @@ import FlatButton from 'material-ui/FlatButton';
 import ActivitySearch from './SearchBar';
 import { activitiesArray } from './Activities';
 import Activity from './Activity';
-import { API_ROOT } from '../api-config';
+import eventService from '../services/events';
+import eventgroupService from '../services/eventgroups';
+import EditEvent from './EditEvent'
+
 
 export default class EventCard extends React.Component {
   constructor(props) {
@@ -155,11 +158,7 @@ export default class EventCard extends React.Component {
         />
         <CardTitle title={event.title} subtitle="Lokaatio?" expandable={true} />
         <CardText expandable={true}>
-          <FlatButton
-            label="Muokkaa"
-            secondary={true}
-            className="buttonRight"
-          />
+          <EditEvent updateEvents={this.updateEvents} buttonClass="buttonRight" data={event}/>
           <FlatButton
             label="Poista"
             secondary={true}
