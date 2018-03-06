@@ -43,12 +43,13 @@ export default class NewEvent extends React.Component {
     });
   };
 
-  handleCloseAndSend = () => {
+  handleCloseAndSend = async () => {
     this.setState({
       open: false
     });
 
     const { startDate, endDate } = this.state;
+    console.log('checked ', this.state.checked, ' repeat count: ', this.state.repeatCount, ' freque: ', this.state.repeatFrequency)
 
     if (!this.state.checked) {
       const data = {
@@ -63,48 +64,51 @@ export default class NewEvent extends React.Component {
 
       console.log('Data', data);
 
-      this.sendEventPostRequest(data).then(() => {
-        if (!this.state.checked) {
-          this.handleClose();
-          this.props.updateEvents();
-        }
-      });
+      await this.sendEventPostRequest(data)
+      if (!this.state.checked) {
+        this.handleClose();
+        this.props.updateEvents();
+      }
     } else {
-      console.log('toistuva')
       // Send POST first to create new GroupId and then use id from response to create group of events. ß
-      this.sendGroupIdPostRequest().then(response => {
-        for (let i = 0; i < this.state.repeatCount; i += 1) {
-          const newStartDate = FrequentEventsHandler(
-            this.state.startDate,
-            this.state.repeatFrequency,
-            i
-          ).format('YYYY-MM-DD');
+      let response = await this.sendGroupIdPostRequest()
+      console.log('checked ', this.state.checked, ' repeat count: ', this.state.repeatCount, ' freque: ', this.state.repeatFrequency)
 
-          const newEndDate = FrequentEventsHandler(
-            this.state.endDate,
-            this.state.repeatFrequency,
-            i
-          ).format('YYYY-MM-DD');
+      for (let i = 0; i < this.state.repeatCount; i += 1) {
+        const newStartDate = FrequentEventsHandler(
+          this.state.startDate,
+          this.state.repeatFrequency,
+          i
+        ).format('YYYY-MM-DD');
 
-          const data = {
-            title: this.state.title,
-            startDate: newStartDate,
-            startTime: moment(this.state.startTime).format('HH:mm'),
-            endDate: newEndDate,
-            endTime: moment(this.state.endTime).format('HH:mm'),
-            type: this.state.type,
-            information: this.state.information,
-            groupId: response.groupId
-          };
+        const newEndDate = FrequentEventsHandler(
+          this.state.endDate,
+          this.state.repeatFrequency,
+          i
+        ).format('YYYY-MM-DD');
+        console.log(newEndDate, ' fre ', this.state.repeatFrequency)
+        const data = {
+          title: this.state.title,
+          startDate: newStartDate,
+          startTime: moment(this.state.startTime).format('HH:mm'),
+          endDate: newEndDate,
+          endTime: moment(this.state.endTime).format('HH:mm'),
+          type: this.state.type,
+          information: this.state.information,
+          groupId: response.groupId
+        };
 
-          this.sendEventPostRequest(data).then(() => {
-            if (i === this.state.repeatCount - 1) {
-              this.handleClose();
-              this.props.updateEvents();
-            }
-          });
+        try {
+          await this.sendEventPostRequest(data)
+          if (i === this.state.repeatCount - 1) {
+            this.handleClose();
+            this.props.updateEvents();
+          }
+        } catch (exception) {
+          console.error('Error in event POST:', exception);
         }
-      });
+      }
+
     }
     this.setState({
       title: '',

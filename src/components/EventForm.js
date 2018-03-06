@@ -9,10 +9,7 @@ import {
     TimeValidator,
     SelectValidator
 } from 'react-material-ui-form-validator';
-import eventService from '../services/events';
-import eventgroupService from '../services/eventgroups';
 import moment from 'moment';
-import FrequentEventsHandler from '../utils/FrequentEventsHandler';
 import FlatButton from 'material-ui/FlatButton';
 
 const errorStyle = {
@@ -131,9 +128,11 @@ export default class EventForm extends React.Component {
     };
 
     send = async () => {
-        await this.props.update(this.state.title, this.state.startDate, this.state.startTime, this.state.endDate, this.state.endTime, this.state.checked
-            , this.state.repeatCount, this.state.repeatFrequency
-            , this.state.type, this.state.information)
+        // console.log('checked ', this.state.checked, ' repeat count: ', this.state.repeatCount, ' freque: ', this.state.repeatFrequency)
+        await this.props.update(this.state.title, this.state.startDate, this.state.startTime,
+            this.state.endDate, this.state.endTime, this.state.checked,
+            this.state.repeatCount, this.state.repeatFrequency,
+            this.state.type, this.state.information)
         this.props.submitFunction()
     }
 
