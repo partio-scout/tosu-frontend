@@ -3,13 +3,13 @@ import matchSorter from 'match-sorter';
 import RaisedButton from 'material-ui/RaisedButton';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import eventService from '../services/events';
+import { API_ROOT } from '../api-config';
 
 export default class ActivitySearch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: this.props.dataSource,
+     dataSource: this.props.dataSource,
       selectedActivity: null
     };
   }
@@ -21,18 +21,29 @@ export default class ActivitySearch extends React.Component {
     });
   };
 
-  saveActivityToEvent = async () => {
+  saveActivityToEvent = () => {
     if (this.state.selectedActivity) {
       const data = {
         guid: this.state.selectedActivity.value
       };
 
-      try {
-        const res = await eventService.addActivity(this.props.event.id, data);
-        this.props.updateActivities(res);
-      } catch (exception) {
-        console.error('Error in adding activity:', exception);
-      }
+      console.log('Tallenna aktiviteetti', data);
+
+      fetch(`${API_ROOT}/events/${this.props.event.id}/activities`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        }
+      )
+        .then(res => res.json())
+        .then(res => this.props.updateActivities(res))
+        .then(
+          this.setState({
+            selectedActivity: null
+          })
+        )
+        .catch(error => console.error('Error:', error));
     } else {
       console.log('Ei valittua aktiviteettia');
     }
@@ -55,7 +66,7 @@ export default class ActivitySearch extends React.Component {
           filterOptions={(options, filter) => {
             const sorterOptions = { keys: ['label'] };
             return matchSorter(options, filter, sorterOptions);
-          }}
+          }}         
           options={this.state.dataSource.map(activity => {
             let obj = {};
             obj = { value: activity.guid, label: activity.title };
