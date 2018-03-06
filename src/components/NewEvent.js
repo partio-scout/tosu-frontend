@@ -164,7 +164,7 @@ export default class NewEvent extends React.Component {
           onRequestClose={this.handleClose}
           autoScrollBodyContent
         >
-          <EventForm submitFunction={this.handleCloseAndSend.bind(this)} close={this.handleClose.bind(this)} update={this.update.bind(this)} />
+          <EventForm submitFunction={this.handleCloseAndSend.bind(this)} close={this.handleClose.bind(this)} update={this.update.bind(this)} data={this.state} />
         </Dialog>
       </div>
     );
