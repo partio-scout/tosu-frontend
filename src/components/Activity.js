@@ -2,23 +2,21 @@ import React from 'react';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import { blue300, indigo900 } from 'material-ui/styles/colors';
-import { API_ROOT } from '../api-config';
+import activityService from '../services/activities';
 
 const styles = {
   chip: {
     margin: 4
   }
 };
-const handleRequestDelete = (activity, props) => {
+const handleRequestDelete = async (activity, props) => {
   console.log('Delete activity', activity);
-
-  fetch(`${API_ROOT}/activities/${activity.id}`, {
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' }
-  })
-    .then(res => res.json())
-    .then(props.updateAfterDelete(activity))
-    .catch(error => console.error('Error:', error));
+  try {
+    await activityService.deleteActivity(activity.id);
+    props.updateAfterDelete(activity);
+  } catch (exception) {
+    console.error('Error in deleting activity:', exception);
+  }
 };
 
 const Activity = props => {

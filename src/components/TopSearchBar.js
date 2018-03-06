@@ -3,7 +3,6 @@ import matchSorter from 'match-sorter';
 import RaisedButton from 'material-ui/RaisedButton';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import { API_ROOT } from '../api-config';
 
 export default class TopSearchBar extends React.Component {
   constructor(props) {
@@ -47,7 +46,7 @@ export default class TopSearchBar extends React.Component {
           <RaisedButton
             label="Tallenna aktiviteetti"
             primary={true}
-            onClick={console.log('click')}
+            onClick={() => console.log('click')}
           />
         </div>
       </div>
