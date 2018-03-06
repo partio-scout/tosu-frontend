@@ -182,7 +182,6 @@ export default class EventCard extends React.Component {
             updateAfterDelete={this.updateAfterDelete}
           />
           <br />
-          <p>Täällä haetaan aktiviteetteja ja lisätään niitä tapahtumaan</p>
           <ActivitySearch
             dataSource={data}
             event={this.props.event}
