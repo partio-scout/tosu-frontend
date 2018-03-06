@@ -6,5 +6,8 @@ const getAll = async () => {
   return response.data
 }
 
-
-export default {getAll}
+const deleteActivity = async (id) => {
+  const response = await axios.delete(`${API_ROOT}/activities/${id}`)
+  return response.data
+}
+export default {getAll, deleteActivity}
