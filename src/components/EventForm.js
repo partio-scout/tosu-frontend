@@ -9,47 +9,24 @@ import {
     TimeValidator,
     SelectValidator
 } from 'react-material-ui-form-validator';
-import eventService from '../services/events';
-import eventgroupService from '../services/eventgroups';
-import moment from 'moment';
-import FrequentEventsHandler from '../utils/FrequentEventsHandler';
-import FlatButton from 'material-ui/FlatButton';
-
-const errorStyle = {
-    position: 'absolute',
-    marginBottom: '-22px',
-    color: 'red'
-};
 
 export default class EventForm extends React.Component {
     constructor(props) {
         super(props);
-        const event = this.props.data
         this.state = {
-            title: event.title,
-            startDate: event.startDate,
-            startTime: event.startTime,
-            endDate: event.endDate,
-            endTime: event.endTime,
-            checked: false,
-            repeatCount: 1,
-            repeatFrequency: 0,
-            type: event.type,
-            information: event.information
+
         };
     }
 
-
-
     componentDidMount() {
         ValidatorForm.addValidationRule('dateIsLater', (value) => {
-            if (value.setHours(0, 0, 0, 0) < this.state.startDate.setHours(0, 0, 0, 0)) {
+            if (value.setHours(0, 0, 0, 0) < this.props.startDate.setHours(0, 0, 0, 0)) {
                 return false;
             }
             return true;
         })
         ValidatorForm.addValidationRule('timeIsLater', (value) => {
-            if (this.state.startDate.setHours(0, 0, 0, 0) === this.state.endDate.setHours(0, 0, 0, 0) && moment(value).format("HH:mm") < moment(this.state.startTime).format("HH:mm")) {
+            if (this.props.startDate.setHours(0, 0, 0, 0) === this.props.endDate.setHours(0, 0, 0, 0) && moment(value).format("HH:mm") < moment(this.props.startTime).format("HH:mm")) {
                 return false;
             }
             return true;
@@ -76,7 +53,7 @@ export default class EventForm extends React.Component {
 
     handleEndDate = (event, date) => {
         this.setState({
-            endDate: new Date(date)
+            endDate: date
         });
     };
 
@@ -130,37 +107,14 @@ export default class EventForm extends React.Component {
         });
     };
 
-    send = async () => {
-        await this.props.update(this.state.title, this.state.startDate, this.state.startTime, this.state.endDate, this.state.endTime, this.state.checked
-            , this.state.repeatCount, this.state.repeatFrequency
-            , this.state.type, this.state.information)
-        this.props.submitFunction()
-    }
-
     render() {
         const minDate = moment()
             .utcOffset(120)
             .toDate()
-
-        const actions = [
-            <FlatButton
-                key="cancelButton"
-                label="Peruuta"
-                primary
-                onClick={this.props.close}
-            />,
-            <FlatButton
-                key="submitButton"
-                type="submit"
-                label="Tallenna"
-                primary
-                keyboardFocused
-            />
-        ];
         return (
             <ValidatorForm
                 ref={() => 'form'}
-                onSubmit={this.send}
+                onSubmit={this.props.handleCloseAndSend}
                 onError={errors => console.log(errors)}
             >
                 <p>Aloituspäivämäärä ja aika</p>
@@ -169,8 +123,8 @@ export default class EventForm extends React.Component {
                     autoOk={true}
                     minDate={minDate}
                     cancelLabel="Peruuta"
-                    value={this.state.startDate === '' ? '' : new Date(this.state.startDate)}
-                    onChange={this.handleStartDate}
+                    value={this.props.startDate}
+                    onChange={this.props.handleStartDate}
                     validators={['required']}
                     errorMessages={['Päivämäärä vaaditaan']}
                 />
@@ -180,8 +134,8 @@ export default class EventForm extends React.Component {
                     name="startTime"
                     cancelLabel="Peruuta"
                     autoOk={true}
-                    value={this.state.startTime}
-                    onChange={this.handleStartTime}
+                    value={this.props.startTime}
+                    onChange={this.props.handleStartTime}
                     validators={['required']}
                     errorMessages={['Aloitusaika vaaditaan']}
                 />
@@ -191,8 +145,8 @@ export default class EventForm extends React.Component {
                     autoOk={true}
                     minDate={minDate}
                     cancelLabel="Peruuta"
-                    value={this.state.endDate === '' ? '' : new Date(this.state.endDate)}
-                    onChange={this.handleEndDate}
+                    value={this.props.endDate}
+                    onChange={this.props.handleEndDate}
                     validators={['dateIsLater']}
                     errorMessages={[
                         'Päättymishetki ei voi olla aiemmin kuin alkamishetki!'
@@ -204,8 +158,8 @@ export default class EventForm extends React.Component {
                     name="endTime"
                     cancelLabel="Peruuta"
                     autoOk={true}
-                    value={this.state.endTime}
-                    onChange={this.handleEndTime}
+                    value={this.props.endTime}
+                    onChange={this.props.handleEndTime}
                     validators={['timeIsLater']}
                     errorMessages={[
                         'Päättymishetki ei voi olla aiemmin kuin alkamishetki!'
@@ -214,7 +168,7 @@ export default class EventForm extends React.Component {
                 <br />
                 <Checkbox
                     label="Luo toistuva tapahtuma"
-                    checked={this.state.checked}
+                    checked={this.props.checked}
                     onCheck={this.updateCheck.bind(this)}
                 />
                 <br />
