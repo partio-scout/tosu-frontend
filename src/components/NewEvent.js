@@ -3,6 +3,17 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import eventService from '../services/events';
 import eventgroupService from '../services/eventgroups';
+import TextField from 'material-ui/TextField';
+import MenuItem from 'material-ui/MenuItem';
+import Checkbox from 'material-ui/Checkbox';
+import { API_ROOT } from '../api-config';
+import {
+  TextValidator,
+  ValidatorForm,
+  DateValidator,
+  TimeValidator,
+  SelectValidator
+} from 'react-material-ui-form-validator';
 import moment from 'moment';
 import FrequentEventsHandler from '../utils/FrequentEventsHandler';
 import EventForm from './EventForm';

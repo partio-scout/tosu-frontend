@@ -10,11 +10,12 @@ import moment from 'moment-with-locales-es6';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import ActivitySearch from './SearchBar';
-import activitiesArray from '../utils/NormalizeActivitiesData';
+import { activitiesArray } from './Activities';
 import Activity from './Activity';
 import eventService from '../services/events';
 import eventgroupService from '../services/eventgroups';
 import EditEvent from './EditEvent'
+
 
 export default class EventCard extends React.Component {
   constructor(props) {
@@ -51,22 +52,34 @@ export default class EventCard extends React.Component {
     });
   };
 
-  deleteEvent = async () => {
-    try {
-      await eventService.deleteEvent(this.props.event.id);
-      this.handleClose();
-    } catch (exception) {
-      console.error('Error in deleting event:', exception);
-    }
+  deleteEvent = () => {
+    fetch(`${API_ROOT}/events/${this.props.event.id}`,
+      {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+      }
+    )
+      .then(res => res.json())
+      .then(() => {
+        this.handleClose();
+        this.props.fetchEvents();
+      })
+      .catch(error => console.error('Error in deleting single event:', error));
   };
 
-  deleteEventGroup = async () => {
-    try {
-      await eventgroupService.deleteEventgroup(this.props.event.groupId);
-      this.handleClose();
-    } catch (exception) {
-      console.error('Error in deleting event:', exception);
-    }
+  deleteEventGroup = () => {
+    fetch(`${API_ROOT}/eventgroup/${this.props.event.groupId}`,
+      {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+      }
+    )
+      .then(res => res.json())
+      .then(() => {
+        this.handleClose();
+        this.props.fetchEvents();
+      })
+      .catch(error => console.error('Error in deleting event group:', error));
   };
 
   handleDelete = () => {
@@ -79,7 +92,6 @@ export default class EventCard extends React.Component {
 
   handleClose = () => {
     this.setState({ open: false });
-    this.props.fetchEvents();
   };
 
   render() {
@@ -179,6 +191,7 @@ export default class EventCard extends React.Component {
             updateAfterDelete={this.updateAfterDelete}
           />
           <br />
+          <p>Täällä haetaan aktiviteetteja ja lisätään niitä tapahtumaan</p>
           <ActivitySearch
             dataSource={data}
             event={this.props.event}
