@@ -41,7 +41,7 @@ describe('<Activity />', () => {
     );
   });
 
-  it('if activites are given, render Chip component ', () => {
+  it('if activites are given, render component containing activityTitle ', () => {
     expect(activityComponent.find('.activityTitle').text()).toContain(
       'Testi 1'
     );
