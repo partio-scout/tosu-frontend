@@ -8,5 +8,10 @@ const create = async () => {
   return response.data
 }
 
+const deleteEventgroup = async (id) => {
+  const response = await axios.delete(`${baseUrl}/${id}`)
+  return response.data
+}
 
-export default {create}
+
+export default {create, deleteEventgroup}

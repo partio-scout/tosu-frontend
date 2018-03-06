@@ -13,5 +13,10 @@ const create = async (data) => {
   return response.data
 }
 
+const deleteEvent = async (id) => {
+  const response = await axios.delete(`${baseUrl}/${id}`)
+  return response.data
+}
 
-export default {getAll, create}
+
+export default {getAll, create, deleteEvent}

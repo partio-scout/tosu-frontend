@@ -12,7 +12,8 @@ import FlatButton from 'material-ui/FlatButton';
 import ActivitySearch from './SearchBar';
 import activitiesArray from '../utils/NormalizeActivitiesData';
 import Activity from './Activity';
-import { API_ROOT } from '../api-config';
+import eventService from '../services/events';
+import eventgroupService from '../services/eventgroups';
 
 export default class EventCard extends React.Component {
   constructor(props) {
@@ -49,34 +50,22 @@ export default class EventCard extends React.Component {
     });
   };
 
-  deleteEvent = () => {
-    fetch(`${API_ROOT}/events/${this.props.event.id}`,
-      {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' }
-      }
-    )
-      .then(res => res.json())
-      .then(() => {
-        this.handleClose();
-        this.props.fetchEvents();
-      })
-      .catch(error => console.error('Error in deleting single event:', error));
+  deleteEvent = async () => {
+    try {
+      await eventService.deleteEvent(this.props.event.id);
+      this.handleClose();
+    } catch (exception) {
+      console.error('Error in deleting event:', exception);
+    }
   };
 
-  deleteEventGroup = () => {
-    fetch(`${API_ROOT}/eventgroup/${this.props.event.groupId}`,
-      {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' }
-      }
-    )
-      .then(res => res.json())
-      .then(() => {
-        this.handleClose();
-        this.props.fetchEvents();
-      })
-      .catch(error => console.error('Error in deleting event group:', error));
+  deleteEventGroup = async () => {
+    try {
+      await eventgroupService.deleteEventgroup(this.props.event.groupId);
+      this.handleClose();
+    } catch (exception) {
+      console.error('Error in deleting event:', exception);
+    }
   };
 
   handleDelete = () => {
@@ -89,6 +78,7 @@ export default class EventCard extends React.Component {
 
   handleClose = () => {
     this.setState({ open: false });
+    this.props.fetchEvents();
   };
 
   render() {
@@ -101,10 +91,10 @@ export default class EventCard extends React.Component {
     const subtitle = this.state.expanded
       ? ''
       : moment(event.startDate, 'YYYY-MM-DD')
-        .locale('fi')
-        .format('ddd D. MMMM YYYY') +
-      ' ' +
-      event.startTime;
+          .locale('fi')
+          .format('ddd D. MMMM YYYY') +
+        ' ' +
+        event.startTime;
 
     let actions = [];
     if (event.groupId) {
