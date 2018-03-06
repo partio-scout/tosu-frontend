@@ -8,7 +8,6 @@ import { API_ROOT } from '../api-config';
 export default class TopSearchBar extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props.dataSource)
     this.state = {
       selectedActivity: null
     };
@@ -16,13 +15,11 @@ export default class TopSearchBar extends React.Component {
 
   handleChange = selectedActivity => {
     this.setState({ selectedActivity });
-    console.log(`Selected: ${selectedActivity.label}`);
   };
 
   render() {
     const { selectedActivity } = this.state;
     const value = selectedActivity && selectedActivity.value;
-    console.log(this.props.dataSource)
     return (
       <div>
         <Select
