@@ -18,5 +18,11 @@ const deleteEvent = async (id) => {
   return response.data
 }
 
+const addActivity = async (id, data) => {
+  console.log(data)
+  const response = await axios.post(`${baseUrl}/${id}/activities`, data)
+  return response.data
 
-export default {getAll, create, deleteEvent}
+}
+
+export default {getAll, create, deleteEvent, addActivity}
