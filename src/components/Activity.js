@@ -12,12 +12,10 @@ const styles = {
 const handleRequestDelete = (activity, props) => {
   console.log('Delete activity', activity);
 
-  fetch(`${API_ROOT}/activities/${activity.id}`,
-    {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' }
-    }
-  )
+  fetch(`${API_ROOT}/activities/${activity.id}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' }
+  })
     .then(res => res.json())
     .then(props.updateAfterDelete(activity))
     .catch(error => console.error('Error:', error));
@@ -45,7 +43,7 @@ const Activity = props => {
           <Avatar size={32} color={blue300} backgroundColor={indigo900}>
             P
           </Avatar>
-          {act[0].title}
+          <span className="activityTitle">{act[0].title}</span>
         </Chip>
       );
     });

@@ -74,7 +74,7 @@ class App extends Component {
           <div id="container">
             <div className="content">
               <h2 style={{ marginTop: 120 }}>Events</h2>
-              <NewEvent updateEvents={this.updateEvents} />
+             <NewEvent updateEvents={this.updateEvents} />
               <ListEvents
                 events={this.state.events}
                 fetchEvents={this.getEvents}
@@ -86,7 +86,8 @@ class App extends Component {
             <Sticky>
               {({ style }) => (
                 <header style={style}>
-                  <Appbar activities={this.state.activities} />
+                  <Appbar activities={this.state.activities}
+                  events={this.state.events} />
                 </header>
               )}
             </Sticky>
