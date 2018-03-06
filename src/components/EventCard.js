@@ -10,7 +10,7 @@ import moment from 'moment-with-locales-es6';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import ActivitySearch from './SearchBar';
-import { activitiesArray } from './Activities';
+import activitiesArray from '../utils/NormalizeActivitiesData';
 import Activity from './Activity';
 import { API_ROOT } from '../api-config';
 

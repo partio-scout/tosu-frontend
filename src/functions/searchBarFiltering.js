@@ -1,22 +1,20 @@
-import { activitiesArray } from '../components/Activities'
+import activitiesArray from '../utils/NormalizeActivitiesData';
 
-export const filterOffExistingOnes = (source, events, buffer) => {
-  let toFilter = activitiesArray(source)
-  let combinedEventActivities = events.map(event =>
-    event.activities)
+const filterOffExistingOnes = (source, events, buffer) => {
+  let toFilter = activitiesArray(source);
+  let combinedEventActivities = events.map(event => event.activities);
   combinedEventActivities = [].concat.apply([], combinedEventActivities);
 
   if (combinedEventActivities[0] === undefined) {
-    return toFilter
-
+    return toFilter;
   }
 
   combinedEventActivities.forEach(activity => {
     toFilter = toFilter.filter(pofRow => {
-      return pofRow.guid.toString() !== activity.guid.toString()
+      return pofRow.guid.toString() !== activity.guid.toString();
     });
   });
-  console.log(toFilter.length)
-  return toFilter
+  return toFilter;
+};
 
-}
+export default filterOffExistingOnes;

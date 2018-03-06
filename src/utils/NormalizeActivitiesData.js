@@ -1,4 +1,3 @@
-import React from 'react';
 import { normalize, schema } from 'normalizr';
 
 
@@ -110,13 +109,5 @@ const activitiesArray = fetchedActivities => {
   return taskArray;
 };
 
-const Activities = ({ fetchedActivities }) => {
-  let activities = activitiesArray(fetchedActivities);
-  activities = activities.map(activity => (
-    <p key={activity.guid}>{activity.title}</p>
-  ));
-  return <div>{activities}</div>;
-};
 
-export default Activities;
-export { activitiesArray };
+export default activitiesArray;
