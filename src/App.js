@@ -7,6 +7,7 @@ import Activities from './components/Activities';
 import Appbar from './components/AppBar';
 import activitiesData from './partio.json';
 import { API_ROOT } from './api-config';
+import { filterOffExistingOnes} from './functions/searchBarFilter'
 
 class App extends Component {
   constructor() {
@@ -80,6 +81,19 @@ class App extends Component {
                 fetchEvents={this.getEvents}
                 fetchedActivities={this.state.activities}
               />
+            
+            
+            
+            
+            
+             <p> {filterOffExistingOnes(this.state.activities, this.state.events, null)}
+           </p>
+           
+           
+           
+           
+           
+           
               <h2>Activities</h2>
               <Activities fetchedActivities={this.state.activities} />
             </div>
