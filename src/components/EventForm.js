@@ -140,7 +140,6 @@ export default class EventForm extends React.Component {
         const minDate = moment()
             .utcOffset(120)
             .toDate()
-
         const actions = [
             <FlatButton
                 key="cancelButton"
@@ -168,7 +167,7 @@ export default class EventForm extends React.Component {
                     autoOk={true}
                     minDate={minDate}
                     cancelLabel="Peruuta"
-                    value={this.state.startDate === '' ? '' : new Date(this.state.startDate)}
+                    value={this.state.startDate === '' ? undefined : this.state.startDate}
                     onChange={this.handleStartDate}
                     validators={['required']}
                     errorMessages={['Päivämäärä vaaditaan']}
@@ -190,7 +189,7 @@ export default class EventForm extends React.Component {
                     autoOk={true}
                     minDate={minDate}
                     cancelLabel="Peruuta"
-                    value={this.state.endDate === '' ? '' : new Date(this.state.endDate)}
+                    value={this.state.endDate}
                     onChange={this.handleEndDate}
                     validators={['dateIsLater']}
                     errorMessages={[

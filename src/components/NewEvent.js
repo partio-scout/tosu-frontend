@@ -47,10 +47,8 @@ export default class NewEvent extends React.Component {
     this.setState({
       open: false
     });
-
+    console.log(this.state.startTime)
     const { startDate, endDate } = this.state;
-    console.log('checked ', this.state.checked, ' repeat count: ', this.state.repeatCount, ' freque: ', this.state.repeatFrequency)
-
     if (!this.state.checked) {
       const data = {
         title: this.state.title,
@@ -62,8 +60,6 @@ export default class NewEvent extends React.Component {
         information: this.state.information
       };
 
-      console.log('Data', data);
-
       await this.sendEventPostRequest(data)
       if (!this.state.checked) {
         this.handleClose();
@@ -72,7 +68,6 @@ export default class NewEvent extends React.Component {
     } else {
       // Send POST first to create new GroupId and then use id from response to create group of events. ß
       let response = await this.sendGroupIdPostRequest()
-      console.log('checked ', this.state.checked, ' repeat count: ', this.state.repeatCount, ' freque: ', this.state.repeatFrequency)
 
       for (let i = 0; i < this.state.repeatCount; i += 1) {
         const newStartDate = FrequentEventsHandler(
@@ -168,7 +163,12 @@ export default class NewEvent extends React.Component {
           onRequestClose={this.handleClose}
           autoScrollBodyContent
         >
-          <EventForm submitFunction={this.handleCloseAndSend.bind(this)} close={this.handleClose.bind(this)} update={this.update.bind(this)} data={this.state} />
+          <EventForm 
+            submitFunction={this.handleCloseAndSend.bind(this)} 
+            close={this.handleClose.bind(this)} 
+            update={this.update.bind(this)} 
+            data={this.state} 
+          />
         </Dialog>
       </div>
     );

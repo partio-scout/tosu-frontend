@@ -11,20 +11,21 @@ export default class NewEvent extends React.Component {
     constructor(props) {
         super(props);
         const event = this.props.data
-        console.log(event.title)
+        let newStartTime = moment(event.startDate + ' ' + event.startTime, "YYYY-MM-DD HH:mm")
+        let newEndTime = moment(event.endDate + ' ' + event.endTime, "YYYY-MM-DD HH:mm")
+        console.log(newStartTime)
         this.state = {
-            open: false,
             title: event.title,
-            startDate: '',
-            startTime: '',
-            endDate: '',
-            endTime: '',
+            startDate: new Date(event.startDate),
+            startTime: newStartTime.toDate(),
+            endDate: new Date(event.endDate),
+            endTime: newEndTime.toDate(),
             checked: false,
             repeatCount: 1,
             repeatFrequency: 0,
-            type: '',
-            information: ''
-        }
+            type: event.type,
+            information: event.information
+        };
     }
 
     handleOpen = () => {
@@ -48,80 +49,7 @@ export default class NewEvent extends React.Component {
     };
 
     handleCloseAndSend = () => {
-        this.setState({
-            open: false
-        });
-
-        const { startDate, endDate } = this.state;
-
-        if (!this.state.checked) {
-            const data = {
-                title: this.state.title,
-                startDate: moment(startDate).format('YYYY-MM-DD'),
-                startTime: moment(this.state.startTime).format('HH:mm'),
-                endDate: moment(endDate).format('YYYY-MM-DD'),
-                endTime: moment(this.state.endTime).format('HH:mm'),
-                type: this.state.type,
-                information: this.state.information
-            };
-
-            console.log('Data', data);
-
-            this.sendEventPostRequest(data).then(() => {
-                if (!this.state.checked) {
-                    this.handleClose();
-                    this.props.updateEvents();
-                }
-            });
-        } else {
-            console.log('toistuva')
-            // Send POST first to create new GroupId and then use id from response to create group of events. ß
-            this.sendGroupIdPostRequest().then(response => {
-                for (let i = 0; i < this.state.repeatCount; i += 1) {
-                    const newStartDate = FrequentEventsHandler(
-                        this.state.startDate,
-                        this.state.repeatFrequency,
-                        i
-                    ).format('YYYY-MM-DD');
-
-                    const newEndDate = FrequentEventsHandler(
-                        this.state.endDate,
-                        this.state.repeatFrequency,
-                        i
-                    ).format('YYYY-MM-DD');
-
-                    const data = {
-                        title: this.state.title,
-                        startDate: newStartDate,
-                        startTime: moment(this.state.startTime).format('HH:mm'),
-                        endDate: newEndDate,
-                        endTime: moment(this.state.endTime).format('HH:mm'),
-                        type: this.state.type,
-                        information: this.state.information,
-                        groupId: response.groupId
-                    };
-
-                    this.sendEventPostRequest(data).then(() => {
-                        if (i === this.state.repeatCount - 1) {
-                            this.handleClose();
-                            this.props.updateEvents();
-                        }
-                    });
-                }
-            });
-        }
-        this.setState({
-            title: '',
-            startDate: '',
-            startTime: '',
-            endDate: '',
-            endTime: '',
-            checked: false,
-            repeatCount: 1,
-            repeatFrequency: 0,
-            type: '',
-            information: ''
-        })
+        console.log('muokataan muokataan...')
     }
 
     sendGroupIdPostRequest = async () => {
