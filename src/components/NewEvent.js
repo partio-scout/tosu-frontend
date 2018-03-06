@@ -5,7 +5,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
-import { API_ROOT } from '../api-config';
+import eventService from '../services/events';
+import eventgroupService from '../services/eventgroups';
+
 import {
   TextValidator,
   ValidatorForm,
@@ -44,9 +46,14 @@ export default class NewEvent extends React.Component {
         return false;
       }
       return true;
-    })
-    ValidatorForm.addValidationRule('timeIsLater', (value) => {
-      if (this.state.startDate.setHours(0, 0, 0, 0) === this.state.endDate.setHours(0, 0, 0, 0) && moment(value).format("HH:mm") < moment(this.state.startTime).format("HH:mm")) {
+    });
+    ValidatorForm.addValidationRule('timeIsLater', value => {
+      if (
+        this.state.startDate.setHours(0, 0, 0, 0) ===
+          this.state.endDate.setHours(0, 0, 0, 0) &&
+        moment(value).format('HH:mm') <
+          moment(this.state.startTime).format('HH:mm')
+      ) {
         return false;
       }
       return true;
@@ -73,26 +80,22 @@ export default class NewEvent extends React.Component {
     });
   };
 
-  sendGroupIdPostRequest = () =>
-    fetch(`${API_ROOT}/eventgroup`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-      }
-    )
-      .then(res => res.json())
-      .catch(error => console.error('Error in groupId POST:', error));
+  sendGroupIdPostRequest = async () => {
+    try {
+      const groupId = await eventgroupService.create();
+      return groupId;
+    } catch (exception) {
+      console.error('Error in event POST:', exception);
+    }
+  };
 
-  sendEventPostRequest = data =>
-  fetch(`${API_ROOT}/events`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      }
-    )
-      .then(res => res.json())
-      .catch(error => console.error('Error in event POST:', error));
+  sendEventPostRequest = async data => {
+    try {
+      await eventService.create(data);
+    } catch (exception) {
+      console.error('Error in event POST:', exception);
+    }
+  };
 
   handleCloseAndSend = () => {
     this.setState({
