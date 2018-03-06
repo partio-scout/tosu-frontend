@@ -1,4 +1,3 @@
-import React from 'react';
 import { normalize, schema } from 'normalizr';
 
 
@@ -35,6 +34,7 @@ const createSchemas = () => {
   return programListSchema;
 };
 
+
 const activitiesArray = fetchedActivities => {
   if (!fetchedActivities) {
     console.log('No activities found yet!');
@@ -47,7 +47,7 @@ const activitiesArray = fetchedActivities => {
     programListSchema
   );
 
-  // Hae haluttu ikäryhmä
+  // Hae haluttu ikäryhmä, toistaiseksi kovakoodattu
   const tarpojat = Object.values(normalizedData.entities.agegroups)[3];
 
   // Hae ikäryhmän taskgroupit
@@ -82,7 +82,7 @@ const activitiesArray = fetchedActivities => {
     return tasks;
   };
 
-  // Luo Array kaikista taskgroupeista, subtaskgroupeista ja taskeista
+  // Luo Array kaikista aktiviteeteista (=taskeista)
 
   const getActivities = (taskgroups, activities) => {
     let foundActivities = [];
@@ -103,20 +103,12 @@ const activitiesArray = fetchedActivities => {
     return foundActivities;
   };
 
-  // Hae kaikki aktiviteetteihin liittyvä tieto
+  // Hae kaikki aktiviteetteihin liittyvä tieto ja palauta se arrayna 
   const activities = [];
   const taskArray = getActivities(taskgroups, activities);
 
   return taskArray;
 };
 
-const Activities = ({ fetchedActivities }) => {
-  let activities = activitiesArray(fetchedActivities);
-  activities = activities.map(activity => (
-    <p key={activity.guid}>{activity.title}</p>
-  ));
-  return <div>{activities}</div>;
-};
 
-export default Activities;
-export { activitiesArray };
+export default activitiesArray;
