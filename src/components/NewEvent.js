@@ -5,7 +5,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import MenuItem from 'material-ui/MenuItem';
 import Checkbox from 'material-ui/Checkbox';
-import { API_ROOT } from '../api-config';
+import eventService from '../services/events';
+import eventgroupService from '../services/eventgroups';
+
 import {
   TextValidator,
   ValidatorForm,
@@ -38,14 +40,21 @@ export default class NewEvent extends React.Component {
   };
 
   componentWillMount() {
-    ValidatorForm.addValidationRule('dateIsLater', (value) => {
-      if (value.setHours(0, 0, 0, 0) < this.state.startDate.setHours(0, 0, 0, 0)) {
+    ValidatorForm.addValidationRule('dateIsLater', value => {
+      if (
+        value.setHours(0, 0, 0, 0) < this.state.startDate.setHours(0, 0, 0, 0)
+      ) {
         return false;
       }
       return true;
-    })
-    ValidatorForm.addValidationRule('timeIsLater', (value) => {
-      if (this.state.startDate.setHours(0, 0, 0, 0) === this.state.endDate.setHours(0, 0, 0, 0) && moment(value).format("HH:mm") < moment(this.state.startTime).format("HH:mm")) {
+    });
+    ValidatorForm.addValidationRule('timeIsLater', value => {
+      if (
+        this.state.startDate.setHours(0, 0, 0, 0) ===
+          this.state.endDate.setHours(0, 0, 0, 0) &&
+        moment(value).format('HH:mm') <
+          moment(this.state.startTime).format('HH:mm')
+      ) {
         return false;
       }
       return true;
@@ -72,26 +81,22 @@ export default class NewEvent extends React.Component {
     });
   };
 
-  sendGroupIdPostRequest = () =>
-    fetch(`${API_ROOT}/eventgroup`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-      }
-    )
-      .then(res => res.json())
-      .catch(error => console.error('Error in groupId POST:', error));
+  sendGroupIdPostRequest = async () => {
+    try {
+      const groupId = await eventgroupService.create();
+      return groupId;
+    } catch (exception) {
+      console.error('Error in event POST:', exception);
+    }
+  };
 
-  sendEventPostRequest = data =>
-  fetch(`${API_ROOT}/events`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      }
-    )
-      .then(res => res.json())
-      .catch(error => console.error('Error in event POST:', error));
+  sendEventPostRequest = async data => {
+    try {
+      await eventService.create(data);
+    } catch (exception) {
+      console.error('Error in event POST:', exception);
+    }
+  };
 
   handleCloseAndSend = () => {
     this.setState({
@@ -171,7 +176,7 @@ export default class NewEvent extends React.Component {
   handleStartTime = (event, date) => {
     this.setState({
       startTime: date,
-      endTime: new Date( moment(date).add(1, 'h'))
+      endTime: new Date(moment(date).add(1, 'h'))
     });
   };
 
@@ -249,7 +254,7 @@ export default class NewEvent extends React.Component {
     ];
     const minDate = moment()
       .utcOffset(120)
-      .toDate()
+      .toDate();
     return (
       <div>
         <RaisedButton label="Uusi tapahtuma" onClick={this.handleOpen} />

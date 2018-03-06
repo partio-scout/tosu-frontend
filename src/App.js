@@ -5,7 +5,6 @@ import ListEvents from './components/ListEvents';
 import NewEvent from './components/NewEvent';
 import Appbar from './components/AppBar';
 import activitiesData from './partio.json';
-import { API_ROOT } from './api-config';
 import eventService from './services/events';
 import activityService from './services/activities';
 
