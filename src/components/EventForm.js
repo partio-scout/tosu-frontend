@@ -24,17 +24,18 @@ const errorStyle = {
 export default class EventForm extends React.Component {
     constructor(props) {
         super(props);
+        const event = this.props.data
         this.state = {
-            title: '',
-            startDate: '',
-            startTime: '',
-            endDate: '',
-            endTime: '',
+            title: event.title,
+            startDate: event.startDate,
+            startTime: event.startTime,
+            endDate: event.endDate,
+            endTime: event.endTime,
             checked: false,
             repeatCount: 1,
             repeatFrequency: 0,
-            type: '',
-            information: ''
+            type: event.type,
+            information: event.information
         };
     }
 
@@ -54,23 +55,6 @@ export default class EventForm extends React.Component {
             return true;
         })
     }
-
-    /* sendGroupIdPostRequest = async () => {
-        try {
-            const groupId = await eventgroupService.create();
-            return groupId;
-        } catch (exception) {
-            console.error('Error in event POST:', exception);
-        }
-    }
-
-    sendEventPostRequest = async data => {
-        try {
-            await eventService.create(data);
-        } catch (exception) {
-            console.error('Error in event POST:', exception);
-        }
-    } */
 
     handleNewEventFormChange = event => {
         this.setState({ [event.target.name]: event.target.value });
@@ -147,8 +131,6 @@ export default class EventForm extends React.Component {
     };
 
     send = async () => {
-        console.log(this.state.title)
-        await this.props.test(this.state.title)
         await this.props.update(this.state.title, this.state.startDate, this.state.startTime, this.state.endDate, this.state.endTime, this.state.checked
             , this.state.repeatCount, this.state.repeatFrequency
             , this.state.type, this.state.information)

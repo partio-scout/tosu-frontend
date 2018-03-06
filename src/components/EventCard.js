@@ -14,6 +14,7 @@ import activitiesArray from '../utils/NormalizeActivitiesData';
 import Activity from './Activity';
 import eventService from '../services/events';
 import eventgroupService from '../services/eventgroups';
+import EditEvent from './EditEvent'
 
 export default class EventCard extends React.Component {
   constructor(props) {
@@ -91,10 +92,10 @@ export default class EventCard extends React.Component {
     const subtitle = this.state.expanded
       ? ''
       : moment(event.startDate, 'YYYY-MM-DD')
-          .locale('fi')
-          .format('ddd D. MMMM YYYY') +
-        ' ' +
-        event.startTime;
+        .locale('fi')
+        .format('ddd D. MMMM YYYY') +
+      ' ' +
+      event.startTime;
 
     let actions = [];
     if (event.groupId) {
@@ -145,11 +146,7 @@ export default class EventCard extends React.Component {
         />
         <CardTitle title={event.title} subtitle="Lokaatio?" expandable={true} />
         <CardText expandable={true}>
-          <FlatButton
-            label="Muokkaa"
-            secondary={true}
-            className="buttonRight"
-          />
+          <EditEvent updateEvents={this.updateEvents} buttonClass="buttonRight" data={event}/>
           <FlatButton
             label="Poista"
             secondary={true}

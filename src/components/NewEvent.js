@@ -1,19 +1,8 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import MenuItem from 'material-ui/MenuItem';
-import Checkbox from 'material-ui/Checkbox';
 import eventService from '../services/events';
 import eventgroupService from '../services/eventgroups';
-import {
-  TextValidator,
-  ValidatorForm,
-  DateValidator,
-  TimeValidator,
-  SelectValidator
-} from 'react-material-ui-form-validator';
 import moment from 'moment';
 import FrequentEventsHandler from '../utils/FrequentEventsHandler';
 import EventForm from './EventForm';
@@ -32,9 +21,6 @@ export default class NewEvent extends React.Component {
     repeatFrequency: 0,
     type: '',
     information: ''
-  };
-
-  componentDidMount() {
   }
 
   handleOpen = () => {
@@ -84,6 +70,7 @@ export default class NewEvent extends React.Component {
         }
       });
     } else {
+      console.log('toistuva')
       // Send POST first to create new GroupId and then use id from response to create group of events. ß
       this.sendGroupIdPostRequest().then(response => {
         for (let i = 0; i < this.state.repeatCount; i += 1) {
@@ -130,8 +117,8 @@ export default class NewEvent extends React.Component {
       repeatFrequency: 0,
       type: '',
       information: ''
-    });
-  };
+    })
+  }
 
   sendGroupIdPostRequest = async () => {
     try {
@@ -165,12 +152,6 @@ export default class NewEvent extends React.Component {
     })
   }
 
-  test = (title) => {
-    this.setState({
-      title
-    })
-  }
-
   render() {
 
     return (
@@ -183,7 +164,7 @@ export default class NewEvent extends React.Component {
           onRequestClose={this.handleClose}
           autoScrollBodyContent
         >
-          <EventForm submitFunction={this.handleCloseAndSend.bind(this)} close={this.handleClose.bind(this)} update={this.update.bind(this)} test={this.test} />
+          <EventForm submitFunction={this.handleCloseAndSend.bind(this)} close={this.handleClose.bind(this)} update={this.update.bind(this)} />
         </Dialog>
       </div>
     );
