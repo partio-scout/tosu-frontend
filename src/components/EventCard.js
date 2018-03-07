@@ -143,7 +143,7 @@ export default class EventCard extends React.Component {
         />
         <CardTitle title={event.title} subtitle="Lokaatio?" expandable />
         <CardText expandable>
-          <EditEvent updateEvents={this.updateEvents} buttonClass="buttonRight" data={event} />
+          <EditEvent buttonClass="buttonRight" data={event} source={this.handleClose} />
           <FlatButton
             label="Poista"
             secondary

@@ -25,4 +25,10 @@ const addActivity = async (id, data) => {
 
 }
 
-export default {getAll, create, deleteEvent, addActivity}
+const edit = async(event) => {
+  console.log(event)
+  const response = await axios.put(`${baseUrl}/${event.id}`, event)
+  return response.data
+}
+
+export default {getAll, create, deleteEvent, addActivity, edit}
