@@ -84,36 +84,33 @@ export default class EventCard extends React.Component {
 
   render() {
     const data = activitiesArray(this.props.fetchedActivities);
-
     const { event } = this.props;
 
     moment.locale('fi');
     const title = this.state.expanded ? '' : event.title;
     const subtitle = this.state.expanded
       ? ''
-      : moment(event.startDate, 'YYYY-MM-DD')
+      : `${moment(event.startDate, 'YYYY-MM-DD')
         .locale('fi')
-        .format('ddd D. MMMM YYYY') +
-      ' ' +
-      event.startTime;
+        .format('ddd D. MMMM YYYY')  } ${  event.startTime}`
 
-    let actions = [];
+    let actions = []
     if (event.groupId) {
       actions = [
         <FlatButton
           label="Peruuta"
-          primary={true}
+          primary
           onClick={this.handleClose}
         />,
 
         <FlatButton
           label="Poista tämä tapahtuma"
-          primary={true}
+          primary
           onClick={this.deleteEvent}
         />,
         <FlatButton
           label="Poista toistuvat tapahtumat"
-          primary={true}
+          primary
           onClick={this.deleteEventGroup}
         />
       ];
@@ -121,12 +118,12 @@ export default class EventCard extends React.Component {
       actions = [
         <FlatButton
           label="Peruuta"
-          primary={true}
+          primary
           onClick={this.handleClose}
         />,
         <FlatButton
           label="Poista tapahtuma"
-          primary={true}
+          primary
           onClick={this.deleteEvent}
         />
       ];
@@ -141,15 +138,15 @@ export default class EventCard extends React.Component {
           title={title}
           subtitle={subtitle}
           // subtitle="päivämäärät, alku ja loppu"
-          actAsExpander={true}
-          showExpandableButton={true}
+          actAsExpander
+          showExpandableButton
         />
-        <CardTitle title={event.title} subtitle="Lokaatio?" expandable={true} />
-        <CardText expandable={true}>
-          <EditEvent updateEvents={this.updateEvents} buttonClass="buttonRight" data={event}/>
+        <CardTitle title={event.title} subtitle="Lokaatio?" expandable />
+        <CardText expandable>
+          <EditEvent updateEvents={this.updateEvents} buttonClass="buttonRight" data={event} />
           <FlatButton
             label="Poista"
-            secondary={true}
+            secondary
             className="buttonRight"
             onClick={this.handleDelete}
           />
@@ -187,9 +184,9 @@ export default class EventCard extends React.Component {
           <CardActions>
             <FlatButton
               label="Sulje"
-              primary={true}
+              primary
               onClick={this.handleReduce}
-              fullWidth={true}
+              fullWidth
             />
           </CardActions>
         </CardText>
