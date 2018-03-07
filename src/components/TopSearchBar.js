@@ -3,6 +3,7 @@ import matchSorter from 'match-sorter';
 import RaisedButton from 'material-ui/RaisedButton';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import BufferZone from './BufferZone'
 
 export default class TopSearchBar extends React.Component {
   constructor(props) {
@@ -36,18 +37,19 @@ export default class TopSearchBar extends React.Component {
           })}
         />
         <div>
-          <p>
+          {/* <p>
             {' '}
             Valittu aktiviteetti:{' '}
             {this.state.selectedActivity
               ? this.state.selectedActivity.label
               : 'Ei valittu'}
-          </p>
+          </p> */}
           <RaisedButton
             label="Tallenna aktiviteetti"
-            primary={true}
+            primary
             onClick={() => console.log('click')}
           />
+          <BufferZone />
         </div>
       </div>
     );

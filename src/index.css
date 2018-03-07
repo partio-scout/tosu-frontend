@@ -33,3 +33,22 @@ p.eventTimes > span {
 .buttonRight {
   float: right
 }
+
+#bufferzone {
+  margin: 10px 0 5px;
+  background-color: azure;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.green {
+  background-color: green
+}
+
+.yellow {
+  background-color: yellow
+}
+
+.red {
+  background-color: red
+}
