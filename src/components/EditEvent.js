@@ -47,8 +47,24 @@ export default class NewEvent extends React.Component {
     });
   };
 
-  handleCloseAndSend = () => {
-    console.log('muokataan muokataan...')
+  handleCloseAndSend = async () => {
+    const data = {
+      id: this.props.data.id,
+      title: this.state.title,
+      startDate: moment(this.state.startDate).format('YYYY-MM-DD'),
+      startTime: moment(this.state.startTime).format('HH:mm'),
+      endDate: moment(this.state.endDate).format('YYYY-MM-DD'),
+      endTime: moment(this.state.endTime).format('HH:mm'),
+      type: this.state.type,
+      information: this.state.information
+    };
+    try {
+      const response = await eventService.edit(data);
+      this.props.source()
+      this.setState({open:false})
+    } catch (exception) {
+      console.error('Error in event PUT:', exception);
+    } 
   }
 
   sendGroupIdPostRequest = async () => {
