@@ -14,6 +14,8 @@ const handleRequestDelete = async (activity, props) => {
   try {
     await activityService.deleteActivity(activity.id);
     props.updateAfterDelete(activity);
+    props.updateFilteredActivities()
+
   } catch (exception) {
     console.error('Error in deleting activity:', exception);
   }

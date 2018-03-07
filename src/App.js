@@ -7,19 +7,26 @@ import Appbar from './components/AppBar';
 import activitiesData from './partio.json';
 import eventService from './services/events';
 import activityService from './services/activities';
+import filterOffExistingOnes from './functions/searchBarFiltering';
+import activitiesArray from './utils/NormalizeActivitiesData';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       events: [{}],
-      activities: activitiesData
+      activities: activitiesData,
+      filteredActivities: []
     };
   }
 
   componentDidMount() {
-    this.getEvents();
-    this.getActivities();
+    const update = async () => {
+      await this.getActivities();
+      this.updateFilteredActivities();
+    };
+
+    update();
   }
 
   getEvents = async () => {
@@ -38,8 +45,9 @@ class App extends Component {
   getActivities = async () => {
     try {
       const activities = await activityService.getAll();
+      const normalizedActivities = activitiesArray(activities);
       this.setState({
-        activities
+        activities: normalizedActivities
       });
     } catch (exception) {
       // Jos tietoja ei saada haettua, hae tiedot staattisesta JSON-tiedostosta
@@ -54,6 +62,18 @@ class App extends Component {
     this.getEvents();
   };
 
+  updateFilteredActivities = async () => {
+    await this.getEvents();
+    const filteredActivities = filterOffExistingOnes(
+      this.state.activities,
+      this.state.events
+    );
+
+    this.setState({
+      filteredActivities
+    });
+  };
+
   render() {
     return (
       <StickyContainer className="App">
@@ -66,15 +86,13 @@ class App extends Component {
                 events={this.state.events}
                 fetchEvents={this.getEvents}
                 fetchedActivities={this.state.activities}
+                updateFilteredActivities={this.updateFilteredActivities}
               />
             </div>
             <Sticky>
               {({ style }) => (
                 <header style={style}>
-                  <Appbar
-                    activities={this.state.activities}
-                    events={this.state.events}
-                  />
+                  <Appbar filteredActivities={this.state.filteredActivities} />
                 </header>
               )}
             </Sticky>
