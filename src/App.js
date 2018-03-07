@@ -8,6 +8,7 @@ import activitiesData from './partio.json';
 import eventService from './services/events';
 import activityService from './services/activities';
 import filterOffExistingOnes from './functions/searchBarFiltering';
+import activitiesArray from './utils/NormalizeActivitiesData';
 
 class App extends Component {
   constructor() {
@@ -21,7 +22,6 @@ class App extends Component {
 
   componentDidMount() {
     const update = async () => {
-      await this.getEvents();
       await this.getActivities();
       this.updateFilteredActivities();
     };
@@ -45,8 +45,9 @@ class App extends Component {
   getActivities = async () => {
     try {
       const activities = await activityService.getAll();
+      const normalizedActivities = activitiesArray(activities);
       this.setState({
-        activities
+        activities: normalizedActivities
       });
     } catch (exception) {
       // Jos tietoja ei saada haettua, hae tiedot staattisesta JSON-tiedostosta
@@ -61,14 +62,13 @@ class App extends Component {
     this.getEvents();
   };
 
-  updateFilteredActivities = () => {
-    console.log('Update activities');
+  updateFilteredActivities = async () => {
+    await this.getEvents();
     const filteredActivities = filterOffExistingOnes(
       this.state.activities,
       this.state.events
     );
 
-    console.log('Filtered', filteredActivities);
     this.setState({
       filteredActivities
     });

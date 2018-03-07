@@ -1,7 +1,5 @@
-import activitiesArray from '../utils/NormalizeActivitiesData';
-
 const filterOffExistingOnes = (source, events, buffer) => {
-  let toFilter = activitiesArray(source);
+  let toFilter = source;
   let combinedEventActivities = events.map(event => event.activities);
   combinedEventActivities = [].concat.apply([], combinedEventActivities);
 
@@ -14,6 +12,7 @@ const filterOffExistingOnes = (source, events, buffer) => {
       return pofRow.guid.toString() !== activity.guid.toString();
     });
   });
+
   return toFilter;
 };
 

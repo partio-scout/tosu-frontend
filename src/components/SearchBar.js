@@ -29,8 +29,8 @@ export default class ActivitySearch extends React.Component {
 
       try {
         const res = await eventService.addActivity(this.props.event.id, data);
-        await this.props.updateActivities(res);
-        await this.props.updateFilteredActivities();
+        this.props.updateActivities(res);
+        this.props.updateFilteredActivities();
       } catch (exception) {
         console.error('Error in adding activity:', exception);
       }
