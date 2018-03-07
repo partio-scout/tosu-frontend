@@ -2,6 +2,7 @@ import React from 'react';
 import { DropTarget } from 'react-dnd';
 import PropTypes from 'prop-types'
 
+
 const Types = {
     ACTIVITY: 'activity'
 }
@@ -24,8 +25,8 @@ function collect(connect, monitor) {
 	}
 }
 
-@DropTarget(Types.ACTIVITY, bufferZoneTarget, collect)
-export default class BufferZone extends React.Component {
+
+class BufferZone extends React.Component {
     static propTypes = {
         isOver: PropTypes.bool.isRequired,
         canDrop: PropTypes.bool.isRequired,
@@ -47,3 +48,5 @@ export default class BufferZone extends React.Component {
         )
     }
 }
+
+export default DropTarget(Types.ACTIVITY, bufferZoneTarget, collect)(BufferZone)

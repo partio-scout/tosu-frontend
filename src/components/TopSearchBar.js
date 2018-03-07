@@ -4,8 +4,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import BufferZone from './BufferZone'
+import { default as TouchBackend } from 'react-dnd-touch-backend';
+import DragDropContext from 'react-dnd/lib/DragDropContext';
 
-export default class TopSearchBar extends React.Component {
+
+class TopSearchBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -55,3 +58,5 @@ export default class TopSearchBar extends React.Component {
     );
   }
 }
+
+export default DragDropContext(TouchBackend)(TopSearchBar)

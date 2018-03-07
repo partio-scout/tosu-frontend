@@ -6,7 +6,11 @@
     "allowJs": true
   },
   "babel": {
-    "stage": 1,
+    "stage": [
+      "react",
+      "es2017",
+      "stage-1"
+    ],
     "plugins": [
       "transform-decorators"
     ]
@@ -14,10 +18,12 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "core-decorators": "^0.20.0",
     "downshift": "^1.28.2",
     "match-sorter": "^2.2.0",
     "material-ui": "^0.20.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
     "material-ui-search-bar": "^0.4.1",
     "moment": "^2.20.1",
     "moment-with-locales-es6": "^2.18.1",
@@ -26,6 +32,7 @@
     "react": "^16.2.0",
     "react-dnd": "^2.5.4",
     "react-dnd-html5-backend": "^2.5.4",
+    "react-dnd-touch-backend": "^0.3.21",
     "react-dom": "^16.2.0",
     "react-material-ui-form-validator": "^1.1.0",
     "react-scripts": "1.1.0",
