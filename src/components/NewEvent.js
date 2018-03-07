@@ -1,12 +1,11 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import moment from 'moment';
 import eventService from '../services/events';
 import eventgroupService from '../services/eventgroups';
-import moment from 'moment';
 import FrequentEventsHandler from '../utils/FrequentEventsHandler';
 import EventForm from './EventForm';
-
 
 export default class NewEvent extends React.Component {
   state = {
@@ -21,7 +20,7 @@ export default class NewEvent extends React.Component {
     repeatFrequency: 0,
     type: '',
     information: ''
-  }
+  };
 
   handleOpen = () => {
     this.setState({ open: true });
@@ -116,8 +115,8 @@ export default class NewEvent extends React.Component {
       repeatFrequency: 0,
       type: '',
       information: ''
-    })
-  }
+    });
+  };
 
   sendGroupIdPostRequest = async () => {
     try {
@@ -126,7 +125,7 @@ export default class NewEvent extends React.Component {
     } catch (exception) {
       console.error('Error in event POST:', exception);
     }
-  }
+  };
 
   sendEventPostRequest = async data => {
     try {
@@ -134,9 +133,20 @@ export default class NewEvent extends React.Component {
     } catch (exception) {
       console.error('Error in event POST:', exception);
     }
-  }
+  };
 
-  update = (title, startDate, startTime, endDate, endTime, checked, repeatCount, repeatFrequency, type, information) => {
+  update = (
+    title,
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    checked,
+    repeatCount,
+    repeatFrequency,
+    type,
+    information
+  ) => {
     this.setState({
       title: title,
       startDate: startDate,
@@ -148,11 +158,10 @@ export default class NewEvent extends React.Component {
       repeatFrequency: repeatFrequency,
       type: type,
       information: information
-    })
-  }
+    });
+  };
 
   render() {
-
     return (
       <div>
         <RaisedButton label="Uusi tapahtuma" onClick={this.handleOpen} />
