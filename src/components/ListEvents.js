@@ -8,6 +8,7 @@ const ListEvents = props => {
       event={event}
       fetchedActivities={props.fetchedActivities}
       fetchEvents={props.fetchEvents}
+      updateFilteredActivities={props.updateFilteredActivities}
     />
   ));
 

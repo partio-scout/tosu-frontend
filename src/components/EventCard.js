@@ -180,6 +180,7 @@ export default class EventCard extends React.Component {
             dataSource={data}
             event={this.props.event}
             updateActivities={this.updateActivities}
+            updateFilteredActivities={this.props.updateFilteredActivities}
           />
           <CardActions>
             <FlatButton
