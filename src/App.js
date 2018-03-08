@@ -105,7 +105,6 @@ class App extends Component {
         <MuiThemeProvider>
           <div id="container">
             <div className="content">
-              <h2 style={{ marginTop: 120 }}>Events</h2>
               <NewEvent
               updateEvents={this.updateEvents} 
               setNotification={this.setNotification}

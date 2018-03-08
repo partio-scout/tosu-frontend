@@ -36,7 +36,7 @@ const Activity = props => {
           key={activity.id}
         >
           <Avatar size={32} color={blue300} backgroundColor={indigo900}>
-            P
+            !
           </Avatar>
           <span className="activityTitle">{act[0].title}</span>
         </Chip>
@@ -45,7 +45,7 @@ const Activity = props => {
 
     return rows;
   }
-  return <p>paskaa</p>;
+  return <p></p>;
 };
 
 export default Activity;
