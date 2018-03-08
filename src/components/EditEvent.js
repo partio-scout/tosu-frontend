@@ -70,6 +70,8 @@ export default class NewEvent extends React.Component {
       this.setState({ open: false });
     } catch (exception) {
       console.error('Error in event PUT:', exception);
+      this.props.setNotification('Eventin muokkaus epäonnistui')
+
     }
   };
 
