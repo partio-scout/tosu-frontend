@@ -72,7 +72,7 @@ export default class ActivitySearch extends React.Component {
           </p> */}
           <RaisedButton
             label="Tallenna aktiviteetti"
-            primary={true}
+            primary
             onClick={this.saveActivityToEvent}
           />
         </div>

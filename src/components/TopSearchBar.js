@@ -1,11 +1,11 @@
 import React from 'react';
 import matchSorter from 'match-sorter';
-import RaisedButton from 'material-ui/RaisedButton';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import BufferZone from './BufferZone'
 import { default as TouchBackend } from 'react-dnd-touch-backend';
 import DragDropContext from 'react-dnd/lib/DragDropContext';
+import activityService from '../services/activities'
 
 
 class TopSearchBar extends React.Component {
@@ -16,8 +16,18 @@ class TopSearchBar extends React.Component {
     };
   }
 
-  handleChange = selectedActivity => {
-    this.setState({ selectedActivity });
+  handleChange = async selectedActivity => {
+    await this.setState({ selectedActivity })
+    if (this.state.selectedActivity) {
+      const data = {
+        guid: this.state.selectedActivity.value
+      }
+      try {
+        activityService.addActivityToBufferZone(data)
+      } catch (exception) {
+        console.error(exception)
+      }
+    } 
   };
 
   render() {
@@ -40,19 +50,7 @@ class TopSearchBar extends React.Component {
           })}
         />
         <div>
-          {/* <p>
-            {' '}
-            Valittu aktiviteetti:{' '}
-            {this.state.selectedActivity
-              ? this.state.selectedActivity.label
-              : 'Ei valittu'}
-          </p> */}
-          <RaisedButton
-            label="Tallenna aktiviteetti"
-            primary
-            onClick={() => console.log('click')}
-          />
-          <BufferZone />
+          <BufferZone activities={this.props.activities} bufferactivities={this.props.bufferactivities} />
         </div>
       </div>
     );

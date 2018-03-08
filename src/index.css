@@ -10,7 +10,7 @@ App {
 }
 
 .content {
-  padding: 70px 10px 50px;
+  padding: 160px 10px 50px;
 }
 
 #title_image {
@@ -36,8 +36,9 @@ p.eventTimes > span {
 
 #bufferzone {
   margin: 10px 0 5px;
-  background-color: azure;
-  height: 40px;
+  background-color: aliceblue;
+  min-height: 50px;
+  height: auto;
   border-radius: 8px;
 }
 
@@ -51,4 +52,9 @@ p.eventTimes > span {
 
 .red {
   background-color: red
+}
+
+.top-search {
+  background: '#5DBCD2';
+  padding: 20 
 }

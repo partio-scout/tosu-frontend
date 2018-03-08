@@ -6,7 +6,8 @@ import activityService from '../services/activities';
 
 const styles = {
   chip: {
-    margin: 4
+    margin: 4,
+    float: 'left'
   }
 };
 const handleRequestDelete = async (activity, props) => {
@@ -20,16 +21,10 @@ const handleRequestDelete = async (activity, props) => {
 };
 
 const Activity = props => {
-  if (props.dataSource !== undefined && props.eventActivities.length !== 0) {
+  if (props.eventActivities && props.dataSource !== undefined && props.eventActivities.length !== 0) {
+    console.log('eventacts', props.eventActivities)
     const rows = props.eventActivities.map(activity => {
-      // VÄLIAIKAINEN KORJAUS, KUNNES BACKEND EI PALAUTA VIRHEELLISTÄ JSONIA
-      let act;
-      if (activity.guid) {
-        act = props.dataSource.filter(a => a.guid === activity.guid);
-      } else {
-        act = props.dataSource.filter(a => a.guid === activity.information);
-      }
-      // VÄLIAIKAINEN KORJAUS ^^^^
+      const act = props.dataSource.filter(a => a.guid === activity.guid);
 
       return (
         <Chip
@@ -48,7 +43,7 @@ const Activity = props => {
 
     return rows;
   }
-  return <p>Ei aktiviteetteja valittuna</p>;
+  return <p>paskaa</p>;
 };
 
 export default Activity;

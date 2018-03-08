@@ -7,19 +7,22 @@ import Appbar from './components/AppBar';
 import activitiesData from './partio.json';
 import eventService from './services/events';
 import activityService from './services/activities';
+import activitiesArray from './utils/NormalizeActivitiesData';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       events: [{}],
-      activities: activitiesData
+      activities: activitiesArray(activitiesData),
+      bufferZoneActivities: [{}]
     };
   }
 
   componentDidMount() {
     this.getEvents();
     this.getActivities();
+    // this.getBufferZoneActivities()
   }
 
   getEvents = async () => {
@@ -35,17 +38,29 @@ class App extends Component {
     }
   };
 
+  getBufferZoneActivities = async () => {
+    try {
+      const bufferZoneActivities = await activityService.getBufferZoneActivities()
+      this.setState({
+        bufferZoneActivities
+      })
+    } catch (exception) {
+      this.setState({bufferZoneActivities: [{"jeejee": 0}]})
+      console.error(exception)
+    }
+  }
+
   getActivities = async () => {
     try {
       const activities = await activityService.getAll();
       this.setState({
-        activities
+        activities: activitiesArray(activities)
       });
     } catch (exception) {
       // Jos tietoja ei saada haettua, hae tiedot staattisesta JSON-tiedostosta
 
       this.setState({
-        activities: activitiesData
+        activities: activitiesArray(activitiesData)
       });
     }
   };
@@ -60,7 +75,6 @@ class App extends Component {
         <MuiThemeProvider>
           <div id="container">
             <div className="content">
-              <h2 style={{ marginTop: 120 }}>Events</h2>
               <NewEvent updateEvents={this.updateEvents} />
               <ListEvents
                 events={this.state.events}
@@ -74,6 +88,7 @@ class App extends Component {
                   <Appbar
                     activities={this.state.activities}
                     events={this.state.events}
+                    bufferactivities={this.state.bufferZoneActivities}
                   />
                 </header>
               )}

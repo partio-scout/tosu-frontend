@@ -83,7 +83,7 @@ export default class EventCard extends React.Component {
   };
 
   render() {
-    const data = activitiesArray(this.props.fetchedActivities);
+    const data = this.props.fetchedActivities;
     const { event } = this.props;
 
     moment.locale('fi');
