@@ -90,8 +90,8 @@ export default class EventCard extends React.Component {
     const subtitle = this.state.expanded
       ? ''
       : `${moment(event.startDate, 'YYYY-MM-DD')
-          .locale('fi')
-          .format('ddd D. MMMM YYYY')} ${event.startTime}`;
+        .locale('fi')
+        .format('ddd D. MMMM YYYY')} ${event.startTime}`;
 
     let actions = [];
     if (event.groupId) {
@@ -138,6 +138,7 @@ export default class EventCard extends React.Component {
             buttonClass="buttonRight"
             data={event}
             source={this.handleClose}
+            setNotification={this.props.setNotification}
           />
           <FlatButton
             label="Poista"
@@ -170,7 +171,6 @@ export default class EventCard extends React.Component {
             dataSource={data}
             updateAfterDelete={this.updateAfterDelete}
             updateFilteredActivities={this.props.updateFilteredActivities}
-
           />
           <br />
           <ActivitySearch
@@ -178,6 +178,7 @@ export default class EventCard extends React.Component {
             event={this.props.event}
             updateActivities={this.updateActivities}
             updateFilteredActivities={this.props.updateFilteredActivities}
+            setNotification={this.props.setNotification}
           />
           <CardActions>
             <FlatButton

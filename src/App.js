@@ -16,7 +16,8 @@ class App extends Component {
     this.state = {
       events: [{}],
       activities: activitiesData,
-      filteredActivities: []
+      filteredActivities: [],
+      notification: ""
     };
   }
 
@@ -62,6 +63,14 @@ class App extends Component {
     this.getEvents();
   };
 
+
+  setNotification = (notification, time = 5) => {
+    this.setState({notification: notification})
+    setTimeout(() => {
+      this.setState({notification: ""})
+    }, time * 1000);
+  }
+
   updateFilteredActivities = async () => {
     await this.getEvents();
 
@@ -70,11 +79,11 @@ class App extends Component {
       this.state.events,
       undefined//buffer here
     );
-
     this.setState({
       filteredActivities
     });
   };
+  
 
   render() {
     return (
@@ -83,13 +92,18 @@ class App extends Component {
           <div id="container">
             <div className="content">
               <h2 style={{ marginTop: 120 }}>Events</h2>
-              <NewEvent updateEvents={this.updateEvents} />
+              <NewEvent
+              updateEvents={this.updateEvents} 
+              setNotification={this.setNotification}
+              />
+              <h2> {this.state.notification.toString()} </h2>
               <ListEvents
                 events={this.state.events}
                 fetchEvents={this.getEvents}
                 fetchedActivities={this.state.activities}
                 updateFilteredActivities={this.updateFilteredActivities}
-              />
+                setNotification={this.setNotification}
+                />
             </div>
             <Sticky>
               {({ style }) => (
