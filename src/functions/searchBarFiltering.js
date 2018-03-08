@@ -1,3 +1,4 @@
+
 const filterOffExistingOnes = (source, events, buffer) => {
   let toFilter = source;
 
@@ -15,8 +16,8 @@ const filterOffExistingOnes = (source, events, buffer) => {
 
   combinedEventActivities.forEach(activity => {
     toFilter = toFilter.filter(pofRow => {
-      return pofRow.guid.toString() !== activity.guid.toString();
-    });
+      return pofRow.guid.toString() !== activity.guid.toString()
+    })
   });
 
   return toFilter;

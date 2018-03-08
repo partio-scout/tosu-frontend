@@ -15,6 +15,7 @@ class App extends Component {
     super();
     this.state = {
       events: [{}],
+      bufferZoneActivities: [{}]
       activities: activitiesData,
       filteredActivities: [],
       notification: ""
@@ -22,6 +23,8 @@ class App extends Component {
   }
 
   componentDidMount() {
+    this.getEvents();
+
     const update = async () => {
       await this.getActivities();
       this.updateFilteredActivities();
@@ -43,18 +46,31 @@ class App extends Component {
     }
   };
 
+  getBufferZoneActivities = async () => {
+    try {
+      const bufferZoneActivities = await activityService.getBufferZoneActivities()
+      this.setState({
+        bufferZoneActivities
+      })
+    } catch (exception) {
+      this.setState({bufferZoneActivities: [{"jeejee": 0}]})
+      console.error(exception)
+    }
+  }
+
   getActivities = async () => {
     try {
       const activities = await activityService.getAll();
       const normalizedActivities = activitiesArray(activities);
       this.setState({
-        activities: normalizedActivities
+        activities: activitiesArray(activities)
+
       });
     } catch (exception) {
       // Jos tietoja ei saada haettua, hae tiedot staattisesta JSON-tiedostosta
 
       this.setState({
-        activities: activitiesData
+        activities: activitiesArray(activitiesData)
       });
     }
   };
@@ -108,7 +124,11 @@ class App extends Component {
             <Sticky>
               {({ style }) => (
                 <header style={style}>
-                  <Appbar filteredActivities={this.state.filteredActivities} />
+                  <Appbar
+                    activities={this.state.activities}
+                    events={this.state.events}
+                    bufferactivities={this.state.bufferZoneActivities}
+                  />
                 </header>
               )}
             </Sticky>
