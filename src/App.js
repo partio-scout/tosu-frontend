@@ -89,11 +89,9 @@ class App extends Component {
 
   updateFilteredActivities = async () => {
     await this.getEvents();
-
     const filteredActivities = filterOffExistingOnes(
       this.state.activities,
-      this.state.events,
-      undefined//buffer here
+      this.state.events
     );
     this.setState({
       filteredActivities
