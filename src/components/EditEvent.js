@@ -9,9 +9,15 @@ import EventForm from './EventForm';
 export default class NewEvent extends React.Component {
   constructor(props) {
     super(props);
-    const event = this.props.data
-    const newStartTime = moment(`${event.startDate  } ${  event.startTime}`, "YYYY-MM-DD HH:mm")
-    const newEndTime = moment(`${event.endDate  } ${  event.endTime}`, "YYYY-MM-DD HH:mm")
+    const event = this.props.data;
+    const newStartTime = moment(
+      `${event.startDate} ${event.startTime}`,
+      'YYYY-MM-DD HH:mm'
+    );
+    const newEndTime = moment(
+      `${event.endDate} ${event.endTime}`,
+      'YYYY-MM-DD HH:mm'
+    );
     this.state = {
       open: false,
       title: event.title,
@@ -47,9 +53,27 @@ export default class NewEvent extends React.Component {
     });
   };
 
-  handleCloseAndSend = () => {
-    console.log('muokataan muokataan...')
-  }
+  handleCloseAndSend = async () => {
+    const data = {
+      id: this.props.data.id,
+      title: this.state.title,
+      startDate: moment(this.state.startDate).format('YYYY-MM-DD'),
+      startTime: moment(this.state.startTime).format('HH:mm'),
+      endDate: moment(this.state.endDate).format('YYYY-MM-DD'),
+      endTime: moment(this.state.endTime).format('HH:mm'),
+      type: this.state.type,
+      information: this.state.information
+    };
+    try {
+      await eventService.edit(data);
+      this.props.source();
+      this.setState({ open: false });
+    } catch (exception) {
+      console.error('Error in event PUT:', exception);
+      this.props.setNotification('Eventin muokkaus epäonnistui')
+
+    }
+  };
 
   sendGroupIdPostRequest = async () => {
     try {
@@ -58,7 +82,7 @@ export default class NewEvent extends React.Component {
     } catch (exception) {
       console.error('Error in event POST:', exception);
     }
-  }
+  };
 
   sendEventPostRequest = async data => {
     try {
@@ -66,9 +90,20 @@ export default class NewEvent extends React.Component {
     } catch (exception) {
       console.error('Error in event POST:', exception);
     }
-  }
+  };
 
-  update = (title, startDate, startTime, endDate, endTime, checked, repeatCount, repeatFrequency, type, information) => {
+  update = (
+    title,
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    checked,
+    repeatCount,
+    repeatFrequency,
+    type,
+    information
+  ) => {
     this.setState({
       title: title,
       startDate: startDate,
@@ -80,14 +115,17 @@ export default class NewEvent extends React.Component {
       repeatFrequency: repeatFrequency,
       type: type,
       information: information
-    })
-  }
+    });
+  };
 
   render() {
-
     return (
       <div>
-        <RaisedButton label="Muokkaa" onClick={this.handleOpen} className={this.props.buttonClass} />
+        <RaisedButton
+          label="Muokkaa"
+          onClick={this.handleOpen}
+          className={this.props.buttonClass}
+        />
         <Dialog
           title="Muokkaa tapahtumaa"
           modal={false}
@@ -95,7 +133,12 @@ export default class NewEvent extends React.Component {
           onRequestClose={this.handleClose}
           autoScrollBodyContent
         >
-          <EventForm submitFunction={this.handleCloseAndSend.bind(this)} close={this.handleClose.bind(this)} update={this.update.bind(this)} data={this.state} />
+          <EventForm
+            submitFunction={this.handleCloseAndSend.bind(this)}
+            close={this.handleClose.bind(this)}
+            update={this.update.bind(this)}
+            data={this.state}
+          />
         </Dialog>
       </div>
     );

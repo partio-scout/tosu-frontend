@@ -7,6 +7,7 @@ import Appbar from './components/AppBar';
 import activitiesData from './partio.json';
 import eventService from './services/events';
 import activityService from './services/activities';
+import filterOffExistingOnes from './functions/searchBarFiltering';
 import activitiesArray from './utils/NormalizeActivitiesData';
 
 class App extends Component {
@@ -14,15 +15,22 @@ class App extends Component {
     super();
     this.state = {
       events: [{}],
-      activities: activitiesArray(activitiesData),
       bufferZoneActivities: [{}]
+      activities: activitiesData,
+      filteredActivities: [],
+      notification: ""
     };
   }
 
   componentDidMount() {
     this.getEvents();
-    this.getActivities();
-    // this.getBufferZoneActivities()
+
+    const update = async () => {
+      await this.getActivities();
+      this.updateFilteredActivities();
+    };
+
+    update();
   }
 
   getEvents = async () => {
@@ -53,8 +61,10 @@ class App extends Component {
   getActivities = async () => {
     try {
       const activities = await activityService.getAll();
+      const normalizedActivities = activitiesArray(activities);
       this.setState({
         activities: activitiesArray(activities)
+
       });
     } catch (exception) {
       // Jos tietoja ei saada haettua, hae tiedot staattisesta JSON-tiedostosta
@@ -69,18 +79,47 @@ class App extends Component {
     this.getEvents();
   };
 
+
+  setNotification = (notification, time = 5) => {
+    this.setState({notification: notification})
+    setTimeout(() => {
+      this.setState({notification: ""})
+    }, time * 1000);
+  }
+
+  updateFilteredActivities = async () => {
+    await this.getEvents();
+
+    const filteredActivities = filterOffExistingOnes(
+      this.state.activities,
+      this.state.events,
+      undefined//buffer here
+    );
+    this.setState({
+      filteredActivities
+    });
+  };
+  
+
   render() {
     return (
       <StickyContainer className="App">
         <MuiThemeProvider>
           <div id="container">
             <div className="content">
-              <NewEvent updateEvents={this.updateEvents} />
+              <h2 style={{ marginTop: 120 }}>Events</h2>
+              <NewEvent
+              updateEvents={this.updateEvents} 
+              setNotification={this.setNotification}
+              />
+              <h2> {this.state.notification.toString()} </h2>
               <ListEvents
                 events={this.state.events}
                 fetchEvents={this.getEvents}
                 fetchedActivities={this.state.activities}
-              />
+                updateFilteredActivities={this.updateFilteredActivities}
+                setNotification={this.setNotification}
+                />
             </div>
             <Sticky>
               {({ style }) => (

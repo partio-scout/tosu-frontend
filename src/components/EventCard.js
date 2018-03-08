@@ -10,11 +10,10 @@ import moment from 'moment-with-locales-es6';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import ActivitySearch from './SearchBar';
-import activitiesArray from '../utils/NormalizeActivitiesData';
 import Activity from './Activity';
 import eventService from '../services/events';
 import eventgroupService from '../services/eventgroups';
-import EditEvent from './EditEvent'
+import EditEvent from './EditEvent';
 
 export default class EventCard extends React.Component {
   constructor(props) {
@@ -92,16 +91,12 @@ export default class EventCard extends React.Component {
       ? ''
       : `${moment(event.startDate, 'YYYY-MM-DD')
         .locale('fi')
-        .format('ddd D. MMMM YYYY')  } ${  event.startTime}`
+        .format('ddd D. MMMM YYYY')} ${event.startTime}`;
 
-    let actions = []
+    let actions = [];
     if (event.groupId) {
       actions = [
-        <FlatButton
-          label="Peruuta"
-          primary
-          onClick={this.handleClose}
-        />,
+        <FlatButton label="Peruuta" primary onClick={this.handleClose} />,
 
         <FlatButton
           label="Poista tämä tapahtuma"
@@ -116,11 +111,7 @@ export default class EventCard extends React.Component {
       ];
     } else {
       actions = [
-        <FlatButton
-          label="Peruuta"
-          primary
-          onClick={this.handleClose}
-        />,
+        <FlatButton label="Peruuta" primary onClick={this.handleClose} />,
         <FlatButton
           label="Poista tapahtuma"
           primary
@@ -143,7 +134,12 @@ export default class EventCard extends React.Component {
         />
         <CardTitle title={event.title} subtitle="Lokaatio?" expandable />
         <CardText expandable>
-          <EditEvent updateEvents={this.updateEvents} buttonClass="buttonRight" data={event} />
+          <EditEvent
+            buttonClass="buttonRight"
+            data={event}
+            source={this.handleClose}
+            setNotification={this.props.setNotification}
+          />
           <FlatButton
             label="Poista"
             secondary
@@ -174,12 +170,15 @@ export default class EventCard extends React.Component {
             eventActivities={this.state.activities}
             dataSource={data}
             updateAfterDelete={this.updateAfterDelete}
+            updateFilteredActivities={this.props.updateFilteredActivities}
           />
           <br />
           <ActivitySearch
             dataSource={data}
             event={this.props.event}
             updateActivities={this.updateActivities}
+            updateFilteredActivities={this.props.updateFilteredActivities}
+            setNotification={this.props.setNotification}
           />
           <CardActions>
             <FlatButton
