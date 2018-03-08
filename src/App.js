@@ -65,18 +65,10 @@ class App extends Component {
   updateFilteredActivities = async () => {
     await this.getEvents();
 
-    const buffer = {
-      activities: [
-        {guid:'3123'},
-        {guid:'313323'},
-        {guid:'33123'},
-      ]
-    }
-
     const filteredActivities = filterOffExistingOnes(
       this.state.activities,
       this.state.events,
-      buffer
+      undefined//buffer here
     );
 
     this.setState({
