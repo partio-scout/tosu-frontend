@@ -15,8 +15,8 @@ class App extends Component {
     super();
     this.state = {
       events: [{}],
-      bufferZoneActivities: [{}]
-      activities: activitiesData,
+      bufferZoneActivities: [],
+      activities: activitiesArray(activitiesData),
       filteredActivities: [],
       notification: ""
     };
