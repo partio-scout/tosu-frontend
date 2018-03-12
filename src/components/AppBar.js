@@ -10,10 +10,8 @@ import activityService from '../services/activities'
 
 const Appbar = ({ activities, events, bufferactivities }) => {
   // Parametreina tulee vielä bufferzone drag and droppia varten
-  console.log('acts appbar ', activities)
   const filteredActivities = filterOffExistingOnes(activities, events);
 
-  // console.log(this.props.bufferactivities)
   return (
     <div className="top-search" style={{background: '#5DBCD2',    padding: 20}}>
       <TopSearchBar 

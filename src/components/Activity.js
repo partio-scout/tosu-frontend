@@ -8,6 +8,9 @@ const styles = {
   chip: {
     margin: 4,
     float: 'left'
+  },
+  avatar: {
+    margin: 2
   }
 };
 const handleRequestDelete = async (activity, props) => {
@@ -35,7 +38,7 @@ const Activity = props => {
           style={styles.chip}
           key={activity.id}
         >
-          <Avatar size={32} color={blue300} backgroundColor={indigo900}>
+          <Avatar size={32} color={blue300} backgroundColor={indigo900} style={styles.avatar}>
             !
           </Avatar>
           <span className="activityTitle">{act[0].title}</span>
