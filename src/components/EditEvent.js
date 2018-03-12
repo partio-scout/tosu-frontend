@@ -6,7 +6,7 @@ import eventgroupService from '../services/eventgroups';
 import moment from 'moment';
 import EventForm from './EventForm';
 
-export default class NewEvent extends React.Component {
+export default class EditEvent extends React.Component {
   constructor(props) {
     super(props);
     const event = this.props.data;
@@ -40,7 +40,7 @@ export default class NewEvent extends React.Component {
   handleClose = () => {
     this.setState({
       open: false,
-      title: '',
+      /* title: '',
       startDate: '',
       startTime: '',
       endDate: '',
@@ -49,7 +49,7 @@ export default class NewEvent extends React.Component {
       repeatCount: 1,
       repeatFrequency: 0,
       type: '',
-      information: ''
+      information: '' */
     });
   };
 
@@ -119,12 +119,14 @@ export default class NewEvent extends React.Component {
   };
 
   render() {
+    const disabled = this.state.endTime < new Date()
     return (
       <div>
         <RaisedButton
           label="Muokkaa"
           onClick={this.handleOpen}
           className={this.props.buttonClass}
+          disabled={disabled}
         />
         <Dialog
           title="Muokkaa tapahtumaa"

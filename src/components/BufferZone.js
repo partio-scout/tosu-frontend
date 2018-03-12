@@ -67,7 +67,6 @@ class BufferZone extends React.Component {
               </div>
             )
         } 
-        console.log('buffer', this.state.bufferZoneActivities)
           return connectDropTarget(
             <div id="bufferzone">
               <Activity
