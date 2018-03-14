@@ -10,6 +10,7 @@ import activityService from './services/activities'
 import filterOffExistingOnes from './functions/searchBarFiltering'
 import activitiesArray from './utils/NormalizeActivitiesData'
 import { connect } from 'react-redux'
+import Notification from './components/Notification'
 
 class App extends Component {
   constructor() {
@@ -18,7 +19,6 @@ class App extends Component {
       events: [{}],
       bufferZoneActivities: [],
       activities: [],
-      notification: '',
       filteredActivities: []
     }
   }
@@ -74,12 +74,6 @@ class App extends Component {
     }
   }
 
-  setNotification = (notification, time = 5) => {
-    this.setState({ notification })
-    setTimeout(() => {
-      this.setState({ notification: '' })
-    }, time * 1000)
-  }
 
   updateEvents = () => {
     this.getEvents()
@@ -122,9 +116,8 @@ class App extends Component {
             <div className="content">
               <NewEvent
                 updateEvents={this.updateEvents}
-                setNotification={this.setNotification}
               />
-              <h2> {this.state.notification.toString()} </h2>
+              <Notification store={this.props.store} />
               <ListEvents
                 events={this.state.events}
                 fetchEvents={this.getEvents}

@@ -180,7 +180,6 @@ export default class EventCard extends React.Component {
             event={this.props.event}
             updateActivities={this.updateActivities}
             updateFilteredActivities={this.props.updateFilteredActivities}
-            setNotification={this.props.setNotification}
           />
           <CardActions>
             <FlatButton
