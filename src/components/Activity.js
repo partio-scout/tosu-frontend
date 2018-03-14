@@ -21,7 +21,7 @@ const handleRequestDelete = async (activity, props) => {
   console.log('Delete activity', activity);
   try {
     await activityService.deleteActivity(activity.id);
-    props.delete(activity);
+    props.delete(activity)
 
   } catch (exception) {
     console.error('Error in deleting activity:', exception);
@@ -30,19 +30,25 @@ const handleRequestDelete = async (activity, props) => {
 
 const Activity = props => {
   const { activity, act } = props
-      return (
-        <Chip
-          onRequestDelete={() => handleRequestDelete(activity, props)}
-          style={styles.chip}
-          key={activity.id}
+  if (activity && act[0]) {
+    return (
+      <Chip
+        onRequestDelete={() => handleRequestDelete(activity, props)}
+        style={styles.chip}
+        key={activity.id}
+      >
+        <Avatar
+          style={styles.avatar}
         >
-          <Avatar
-            style={styles.avatar}
-          >
-            !
-          </Avatar>
-          <span className="activityTitle">{act[0].title}</span>
-        </Chip>
+          !
+        </Avatar>
+        <span className="activityTitle">{act[0].title}</span>
+      </Chip>
+    );
+  
+  }
+      return (
+        <div></div>
       );
     
 

@@ -23,10 +23,11 @@ class TopSearchBar extends React.Component {
         guid: this.state.selectedActivity.value
       }
       try {
-        const res = activityService.addActivityToBufferZone(data)
+        console.log(data)
+        const res = await activityService.addActivityToBufferZone(data)
         console.log(res)
-        // this.updateActivities(res);
-        this.props.updateFilteredActivities();
+        this.updateActivities(res)
+        this.props.updateFilteredActivities()
         this.setState({ selectedActivity: null})
       } catch (exception) {
         console.error(exception)
@@ -35,9 +36,7 @@ class TopSearchBar extends React.Component {
   };
 
   updateActivities = activity => {
-    this.setState({
-      activities: this.state.activities.concat(activity)
-    });
+    this.props.bufferZoneUpdater(activity)
   };
 
 

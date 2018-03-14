@@ -48,10 +48,17 @@ class BufferZone extends React.Component {
       });
     };
 
+    updateActivities = activity => {
+        this.setState({
+          bufferZoneActivities: this.state.bufferZoneActivities.concat(activity)
+        });
+      };
+
     render() {
         // const { position } = this.props
         // console.log(position)
         const { isOver, canDrop, connectDropTarget } = this.props
+        console.log(this.props.bufferZoneActivities)
         if (!this.props.bufferZoneActivities || this.props.bufferZoneActivities.length === 0) {
             return connectDropTarget(
               <div id="bufferzone">
@@ -63,7 +70,7 @@ class BufferZone extends React.Component {
         }
         const rows = this.props.bufferZoneActivities.activities.map(activity => {
             const act = this.props.activities.filter(a => a.guid === activity.guid);
-              return <Activity key={activity.id} act={act} activity={activity} delete={this.updateAfterDelete} update={this.updateActivities} />
+              return <Activity key={activity.id} act={act} activity={activity} delete={this.updateAfterDelete} />
         })
         // const rows = ActivityMapper(activities, this.props.activities)
           return connectDropTarget(

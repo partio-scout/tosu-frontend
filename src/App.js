@@ -16,7 +16,7 @@ class App extends Component {
     this.state = {
       events: [{}],
       bufferZoneActivities: [],
-      activities: activitiesArray(activitiesData),
+      activities: [],
       notification: "",
       filteredActivities: []
     };
@@ -85,8 +85,8 @@ class App extends Component {
     this.getEvents();
   };
 
-  updateBufferZoneActivities = (activities) => {
-    this.setState({ bufferZoneActivities: activities })
+  updateBufferZoneActivities = (activity) => {
+    this.setState({ bufferZoneActivities: this.state.bufferZoneActivities.concat(activity) })
   }
 
   updateFilteredActivities = async () => {
@@ -102,6 +102,7 @@ class App extends Component {
   
 
   render() {
+    console.log(this.state.bufferZoneActivities)
     return (
       <StickyContainer className="App">
         <MuiThemeProvider>
@@ -124,7 +125,6 @@ class App extends Component {
               {({ style }) => (
                 <header style={style}>
                   <Appbar
-                    filteredActivities={this.state.filteredActivities}
                     activities={this.state.activities}
                     events={this.state.events}
                     bufferZoneActivities={this.state.bufferZoneActivities}
