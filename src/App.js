@@ -89,6 +89,17 @@ class App extends Component {
     this.setState({ bufferZoneActivities: this.state.bufferZoneActivities.concat(activity) })
   }
 
+  deleteFromBufferZone = (activity) => {
+    console.log(activity)
+    console.log(this.state.bufferZoneActivities)
+    const index = this.state.bufferZoneActivities.activities.indexOf(activity);
+    const activitiesAfterDelete = this.state.bufferZoneActivities.activities;
+    activitiesAfterDelete.splice(index, 1);
+    this.setState({
+      bufferZoneActivities: activitiesAfterDelete
+    })
+  }
+
   updateFilteredActivities = async () => {
     await this.getEvents();
     const filteredActivities = filterOffExistingOnes(
@@ -130,6 +141,7 @@ class App extends Component {
                     bufferZoneActivities={this.state.bufferZoneActivities}
                     updateFilteredActivities={this.updateFilteredActivities}
                     bufferZoneUpdater={this.updateBufferZoneActivities}
+                    deleteFromBufferZone={this.deleteFromBufferZone}
                   />
                 </header>
               )}
