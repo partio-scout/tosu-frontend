@@ -1,51 +1,52 @@
-import React, { Component } from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { StickyContainer, Sticky } from 'react-sticky';
-import ListEvents from './components/ListEvents';
-import NewEvent from './components/NewEvent';
-import Appbar from './components/AppBar';
-import activitiesData from './partio.json';
-import eventService from './services/events';
-import activityService from './services/activities';
-import filterOffExistingOnes from './functions/searchBarFiltering';
-import activitiesArray from './utils/NormalizeActivitiesData';
+import React, { Component } from 'react'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import { StickyContainer, Sticky } from 'react-sticky'
+import ListEvents from './components/ListEvents'
+import NewEvent from './components/NewEvent'
+import Appbar from './components/AppBar'
+import activitiesData from './partio.json'
+import eventService from './services/events'
+import activityService from './services/activities'
+import filterOffExistingOnes from './functions/searchBarFiltering'
+import activitiesArray from './utils/NormalizeActivitiesData'
+import { connect } from 'react-redux'
 
 class App extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       events: [{}],
       bufferZoneActivities: [],
       activities: [],
-      notification: "",
+      notification: '',
       filteredActivities: []
-    };
+    }
   }
 
   componentDidMount() {
-    this.getEvents();
+    this.getEvents()
 
     const update = () => {
       this.getActivities()
       this.updateFilteredActivities()
       this.getBufferZoneActivities()
-    };
+    }
 
-    update();
+    update()
   }
 
   getEvents = async () => {
     try {
-      const events = await eventService.getAll();
+      const events = await eventService.getAll()
       this.setState({
         events
-      });
+      })
     } catch (exception) {
       this.setState({
         events: []
-      });
+      })
     }
-  };
+  }
 
   getBufferZoneActivities = async () => {
     try {
@@ -60,30 +61,29 @@ class App extends Component {
 
   getActivities = async () => {
     try {
-      const activities = await activityService.getAll();
+      const activities = await activityService.getAll()
       this.setState({
         activities: activitiesArray(activities)
-
-      });
+      })
     } catch (exception) {
       // Jos tietoja ei saada haettua, hae tiedot staattisesta JSON-tiedostosta
 
       this.setState({
         activities: activitiesArray(activitiesData)
-      });
+      })
     }
-  };
+  }
 
   setNotification = (notification, time = 5) => {
     this.setState({ notification })
     setTimeout(() => {
-      this.setState({notification: ""})
-    }, time * 1000);
+      this.setState({ notification: '' })
+    }, time * 1000)
   }
 
   updateEvents = () => {
-    this.getEvents();
-  };
+    this.getEvents()
+  }
 
   updateBufferZoneActivities = (activity) => {
     const activities = this.state.bufferZoneActivities.activities.concat(activity)
@@ -104,16 +104,15 @@ class App extends Component {
   }
 
   updateFilteredActivities = async () => {
-    await this.getEvents();
+    await this.getEvents()
     const filteredActivities = filterOffExistingOnes(
       this.state.activities,
       this.state.events
-    );
+    )
     this.setState({
       filteredActivities
-    });
-  };
-  
+    })
+  }
 
   render() {
     return (
@@ -122,7 +121,7 @@ class App extends Component {
           <div id="container">
             <div className="content">
               <NewEvent
-                updateEvents={this.updateEvents} 
+                updateEvents={this.updateEvents}
                 setNotification={this.setNotification}
               />
               <h2> {this.state.notification.toString()} </h2>
@@ -151,8 +150,8 @@ class App extends Component {
           </div>
         </MuiThemeProvider>
       </StickyContainer>
-    );
+    )
   }
 }
 
-export default App;
+export default connect(null)(App)
