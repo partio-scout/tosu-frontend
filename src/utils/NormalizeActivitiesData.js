@@ -41,8 +41,6 @@ const activitiesArray = fetchedActivities => {
     return [];
   }
 
-  console.log("Normalize!")
-
   const programListSchema = createSchemas();
   const normalizedData = normalize(
     fetchedActivities.program,

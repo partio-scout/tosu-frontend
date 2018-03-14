@@ -17,17 +17,18 @@ class App extends Component {
       events: [{}],
       bufferZoneActivities: [],
       activities: activitiesArray(activitiesData),
-      filteredActivities: [],
-      notification: ""
+      notification: "",
+      filteredActivities: []
     };
   }
 
   componentDidMount() {
     this.getEvents();
 
-    const update = async () => {
-      await this.getActivities();
-      this.updateFilteredActivities();
+    const update = () => {
+      this.getActivities()
+      this.updateFilteredActivities()
+      this.getBufferZoneActivities()
     };
 
     update();
@@ -53,7 +54,6 @@ class App extends Component {
         bufferZoneActivities
       })
     } catch (exception) {
-      this.setState({bufferZoneActivities: [{"jeejee": 0}]})
       console.error(exception)
     }
   }
@@ -61,7 +61,6 @@ class App extends Component {
   getActivities = async () => {
     try {
       const activities = await activityService.getAll();
-      const normalizedActivities = activitiesArray(activities);
       this.setState({
         activities: activitiesArray(activities)
 
@@ -75,16 +74,19 @@ class App extends Component {
     }
   };
 
+  setNotification = (notification, time = 5) => {
+    this.setState({ notification: notification })
+    setTimeout(() => {
+      this.setState({notification: ""})
+    }, time * 1000);
+  }
+
   updateEvents = () => {
     this.getEvents();
   };
 
-
-  setNotification = (notification, time = 5) => {
-    this.setState({notification: notification})
-    setTimeout(() => {
-      this.setState({notification: ""})
-    }, time * 1000);
+  updateBufferZoneActivities = (activities) => {
+    this.setState({ bufferZoneActivities: activities })
   }
 
   updateFilteredActivities = async () => {
@@ -106,8 +108,8 @@ class App extends Component {
           <div id="container">
             <div className="content">
               <NewEvent
-              updateEvents={this.updateEvents} 
-              setNotification={this.setNotification}
+                updateEvents={this.updateEvents} 
+                setNotification={this.setNotification}
               />
               <h2> {this.state.notification.toString()} </h2>
               <ListEvents
@@ -116,15 +118,18 @@ class App extends Component {
                 fetchedActivities={this.state.activities}
                 updateFilteredActivities={this.updateFilteredActivities}
                 setNotification={this.setNotification}
-                />
+              />
             </div>
             <Sticky>
               {({ style }) => (
                 <header style={style}>
                   <Appbar
+                    filteredActivities={this.state.filteredActivities}
                     activities={this.state.activities}
                     events={this.state.events}
-                    bufferactivities={this.state.bufferZoneActivities}
+                    bufferZoneActivities={this.state.bufferZoneActivities}
+                    updateFilteredActivities={this.updateFilteredActivities}
+                    bufferZoneUpdater={this.updateBufferZoneActivities}
                   />
                 </header>
               )}

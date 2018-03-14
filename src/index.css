@@ -58,3 +58,8 @@ p.eventTimes > span {
   background: '#5DBCD2';
   padding: 20 
 }
+
+.activityTitle {
+  word-wrap: break-word;
+  font-weight: bold
+}

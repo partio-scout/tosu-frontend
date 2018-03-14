@@ -7,15 +7,21 @@ import activityService from '../services/activities';
 const styles = {
   chip: {
     margin: 4,
-    float: 'left'
+    float: 'left',
+    backgroundColor: blue300
+  },
+  avatar: {
+    size: 28,
+    color: blue300,
+    backgroundColor: indigo900,
+    margin: 4
   }
 };
 const handleRequestDelete = async (activity, props) => {
   console.log('Delete activity', activity);
   try {
     await activityService.deleteActivity(activity.id);
-    props.updateAfterDelete(activity);
-    props.updateFilteredActivities()
+    props.delete(activity);
 
   } catch (exception) {
     console.error('Error in deleting activity:', exception);
@@ -23,29 +29,26 @@ const handleRequestDelete = async (activity, props) => {
 };
 
 const Activity = props => {
-  if (props.eventActivities && props.dataSource !== undefined && props.eventActivities.length !== 0) {
-    console.log('eventacts', props.eventActivities)
-    const rows = props.eventActivities.map(activity => {
-      const act = props.dataSource.filter(a => a.guid === activity.guid);
-
+  const { activity, act } = props
       return (
         <Chip
-          backgroundColor={blue300}
           onRequestDelete={() => handleRequestDelete(activity, props)}
           style={styles.chip}
           key={activity.id}
         >
-          <Avatar size={32} color={blue300} backgroundColor={indigo900}>
+          <Avatar
+            style={styles.avatar}
+          >
             !
           </Avatar>
           <span className="activityTitle">{act[0].title}</span>
         </Chip>
       );
-    });
+    
 
-    return rows;
-  }
-  return <p></p>;
+    
+  
+  
 };
 
 export default Activity;
