@@ -36,17 +36,6 @@ class BufferZone extends React.Component {
     state = {
         bufferZoneActivities: []
     }
-    
-    updateAfterDelete = activity => {
-      this.bufferZoneActivities = this.props.bufferZoneActivities
-      const index = this.state.bufferZoneActivities.indexOf(activity);
-      const activitiesAfterDelete = this.bufferZoneActivities.activities;
-      activitiesAfterDelete.splice(index, 1);
-    
-      this.setState({
-        bufferZoneActivities: activitiesAfterDelete
-      });
-    };
 
     updateActivities = activity => {
         this.setState({
@@ -70,7 +59,7 @@ class BufferZone extends React.Component {
         }
         const rows = this.props.bufferZoneActivities.activities.map(activity => {
             const act = this.props.activities.filter(a => a.guid === activity.guid);
-              return <Activity key={activity.id} act={act} activity={activity} delete={this.updateAfterDelete} />
+              return <Activity key={activity.id} act={act} activity={activity} delete={this.props.deleteFromBufferZone} />
         })
         // const rows = ActivityMapper(activities, this.props.activities)
           return connectDropTarget(

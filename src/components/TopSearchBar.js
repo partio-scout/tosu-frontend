@@ -63,7 +63,8 @@ class TopSearchBar extends React.Component {
           <BufferZone
             activities={this.props.activities}
             bufferZoneActivities={this.props.bufferZoneActivities} 
-            bufferZoneUpdater={this.props.updateBufferZoneActivities}
+            bufferZoneUpdater={this.props.bufferZoneUpdater}
+            deleteFromBufferZone={this.props.deleteFromBufferZone}
           />
         </div>
       </div>

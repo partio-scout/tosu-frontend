@@ -20,7 +20,6 @@ export default class ActivitySearch extends React.Component {
   };
 
   saveActivityToEvent = async () => {
-    console.log('jejeje')
     const data = {
       guid: this.state.selectedActivity.value
     };
@@ -29,6 +28,7 @@ export default class ActivitySearch extends React.Component {
       const res = await eventService.addActivity(this.props.event.id, data);
       this.props.updateActivities(res);
       this.props.updateFilteredActivities();
+      this.setState({ selectedActivity: null })
     } catch (exception) {
       this.props.setNotification('Aktiviteetin lisäys epäonnistui. Saattaa olla jo lisätty tapahtumaan')
       console.error('Error in adding activity:', exception);

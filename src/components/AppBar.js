@@ -36,8 +36,9 @@ class AppBar extends React.Component {
           activities={this.props.activities}
           bufferZoneActivities={this.props.bufferZoneActivities}
           updateFilteredActivities={this.props.updateFilteredActivities}
-          bufferZoneUpdater={this.props.updateBufferZoneActivities}
-          filteredActivities={this.props.filteredActivities}                    
+          bufferZoneUpdater={this.props.bufferZoneUpdater}
+          filteredActivities={this.props.filteredActivities}
+          deleteFromBufferZone={this.props.deleteFromBufferZone}                  
         />
       </div>
     )
