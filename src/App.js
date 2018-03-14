@@ -16,18 +16,19 @@ class App extends Component {
     this.state = {
       events: [{}],
       bufferZoneActivities: [],
-      activities: activitiesArray(activitiesData),
-      filteredActivities: [],
-      notification: ""
+      activities: [],
+      notification: "",
+      filteredActivities: []
     };
   }
 
   componentDidMount() {
     this.getEvents();
 
-    const update = async () => {
-      await this.getActivities();
-      this.updateFilteredActivities();
+    const update = () => {
+      this.getActivities()
+      this.updateFilteredActivities()
+      this.getBufferZoneActivities()
     };
 
     update();
@@ -53,7 +54,6 @@ class App extends Component {
         bufferZoneActivities
       })
     } catch (exception) {
-      this.setState({bufferZoneActivities: [{"jeejee": 0}]})
       console.error(exception)
     }
   }
@@ -61,7 +61,6 @@ class App extends Component {
   getActivities = async () => {
     try {
       const activities = await activityService.getAll();
-      const normalizedActivities = activitiesArray(activities);
       this.setState({
         activities: activitiesArray(activities)
 
@@ -75,16 +74,19 @@ class App extends Component {
     }
   };
 
+  setNotification = (notification, time = 5) => {
+    this.setState({ notification: notification })
+    setTimeout(() => {
+      this.setState({notification: ""})
+    }, time * 1000);
+  }
+
   updateEvents = () => {
     this.getEvents();
   };
 
-
-  setNotification = (notification, time = 5) => {
-    this.setState({notification: notification})
-    setTimeout(() => {
-      this.setState({notification: ""})
-    }, time * 1000);
+  updateBufferZoneActivities = (activity) => {
+    this.setState({ bufferZoneActivities: this.state.bufferZoneActivities.concat(activity) })
   }
 
   updateFilteredActivities = async () => {
@@ -100,14 +102,15 @@ class App extends Component {
   
 
   render() {
+    console.log(this.state.bufferZoneActivities)
     return (
       <StickyContainer className="App">
         <MuiThemeProvider>
           <div id="container">
             <div className="content">
               <NewEvent
-              updateEvents={this.updateEvents} 
-              setNotification={this.setNotification}
+                updateEvents={this.updateEvents} 
+                setNotification={this.setNotification}
               />
               <h2> {this.state.notification.toString()} </h2>
               <ListEvents
@@ -116,7 +119,7 @@ class App extends Component {
                 fetchedActivities={this.state.activities}
                 updateFilteredActivities={this.updateFilteredActivities}
                 setNotification={this.setNotification}
-                />
+              />
             </div>
             <Sticky>
               {({ style }) => (
@@ -124,7 +127,9 @@ class App extends Component {
                   <Appbar
                     activities={this.state.activities}
                     events={this.state.events}
-                    bufferactivities={this.state.bufferZoneActivities}
+                    bufferZoneActivities={this.state.bufferZoneActivities}
+                    updateFilteredActivities={this.updateFilteredActivities}
+                    bufferZoneUpdater={this.updateBufferZoneActivities}
                   />
                 </header>
               )}

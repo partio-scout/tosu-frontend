@@ -1,6 +1,5 @@
 import React from 'react';
 import matchSorter from 'match-sorter';
-import RaisedButton from 'material-ui/RaisedButton';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import eventService from '../services/events';
@@ -15,35 +14,30 @@ export default class ActivitySearch extends React.Component {
   }
 
   updateSelectedActivity = selectedActivity => {
-    console.log('Update selected activity', selectedActivity);
     this.setState({
       selectedActivity
     });
   };
 
   saveActivityToEvent = async () => {
-    if (this.state.selectedActivity) {
-      const data = {
-        guid: this.state.selectedActivity.value
-      };
+    console.log('jejeje')
+    const data = {
+      guid: this.state.selectedActivity.value
+    };
 
-      try {
-        const res = await eventService.addActivity(this.props.event.id, data);
-        this.props.updateActivities(res);
-        this.props.updateFilteredActivities();
-      } catch (exception) {
-        this.props.setNotification('Aktiviteetin lisäys epäonnistui. Saattaa olla jo llisätty tapahtumaan')
-        console.error('Error in adding activity:', exception);
-        
-      }
-    } else {
-      console.log('Ei valittua aktiviteettia');
+    try {
+      const res = await eventService.addActivity(this.props.event.id, data);
+      this.props.updateActivities(res);
+      this.props.updateFilteredActivities();
+    } catch (exception) {
+      this.props.setNotification('Aktiviteetin lisäys epäonnistui. Saattaa olla jo lisätty tapahtumaan')
+      console.error('Error in adding activity:', exception);
     }
-  };
+  }
 
-  handleChange = selectedActivity => {
-    this.setState({ selectedActivity });
-    console.log(`Selected: ${selectedActivity.label}`);
+  handleChange = async selectedActivity => {
+    await this.setState({ selectedActivity });
+    this.saveActivityToEvent()
   };
 
   render() {
@@ -73,11 +67,11 @@ export default class ActivitySearch extends React.Component {
               ? this.state.selectedActivity.label
               : 'Ei valittu'}
           </p> */}
-          <RaisedButton
+          {/* <RaisedButton
             label="Tallenna aktiviteetti"
             primary
             onClick={this.saveActivityToEvent}
-          />
+          /> */}
         </div>
       </div>
     );

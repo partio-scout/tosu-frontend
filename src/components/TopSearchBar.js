@@ -3,8 +3,8 @@ import matchSorter from 'match-sorter';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import BufferZone from './BufferZone'
-import { default as TouchBackend } from 'react-dnd-touch-backend';
 import DragDropContext from 'react-dnd/lib/DragDropContext';
+import { default as TouchBackend } from 'react-dnd-touch-backend';
 import activityService from '../services/activities'
 
 
@@ -23,12 +23,22 @@ class TopSearchBar extends React.Component {
         guid: this.state.selectedActivity.value
       }
       try {
-        activityService.addActivityToBufferZone(data)
+        console.log(data)
+        const res = await activityService.addActivityToBufferZone(data)
+        console.log(res)
+        this.updateActivities(res)
+        this.props.updateFilteredActivities()
+        this.setState({ selectedActivity: null})
       } catch (exception) {
         console.error(exception)
       }
-    } 
+    }
   };
+
+  updateActivities = activity => {
+    this.props.bufferZoneUpdater(activity)
+  };
+
 
   render() {
     const { selectedActivity } = this.state;
@@ -42,15 +52,19 @@ class TopSearchBar extends React.Component {
           filterOptions={(options, filter) => {
             const sorterOptions = { keys: ['label'] };
             return matchSorter(options, filter, sorterOptions);
-          }}         
-          options={this.props.dataSource.map(activity => {
+          }}
+          options={this.props.activities.map(activity => {
             let obj = {};
             obj = { value: activity.guid, label: activity.title };
             return obj;
           })}
         />
         <div>
-          <BufferZone activities={this.props.activities} bufferactivities={this.props.bufferactivities} />
+          <BufferZone
+            activities={this.props.activities}
+            bufferZoneActivities={this.props.bufferZoneActivities} 
+            bufferZoneUpdater={this.props.updateBufferZoneActivities}
+          />
         </div>
       </div>
     );

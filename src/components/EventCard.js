@@ -83,6 +83,13 @@ export default class EventCard extends React.Component {
 
   render() {
     const data = this.props.fetchedActivities;
+    let rows
+    if (this.state.activities) {
+      rows = this.state.activities.map(activity => {
+        const act = data.filter(a => a.guid === activity.guid);
+        return <Activity key={activity.id} act={act} activity={activity} delete={this.updateAfterDelete} />
+      })
+    }
     const { event } = this.props;
 
     moment.locale('fi');
@@ -166,12 +173,7 @@ export default class EventCard extends React.Component {
           </p>
           <p>{event.information}</p>
           <p>Aktiviteetit:</p>
-          <Activity
-            eventActivities={this.state.activities}
-            dataSource={data}
-            updateAfterDelete={this.updateAfterDelete}
-            updateFilteredActivities={this.props.updateFilteredActivities}
-          />
+          {rows}
           <br />
           <ActivitySearch
             dataSource={data}
