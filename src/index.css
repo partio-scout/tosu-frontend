@@ -10,7 +10,7 @@ App {
 }
 
 .content {
-  padding: 160px 10px 50px;
+  padding: 10px 10px 50px;
 }
 
 #title_image {
@@ -62,4 +62,8 @@ p.eventTimes > span {
 .activityTitle {
   word-wrap: break-word;
   font-weight: bold
+}
+
+.bufferzone-activities{
+  overflow: auto;
 }

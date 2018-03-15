@@ -53,7 +53,7 @@ class BufferZone extends React.Component {
         // const rows = ActivityMapper(activities, this.props.activities)
           return connectDropTarget(
             <div id="bufferzone">
-              {rows}
+              <div className="bufferzone-activities">{rows}</div>
               {isOver && canDrop && <div className='green' />}
               {!isOver && canDrop && <div className='yellow' />}
               {isOver && !canDrop && <div className='red' />}

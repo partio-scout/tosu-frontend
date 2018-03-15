@@ -1,7 +1,7 @@
-import DragDropContext from 'react-dnd/lib/DragDropContext';
-import { default as TouchBackend } from 'react-dnd-touch-backend';
-import React from 'react';
-import TopSearchBar from './TopSearchBar';
+import DragDropContext from 'react-dnd/lib/DragDropContext'
+import { default as TouchBackend } from 'react-dnd-touch-backend'
+import React from 'react'
+import TopSearchBar from './TopSearchBar'
 
 /**
  * A simple example of `AppBar` with an icon on the right.
@@ -10,9 +10,14 @@ import TopSearchBar from './TopSearchBar';
 
 class AppBar extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = {
-    }
+    super(props)
+    this.state = {}
+  }
+
+  componentDidUpdate = () => {
+    const bufferZoneHeight = document.getElementById('top-bar-header')
+      .clientHeight
+    this.props.setHeaderHeight(bufferZoneHeight)
   }
 
   updateActivities = activity => {
@@ -26,19 +31,22 @@ class AppBar extends React.Component {
   // console.log(this.props.bufferactivities)
   render() {
     return (
-      <div className="top-search" style={{ background: '#5DBCD2', padding: 20 }}>
+      <div
+        className="top-search"
+        id="top-bar-header"
+        style={{ background: '#5DBCD2', padding: 20 }}
+      >
         <TopSearchBar
           activities={this.props.activities}
           bufferZoneActivities={this.props.bufferZoneActivities}
           updateFilteredActivities={this.props.updateFilteredActivities}
           bufferZoneUpdater={this.props.bufferZoneUpdater}
           filteredActivities={this.props.filteredActivities}
-          deleteFromBufferZone={this.props.deleteFromBufferZone}  
+          deleteFromBufferZone={this.props.deleteFromBufferZone}
         />
       </div>
     )
   }
 }
-
 
 export default DragDropContext(TouchBackend)(AppBar)
