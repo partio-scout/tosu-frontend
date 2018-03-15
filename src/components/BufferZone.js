@@ -2,16 +2,9 @@ import React from 'react';
 import { DropTarget } from 'react-dnd';
 import PropTypes from 'prop-types'
 import Activity from './Activity'
-<<<<<<< HEAD
 import ItemTypes from '../ItemTypes'
-=======
 import {connect} from 'react-redux'
 import {notify} from '../reducers/notificationReducer'
-
-const Types = {
-    ACTIVITY: 'activity'
-}
->>>>>>> master
 
 const bufferZoneTarget = {
     canDrop() {
@@ -51,13 +44,8 @@ class BufferZone extends React.Component {
             )
         }
         const rows = this.props.bufferZoneActivities.activities.map(activity => {
-<<<<<<< HEAD
-            const act = this.props.activities.filter(a => a.guid === activity.guid);
-              return <Activity parentId={this.props.bufferZoneActivities.id} parent={this} key={activity.id} act={act} activity={activity} delete={this.props.deleteFromBufferZone} />
-=======
             const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
-              return <Activity key={activity.id} act={act} activity={activity} delete={this.props.deleteFromBufferZone} />
->>>>>>> master
+              return <Activity parentId={this.props.bufferZoneActivities.id} parent={this} key={activity.id} act={act} activity={activity} delete={this.props.deleteFromBufferZone} />
         })
           return connectDropTarget(
             <div id="bufferzone">
@@ -70,20 +58,16 @@ class BufferZone extends React.Component {
         }
 }
 
-<<<<<<< HEAD
-export default DropTarget(ItemTypes.ACTIVITY, bufferZoneTarget, collect)(BufferZone)
-=======
 const mapStateToProps = (state) => {
     return {
       pofActivities: state.pofActivities
     }
-  }
+}
 
-export default DropTarget(Types.ACTIVITY, bufferZoneTarget, collect)(
+export default DropTarget(ItemTypes.ACTIVITY, bufferZoneTarget, collect)(
     connect(
         mapStateToProps,
         { notify }
       
       )(BufferZone)
 )
->>>>>>> master

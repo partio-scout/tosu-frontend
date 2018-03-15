@@ -3,21 +3,18 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { StickyContainer, Sticky } from 'react-sticky'
 import NewEvent from './components/NewEvent'
 import Appbar from './components/AppBar'
-//import activitiesData from './partio.json'
+// import activitiesData from './partio.json'
 import eventService from './services/events'
 import activityService from './services/activities'
 import filterOffExistingOnes from './functions/searchBarFiltering'
 import { connect } from 'react-redux'
 import Notification from './components/Notification'
-<<<<<<< HEAD
 import DragDropContext from 'react-dnd/lib/DragDropContext';
 import { default as TouchBackend } from 'react-dnd-touch-backend';
 import HTML5Backend from 'react-dnd-html5-backend'
-=======
 import ListEvents from './components/ListEvents'
 import { notify} from './reducers/notificationReducer'
 import {pofInitialization} from './reducers/pofActivityReducer'
->>>>>>> master
 
 class App extends Component {
   constructor() {
@@ -139,19 +136,16 @@ class App extends Component {
   }
 }
 
-<<<<<<< HEAD
-const AppDnD = DragDropContext(HTML5Backend)(App);
-export default connect(null)(AppDnD)
-=======
 const mapStateToProps = state => {
   return {
     notification: state.notification
   }
 }
+
+const AppDnD = DragDropContext(HTML5Backend)(App);
 export default connect(
   mapStateToProps,
   { notify, pofInitialization }
 
-)(App)
+)(AppDnD)
 
->>>>>>> master

@@ -20,7 +20,7 @@ import ItemTypes from '../ItemTypes'
 import activityService from '../services/activities'
 
 const EventCardTarget = {
-  async drop(props, monitor) {
+  drop(props, monitor) {
     const item = monitor.getItem()
     const targetId = props.event.id
     const { parentId } = item
@@ -28,7 +28,7 @@ const EventCardTarget = {
     console.log('parent: ', parentId)
     console.log('target: ', targetId)
     console.log('id: ', activityId)
-    const res = await activityService.moveActivityFromBufferZoneToActivity(activityId, parentId, targetId)
+    const res = activityService.moveActivityFromBufferZoneToActivity(activityId, parentId, targetId)
     console.log(res)
     console.log('item: ', item)
     console.log('props: ', props)
@@ -203,7 +203,7 @@ class EventCard extends React.Component {
             <p>{event.information}</p>
             <p>Aktiviteetit:</p>
             {rows}
-            <br />
+            <br style={{clear: 'both'}} />
             <ActivitySearch
               dataSource={this.props.pofActivities}
               event={this.props.event}
@@ -231,11 +231,13 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default DropTarget(ItemTypes.ACTIVITY, EventCardTarget, collect)(connect(
+const DroppableEventCard = DropTarget(ItemTypes.ACTIVITY, EventCardTarget, collect)(EventCard)
+
+export default connect(
   mapStateToProps,
   {}
 
-))(EventCard)
+)(DroppableEventCard)
 
 
 

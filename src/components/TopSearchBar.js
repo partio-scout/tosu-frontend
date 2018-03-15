@@ -10,8 +10,7 @@ import { notify } from '../reducers/notificationReducer'
 import { pofInitialization } from '../reducers/pofActivityReducer'
 import filterOffExistingOnes from '../functions/searchBarFiltering';
 
-
-export default class TopSearchBar extends React.Component {
+class TopSearchBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -73,8 +72,6 @@ export default class TopSearchBar extends React.Component {
   }
 }
 
-<<<<<<< HEAD
-=======
 
 const mapStateToProps = (state) => {
   return {
@@ -82,10 +79,9 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default DragDropContext(TouchBackend)(connect(
+export default connect(
   mapStateToProps,
   { notify, pofInitialization }
 
-)(TopSearchBar))
+)(TopSearchBar)
 
->>>>>>> master
