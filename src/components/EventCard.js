@@ -14,8 +14,9 @@ import Activity from './Activity';
 import eventService from '../services/events';
 import eventgroupService from '../services/eventgroups';
 import EditEvent from './EditEvent';
+import { connect } from 'react-redux'
 
-export default class EventCard extends React.Component {
+class EventCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -82,11 +83,11 @@ export default class EventCard extends React.Component {
   };
 
   render() {
-    const data = this.props.fetchedActivities;
     let rows
     if (this.state.activities) {
       rows = this.state.activities.map(activity => {
-        const act = data.filter(a => a.guid === activity.guid);
+        const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
+      console.log(act)
         return <Activity key={activity.id} act={act} activity={activity} delete={this.updateAfterDelete} />
       })
     }
@@ -176,7 +177,7 @@ export default class EventCard extends React.Component {
           {rows}
           <br />
           <ActivitySearch
-            dataSource={data}
+            dataSource={this.props.pofActivities}
             event={this.props.event}
             updateActivities={this.updateActivities}
             updateFilteredActivities={this.props.updateFilteredActivities}
@@ -194,3 +195,16 @@ export default class EventCard extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    pofActivities: state.pofActivities
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  {}
+
+)(EventCard)
+
