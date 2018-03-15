@@ -59,20 +59,6 @@ export default class ActivitySearch extends React.Component {
             return obj;
           })}
         />
-        <div>
-          {/* <p>
-            {' '}
-            Valittu aktiviteetti:{' '}
-            {this.state.selectedActivity
-              ? this.state.selectedActivity.label
-              : 'Ei valittu'}
-          </p> */}
-          {/* <RaisedButton
-            label="Tallenna aktiviteetti"
-            primary
-            onClick={this.saveActivityToEvent}
-          /> */}
-        </div>
       </div>
     );
   }

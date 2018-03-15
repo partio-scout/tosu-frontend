@@ -177,7 +177,7 @@ export default class EventForm extends React.Component {
           name="startTime"
           cancelLabel="Peruuta"
           autoOk
-          value={this.state.startTime}
+          value={this.state.startTime === '' ? undefined : this.state.startTime}
           onChange={this.handleStartTime}
           validators={['required']}
           errorMessages={['Aloitusaika vaaditaan']}
@@ -188,7 +188,7 @@ export default class EventForm extends React.Component {
           autoOk
           minDate={minDate}
           cancelLabel="Peruuta"
-          value={this.state.endDate}
+          value={this.state.endDate === '' ? undefined : this.state.endDate}
           onChange={this.handleEndDate}
           validators={['dateIsLater']}
           errorMessages={[
@@ -201,7 +201,7 @@ export default class EventForm extends React.Component {
           name="endTime"
           cancelLabel="Peruuta"
           autoOk
-          value={this.state.endTime}
+          value={this.state.endTime === '' ? undefined : this.state.endTime}
           onChange={this.handleEndTime}
           validators={['timeIsLater']}
           errorMessages={[

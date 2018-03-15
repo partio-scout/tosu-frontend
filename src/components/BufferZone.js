@@ -33,21 +33,10 @@ class BufferZone extends React.Component {
         connectDropTarget: PropTypes.func.isRequired
     }
 
-    state = {
-        bufferZoneActivities: []
-    }
-
-    updateActivities = activity => {
-        this.setState({
-          bufferZoneActivities: this.state.bufferZoneActivities.concat(activity)
-        });
-      };
-
     render() {
         // const { position } = this.props
         // console.log(position)
         const { isOver, canDrop, connectDropTarget } = this.props
-        console.log(this.props.bufferZoneActivities)
         if (!this.props.bufferZoneActivities || this.props.bufferZoneActivities.length === 0) {
             return connectDropTarget(
               <div id="bufferzone">

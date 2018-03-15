@@ -106,10 +106,10 @@ export default class NewEvent extends React.Component {
     }
     this.setState({
       title: '',
-      startDate: '',
-      startTime: '',
-      endDate: '',
-      endTime: '',
+      startDate: null,
+      startTime: null,
+      endDate: null,
+      endTime: null,
       checked: false,
       repeatCount: 1,
       repeatFrequency: 0,
@@ -124,6 +124,7 @@ export default class NewEvent extends React.Component {
       return groupId;
     } catch (exception) {
       console.error('Error in event POST:', exception);
+      return null
     }
   };
 
@@ -148,16 +149,16 @@ export default class NewEvent extends React.Component {
     information
   ) => {
     this.setState({
-      title: title,
-      startDate: startDate,
-      startTime: startTime,
-      endDate: endDate,
-      endTime: endTime,
-      checked: checked,
-      repeatCount: repeatCount,
-      repeatFrequency: repeatFrequency,
-      type: type,
-      information: information
+      title,
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+      checked,
+      repeatCount,
+      repeatFrequency,
+      type,
+      information
     });
   };
 
