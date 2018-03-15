@@ -1,3 +1,4 @@
+import { connect } from 'react-redux'
 import React from 'react';
 import { DropTarget } from 'react-dnd';
 import {
@@ -109,11 +110,11 @@ class EventCard extends React.Component {
   };
 
   render() {
-    const data = this.props.fetchedActivities;
     let rows
     if (this.state.activities) {
       rows = this.state.activities.map(activity => {
-        const act = data.filter(a => a.guid === activity.guid);
+        const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
+        console.log(act)
         return <Activity parentId={this.props.event.id} parent={this} key={activity.id} act={act} activity={activity} delete={this.updateAfterDelete} />
       })
     }
@@ -189,7 +190,7 @@ class EventCard extends React.Component {
               onRequestClose={this.handleClose}
             >
               Poistetaanko tapahtuma {event.title}?
-          </Dialog>
+            </Dialog>
 
             <p className="eventTimes">
               <span>{event.type} alkaa:</span>{' '}
@@ -202,9 +203,9 @@ class EventCard extends React.Component {
             <p>{event.information}</p>
             <p>Aktiviteetit:</p>
             {rows}
-            <br style={{ clear: 'both' }} />
+            <br />
             <ActivitySearch
-              dataSource={data}
+              dataSource={this.props.pofActivities}
               event={this.props.event}
               updateActivities={this.updateActivities}
               updateFilteredActivities={this.props.updateFilteredActivities}
@@ -224,4 +225,17 @@ class EventCard extends React.Component {
   }
 }
 
-export default DropTarget(ItemTypes.ACTIVITY, EventCardTarget, collect)(EventCard)
+const mapStateToProps = (state) => {
+  return {
+    pofActivities: state.pofActivities
+  }
+}
+
+export default DropTarget(ItemTypes.ACTIVITY, EventCardTarget, collect)(connect(
+  mapStateToProps,
+  {}
+
+))(EventCard)
+
+
+

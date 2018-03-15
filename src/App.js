@@ -1,19 +1,23 @@
 import React, { Component } from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { StickyContainer, Sticky } from 'react-sticky'
-import ListEvents from './components/ListEvents'
 import NewEvent from './components/NewEvent'
 import Appbar from './components/AppBar'
-import activitiesData from './partio.json'
+//import activitiesData from './partio.json'
 import eventService from './services/events'
 import activityService from './services/activities'
 import filterOffExistingOnes from './functions/searchBarFiltering'
-import activitiesArray from './utils/NormalizeActivitiesData'
 import { connect } from 'react-redux'
 import Notification from './components/Notification'
+<<<<<<< HEAD
 import DragDropContext from 'react-dnd/lib/DragDropContext';
 import { default as TouchBackend } from 'react-dnd-touch-backend';
 import HTML5Backend from 'react-dnd-html5-backend'
+=======
+import ListEvents from './components/ListEvents'
+import { notify} from './reducers/notificationReducer'
+import {pofInitialization} from './reducers/pofActivityReducer'
+>>>>>>> master
 
 class App extends Component {
   constructor() {
@@ -21,18 +25,16 @@ class App extends Component {
     this.state = {
       events: [{}],
       bufferZoneActivities: [],
-      activities: [],
-      filteredActivities: []
+      bufferZoneHeight: 0
     }
   }
 
-  componentDidMount() {
-    this.getEvents()
+  componentDidMount = async () => {
+    await this.getEvents()
 
-    const update = () => {
-      this.getActivities()
-      this.updateFilteredActivities()
-      this.getBufferZoneActivities()
+    const update = async () => {
+      await this.props.pofInitialization()
+      await this.getBufferZoneActivities()
     }
 
     update()
@@ -62,38 +64,30 @@ class App extends Component {
     }
   }
 
-  getActivities = async () => {
-    try {
-      const activities = await activityService.getAll()
-      this.setState({
-        activities: activitiesArray(activities)
-      })
-    } catch (exception) {
-      // Jos tietoja ei saada haettua, hae tiedot staattisesta JSON-tiedostosta
-
-      this.setState({
-        activities: activitiesArray(activitiesData)
-      })
+  setHeaderHeight = height => {
+    if (height !== this.state.bufferZoneHeight) {
+      this.setState({ bufferZoneHeight: height })
     }
   }
-
 
   updateEvents = () => {
     this.getEvents()
   }
 
-  updateBufferZoneActivities = (activity) => {
-    const activities = this.state.bufferZoneActivities.activities.concat(activity)
+  updateBufferZoneActivities = activity => {
+    const activities = this.state.bufferZoneActivities.activities.concat(
+      activity
+    )
     const newBufferZoneActivities = this.state.bufferZoneActivities
     newBufferZoneActivities.activities = activities
     this.setState({ bufferZoneActivities: newBufferZoneActivities })
   }
 
-  deleteFromBufferZone = (activity) => {
+  deleteFromBufferZone = activity => {
     const newBufferZoneActivities = this.state.bufferZoneActivities
-    const index = this.state.bufferZoneActivities.activities.indexOf(activity);
-    const activitiesAfterDelete = this.state.bufferZoneActivities.activities;
-    activitiesAfterDelete.splice(index, 1);
+    const index = this.state.bufferZoneActivities.activities.indexOf(activity)
+    const activitiesAfterDelete = this.state.bufferZoneActivities.activities
+    activitiesAfterDelete.splice(index, 1)
     newBufferZoneActivities.activities = activitiesAfterDelete
     this.setState({
       bufferZoneActivities: newBufferZoneActivities
@@ -102,29 +96,23 @@ class App extends Component {
 
   updateFilteredActivities = async () => {
     await this.getEvents()
-    const filteredActivities = filterOffExistingOnes(
-      this.state.activities,
-      this.state.events
-    )
-    this.setState({
-      filteredActivities
-    })
   }
 
   render() {
+    console.log('Height', this.state.bufferZoneHeight)
     return (
       <StickyContainer className="App">
         <MuiThemeProvider>
-          <div id="container">
+          <div
+            id="container"
+            style={{ paddingTop: this.state.bufferZoneHeight }}
+          >
             <div className="content">
-              <NewEvent
-                updateEvents={this.updateEvents}
-              />
-              <Notification store={this.props.store} />
+              <NewEvent updateEvents={this.updateEvents} />
+              <Notification />
               <ListEvents
                 events={this.state.events}
                 fetchEvents={this.getEvents}
-                fetchedActivities={this.state.activities}
                 updateFilteredActivities={this.updateFilteredActivities}
                 setNotification={this.setNotification}
               />
@@ -139,6 +127,7 @@ class App extends Component {
                     updateFilteredActivities={this.updateFilteredActivities}
                     bufferZoneUpdater={this.updateBufferZoneActivities}
                     deleteFromBufferZone={this.deleteFromBufferZone}
+                    setHeaderHeight={this.setHeaderHeight}
                   />
                 </header>
               )}
@@ -150,5 +139,19 @@ class App extends Component {
   }
 }
 
+<<<<<<< HEAD
 const AppDnD = DragDropContext(HTML5Backend)(App);
 export default connect(null)(AppDnD)
+=======
+const mapStateToProps = state => {
+  return {
+    notification: state.notification
+  }
+}
+export default connect(
+  mapStateToProps,
+  { notify, pofInitialization }
+
+)(App)
+
+>>>>>>> master

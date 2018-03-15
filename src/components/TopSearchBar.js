@@ -5,6 +5,10 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import BufferZone from './BufferZone'
 import activityService from '../services/activities'
+import { connect } from 'react-redux'
+import { notify } from '../reducers/notificationReducer'
+import { pofInitialization } from '../reducers/pofActivityReducer'
+import filterOffExistingOnes from '../functions/searchBarFiltering';
 
 
 export default class TopSearchBar extends React.Component {
@@ -23,8 +27,8 @@ export default class TopSearchBar extends React.Component {
       }
       try {
         const res = await activityService.addActivityToBufferZone(data)
-        this.updateActivities(res)
-        this.props.updateFilteredActivities()
+    //    this.updateActivities(res)    reduuuux
+     //   this.props.updateFilteredActivities()
         this.setState({ selectedActivity: null})
       } catch (exception) {
         console.error(exception)
@@ -33,7 +37,7 @@ export default class TopSearchBar extends React.Component {
   };
 
   updateActivities = activity => {
-    this.props.bufferZoneUpdater(activity)
+  //  this.props.bufferZoneUpdater(activity)
   };
 
 
@@ -50,7 +54,7 @@ export default class TopSearchBar extends React.Component {
             const sorterOptions = { keys: ['label'] };
             return matchSorter(options, filter, sorterOptions);
           }}
-          options={this.props.activities.map(activity => {
+          options={filterOffExistingOnes(this.props.pofActivities, this.props.events, this.props.bufferZoneActivities).map(activity => {
             let obj = {};
             obj = { value: activity.guid, label: activity.title };
             return obj;
@@ -69,3 +73,19 @@ export default class TopSearchBar extends React.Component {
   }
 }
 
+<<<<<<< HEAD
+=======
+
+const mapStateToProps = (state) => {
+  return {
+    pofActivities: state.pofActivities
+  }
+}
+
+export default DragDropContext(TouchBackend)(connect(
+  mapStateToProps,
+  { notify, pofInitialization }
+
+)(TopSearchBar))
+
+>>>>>>> master
