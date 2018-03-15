@@ -1,5 +1,4 @@
-import DragDropContext from 'react-dnd/lib/DragDropContext';
-import { default as TouchBackend } from 'react-dnd-touch-backend';
+
 import React from 'react';
 import matchSorter from 'match-sorter';
 import Select from 'react-select';
@@ -8,7 +7,7 @@ import BufferZone from './BufferZone'
 import activityService from '../services/activities'
 
 
-class TopSearchBar extends React.Component {
+export default class TopSearchBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -70,4 +69,3 @@ class TopSearchBar extends React.Component {
   }
 }
 
-export default DragDropContext(TouchBackend)(TopSearchBar)

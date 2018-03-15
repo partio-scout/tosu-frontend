@@ -14,8 +14,22 @@ import Activity from './Activity';
 import eventService from '../services/events';
 import eventgroupService from '../services/eventgroups';
 import EditEvent from './EditEvent';
+import { DropTarget } from 'react-dnd';
 
-export default class EventCard extends React.Component {
+const EventCardTarget = {
+  drop(props) {
+    //moveKnight(props.x, props.y);
+  }
+};
+
+function collect(connect, monitor) {
+  return {
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver()
+  };
+}
+
+class EventCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -194,3 +208,5 @@ export default class EventCard extends React.Component {
     );
   }
 }
+
+export default DropTarget(ItemTypes.ACTIVITY, EventCardTarget, collect) (EventCard)

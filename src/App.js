@@ -11,6 +11,8 @@ import filterOffExistingOnes from './functions/searchBarFiltering'
 import activitiesArray from './utils/NormalizeActivitiesData'
 import { connect } from 'react-redux'
 import Notification from './components/Notification'
+import DragDropContext from 'react-dnd/lib/DragDropContext';
+import { default as TouchBackend } from 'react-dnd-touch-backend';
 
 class App extends Component {
   constructor() {
@@ -147,4 +149,5 @@ class App extends Component {
   }
 }
 
+App = DragDropContext(TouchBackend)(App);
 export default connect(null)(App)
