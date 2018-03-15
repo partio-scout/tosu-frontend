@@ -2,10 +2,7 @@ import React from 'react';
 import { DropTarget } from 'react-dnd';
 import PropTypes from 'prop-types'
 import Activity from './Activity'
-
-const Types = {
-    ACTIVITY: 'activity'
-}
+import ItemTypes from '../ItemTypes'
 
 const bufferZoneTarget = {
     canDrop() {
@@ -62,4 +59,4 @@ class BufferZone extends React.Component {
         }
 }
 
-export default DropTarget(Types.ACTIVITY, bufferZoneTarget, collect)(BufferZone)
+export default DropTarget(ItemTypes.ACTIVITY, bufferZoneTarget, collect)(BufferZone)
