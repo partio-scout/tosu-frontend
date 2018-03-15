@@ -4,6 +4,10 @@ const filterOffExistingOnes = (source, events, buffer) => {
   let combinedEventActivities = events.map(event => event.activities);
   combinedEventActivities = [].concat.apply([], combinedEventActivities);
 
+  if (buffer !== undefined) {
+    combinedEventActivities = [].concat.apply(combinedEventActivities, buffer.activities);
+
+  }
   if (combinedEventActivities[0] === undefined) {
     return toFilter;
   }
