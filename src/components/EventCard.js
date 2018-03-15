@@ -1,4 +1,5 @@
 import React from 'react';
+import { DropTarget } from 'react-dnd';
 import {
   Card,
   CardActions,
@@ -14,11 +15,23 @@ import Activity from './Activity';
 import eventService from '../services/events';
 import eventgroupService from '../services/eventgroups';
 import EditEvent from './EditEvent';
-import { DropTarget } from 'react-dnd';
+import ItemTypes from '../ItemTypes'
+import activityService from '../services/activities'
 
 const EventCardTarget = {
-  drop(props) {
-    //moveKnight(props.x, props.y);
+  async drop(props, monitor) {
+    const item = monitor.getItem()
+    const targetId = props.event.id
+    const { parentId } = item
+    const activityId = item.id
+    console.log('parent: ', parentId)
+    console.log('target: ', targetId)
+    console.log('id: ', activityId)
+    const res = await activityService.moveActivityFromBufferZoneToActivity(activityId, parentId, targetId)
+    console.log(res)
+    console.log('item: ', item)
+    console.log('props: ', props)
+    return res
   }
 };
 
@@ -101,7 +114,7 @@ class EventCard extends React.Component {
     if (this.state.activities) {
       rows = this.state.activities.map(activity => {
         const act = data.filter(a => a.guid === activity.guid);
-        return <Activity key={activity.id} act={act} activity={activity} delete={this.updateAfterDelete} />
+        return <Activity parentId={this.props.event.id} parent={this} key={activity.id} act={act} activity={activity} delete={this.updateAfterDelete} />
       })
     }
     const { event } = this.props;
@@ -140,73 +153,75 @@ class EventCard extends React.Component {
         />
       ];
     }
-
-    return (
-      <Card
-        expanded={this.state.expanded}
-        onExpandChange={this.handleExpandChange}
-      >
-        <CardHeader
-          title={title}
-          subtitle={subtitle}
-          // subtitle="päivämäärät, alku ja loppu"
-          actAsExpander
-          showExpandableButton
-        />
-        <CardTitle title={event.title} subtitle="Lokaatio?" expandable />
-        <CardText expandable>
-          <EditEvent
-            buttonClass="buttonRight"
-            data={event}
-            source={this.handleClose}
-            setNotification={this.props.setNotification}
+    const { connectDropTarget } = this.props
+    return connectDropTarget(
+      <div>
+        <Card
+          expanded={this.state.expanded}
+          onExpandChange={this.handleExpandChange}
+        >
+          <CardHeader
+            title={title}
+            subtitle={subtitle}
+            // subtitle="päivämäärät, alku ja loppu"
+            actAsExpander
+            showExpandableButton
           />
-          <FlatButton
-            label="Poista"
-            secondary
-            className="buttonRight"
-            onClick={this.handleDelete}
-          />
+          <CardTitle title={event.title} subtitle="Lokaatio?" expandable />
+          <CardText expandable>
+            <EditEvent
+              buttonClass="buttonRight"
+              data={event}
+              source={this.handleClose}
+              setNotification={this.props.setNotification}
+            />
+            <FlatButton
+              label="Poista"
+              secondary
+              className="buttonRight"
+              onClick={this.handleDelete}
+            />
 
-          <Dialog
-            actions={actions}
-            modal={false}
-            open={this.state.open}
-            onRequestClose={this.handleClose}
-          >
-            Poistetaanko tapahtuma {event.title}?
+            <Dialog
+              actions={actions}
+              modal={false}
+              open={this.state.open}
+              onRequestClose={this.handleClose}
+            >
+              Poistetaanko tapahtuma {event.title}?
           </Dialog>
 
-          <p className="eventTimes">
-            <span>{event.type} alkaa:</span>{' '}
-            {moment(event.startDate).format('D.M.YYYY')} kello {event.startTime}
-          </p>
-          <p className="eventTimes">
-            <span>{event.type} päättyy:</span>{' '}
-            {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
-          </p>
-          <p>{event.information}</p>
-          <p>Aktiviteetit:</p>
-          {rows}
-          <br />
-          <ActivitySearch
-            dataSource={data}
-            event={this.props.event}
-            updateActivities={this.updateActivities}
-            updateFilteredActivities={this.props.updateFilteredActivities}
-          />
-          <CardActions>
-            <FlatButton
-              label="Sulje"
-              primary
-              onClick={this.handleReduce}
-              fullWidth
+            <p className="eventTimes">
+              <span>{event.type} alkaa:</span>{' '}
+              {moment(event.startDate).format('D.M.YYYY')} kello {event.startTime}
+            </p>
+            <p className="eventTimes">
+              <span>{event.type} päättyy:</span>{' '}
+              {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
+            </p>
+            <p>{event.information}</p>
+            <p>Aktiviteetit:</p>
+            {rows}
+            <br style={{ clear: 'both' }} />
+            <ActivitySearch
+              dataSource={data}
+              event={this.props.event}
+              updateActivities={this.updateActivities}
+              updateFilteredActivities={this.props.updateFilteredActivities}
             />
-          </CardActions>
-        </CardText>
-      </Card>
+            <CardActions>
+              <FlatButton
+                label="Sulje"
+                primary
+                onClick={this.handleReduce}
+                fullWidth
+              />
+            </CardActions>
+          </CardText>
+        </Card>
+      </div>
     );
   }
 }
 
-export default DropTarget(ItemTypes.ACTIVITY, EventCardTarget, collect) (EventCard)
+export default DropTarget(ItemTypes.ACTIVITY, EventCardTarget, collect)(EventCard)

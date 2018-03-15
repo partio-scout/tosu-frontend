@@ -1,5 +1,3 @@
-import DragDropContext from 'react-dnd/lib/DragDropContext';
-import { default as TouchBackend } from 'react-dnd-touch-backend';
 import React from 'react';
 import TopSearchBar from './TopSearchBar';
 
@@ -8,7 +6,7 @@ import TopSearchBar from './TopSearchBar';
  * By default, the left icon is a navigation-menu.
  */
 
-class AppBar extends React.Component {
+export default class AppBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,5 +38,3 @@ class AppBar extends React.Component {
   }
 }
 
-
-export default DragDropContext(TouchBackend)(AppBar)

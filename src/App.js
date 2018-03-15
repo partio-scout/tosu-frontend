@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 import Notification from './components/Notification'
 import DragDropContext from 'react-dnd/lib/DragDropContext';
 import { default as TouchBackend } from 'react-dnd-touch-backend';
+import HTML5Backend from 'react-dnd-html5-backend'
 
 class App extends Component {
   constructor() {
@@ -149,5 +150,5 @@ class App extends Component {
   }
 }
 
-App = DragDropContext(TouchBackend)(App);
-export default connect(null)(App)
+const AppDnD = DragDropContext(HTML5Backend)(App);
+export default connect(null)(AppDnD)
