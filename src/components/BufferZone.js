@@ -2,6 +2,8 @@ import React from 'react';
 import { DropTarget } from 'react-dnd';
 import PropTypes from 'prop-types'
 import Activity from './Activity'
+import {connect} from 'react-redux'
+import {notify} from '../reducers/notificationReducer'
 
 const Types = {
     ACTIVITY: 'activity'
@@ -47,7 +49,7 @@ class BufferZone extends React.Component {
             )
         }
         const rows = this.props.bufferZoneActivities.activities.map(activity => {
-            const act = this.props.activities.filter(a => a.guid === activity.guid);
+            const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
               return <Activity key={activity.id} act={act} activity={activity} delete={this.props.deleteFromBufferZone} />
         })
         // const rows = ActivityMapper(activities, this.props.activities)
@@ -62,4 +64,16 @@ class BufferZone extends React.Component {
         }
 }
 
-export default DropTarget(Types.ACTIVITY, bufferZoneTarget, collect)(BufferZone)
+const mapStateToProps = (state) => {
+    return {
+      pofActivities: state.pofActivities
+    }
+  }
+
+export default DropTarget(Types.ACTIVITY, bufferZoneTarget, collect)(
+    connect(
+        mapStateToProps,
+        { notify }
+      
+      )(BufferZone)
+)

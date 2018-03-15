@@ -25,10 +25,6 @@ class AppBar extends React.Component {
       bufferZoneActivities: this.state.bufferZoneActivities.concat(activity)
     })
   }
-
-  // const filteredActivities = filterOffExistingOnes(activities, events);
-
-  // console.log(this.props.bufferactivities)
   render() {
     return (
       <div
@@ -38,6 +34,7 @@ class AppBar extends React.Component {
       >
         <TopSearchBar
           activities={this.props.activities}
+          events={this.props.events}
           bufferZoneActivities={this.props.bufferZoneActivities}
           updateFilteredActivities={this.props.updateFilteredActivities}
           bufferZoneUpdater={this.props.bufferZoneUpdater}

@@ -6,9 +6,7 @@ const ListEvents = props => {
     <EventCard
       key={event.id ? event.id : 0}
       event={event}
-      fetchedActivities={props.fetchedActivities}
       fetchEvents={props.fetchEvents}
-      updateFilteredActivities={props.updateFilteredActivities}
     />
   ));
 

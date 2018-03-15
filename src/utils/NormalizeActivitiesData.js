@@ -1,3 +1,4 @@
+/**
 import { normalize, schema } from 'normalizr';
 
 
@@ -112,3 +113,4 @@ const activitiesArray = fetchedActivities => {
 
 
 export default activitiesArray;
+*/

@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { StickyContainer, Sticky } from 'react-sticky'
-import ListEvents from './components/ListEvents'
 import NewEvent from './components/NewEvent'
 import Appbar from './components/AppBar'
-import activitiesData from './partio.json'
+//import activitiesData from './partio.json'
 import eventService from './services/events'
 import activityService from './services/activities'
 import filterOffExistingOnes from './functions/searchBarFiltering'
-import activitiesArray from './utils/NormalizeActivitiesData'
 import { connect } from 'react-redux'
 import Notification from './components/Notification'
-import { notify } from './reducers/notificationReducer'
+import ListEvents from './components/ListEvents'
+import { notify} from './reducers/notificationReducer'
+import {pofInitialization} from './reducers/pofActivityReducer'
 
 class App extends Component {
   constructor() {
@@ -19,19 +19,16 @@ class App extends Component {
     this.state = {
       events: [{}],
       bufferZoneActivities: [],
-      activities: [],
-      filteredActivities: [],
       bufferZoneHeight: 0
     }
   }
 
-  componentDidMount() {
-    this.getEvents()
+  componentDidMount = async () => {
+    await this.getEvents()
 
-    const update = () => {
-      this.getActivities()
-      this.updateFilteredActivities()
-      this.getBufferZoneActivities()
+    const update = async () => {
+      await this.props.pofInitialization()
+      await this.getBufferZoneActivities()
     }
 
     update()
@@ -58,21 +55,6 @@ class App extends Component {
       })
     } catch (exception) {
       console.error(exception)
-    }
-  }
-
-  getActivities = async () => {
-    try {
-      const activities = await activityService.getAll()
-      this.setState({
-        activities: activitiesArray(activities)
-      })
-    } catch (exception) {
-      // Jos tietoja ei saada haettua, hae tiedot staattisesta JSON-tiedostosta
-
-      this.setState({
-        activities: activitiesArray(activitiesData)
-      })
     }
   }
 
@@ -108,13 +90,6 @@ class App extends Component {
 
   updateFilteredActivities = async () => {
     await this.getEvents()
-    const filteredActivities = filterOffExistingOnes(
-      this.state.activities,
-      this.state.events
-    )
-    this.setState({
-      filteredActivities
-    })
   }
 
   render() {
@@ -132,7 +107,6 @@ class App extends Component {
               <ListEvents
                 events={this.state.events}
                 fetchEvents={this.getEvents}
-                fetchedActivities={this.state.activities}
                 updateFilteredActivities={this.updateFilteredActivities}
                 setNotification={this.setNotification}
               />
@@ -164,4 +138,9 @@ const mapStateToProps = state => {
     notification: state.notification
   }
 }
-export default connect(mapStateToProps, { notify })(App)
+export default connect(
+  mapStateToProps,
+  { notify, pofInitialization }
+
+)(App)
+
