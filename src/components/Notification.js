@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 
 class Notification extends React.Component {
   render() {
-    // if (this.props.notification.length === 0) {
-    //   return null
-    // }
+    if (this.props.notification.length === 0) {
+      return null
+    }
     const style = {
       border: 'solid',
       padding: 10,
@@ -13,7 +13,7 @@ class Notification extends React.Component {
     }
 
     console.log('This props', this.props)
-    console.log("noti", this.props.store.getState())
+    console.log('noti', this.props.store.getState())
 
     return <div style={style}>{this.props.store.getState().notification}</div>
   }
