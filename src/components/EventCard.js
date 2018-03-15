@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import React from 'react';
 import { DropTarget } from 'react-dnd';
+import PropTypes from 'prop-types'
 import {
   Card,
   CardActions,
@@ -19,6 +20,11 @@ import EditEvent from './EditEvent';
 import ItemTypes from '../ItemTypes'
 import activityService from '../services/activities'
 
+const moveActivity = async (activityId, parentId, targetId) => {
+  const res = await activityService.moveActivityFromBufferZoneToActivity(activityId, parentId, targetId)
+  console.log(res)
+}
+
 const EventCardTarget = {
   drop(props, monitor) {
     const item = monitor.getItem()
@@ -28,30 +34,36 @@ const EventCardTarget = {
     console.log('parent: ', parentId)
     console.log('target: ', targetId)
     console.log('id: ', activityId)
-    const res = activityService.moveActivityFromBufferZoneToActivity(activityId, parentId, targetId)
-    console.log(res)
+    moveActivity(activityId, parentId, targetId)
     console.log('item: ', item)
     console.log('props: ', props)
-    return res
   }
-};
+}
 
-function collect(connect, monitor) {
+function collect(connector, monitor) {
   return {
-    connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver()
-  };
+    connectDropTarget: connector.dropTarget(),
+    isOver: monitor.isOver(),
+    canDrop: monitor.canDrop()
+  }
 }
 
 class EventCard extends React.Component {
+  static propTypes = {
+    isOver: PropTypes.bool.isRequired,
+    canDrop: PropTypes.bool.isRequired,
+    connectDropTarget: PropTypes.func.isRequired
+  }
   constructor(props) {
     super(props);
     this.state = {
       expanded: false,
       open: false,
       activities: props.event.activities
-    };
+    }
   }
+
+  
 
   handleExpandChange = expanded => {
     this.setState({ expanded });
@@ -62,7 +74,6 @@ class EventCard extends React.Component {
   };
 
   updateActivities = activity => {
-    console.log('Update', activity);
     this.setState({
       activities: this.state.activities.concat(activity)
     });
@@ -114,7 +125,6 @@ class EventCard extends React.Component {
     if (this.state.activities) {
       rows = this.state.activities.map(activity => {
         const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
-        console.log(act)
         return <Activity parentId={this.props.event.id} parent={this} key={activity.id} act={act} activity={activity} delete={this.updateAfterDelete} />
       })
     }
@@ -164,7 +174,6 @@ class EventCard extends React.Component {
           <CardHeader
             title={title}
             subtitle={subtitle}
-            // subtitle="päivämäärät, alku ja loppu"
             actAsExpander
             showExpandableButton
           />
@@ -238,6 +247,3 @@ export default connect(
   {}
 
 )(DroppableEventCard)
-
-
-

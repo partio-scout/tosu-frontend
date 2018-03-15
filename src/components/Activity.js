@@ -24,12 +24,24 @@ const styles = {
 
 const activitySource = {
   beginDrag(props) {
-    return {  
+    return {
       id: props.activity.id,
       parent: props.parent.constructor.name,
       parentId: props.parentId
     }
+  },
+  endDrag(props, monitor) {
+    console.log('loppu')
+    if (!monitor.didDrop()) {
+      console.log('ei tiputa')
+      return
+    }
+    const activity = monitor.getItem()
+    const dropResult = monitor.getDropResult()
+    console.log(`activity: ${activity} result: ${dropResult}`)
   }
+
+
 }
 
 function collect(connect, monitor) {
@@ -53,8 +65,7 @@ const handleRequestDelete = async (activity, props) => {
 class Activity extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
-    connectDragPreview: PropTypes.func.isRequired,
-    isDragging: PropTypes.bool.isRequired,
+    connectDragPreview: PropTypes.func.isRequired
   }
 
   componentDidMount() {
@@ -64,9 +75,8 @@ class Activity extends Component {
   }
 
   render() {
-    console.log(this.props.parentId)
     const { activity, act } = this.props
-    const { connectDragSource, isDragging } = this.props
+    const { connectDragSource } = this.props
     if (activity && act[0]) {
       return connectDragSource(
         <div>
@@ -83,8 +93,8 @@ class Activity extends Component {
             <span className="activityTitle">{act[0].title}</span>
           </Chip>
         </div>
-    );
-  }
+      );
+    }
     return (
       <div />
     );

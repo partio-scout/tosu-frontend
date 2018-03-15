@@ -1,24 +1,23 @@
+import { connect } from 'react-redux'
 import React from 'react';
 import { DropTarget } from 'react-dnd';
 import PropTypes from 'prop-types'
 import Activity from './Activity'
 import ItemTypes from '../ItemTypes'
-import {connect} from 'react-redux'
 import {notify} from '../reducers/notificationReducer'
 
 const bufferZoneTarget = {
     canDrop() {
-        return 'success'
+        return true
     },
     drop() {
-        return 'ok'
+        console.log('jee')
     }
-
 }
 
-function collect(connect, monitor) {
+function collect(connector, monitor) {
     return {
-        connectDropTarget: connect.dropTarget(),
+        connectDropTarget: connector.dropTarget(),
         isOver: monitor.isOver(),
         canDrop: monitor.canDrop()
     }
@@ -64,10 +63,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default DropTarget(ItemTypes.ACTIVITY, bufferZoneTarget, collect)(
-    connect(
+const DroppableBufferZone = DropTarget(ItemTypes.ACTIVITY, bufferZoneTarget, collect)(BufferZone)
+
+export default connect(
         mapStateToProps,
         { notify }
-      
-      )(BufferZone)
-)
+      )(DroppableBufferZone)
+
