@@ -11,7 +11,7 @@ import filterOffExistingOnes from './functions/searchBarFiltering'
 import activitiesArray from './utils/NormalizeActivitiesData'
 import { connect } from 'react-redux'
 import Notification from './components/Notification'
-import { notify} from './reducers/notificationReducer'
+import { notify } from './reducers/notificationReducer'
 
 class App extends Component {
   constructor() {
@@ -20,7 +20,8 @@ class App extends Component {
       events: [{}],
       bufferZoneActivities: [],
       activities: [],
-      filteredActivities: []
+      filteredActivities: [],
+      bufferZoneHeight: 0
     }
   }
 
@@ -75,23 +76,30 @@ class App extends Component {
     }
   }
 
+  setHeaderHeight = height => {
+    if (height !== this.state.bufferZoneHeight) {
+      this.setState({ bufferZoneHeight: height })
+    }
+  }
 
   updateEvents = () => {
     this.getEvents()
   }
 
-  updateBufferZoneActivities = (activity) => {
-    const activities = this.state.bufferZoneActivities.activities.concat(activity)
+  updateBufferZoneActivities = activity => {
+    const activities = this.state.bufferZoneActivities.activities.concat(
+      activity
+    )
     const newBufferZoneActivities = this.state.bufferZoneActivities
     newBufferZoneActivities.activities = activities
     this.setState({ bufferZoneActivities: newBufferZoneActivities })
   }
 
-  deleteFromBufferZone = (activity) => {
+  deleteFromBufferZone = activity => {
     const newBufferZoneActivities = this.state.bufferZoneActivities
-    const index = this.state.bufferZoneActivities.activities.indexOf(activity);
-    const activitiesAfterDelete = this.state.bufferZoneActivities.activities;
-    activitiesAfterDelete.splice(index, 1);
+    const index = this.state.bufferZoneActivities.activities.indexOf(activity)
+    const activitiesAfterDelete = this.state.bufferZoneActivities.activities
+    activitiesAfterDelete.splice(index, 1)
     newBufferZoneActivities.activities = activitiesAfterDelete
     this.setState({
       bufferZoneActivities: newBufferZoneActivities
@@ -110,14 +118,16 @@ class App extends Component {
   }
 
   render() {
+    console.log('Height', this.state.bufferZoneHeight)
     return (
       <StickyContainer className="App">
         <MuiThemeProvider>
-          <div id="container">
+          <div
+            id="container"
+            style={{ paddingTop: this.state.bufferZoneHeight }}
+          >
             <div className="content">
-              <NewEvent
-                updateEvents={this.updateEvents}
-              />
+              <NewEvent updateEvents={this.updateEvents} />
               <Notification />
               <ListEvents
                 events={this.state.events}
@@ -137,6 +147,7 @@ class App extends Component {
                     updateFilteredActivities={this.updateFilteredActivities}
                     bufferZoneUpdater={this.updateBufferZoneActivities}
                     deleteFromBufferZone={this.deleteFromBufferZone}
+                    setHeaderHeight={this.setHeaderHeight}
                   />
                 </header>
               )}
@@ -148,14 +159,9 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     notification: state.notification
   }
 }
-export default connect(
-  mapStateToProps,
-  { notify }
-
-)(App)
-
+export default connect(mapStateToProps, { notify })(App)
