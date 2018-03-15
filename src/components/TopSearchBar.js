@@ -1,10 +1,10 @@
+import DragDropContext from 'react-dnd/lib/DragDropContext';
+import { default as TouchBackend } from 'react-dnd-touch-backend';
 import React from 'react';
 import matchSorter from 'match-sorter';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import BufferZone from './BufferZone'
-import DragDropContext from 'react-dnd/lib/DragDropContext';
-import { default as TouchBackend } from 'react-dnd-touch-backend';
 import activityService from '../services/activities'
 
 
@@ -23,9 +23,7 @@ class TopSearchBar extends React.Component {
         guid: this.state.selectedActivity.value
       }
       try {
-        console.log(data)
         const res = await activityService.addActivityToBufferZone(data)
-        console.log(res)
         this.updateActivities(res)
         this.props.updateFilteredActivities()
         this.setState({ selectedActivity: null})

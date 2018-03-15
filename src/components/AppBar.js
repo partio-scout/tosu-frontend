@@ -1,10 +1,7 @@
-import React from 'react';
-import TopSearchBar from './TopSearchBar';
-import filterOffExistingOnes from '../functions/searchBarFiltering';
-import ActivitySearch from './SearchBar';
-import BufferZone from './BufferZone'
 import DragDropContext from 'react-dnd/lib/DragDropContext';
 import { default as TouchBackend } from 'react-dnd-touch-backend';
+import React from 'react';
+import TopSearchBar from './TopSearchBar';
 
 /**
  * A simple example of `AppBar` with an icon on the right.
@@ -15,12 +12,10 @@ class AppBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedActivity: null
     }
   }
 
   updateActivities = activity => {
-    console.log('Update', activity);
     this.setState({
       bufferZoneActivities: this.state.bufferZoneActivities.concat(activity)
     })
@@ -38,7 +33,7 @@ class AppBar extends React.Component {
           updateFilteredActivities={this.props.updateFilteredActivities}
           bufferZoneUpdater={this.props.bufferZoneUpdater}
           filteredActivities={this.props.filteredActivities}
-          deleteFromBufferZone={this.props.deleteFromBufferZone}                  
+          deleteFromBufferZone={this.props.deleteFromBufferZone}  
         />
       </div>
     )

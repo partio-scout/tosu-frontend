@@ -18,7 +18,6 @@ const addActivityToBufferZone = async (data) => {
 
 const getBufferZoneActivities = async () => {
   const response = await axios.get(`${API_ROOT}/activitybuffer/0`)
-  console.log(response.data)
   return response.data
 }
 

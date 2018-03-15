@@ -75,7 +75,7 @@ class App extends Component {
   };
 
   setNotification = (notification, time = 5) => {
-    this.setState({ notification: notification })
+    this.setState({ notification })
     setTimeout(() => {
       this.setState({notification: ""})
     }, time * 1000);
@@ -86,17 +86,20 @@ class App extends Component {
   };
 
   updateBufferZoneActivities = (activity) => {
-    this.setState({ bufferZoneActivities: this.state.bufferZoneActivities.concat(activity) })
+    const activities = this.state.bufferZoneActivities.activities.concat(activity)
+    const newBufferZoneActivities = this.state.bufferZoneActivities
+    newBufferZoneActivities.activities = activities
+    this.setState({ bufferZoneActivities: newBufferZoneActivities })
   }
 
   deleteFromBufferZone = (activity) => {
-    console.log(activity)
-    console.log(this.state.bufferZoneActivities)
+    const newBufferZoneActivities = this.state.bufferZoneActivities
     const index = this.state.bufferZoneActivities.activities.indexOf(activity);
     const activitiesAfterDelete = this.state.bufferZoneActivities.activities;
     activitiesAfterDelete.splice(index, 1);
+    newBufferZoneActivities.activities = activitiesAfterDelete
     this.setState({
-      bufferZoneActivities: activitiesAfterDelete
+      bufferZoneActivities: newBufferZoneActivities
     })
   }
 
@@ -113,7 +116,6 @@ class App extends Component {
   
 
   render() {
-    console.log(this.state.bufferZoneActivities)
     return (
       <StickyContainer className="App">
         <MuiThemeProvider>

@@ -18,7 +18,6 @@ const styles = {
   }
 };
 const handleRequestDelete = async (activity, props) => {
-  console.log('Delete activity', activity);
   try {
     await activityService.deleteActivity(activity.id);
     props.delete(activity)
@@ -48,7 +47,7 @@ const Activity = props => {
   
   }
       return (
-        <div></div>
+        <div />
       );
     
 
