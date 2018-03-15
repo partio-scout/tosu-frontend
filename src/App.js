@@ -11,6 +11,7 @@ import filterOffExistingOnes from './functions/searchBarFiltering'
 import activitiesArray from './utils/NormalizeActivitiesData'
 import { connect } from 'react-redux'
 import Notification from './components/Notification'
+import { notify} from './reducers/notificationReducer'
 
 class App extends Component {
   constructor() {
@@ -117,7 +118,7 @@ class App extends Component {
               <NewEvent
                 updateEvents={this.updateEvents}
               />
-              <Notification store={this.props.store} />
+              <Notification />
               <ListEvents
                 events={this.state.events}
                 fetchEvents={this.getEvents}
@@ -147,4 +148,14 @@ class App extends Component {
   }
 }
 
-export default connect(null)(App)
+const mapStateToProps = (state) => {
+  return {
+    notification: state.notification
+  }
+}
+export default connect(
+  mapStateToProps,
+  { notify }
+
+)(App)
+

@@ -32,6 +32,7 @@ import { notify } from '../reducers/notificationReducer'
       this.props.updateFilteredActivities();
       this.setState({ selectedActivity: null })
     } catch (exception) {
+      console.log("sadafsfsdfcasdcfsdacd")
       this.props.notify(
         `Aktiviteetin lisäys epäonnistui. Saattaa olla jo lisätty tapahtumaan`,
         5000
