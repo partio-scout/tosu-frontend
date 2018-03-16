@@ -14,8 +14,8 @@ const styles = {
   },
   avatar: {
     size: 28,
-    color: blue300,
-    backgroundColor: indigo900,
+    color: indigo900,
+    backgroundColor: blue300,
     margin: 4
   },
   chipMandatory: {
@@ -25,8 +25,8 @@ const styles = {
   },
   avatarMandatory: {
     size: 28,
-    color: red300,
-    backgroundColor: red900,
+    color: red900,
+    backgroundColor: red300,
     margin: 4
   }
 }
@@ -58,7 +58,13 @@ const Activity = props => {
           style={styles.chipMandatory}
           key={activity.id}
         >
-          <Avatar style={styles.avatarMandatory}>!</Avatar>
+          <Avatar style={styles.avatarMandatory}>
+            <img
+              style={{ width: '100%' }}
+              src="https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png"
+              alt="Mandatory activity"
+            />
+          </Avatar>
           <span className="activityTitle">{act[0].title}</span>
         </Chip>
       )
@@ -69,7 +75,13 @@ const Activity = props => {
         style={styles.chip}
         key={activity.id}
       >
-        <Avatar style={styles.avatar}>!</Avatar>
+        <Avatar style={styles.avatar}>
+          <img
+            style={{ width: '100%' }}
+            src="https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3562.png"
+            alt="Not-mandatory activity"
+          />
+        </Avatar>
         <span className="activityTitle">{act[0].title}</span>
       </Chip>
     )
