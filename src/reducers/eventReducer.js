@@ -68,6 +68,7 @@ export const deleteEventGroup = (eventGroupId) => {
       type: 'DELETE_EVENTGROUP',
       eventGroupId
     })
+
   }
 }
 
@@ -84,10 +85,10 @@ export const addEvent = (event) => {
 
 export const editEvent = (event) => {
   return async (dispatch) => {
-    await eventService.edit(event)
+    const modded = await eventService.edit(event)
     dispatch({
       type: 'UPDATE_EVENT',
-      modded: event
+      modded
     })
   }
 }
@@ -114,5 +115,4 @@ export const deleteActivityFromEvent = (activityId) => {
     })
   }
 }
-
 export default reducer

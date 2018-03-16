@@ -3,7 +3,7 @@ import activityService from '../services/activities'
 const reducer = (state = [], action) => {
   switch (action.type) {
     case 'INIT_BUFFER':
-      return action.bufferActivities
+      return action.buffer
     case 'ADD_TO_BUFFER':
       const newActivities = state.activities.concat(action.activity)
       let newBuffer = Object.assign({}, state)
@@ -22,10 +22,10 @@ const reducer = (state = [], action) => {
 
 export const bufferZoneInitialization = (userId) => {
   return async (dispatch) => {
-    const bufferActivities = await activityService.getBufferZoneActivities(userId)
+    const buffer = await activityService.getBufferZoneActivities(userId)
     dispatch({
       type: 'INIT_BUFFER',
-      bufferActivities
+      buffer
     })
   }
 }
