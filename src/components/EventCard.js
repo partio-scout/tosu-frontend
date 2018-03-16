@@ -21,6 +21,9 @@ import ItemTypes from '../ItemTypes'
 import activityService from '../services/activities'
 
 const moveActivity = async (activityId, parentId, targetId) => {
+  console.log('parent: ', parentId)
+  console.log('target: ', targetId)
+  console.log('id: ', activityId)
   const res = await activityService.moveActivityFromBufferZoneToActivity(activityId, parentId, targetId)
   console.log(res)
 }
@@ -35,8 +38,8 @@ const EventCardTarget = {
     console.log('target: ', targetId)
     console.log('id: ', activityId)
     moveActivity(activityId, parentId, targetId)
-    console.log('item: ', item)
-    console.log('props: ', props)
+    /* console.log('item: ', item)
+    console.log('props: ', props) */
   }
 }
 

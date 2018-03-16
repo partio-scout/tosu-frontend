@@ -17,7 +17,11 @@ const getBufferZoneActivities = async () => {
 }
 
 const moveActivityFromBufferZoneToActivity = async (id, parentId, targetId) => {
+  console.log('parent: ', parentId)
+    console.log('target: ', targetId)
+    console.log('id: ', id)
   const response = await axios.put(`${API_ROOT}/activity/${id}/frombuffer/${parentId}/toevent/${targetId}`)
+  console.log(response)
   return response.data
 }
 
