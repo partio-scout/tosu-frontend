@@ -22,9 +22,13 @@ class App extends Component {
 
   componentDidMount = async () => {
 
-      await this.props.pofInitialization()
-      await this.props.eventsInitialization()
-      await this.props.bufferZoneInitialization(2)//id tulee userista myöhemmin
+    await Promise.all([
+       this.props.pofInitialization(),
+       this.props.eventsInitialization(),
+       this.props.bufferZoneInitialization(2)//id tulee userista myöhemmin
+      ])
+
+      
 
   }
 
