@@ -25,21 +25,12 @@ class TopSearchBar extends React.Component {
       }
       try {
         this.props.postActivityToBuffer(data)
-       // console.log(this.props.buffer)
-        //     const res = await activityService.addActivityToBufferZone(data)
-        //    this.updateActivities(res)    reduuuux
-        //   this.props.updateFilteredActivities()
         this.setState({ selectedActivity: null })
       } catch (exception) {
         console.error(exception)
       }
     }
   };
-
-  //updateActivities = activity => {
-  //  this.props.bufferZoneUpdater(activity)
-  //};
-
 
   render() {
     const { selectedActivity } = this.state;
@@ -66,12 +57,7 @@ class TopSearchBar extends React.Component {
           })}
         />
         <div>
-          <BufferZone
-          //   activities={this.props.activities}
-          //   bufferZoneActivities={this.props.bufferZoneActivities} 
-          //   bufferZoneUpdater={this.props.bufferZoneUpdater}
-          //   deleteFromBufferZone={this.props.deleteFromBufferZone}
-          />
+          <BufferZone  />
         </div>
       </div>
     );
