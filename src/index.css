@@ -60,8 +60,13 @@ p.eventTimes > span {
 }
 
 .activityTitle {
-  word-wrap: break-word;
-  font-weight: bold
+  display: block;
+  max-width: 175px;
+  word-wrap: break-all;
+  white-space:normal;
+  font-weight: bold;
+  line-height: 20px;
+  padding: 5px;
 }
 
 .bufferzone-activities{
