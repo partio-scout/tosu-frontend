@@ -160,6 +160,7 @@ export default class EventForm extends React.Component {
         onSubmit={this.send}
         onError={errors => console.log(errors)}
       >
+        <p>Tapahtuman nimi</p>
         <TextValidator
           floatingLabelText="Tapahtuman nimi"
           name="title"
