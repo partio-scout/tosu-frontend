@@ -5,11 +5,19 @@ import PropTypes from 'prop-types'
 import Activity from './Activity'
 import ItemTypes from '../ItemTypes'
 import { notify } from '../reducers/notificationReducer'
+import { postActivityToBufferOnlyLocally } from '../reducers/bufferZoneReducer'
+import { deleteActivityFromEventOnlyLocally } from '../reducers/eventReducer'
 import activityService from '../services/activities'
 
-const MoveActivity = async (activityId, parentId, targetId) => {
-    const res = await activityService.moveActivityFromEventToBufferZone(activityId, parentId, targetId)
-    return res
+const moveActivity = async (props, activityId, parentId, targetId) => {
+    try {
+        const res = await activityService.moveActivityFromEventToBufferZone(activityId, parentId, targetId)
+        props.deleteActivityFromEventOnlyLocally(activityId)
+        props.postActivityToBufferOnlyLocally(res)
+        return res
+    } catch (exception) {
+        return exception
+    }
 }
 
 const bufferZoneTarget = {
@@ -21,8 +29,8 @@ const bufferZoneTarget = {
         console.log('parent: ', parentId)
         console.log('target: ', targetId)
         console.log('id: ', activityId)
-        const res = MoveActivity(activityId, parentId, targetId)
-        console.log(res)
+        moveActivity(props, activityId, parentId, targetId)
+       
     }
 }
 
@@ -46,11 +54,11 @@ class BufferZone extends React.Component {
         const { isOver, canDrop, connectDropTarget } = this.props
         if (!this.props.buffer.activities || this.props.buffer.activities.length === 0) {
             return connectDropTarget(
-              <div id="bufferzone">
-                {isOver && canDrop && <div className='green' />}
-                {!isOver && canDrop && <div className='yellow' />}
-                {isOver && !canDrop && <div className='red' />}
-              </div>
+                <div id="bufferzone">
+                    {isOver && canDrop && <div className='green' />}
+                    {!isOver && canDrop && <div className='yellow' />}
+                    {isOver && !canDrop && <div className='red' />}
+                </div>
             )
         }
 
@@ -59,12 +67,12 @@ class BufferZone extends React.Component {
             return <Activity bufferzone='true' parentId={this.props.buffer.id} parent={this} key={activity.id} act={act} activity={activity} delete={this.props.deleteFromBufferZone} />
         })
         return connectDropTarget(
-          <div id="bufferzone">
-            <div className="bufferzone-activities">{rows}</div>
-            {isOver && canDrop && <div className='green' />}
-            {!isOver && canDrop && <div className='yellow' />}
-            {isOver && !canDrop && <div className='red' />}
-          </div>
+            <div id="bufferzone">
+                <div className="bufferzone-activities">{rows}</div>
+                {isOver && canDrop && <div className='green' />}
+                {!isOver && canDrop && <div className='yellow' />}
+                {isOver && !canDrop && <div className='red' />}
+            </div>
         )
     }
 }
@@ -81,6 +89,10 @@ const DroppableBufferZone = DropTarget(ItemTypes.ACTIVITY, bufferZoneTarget, col
 
 export default connect(
     mapStateToProps,
-    { notify }
+    {
+        notify,
+        deleteActivityFromEventOnlyLocally,
+        postActivityToBufferOnlyLocally
+    }
 )(DroppableBufferZone)
 

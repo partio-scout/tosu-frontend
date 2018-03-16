@@ -48,5 +48,21 @@ export const deleteActivityFromBuffer = (activityId) => {
     })
   }
 }
+export const deleteActivityFromBufferOnlyLocally = (activityId) => {
+  return async (dispatch) => {
+    dispatch({
+      type: 'DELETE_FROM_BUFFER',
+      activityId
+    })
+  }
+}
+export const postActivityToBufferOnlyLocally = (activity) => {
+  return async (dispatch) => {
+    dispatch({
+      type: 'ADD_TO_BUFFER',
+      activity
+    })
+  }
+}
 
 export default reducer

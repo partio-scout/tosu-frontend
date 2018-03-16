@@ -17,17 +17,29 @@ import Activity from './Activity';
 import EditEvent from './EditEvent';
 import ItemTypes from '../ItemTypes'
 import activityService from '../services/activities'
-import { editEvent, deleteEvent, deleteEventGroup } from '../reducers/eventReducer'
+import { editEvent, deleteEvent, deleteEventGroup, deleteActivityFromEventOnlyLocally, addActivityToEventOnlyLocally } from '../reducers/eventReducer'
+import { deleteActivityFromBufferOnlyLocally } from '../reducers/bufferZoneReducer'
 
-
-const moveActivityFromBuffer = async (activityId, parentId, targetId) => {
-  const res = await activityService.moveActivityFromBufferZoneToEvent(activityId, parentId, targetId)
-  return res
+const moveActivityFromBuffer = async (props, activityId, parentId, targetId) => {
+  try {
+    const res = await activityService.moveActivityFromBufferZoneToEvent(activityId, parentId, targetId)
+    await props.addActivityToEventOnlyLocally(targetId, res)
+    await props.deleteActivityFromBufferOnlyLocally(activityId)
+    return res
+  } catch (exception) {
+    return exception
+  }
 }
 
-const moveActivityFromEvent = async (activityId, parentId, targetId) => {
-  const res = await activityService.moveActivityFromEventToEvent(activityId, parentId, targetId)
-  return res
+const moveActivityFromEvent = async (props, activityId, parentId, targetId) => {
+  try {
+    const res = await activityService.moveActivityFromEventToEvent(activityId, parentId, targetId)
+    props.addActivityToEventOnlyLocally(targetId, res)
+    props.deleteActivityFromEventOnlyLocally(activityId)
+    return res
+  } catch (exception) {
+    return exception
+  }
 }
 
 const EventCardTarget = {
@@ -39,10 +51,10 @@ const EventCardTarget = {
     console.log(item)
     console.log(item.bufferzone)
     if (item.bufferzone === 'true') {
-      const res = moveActivityFromBuffer(activityId, parentId, targetId)
-      console.log(res)
+      moveActivityFromBuffer(props, activityId, parentId, targetId)
+
     } else {
-      moveActivityFromEvent(activityId, parentId, targetId)
+      moveActivityFromEvent(props, activityId, parentId, targetId)
     }
 
   }
@@ -235,6 +247,13 @@ const DroppableEventCard = DropTarget(ItemTypes.ACTIVITY, EventCardTarget, colle
 
 export default connect(
   mapStateToProps,
-  { editEvent, deleteEvent, deleteEventGroup }
+  {
+    editEvent,
+    deleteEvent,
+    deleteEventGroup,
+    addActivityToEventOnlyLocally,
+    deleteActivityFromEventOnlyLocally,
+    deleteActivityFromBufferOnlyLocally
+  }
 
 )(DroppableEventCard)

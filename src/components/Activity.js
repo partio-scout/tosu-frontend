@@ -93,7 +93,7 @@ class Activity extends Component {
   }
 
   render() {
-    console.log(this.props.parent.constructor.name)
+    //console.log(this.props.parent.constructor.name)
     const { activity, act } = this.props
     const { connectDragSource } = this.props
     if (activity && act[0]) {

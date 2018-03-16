@@ -115,4 +115,23 @@ export const deleteActivityFromEvent = (activityId) => {
     })
   }
 }
+
+export const addActivityToEventOnlyLocally = (eventId, activity) => {
+  return async (dispatch) => {
+      dispatch({
+      type: 'ADD_ACTIVITY_TO_EVENT',
+      eventId,
+      activity: activity
+    })
+  }
+}
+
+export const deleteActivityFromEventOnlyLocally = (activityId) => {
+  return async (dispatch) => {
+    dispatch({
+      type: 'DELETE_ACTIVITY_FROM_EVENT',
+      activityId
+    })
+  }
+}
 export default reducer
