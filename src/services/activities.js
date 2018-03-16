@@ -16,13 +16,21 @@ const getBufferZoneActivities = async () => {
   return response.data
 }
 
-const moveActivityFromBufferZoneToActivity = async (id, parentId, targetId) => {
-  console.log('parent: ', parentId)
-    console.log('target: ', targetId)
-    console.log('id: ', id)
-  const response = await axios.put(`${API_ROOT}/activity/${id}/frombuffer/${parentId}/toevent/${targetId}`)
-  console.log(response)
+const moveActivityFromBufferZoneToEvent = async (id, parentId, targetId) => {
+  const url = `${API_ROOT}/activity/${id}/frombuffer/${parentId}/toevent/${targetId}`
+  console.log(url)
+  const response = await axios.put(url)
   return response.data
 }
 
-export default { deleteActivity, addActivityToBufferZone, getBufferZoneActivities, moveActivityFromBufferZoneToActivity }
+const moveActivityFromEventToBufferZone = async (activityId, parentId, targetId) => {
+  const response = await axios.put(`${API_ROOT}/activity/${activityId}/fromevent/${parentId}/tobuffer/${targetId}`)
+  return response.data
+}
+
+const moveActivityFromEventToEvent = async (activityId, parentId, targetId) => {
+  const response = await axios.put(`${API_ROOT}/activity/${activityId}/fromevent/${parentId}/toevent/${targetId}`)
+  return response.data
+}
+
+export default { deleteActivity, addActivityToBufferZone, getBufferZoneActivities, moveActivityFromBufferZoneToEvent, moveActivityFromEventToBufferZone, moveActivityFromEventToEvent }

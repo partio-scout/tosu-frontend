@@ -1,11 +1,14 @@
+import { connect } from 'react-redux'
 import { DragSource } from 'react-dnd'
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import Avatar from 'material-ui/Avatar';
-import Chip from 'material-ui/Chip';
-import { blue300, indigo900 } from 'material-ui/styles/colors';
-import activityService from '../services/activities';
+import Chip from 'material-ui/Chip'
+import { blue300, indigo900 } from 'material-ui/styles/colors'
+import { deleteActivityFromEvent } from '../reducers/eventReducer'
+import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
+
 
 const styles = {
   chip: {
@@ -31,31 +34,31 @@ const activitySource = {
     }
   },
   endDrag(props, monitor) {
-    console.log('loppu')
     if (!monitor.didDrop()) {
-      console.log('ei tiputa')
       return
     }
     const activity = monitor.getItem()
     const dropResult = monitor.getDropResult()
     console.log(`activity: ${activity} result: ${dropResult}`)
   }
-
-
 }
 
-function collect(connect, monitor) {
+function collect(connector, monitor) {
   return {
-    connectDragSource: connect.dragSource(),
-    connectDragPreview: connect.dragPreview(),
+    connectDragSource: connector.dragSource(),
+    connectDragPreview: connector.dragPreview(),
     isDragging: monitor.isDragging()
   }
 }
 
 const handleRequestDelete = async (activity, props) => {
   try {
-    await activityService.deleteActivity(activity.id);
-    props.delete(activity)
+    if (props.buffer.activities.find(a => a.id.toString() === activity.id.toString()) !== undefined) {
+      props.deleteActivityFromBuffer(activity.id)
+      
+    } else {
+      props.deleteActivityFromEvent(activity.id)
+    }
 
   } catch (exception) {
     console.error('Error in deleting activity:', exception);
@@ -77,6 +80,7 @@ class Activity extends Component {
   render() {
     const { activity, act } = this.props
     const { connectDragSource } = this.props
+    console.log(this.props.parent.constructor.name)
     if (activity && act[0]) {
       return connectDragSource(
         <div>
@@ -101,5 +105,16 @@ class Activity extends Component {
   }
 
 }
-export default DragSource(ItemTypes.ACTIVITY, activitySource, collect)(Activity)
+const DraggableActivity =  DragSource(ItemTypes.ACTIVITY, activitySource, collect)(Activity)
 
+const mapStateToProps = state => {
+  return {
+    notification: state.notification,
+    buffer: state.buffer
+  }
+}
+export default connect(
+  mapStateToProps,
+  { deleteActivityFromEvent, deleteActivityFromBuffer }
+
+)(DraggableActivity)

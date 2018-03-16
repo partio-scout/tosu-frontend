@@ -14,18 +14,20 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import ActivitySearch from './SearchBar';
 import Activity from './Activity';
-import eventService from '../services/events';
-import eventgroupService from '../services/eventgroups';
 import EditEvent from './EditEvent';
 import ItemTypes from '../ItemTypes'
 import activityService from '../services/activities'
+import { editEvent, deleteEvent, deleteEventGroup } from '../reducers/eventReducer'
 
-const moveActivity = async (activityId, parentId, targetId) => {
-  console.log('parent: ', parentId)
-  console.log('target: ', targetId)
-  console.log('id: ', activityId)
-  const res = await activityService.moveActivityFromBufferZoneToActivity(activityId, parentId, targetId)
-  console.log(res)
+
+const moveActivityFromBuffer = async (activityId, parentId, targetId) => {
+  const res = await activityService.moveActivityFromBufferZoneToEvent(activityId, parentId, targetId)
+  return res
+}
+
+const moveActivityFromEvent = async (activityId, parentId, targetId) => {
+  const res = await activityService.moveActivityFromEventToEvent(activityId, parentId, targetId)
+  return res
 }
 
 const EventCardTarget = {
@@ -34,12 +36,18 @@ const EventCardTarget = {
     const targetId = props.event.id
     const { parentId } = item
     const activityId = item.id
+    const parentName = item.parent
+    console.log(parentName)
     console.log('parent: ', parentId)
     console.log('target: ', targetId)
     console.log('id: ', activityId)
-    moveActivity(activityId, parentId, targetId)
-    /* console.log('item: ', item)
-    console.log('props: ', props) */
+    if (parentName === 'BufferZone') {
+      const res = moveActivityFromBuffer(activityId, parentId, targetId)
+      console.log(res)
+    } else {
+      moveActivityFromEvent(activityId, parentId, targetId)
+    }
+
   }
 }
 
@@ -61,12 +69,11 @@ class EventCard extends React.Component {
     super(props);
     this.state = {
       expanded: false,
-      open: false,
-      activities: props.event.activities
-    }
+      open: false
+    };
   }
 
-  
+
 
   handleExpandChange = expanded => {
     this.setState({ expanded });
@@ -76,25 +83,9 @@ class EventCard extends React.Component {
     this.setState({ expanded: false });
   };
 
-  updateActivities = activity => {
-    this.setState({
-      activities: this.state.activities.concat(activity)
-    });
-  };
-
-  updateAfterDelete = activity => {
-    const index = this.state.activities.indexOf(activity);
-    const activitiesAfterDelete = this.state.activities;
-    activitiesAfterDelete.splice(index, 1);
-
-    this.setState({
-      activities: activitiesAfterDelete
-    });
-  };
-
   deleteEvent = async () => {
     try {
-      await eventService.deleteEvent(this.props.event.id);
+      this.props.deleteEvent(this.props.event.id)
       this.handleClose();
     } catch (exception) {
       console.error('Error in deleting event:', exception);
@@ -103,7 +94,7 @@ class EventCard extends React.Component {
 
   deleteEventGroup = async () => {
     try {
-      await eventgroupService.deleteEventgroup(this.props.event.groupId);
+      this.props.deleteEventGroup(this.props.event.groupId);
       this.handleClose();
     } catch (exception) {
       console.error('Error in deleting event:', exception);
@@ -120,13 +111,12 @@ class EventCard extends React.Component {
 
   handleClose = () => {
     this.setState({ open: false });
-    this.props.fetchEvents();
   };
 
   render() {
     let rows
-    if (this.state.activities) {
-      rows = this.state.activities.map(activity => {
+    if (this.props.event.activities) {
+      rows = this.props.event.activities.map(activity => {
         const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
         return <Activity parentId={this.props.event.id} parent={this} key={activity.id} act={act} activity={activity} delete={this.updateAfterDelete} />
       })
@@ -215,7 +205,7 @@ class EventCard extends React.Component {
             <p>{event.information}</p>
             <p>Aktiviteetit:</p>
             {rows}
-            <br style={{clear: 'both'}} />
+            <br style={{ clear: 'both' }} />
             <ActivitySearch
               dataSource={this.props.pofActivities}
               event={this.props.event}
@@ -239,7 +229,8 @@ class EventCard extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    pofActivities: state.pofActivities
+    pofActivities: state.pofActivities,
+    events: state.events
   }
 }
 
@@ -247,6 +238,6 @@ const DroppableEventCard = DropTarget(ItemTypes.ACTIVITY, EventCardTarget, colle
 
 export default connect(
   mapStateToProps,
-  {}
+  { editEvent, deleteEvent, deleteEventGroup }
 
 )(DroppableEventCard)

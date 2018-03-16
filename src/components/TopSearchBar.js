@@ -4,10 +4,9 @@ import matchSorter from 'match-sorter';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import BufferZone from './BufferZone'
-import activityService from '../services/activities'
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
-import { pofInitialization } from '../reducers/pofActivityReducer'
+import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
 import filterOffExistingOnes from '../functions/searchBarFiltering';
 
 class TopSearchBar extends React.Component {
@@ -25,24 +24,31 @@ class TopSearchBar extends React.Component {
         guid: this.state.selectedActivity.value
       }
       try {
-        const res = await activityService.addActivityToBufferZone(data)
-    //    this.updateActivities(res)    reduuuux
-     //   this.props.updateFilteredActivities()
-        this.setState({ selectedActivity: null})
+        this.props.postActivityToBuffer(data)
+       // console.log(this.props.buffer)
+        //     const res = await activityService.addActivityToBufferZone(data)
+        //    this.updateActivities(res)    reduuuux
+        //   this.props.updateFilteredActivities()
+        this.setState({ selectedActivity: null })
       } catch (exception) {
         console.error(exception)
       }
     }
   };
 
-  updateActivities = activity => {
+  //updateActivities = activity => {
   //  this.props.bufferZoneUpdater(activity)
-  };
+  //};
 
 
   render() {
     const { selectedActivity } = this.state;
     const value = selectedActivity && selectedActivity.value;
+    const filteredPofActivities = filterOffExistingOnes(
+      this.props.pofActivities,
+      this.props.events,
+      this.props.buffer
+    )
     return (
       <div>
         <Select
@@ -53,7 +59,7 @@ class TopSearchBar extends React.Component {
             const sorterOptions = { keys: ['label'] };
             return matchSorter(options, filter, sorterOptions);
           }}
-          options={filterOffExistingOnes(this.props.pofActivities, this.props.events, this.props.bufferZoneActivities).map(activity => {
+          options={filteredPofActivities.map(activity => {
             let obj = {};
             obj = { value: activity.guid, label: activity.title };
             return obj;
@@ -61,10 +67,10 @@ class TopSearchBar extends React.Component {
         />
         <div>
           <BufferZone
-            activities={this.props.activities}
-            bufferZoneActivities={this.props.bufferZoneActivities} 
-            bufferZoneUpdater={this.props.bufferZoneUpdater}
-            deleteFromBufferZone={this.props.deleteFromBufferZone}
+          //   activities={this.props.activities}
+          //   bufferZoneActivities={this.props.bufferZoneActivities} 
+          //   bufferZoneUpdater={this.props.bufferZoneUpdater}
+          //   deleteFromBufferZone={this.props.deleteFromBufferZone}
           />
         </div>
       </div>
@@ -75,13 +81,15 @@ class TopSearchBar extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    pofActivities: state.pofActivities
+    pofActivities: state.pofActivities,
+    events: state.events,
+    buffer: state.buffer
   }
 }
 
 export default connect(
   mapStateToProps,
-  { notify, pofInitialization }
+  { notify, postActivityToBuffer }
 
 )(TopSearchBar)
 

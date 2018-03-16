@@ -18,11 +18,11 @@ export default class AppBar extends React.Component {
     this.props.setHeaderHeight(bufferZoneHeight)
   }
 
-  updateActivities = activity => {
-    this.setState({
-      bufferZoneActivities: this.state.bufferZoneActivities.concat(activity)
-    })
-  }
+  // updateActivities = activity => {
+   // this.setState({
+   //   bufferZoneActivities: this.state.bufferZoneActivities.concat(activity)
+   // })
+ // }
   render() {
     return (
       <div
@@ -30,15 +30,7 @@ export default class AppBar extends React.Component {
         id="top-bar-header"
         style={{ background: '#5DBCD2', padding: 20 }}
       >
-        <TopSearchBar
-          activities={this.props.activities}
-          events={this.props.events}
-          bufferZoneActivities={this.props.bufferZoneActivities}
-          updateFilteredActivities={this.props.updateFilteredActivities}
-          bufferZoneUpdater={this.props.bufferZoneUpdater}
-          filteredActivities={this.props.filteredActivities}
-          deleteFromBufferZone={this.props.deleteFromBufferZone}
-        />
+        <TopSearchBar />
       </div>
     )
   }
