@@ -9,7 +9,6 @@ import { notify } from '../reducers/notificationReducer'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
 import filterOffExistingOnes from '../functions/searchBarFiltering';
 
-
 class TopSearchBar extends React.Component {
   constructor(props) {
     super(props);

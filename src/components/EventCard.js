@@ -1,4 +1,7 @@
+import { connect } from 'react-redux'
 import React from 'react';
+import { DropTarget } from 'react-dnd';
+import PropTypes from 'prop-types'
 import {
   Card,
   CardActions,
@@ -12,25 +15,56 @@ import FlatButton from 'material-ui/FlatButton';
 import ActivitySearch from './SearchBar';
 import Activity from './Activity';
 import EditEvent from './EditEvent';
-import { DropTarget } from 'react-dnd';
-import { connect } from 'react-redux'
-import { editEvent, deleteEvent, deleteEventGroup } from '../reducers/eventReducer'
 import ItemTypes from '../ItemTypes'
+import activityService from '../services/activities'
+import { editEvent, deleteEvent, deleteEventGroup } from '../reducers/eventReducer'
+
+
+const moveActivityFromBuffer = async (activityId, parentId, targetId) => {
+  const res = await activityService.moveActivityFromBufferZoneToEvent(activityId, parentId, targetId)
+  return res
+}
+
+const moveActivityFromEvent = async (activityId, parentId, targetId) => {
+  const res = await activityService.moveActivityFromEventToEvent(activityId, parentId, targetId)
+  return res
+}
 
 const EventCardTarget = {
-  drop(props) {
-    //moveKnight(props.x, props.y);
-  }
-};
+  drop(props, monitor) {
+    const item = monitor.getItem()
+    const targetId = props.event.id
+    const { parentId } = item
+    const activityId = item.id
+    const parentName = item.parent
+    console.log(parentName)
+    console.log('parent: ', parentId)
+    console.log('target: ', targetId)
+    console.log('id: ', activityId)
+    if (parentName === 'BufferZone') {
+      const res = moveActivityFromBuffer(activityId, parentId, targetId)
+      console.log(res)
+    } else {
+      moveActivityFromEvent(activityId, parentId, targetId)
+    }
 
-function collect(connect, monitor) {
+  }
+}
+
+function collect(connector, monitor) {
   return {
-    connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver()
-  };
+    connectDropTarget: connector.dropTarget(),
+    isOver: monitor.isOver(),
+    canDrop: monitor.canDrop()
+  }
 }
 
 class EventCard extends React.Component {
+  static propTypes = {
+    isOver: PropTypes.bool.isRequired,
+    canDrop: PropTypes.bool.isRequired,
+    connectDropTarget: PropTypes.func.isRequired
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -38,6 +72,8 @@ class EventCard extends React.Component {
       open: false
     };
   }
+
+
 
   handleExpandChange = expanded => {
     this.setState({ expanded });
@@ -58,7 +94,7 @@ class EventCard extends React.Component {
 
   deleteEventGroup = async () => {
     try {
-     this.props.deleteEventGroup(this.props.event.groupId);
+      this.props.deleteEventGroup(this.props.event.groupId);
       this.handleClose();
     } catch (exception) {
       console.error('Error in deleting event:', exception);
@@ -82,7 +118,7 @@ class EventCard extends React.Component {
     if (this.props.event.activities) {
       rows = this.props.event.activities.map(activity => {
         const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
-        return <Activity key={activity.id} act={act} activity={activity} />
+        return <Activity parentId={this.props.event.id} parent={this} key={activity.id} act={act} activity={activity} delete={this.updateAfterDelete} />
       })
     }
     const { event } = this.props;
@@ -121,73 +157,75 @@ class EventCard extends React.Component {
         />
       ];
     }
-    return (
-      <Card
-        expanded={this.state.expanded}
-        onExpandChange={this.handleExpandChange}
-      >
-        <CardHeader
-          title={title}
-          subtitle={subtitle}
-          // subtitle="päivämäärät, alku ja loppu"
-          actAsExpander
-          showExpandableButton
-        />
-        <CardTitle title={event.title} subtitle="Lokaatio?" expandable />
-        <CardText expandable>
-          <EditEvent
-            buttonClass="buttonRight"
-            data={event}
-            source={this.handleClose}
-            setNotification={this.props.setNotification}
+    const { connectDropTarget } = this.props
+    return connectDropTarget(
+      <div>
+        <Card
+          expanded={this.state.expanded}
+          onExpandChange={this.handleExpandChange}
+        >
+          <CardHeader
+            title={title}
+            subtitle={subtitle}
+            actAsExpander
+            showExpandableButton
           />
-          <FlatButton
-            label="Poista"
-            secondary
-            className="buttonRight"
-            onClick={this.handleDelete}
-          />
-
-          <Dialog
-            actions={actions}
-            modal={false}
-            open={this.state.open}
-            onRequestClose={this.handleClose}
-          >
-            Poistetaanko tapahtuma {event.title}?
-          </Dialog>
-
-          <p className="eventTimes">
-            <span>{event.type} alkaa:</span>{' '}
-            {moment(event.startDate).format('D.M.YYYY')} kello {event.startTime}
-          </p>
-          <p className="eventTimes">
-            <span>{event.type} päättyy:</span>{' '}
-            {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
-          </p>
-          <p>{event.information}</p>
-          <p>Aktiviteetit:</p>
-          {rows}
-          <br />
-          <ActivitySearch
-            dataSource={this.props.pofActivities}
-            event={this.props.event}
-            updateFilteredActivities={this.props.updateFilteredActivities}
-          />
-          <CardActions>
-            <FlatButton
-              label="Sulje"
-              primary
-              onClick={this.handleReduce}
-              fullWidth
+          <CardTitle title={event.title} subtitle="Lokaatio?" expandable />
+          <CardText expandable>
+            <EditEvent
+              buttonClass="buttonRight"
+              data={event}
+              source={this.handleClose}
+              setNotification={this.props.setNotification}
             />
-          </CardActions>
-        </CardText>
-      </Card>
+            <FlatButton
+              label="Poista"
+              secondary
+              className="buttonRight"
+              onClick={this.handleDelete}
+            />
+
+            <Dialog
+              actions={actions}
+              modal={false}
+              open={this.state.open}
+              onRequestClose={this.handleClose}
+            >
+              Poistetaanko tapahtuma {event.title}?
+            </Dialog>
+
+            <p className="eventTimes">
+              <span>{event.type} alkaa:</span>{' '}
+              {moment(event.startDate).format('D.M.YYYY')} kello {event.startTime}
+            </p>
+            <p className="eventTimes">
+              <span>{event.type} päättyy:</span>{' '}
+              {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
+            </p>
+            <p>{event.information}</p>
+            <p>Aktiviteetit:</p>
+            {rows}
+            <br style={{ clear: 'both' }} />
+            <ActivitySearch
+              dataSource={this.props.pofActivities}
+              event={this.props.event}
+              updateActivities={this.updateActivities}
+              updateFilteredActivities={this.props.updateFilteredActivities}
+            />
+            <CardActions>
+              <FlatButton
+                label="Sulje"
+                primary
+                onClick={this.handleReduce}
+                fullWidth
+              />
+            </CardActions>
+          </CardText>
+        </Card>
+      </div>
     );
   }
 }
-
 
 const mapStateToProps = (state) => {
   return {
@@ -203,4 +241,3 @@ export default connect(
   { editEvent, deleteEvent, deleteEventGroup }
 
 )(DroppableEventCard)
-

@@ -1,7 +1,5 @@
-import DragDropContext from 'react-dnd/lib/DragDropContext'
-import { default as TouchBackend } from 'react-dnd-touch-backend'
-import React from 'react'
-import TopSearchBar from './TopSearchBar'
+import React from 'react';
+import TopSearchBar from './TopSearchBar';
 
 /**
  * A simple example of `AppBar` with an icon on the right.

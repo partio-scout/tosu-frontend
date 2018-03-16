@@ -1,3 +1,4 @@
+import { connect } from 'react-redux'
 import { DragDropContext } from 'react-dnd'
 import React, { Component } from 'react'
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -5,11 +6,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { StickyContainer, Sticky } from 'react-sticky'
 import NewEvent from './components/NewEvent'
 import Appbar from './components/AppBar'
-import { connect } from 'react-redux'
 import Notification from './components/Notification'
+import { default as TouchBackend } from 'react-dnd-touch-backend';
 import ListEvents from './components/ListEvents'
 import { notify} from './reducers/notificationReducer'
-import { pofInitialization } from './reducers/pofActivityReducer'
+import {pofInitialization} from './reducers/pofActivityReducer'
 import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 
@@ -28,9 +29,6 @@ class App extends Component {
        this.props.eventsInitialization(),
        this.props.bufferZoneInitialization(2) // id tulee userista myöhemmin
       ])
-
-      
-
   }
 
   setHeaderHeight = height => {
