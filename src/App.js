@@ -9,9 +9,9 @@ import { connect } from 'react-redux'
 import Notification from './components/Notification'
 import ListEvents from './components/ListEvents'
 import { notify} from './reducers/notificationReducer'
-import {pofInitialization} from './reducers/pofActivityReducer'
-import {bufferZoneInitialization} from './reducers/bufferZoneReducer'
-import {eventsInitialization} from './reducers/eventReducer'
+import { pofInitialization } from './reducers/pofActivityReducer'
+import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
+import { eventsInitialization } from './reducers/eventReducer'
 
 class App extends Component {
   constructor() {
@@ -76,11 +76,12 @@ const mapStateToProps = state => {
   }
 }
 
-const AppDnD = DragDropContext(HTML5Backend)(App)
+const DragTouch = DragDropContext(HTML5Backend)
+
+const AppDnD = DragTouch(App)
 
 export default connect(
   mapStateToProps,
-  { notify, pofInitialization }
+  { notify, pofInitialization, eventsInitialization, bufferZoneInitialization }
 
 )(AppDnD)
-
