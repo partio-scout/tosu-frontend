@@ -1,6 +1,6 @@
-import { DragDropContext } from 'react-dnd/lib/DragDropContext'
+import { DragDropContext } from 'react-dnd'
 import React, { Component } from 'react'
-import { HTML5Backend } from 'react-dnd-html5-backend'
+import HTML5Backend from 'react-dnd-html5-backend'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { StickyContainer, Sticky } from 'react-sticky'
 import NewEvent from './components/NewEvent'
@@ -76,9 +76,7 @@ const mapStateToProps = state => {
   }
 }
 
-const DragTouch = DragDropContext(HTML5Backend)
-
-const AppDnD = DragTouch(App)
+const AppDnD = DragDropContext(HTML5Backend)(App)
 
 export default connect(
   mapStateToProps,
