@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip'
-import { blue300, indigo900 } from 'material-ui/styles/colors'
+import { blue300, red300, indigo900, red900 } from 'material-ui/styles/colors'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
@@ -19,8 +19,19 @@ const styles = {
   },
   avatar: {
     size: 28,
-    color: blue300,
-    backgroundColor: indigo900,
+    color: indigo900,
+    backgroundColor: blue300,
+    margin: 4
+  },
+  chipMandatory: {
+    margin: 4,
+    float: 'left',
+    backgroundColor: red300
+  },
+  avatarMandatory: {
+    size: 28,
+    color: red900,
+    backgroundColor: red300,
     margin: 4
   }
 };
@@ -53,17 +64,19 @@ function collect(connector, monitor) {
 
 const handleRequestDelete = async (activity, props) => {
   try {
-    if (props.buffer.activities.find(a => a.id.toString() === activity.id.toString()) !== undefined) {
+    if (
+      props.buffer.activities.find(
+        a => a.id.toString() === activity.id.toString()
+      ) !== undefined
+    ) {
       props.deleteActivityFromBuffer(activity.id)
-      
     } else {
       props.deleteActivityFromEvent(activity.id)
     }
-
   } catch (exception) {
-    console.error('Error in deleting activity:', exception);
+    console.error('Error in deleting activity:', exception)
   }
-};
+}
 
 class Activity extends Component {
   static propTypes = {
@@ -80,8 +93,27 @@ class Activity extends Component {
   render() {
     const { activity, act } = this.props
     const { connectDragSource } = this.props
-    console.log(this.props.parent.constructor.name)
     if (activity && act[0]) {
+      if (act[0].mandatory) {
+        return connectDragSource(
+          <div>
+            <Chip
+              onRequestDelete={() => handleRequestDelete(activity, this.props)}
+              style={styles.chipMandatory}
+              key={activity.id}
+            >
+              <Avatar style={styles.avatarMandatory}>
+                <img
+                  style={{ width: '100%' }}
+                  src="https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png"
+                  alt="Mandatory activity"
+                />
+              </Avatar>
+              <span className="activityTitle">{act[0].title}</span>
+            </Chip>
+          </div>
+        )
+      }
       return connectDragSource(
         <div>
           <Chip
@@ -89,23 +121,25 @@ class Activity extends Component {
             style={styles.chip}
             key={activity.id}
           >
-            <Avatar
-              style={styles.avatar}
-            >
-              !
+            <Avatar style={styles.avatar}>
+              <img
+                style={{ width: '100%' }}
+                src="https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3562.png"
+                alt="Not-mandatory activity"
+              />
             </Avatar>
             <span className="activityTitle">{act[0].title}</span>
           </Chip>
         </div>
-      );
+      )
     }
-    return (
-      <div />
-    );
+    return <div />
+
   }
 
 }
-const DraggableActivity =  DragSource(ItemTypes.ACTIVITY, activitySource, collect)(Activity)
+
+const DraggableActivity = DragSource(ItemTypes.ACTIVITY, activitySource, collect)(Activity)
 
 const mapStateToProps = state => {
   return {
