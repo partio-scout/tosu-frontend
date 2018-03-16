@@ -1,7 +1,4 @@
-import eventService from '../services/events'
 import pofService from '../services/pof'
-import activityService from '../services/activities'
-import filterOffExistingOnes from '../functions/searchBarFiltering'
 
 const reducer = (state = [], action) => {
   switch (action.type) {

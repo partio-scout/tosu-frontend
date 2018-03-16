@@ -2,12 +2,13 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import moment from 'moment';
-import eventService from '../services/events';
 import eventgroupService from '../services/eventgroups';
 import FrequentEventsHandler from '../utils/FrequentEventsHandler';
 import EventForm from './EventForm';
+import {addEvent} from '../reducers/eventReducer'
+import {connect} from 'react-redux'
 
-export default class NewEvent extends React.Component {
+class NewEvent extends React.Component {
   state = {
     open: false,
     title: '',
@@ -46,7 +47,6 @@ export default class NewEvent extends React.Component {
     this.setState({
       open: false
     });
-    console.log(this.state.startTime)
     const { startDate, endDate } = this.state;
     if (!this.state.checked) {
       const data = {
@@ -62,7 +62,6 @@ export default class NewEvent extends React.Component {
       await this.sendEventPostRequest(data)
       if (!this.state.checked) {
         this.handleClose();
-        this.props.updateEvents();
       }
     } else {
       // Send POST first to create new GroupId and then use id from response to create group of events. ß
@@ -80,7 +79,6 @@ export default class NewEvent extends React.Component {
           this.state.repeatFrequency,
           i
         ).format('YYYY-MM-DD');
-        console.log(newEndDate, ' fre ', this.state.repeatFrequency)
         const data = {
           title: this.state.title,
           startDate: newStartDate,
@@ -96,7 +94,6 @@ export default class NewEvent extends React.Component {
           await this.sendEventPostRequest(data)
           if (i === this.state.repeatCount - 1) {
             this.handleClose();
-            this.props.updateEvents();
           }
         } catch (exception) {
           console.error('Error in event POST:', exception);
@@ -128,9 +125,9 @@ export default class NewEvent extends React.Component {
     }
   };
 
-  sendEventPostRequest = async data => {
+  sendEventPostRequest = async eventData => {
     try {
-      await eventService.create(data);
+      await this.props.addEvent(eventData);
     } catch (exception) {
       console.error('Error in event POST:', exception);
     }
@@ -184,3 +181,9 @@ export default class NewEvent extends React.Component {
     );
   }
 }
+
+export default connect(
+  null,
+  { addEvent }
+
+)(NewEvent)

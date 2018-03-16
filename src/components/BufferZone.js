@@ -36,10 +36,11 @@ class BufferZone extends React.Component {
     }
 
     render() {
+    //    console.log(this.props)
         // const { position } = this.props
         // console.log(position)
         const { isOver, canDrop, connectDropTarget } = this.props
-        if (!this.props.bufferZoneActivities || this.props.bufferZoneActivities.length === 0) {
+        if (!this.props.buffer.activities || this.props.buffer.activities.length === 0) {
             return connectDropTarget(
               <div id="bufferzone">
                 {isOver && canDrop && <div className='green' />}
@@ -48,7 +49,8 @@ class BufferZone extends React.Component {
               </div>
             )
         }
-        const rows = this.props.bufferZoneActivities.activities.map(activity => {
+       
+        const rows = this.props.buffer.activities.map(activity => {
             const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
               return <Activity key={activity.id} act={act} activity={activity} delete={this.props.deleteFromBufferZone} />
         })
@@ -66,7 +68,9 @@ class BufferZone extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-      pofActivities: state.pofActivities
+      pofActivities: state.pofActivities,
+      buffer: state.buffer,
+      events: state.events
     }
   }
 

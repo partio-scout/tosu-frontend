@@ -4,58 +4,32 @@ import { StickyContainer, Sticky } from 'react-sticky'
 import NewEvent from './components/NewEvent'
 import Appbar from './components/AppBar'
 //import activitiesData from './partio.json'
-import eventService from './services/events'
-import activityService from './services/activities'
-import filterOffExistingOnes from './functions/searchBarFiltering'
 import { connect } from 'react-redux'
 import Notification from './components/Notification'
 import ListEvents from './components/ListEvents'
 import { notify} from './reducers/notificationReducer'
 import {pofInitialization} from './reducers/pofActivityReducer'
+import {bufferZoneInitialization} from './reducers/bufferZoneReducer'
+import {eventsInitialization} from './reducers/eventReducer'
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
-      events: [{}],
-      bufferZoneActivities: [],
       bufferZoneHeight: 0
     }
   }
 
   componentDidMount = async () => {
-    await this.getEvents()
 
-    const update = async () => {
-      await this.props.pofInitialization()
-      await this.getBufferZoneActivities()
-    }
+    await Promise.all([
+       this.props.pofInitialization(),
+       this.props.eventsInitialization(),
+       this.props.bufferZoneInitialization(2)//id tulee userista myöhemmin
+      ])
 
-    update()
-  }
+      
 
-  getEvents = async () => {
-    try {
-      const events = await eventService.getAll()
-      this.setState({
-        events
-      })
-    } catch (exception) {
-      this.setState({
-        events: []
-      })
-    }
-  }
-
-  getBufferZoneActivities = async () => {
-    try {
-      const bufferZoneActivities = await activityService.getBufferZoneActivities()
-      this.setState({
-        bufferZoneActivities
-      })
-    } catch (exception) {
-      console.error(exception)
-    }
   }
 
   setHeaderHeight = height => {
@@ -63,11 +37,7 @@ class App extends Component {
       this.setState({ bufferZoneHeight: height })
     }
   }
-
-  updateEvents = () => {
-    this.getEvents()
-  }
-
+/*
   updateBufferZoneActivities = activity => {
     const activities = this.state.bufferZoneActivities.activities.concat(
       activity
@@ -86,14 +56,9 @@ class App extends Component {
     this.setState({
       bufferZoneActivities: newBufferZoneActivities
     })
-  }
-
-  updateFilteredActivities = async () => {
-    await this.getEvents()
-  }
+  }*/
 
   render() {
-    console.log('Height', this.state.bufferZoneHeight)
     return (
       <StickyContainer className="App">
         <MuiThemeProvider>
@@ -102,25 +67,16 @@ class App extends Component {
             style={{ paddingTop: this.state.bufferZoneHeight }}
           >
             <div className="content">
-              <NewEvent updateEvents={this.updateEvents} />
+              <NewEvent />
               <Notification />
-              <ListEvents
-                events={this.state.events}
-                fetchEvents={this.getEvents}
-                updateFilteredActivities={this.updateFilteredActivities}
-                setNotification={this.setNotification}
-              />
+              <ListEvents />
             </div>
             <Sticky>
               {({ style }) => (
                 <header style={style}>
                   <Appbar
-                    activities={this.state.activities}
-                    events={this.state.events}
-                    bufferZoneActivities={this.state.bufferZoneActivities}
-                    updateFilteredActivities={this.updateFilteredActivities}
-                    bufferZoneUpdater={this.updateBufferZoneActivities}
-                    deleteFromBufferZone={this.deleteFromBufferZone}
+                //    bufferZoneUpdater={this.updateBufferZoneActivities}
+                  //  deleteFromBufferZone={this.deleteFromBufferZone}
                     setHeaderHeight={this.setHeaderHeight}
                   />
                 </header>
@@ -140,7 +96,7 @@ const mapStateToProps = state => {
 }
 export default connect(
   mapStateToProps,
-  { notify, pofInitialization }
+  { notify, pofInitialization, bufferZoneInitialization, eventsInitialization }
 
 )(App)
 

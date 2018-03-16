@@ -1,8 +1,10 @@
 import React from 'react';
 import Avatar from 'material-ui/Avatar';
-import Chip from 'material-ui/Chip';
-import { blue300, indigo900 } from 'material-ui/styles/colors';
-import activityService from '../services/activities';
+import Chip from 'material-ui/Chip'
+import { blue300, indigo900 } from 'material-ui/styles/colors'
+import { deleteActivityFromEvent } from '../reducers/eventReducer'
+import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
+import { connect } from 'react-redux'
 
 const styles = {
   chip: {
@@ -19,8 +21,12 @@ const styles = {
 };
 const handleRequestDelete = async (activity, props) => {
   try {
-    await activityService.deleteActivity(activity.id);
-    props.delete(activity)
+    if (props.buffer.activities.find(a => a.id.toString() === activity.id.toString()) !== undefined) {
+      props.deleteActivityFromBuffer(activity.id)
+      
+    } else {
+      props.deleteActivityFromEvent(activity.id)
+    }
 
   } catch (exception) {
     console.error('Error in deleting activity:', exception);
@@ -44,16 +50,26 @@ const Activity = props => {
         <span className="activityTitle">{act[0].title}</span>
       </Chip>
     );
-  
-  }
-      return (
-        <div />
-      );
-    
 
-    
-  
-  
+  }
+  return (
+    <div />
+  );
+
+
+
+
+
 };
 
-export default Activity;
+const mapStateToProps = state => {
+  return {
+    notification: state.notification,
+    buffer: state.buffer
+  }
+}
+export default connect(
+  mapStateToProps,
+  { deleteActivityFromEvent, deleteActivityFromBuffer }
+
+)(Activity)
