@@ -52,11 +52,9 @@ const EventCardTarget = {
     console.log(item.bufferzone)
     if (item.bufferzone === 'true') {
       moveActivityFromBuffer(props, activityId, parentId, targetId)
-
-    } else {
-      moveActivityFromEvent(props, activityId, parentId, targetId)
+    } else if (targetId !== parentId) {
+        moveActivityFromEvent(props, activityId, parentId, targetId)
     }
-
   }
 }
 
