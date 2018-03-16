@@ -1,4 +1,6 @@
+import { DragDropContext } from 'react-dnd/lib/DragDropContext'
 import React, { Component } from 'react'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import { StickyContainer, Sticky } from 'react-sticky'
 import NewEvent from './components/NewEvent'
@@ -73,9 +75,12 @@ const mapStateToProps = state => {
     notification: state.notification
   }
 }
+
+const AppDnD = DragDropContext(HTML5Backend)(App)
+
 export default connect(
   mapStateToProps,
-  { notify, pofInitialization, bufferZoneInitialization, eventsInitialization }
+  { notify, pofInitialization }
 
-)(App)
+)(AppDnD)
 
