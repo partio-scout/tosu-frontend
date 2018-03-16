@@ -18,7 +18,7 @@ import EditEvent from './EditEvent';
 import ItemTypes from '../ItemTypes'
 import activityService from '../services/activities'
 import { editEvent, deleteEvent, deleteEventGroup, deleteActivityFromEventOnlyLocally, addActivityToEventOnlyLocally } from '../reducers/eventReducer'
-import { deleteActivityFromBufferOnlyLocally } from '../reducers/bufferZoneReducer'
+import { deleteActivityFromBufferOnlyLocally, bufferZoneInitialization } from '../reducers/bufferZoneReducer'
 
 const moveActivityFromBuffer = async (props, activityId, parentId, targetId) => {
   try {
@@ -94,7 +94,8 @@ class EventCard extends React.Component {
 
   deleteEvent = async () => {
     try {
-      this.props.deleteEvent(this.props.event.id)
+      await this.props.deleteEvent(this.props.event.id)
+      await this.props.bufferZoneInitialization()
       this.handleClose();
     } catch (exception) {
       console.error('Error in deleting event:', exception);
@@ -250,6 +251,7 @@ export default connect(
   {
     editEvent,
     deleteEvent,
+    bufferZoneInitialization,
     deleteEventGroup,
     addActivityToEventOnlyLocally,
     deleteActivityFromEventOnlyLocally,

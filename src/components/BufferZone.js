@@ -12,10 +12,12 @@ import activityService from '../services/activities'
 const moveActivity = async (props, activityId, parentId, targetId) => {
     try {
         const res = await activityService.moveActivityFromEventToBufferZone(activityId, parentId, targetId)
+      console.log(res)
         props.deleteActivityFromEventOnlyLocally(activityId)
         props.postActivityToBufferOnlyLocally(res)
         return res
     } catch (exception) {
+        console.log(exception)
         return exception
     }
 }
