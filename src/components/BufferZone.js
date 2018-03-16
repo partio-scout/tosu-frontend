@@ -46,25 +46,25 @@ class BufferZone extends React.Component {
         const { isOver, canDrop, connectDropTarget } = this.props
         if (!this.props.buffer.activities || this.props.buffer.activities.length === 0) {
             return connectDropTarget(
-                <div id="bufferzone">
-                    {isOver && canDrop && <div className='green' />}
-                    {!isOver && canDrop && <div className='yellow' />}
-                    {isOver && !canDrop && <div className='red' />}
-                </div>
+              <div id="bufferzone">
+                {isOver && canDrop && <div className='green' />}
+                {!isOver && canDrop && <div className='yellow' />}
+                {isOver && !canDrop && <div className='red' />}
+              </div>
             )
         }
 
         const rows = this.props.buffer.activities.map(activity => {
             const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
-            return <Activity parentId={this.props.buffer.id} parent={this} key={activity.id} act={act} activity={activity} delete={this.props.deleteFromBufferZone} />
+            return <Activity bufferzone='true' parentId={this.props.buffer.id} parent={this} key={activity.id} act={act} activity={activity} delete={this.props.deleteFromBufferZone} />
         })
         return connectDropTarget(
-            <div id="bufferzone">
-                <div className="bufferzone-activities">{rows}</div>
-                {isOver && canDrop && <div className='green' />}
-                {!isOver && canDrop && <div className='yellow' />}
-                {isOver && !canDrop && <div className='red' />}
-            </div>
+          <div id="bufferzone">
+            <div className="bufferzone-activities">{rows}</div>
+            {isOver && canDrop && <div className='green' />}
+            {!isOver && canDrop && <div className='yellow' />}
+            {isOver && !canDrop && <div className='red' />}
+          </div>
         )
     }
 }

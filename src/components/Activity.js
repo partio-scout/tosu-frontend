@@ -26,7 +26,8 @@ const styles = {
   chipMandatory: {
     margin: 4,
     float: 'left',
-    backgroundColor: red300
+    backgroundColor: red300,
+    cursor: 'move'
   },
   avatarMandatory: {
     size: 28,
@@ -41,7 +42,8 @@ const activitySource = {
     return {
       id: props.activity.id,
       parent: props.parent.constructor.name,
-      parentId: props.parentId
+      parentId: props.parentId,
+      bufferzone: props.bufferzone
     }
   },
   endDrag(props, monitor) {
@@ -91,6 +93,7 @@ class Activity extends Component {
   }
 
   render() {
+    console.log(this.props.parent.constructor.name)
     const { activity, act } = this.props
     const { connectDragSource } = this.props
     if (activity && act[0]) {

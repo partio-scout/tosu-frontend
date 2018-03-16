@@ -36,12 +36,9 @@ const EventCardTarget = {
     const targetId = props.event.id
     const { parentId } = item
     const activityId = item.id
-    const parentName = item.parent
-    console.log(parentName)
-    console.log('parent: ', parentId)
-    console.log('target: ', targetId)
-    console.log('id: ', activityId)
-    if (parentName === 'BufferZone') {
+    console.log(item)
+    console.log(item.bufferzone)
+    if (item.bufferzone === 'true') {
       const res = moveActivityFromBuffer(activityId, parentId, targetId)
       console.log(res)
     } else {
