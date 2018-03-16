@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import { DragDropContext } from 'react-dnd'
+import isTouchDevice from 'is-touch-device'
 import React, { Component } from 'react'
 import HTML5Backend from 'react-dnd-html5-backend'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -13,6 +14,7 @@ import { notify} from './reducers/notificationReducer'
 import {pofInitialization} from './reducers/pofActivityReducer'
 import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
+
 
 class App extends Component {
   constructor() {
@@ -74,7 +76,18 @@ const mapStateToProps = state => {
   }
 }
 
-const AppDnD = DragDropContext(HTML5Backend)(App)
+
+
+let AppDnD
+
+if (!isTouchDevice()) {
+  console.log('ei oo')
+  AppDnD = DragDropContext(HTML5Backend)(App)
+} else {
+  console.log('on')
+  AppDnD = DragDropContext(TouchBackend)(App)
+}
+
 
 export default connect(
   mapStateToProps,

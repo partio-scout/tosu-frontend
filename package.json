@@ -23,6 +23,7 @@
     "core-decorators": "^0.20.0",
     "downshift": "^1.28.2",
     "flow": "^0.2.3",
+    "is-touch-device": "^1.0.1",
     "match-sorter": "^2.2.0",
     "material-ui": "^0.20.0",
     "material-ui-search-bar": "^0.4.1",
