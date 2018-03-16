@@ -1,12 +1,14 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
-import eventService from '../services/events';
-import eventgroupService from '../services/eventgroups';
+//import eventgroupService from '../services/eventgroups';
 import moment from 'moment';
 import EventForm from './EventForm';
+import {connect} from 'react-redux'
+import {editEvent} from '../reducers/eventReducer'
+import {bufferZoneInitialization} from '../reducers/bufferZoneReducer'
 
-export default class EditEvent extends React.Component {
+class EditEvent extends React.Component {
   constructor(props) {
     super(props);
     const event = this.props.data;
@@ -54,7 +56,7 @@ export default class EditEvent extends React.Component {
   };
 
   handleCloseAndSend = async () => {
-    const data = {
+    const moddedEvent = {
       id: this.props.data.id,
       title: this.state.title,
       startDate: moment(this.state.startDate).format('YYYY-MM-DD'),
@@ -65,7 +67,9 @@ export default class EditEvent extends React.Component {
       information: this.state.information
     };
     try {
-      await eventService.edit(data);
+      this.props.editEvent(moddedEvent)
+      this.props.bufferZoneInitialization(0)
+     // await eventService.edit(data);
       this.props.source();
       this.setState({ open: false });
     } catch (exception) {
@@ -75,6 +79,7 @@ export default class EditEvent extends React.Component {
     }
   };
 
+  /*
   sendGroupIdPostRequest = async () => {
     try {
       const groupId = await eventgroupService.create();
@@ -91,6 +96,7 @@ export default class EditEvent extends React.Component {
       console.error('Error in event POST:', exception);
     }
   };
+  */
 
   update = (
     title,
@@ -146,3 +152,9 @@ export default class EditEvent extends React.Component {
     );
   }
 }
+
+export default connect(
+  null,
+  { editEvent, bufferZoneInitialization }
+
+)(EditEvent)
