@@ -78,15 +78,15 @@ const mapStateToProps = state => {
 
 
 
-let AppDnD
+// let AppDnD
 
-if (!isTouchDevice()) {
-  console.log('ei oo')
-  AppDnD = DragDropContext(HTML5Backend)(App)
-} else {
-  console.log('on')
-  AppDnD = DragDropContext(TouchBackend)(App)
-}
+/* if (!isTouchDevice()) {
+  console.log('ei oo') */
+ const AppDnD = DragDropContext(HTML5Backend)(App)
+// } else {
+  // console.log('on')
+  // AppDnD = DragDropContext(TouchBackend)(App)
+// }
 
 
 export default connect(

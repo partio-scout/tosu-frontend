@@ -160,6 +160,16 @@ export default class EventForm extends React.Component {
         onSubmit={this.send}
         onError={errors => console.log(errors)}
       >
+        <TextValidator
+          floatingLabelText="Tapahtuman nimi"
+          name="title"
+          value={this.state.title}
+          hintText="Tapahtuman nimi"
+          onChange={this.handleNewEventFormChange}
+          validators={['required']}
+          errorMessages={['Tapahtuman nimi vaaditaan']}
+          errorStyle={errorStyle}
+        />
         <p>Aloituspäivämäärä ja aika</p>
         <DateValidator
           name="startDate"
@@ -246,18 +256,6 @@ export default class EventForm extends React.Component {
             primaryText="Kuukausittain (esim. 2. maanantai)"
           />
         </SelectValidator>
-        <br />
-
-        <TextValidator
-          floatingLabelText="Tapahtuman nimi"
-          name="title"
-          value={this.state.title}
-          hintText="Tapahtuman nimi"
-          onChange={this.handleNewEventFormChange}
-          validators={['required']}
-          errorMessages={['Tapahtuman nimi vaaditaan']}
-          errorStyle={errorStyle}
-        />
         <br />
         <SelectValidator
           name="type"
