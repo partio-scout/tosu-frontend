@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 class Notification extends React.Component {
   render() {
-    if (this.props.notification.length === 0) {
+    if (this.props.notification === null) {
       return null
     }
     const style = {
@@ -12,10 +12,7 @@ class Notification extends React.Component {
       borderWidth: 1
     }
 
-    console.log('This props', this.props)
-    console.log('noti', this.props.store.getState())
-
-    return <div style={style}>{this.props.store.getState().notification}</div>
+    return <div style={style}>{this.props.notification}</div>
   }
 }
 

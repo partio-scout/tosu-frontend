@@ -2,6 +2,8 @@ import React from 'react';
 import { DropTarget } from 'react-dnd';
 import PropTypes from 'prop-types'
 import Activity from './Activity'
+import {connect} from 'react-redux'
+import {notify} from '../reducers/notificationReducer'
 
 const Types = {
     ACTIVITY: 'activity'
@@ -34,10 +36,11 @@ class BufferZone extends React.Component {
     }
 
     render() {
+    //    console.log(this.props)
         // const { position } = this.props
         // console.log(position)
         const { isOver, canDrop, connectDropTarget } = this.props
-        if (!this.props.bufferZoneActivities || this.props.bufferZoneActivities.length === 0) {
+        if (!this.props.buffer.activities || this.props.buffer.activities.length === 0) {
             return connectDropTarget(
               <div id="bufferzone">
                 {isOver && canDrop && <div className='green' />}
@@ -46,14 +49,15 @@ class BufferZone extends React.Component {
               </div>
             )
         }
-        const rows = this.props.bufferZoneActivities.activities.map(activity => {
-            const act = this.props.activities.filter(a => a.guid === activity.guid);
+       
+        const rows = this.props.buffer.activities.map(activity => {
+            const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
               return <Activity key={activity.id} act={act} activity={activity} delete={this.props.deleteFromBufferZone} />
         })
         // const rows = ActivityMapper(activities, this.props.activities)
           return connectDropTarget(
             <div id="bufferzone">
-              {rows}
+              <div className="bufferzone-activities">{rows}</div>
               {isOver && canDrop && <div className='green' />}
               {!isOver && canDrop && <div className='yellow' />}
               {isOver && !canDrop && <div className='red' />}
@@ -62,4 +66,18 @@ class BufferZone extends React.Component {
         }
 }
 
-export default DropTarget(Types.ACTIVITY, bufferZoneTarget, collect)(BufferZone)
+const mapStateToProps = (state) => {
+    return {
+      pofActivities: state.pofActivities,
+      buffer: state.buffer,
+      events: state.events
+    }
+  }
+
+export default DropTarget(Types.ACTIVITY, bufferZoneTarget, collect)(
+    connect(
+        mapStateToProps,
+        { notify }
+      
+      )(BufferZone)
+)

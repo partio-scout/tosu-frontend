@@ -1,14 +1,12 @@
-import React from 'react';
-import EventCard from './EventCard';
+import React from 'react'
+import EventCard from './EventCard'
+import { connect } from 'react-redux'
 
 const ListEvents = props => {
   const listOfEvents = props.events.map(event => (
     <EventCard
       key={event.id ? event.id : 0}
       event={event}
-      fetchedActivities={props.fetchedActivities}
-      fetchEvents={props.fetchEvents}
-      updateFilteredActivities={props.updateFilteredActivities}
     />
   ));
 
@@ -20,4 +18,14 @@ const ListEvents = props => {
   );
 };
 
-export default ListEvents;
+const mapStateToProps = state => {
+  return {
+    events: state.events
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  {  }
+
+)(ListEvents)

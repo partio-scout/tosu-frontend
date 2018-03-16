@@ -11,10 +11,11 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import ActivitySearch from './SearchBar';
 import Activity from './Activity';
-import eventService from '../services/events';
-import eventgroupService from '../services/eventgroups';
 import EditEvent from './EditEvent';
 import { DropTarget } from 'react-dnd';
+import { connect } from 'react-redux'
+import { editEvent, deleteEvent, deleteEventGroup } from '../reducers/eventReducer'
+import ItemTypes from '../ItemTypes'
 
 const EventCardTarget = {
   drop(props) {
@@ -34,8 +35,7 @@ class EventCard extends React.Component {
     super(props);
     this.state = {
       expanded: false,
-      open: false,
-      activities: props.event.activities
+      open: false
     };
   }
 
@@ -47,26 +47,9 @@ class EventCard extends React.Component {
     this.setState({ expanded: false });
   };
 
-  updateActivities = activity => {
-    console.log('Update', activity);
-    this.setState({
-      activities: this.state.activities.concat(activity)
-    });
-  };
-
-  updateAfterDelete = activity => {
-    const index = this.state.activities.indexOf(activity);
-    const activitiesAfterDelete = this.state.activities;
-    activitiesAfterDelete.splice(index, 1);
-
-    this.setState({
-      activities: activitiesAfterDelete
-    });
-  };
-
   deleteEvent = async () => {
     try {
-      await eventService.deleteEvent(this.props.event.id);
+      this.props.deleteEvent(this.props.event.id)
       this.handleClose();
     } catch (exception) {
       console.error('Error in deleting event:', exception);
@@ -75,7 +58,7 @@ class EventCard extends React.Component {
 
   deleteEventGroup = async () => {
     try {
-      await eventgroupService.deleteEventgroup(this.props.event.groupId);
+     this.props.deleteEventGroup(this.props.event.groupId);
       this.handleClose();
     } catch (exception) {
       console.error('Error in deleting event:', exception);
@@ -92,16 +75,14 @@ class EventCard extends React.Component {
 
   handleClose = () => {
     this.setState({ open: false });
-    this.props.fetchEvents();
   };
 
   render() {
-    const data = this.props.fetchedActivities;
     let rows
-    if (this.state.activities) {
-      rows = this.state.activities.map(activity => {
-        const act = data.filter(a => a.guid === activity.guid);
-        return <Activity key={activity.id} act={act} activity={activity} delete={this.updateAfterDelete} />
+    if (this.props.event.activities) {
+      rows = this.props.event.activities.map(activity => {
+        const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
+        return <Activity key={activity.id} act={act} activity={activity} />
       })
     }
     const { event } = this.props;
@@ -140,7 +121,6 @@ class EventCard extends React.Component {
         />
       ];
     }
-
     return (
       <Card
         expanded={this.state.expanded}
@@ -190,9 +170,8 @@ class EventCard extends React.Component {
           {rows}
           <br />
           <ActivitySearch
-            dataSource={data}
+            dataSource={this.props.pofActivities}
             event={this.props.event}
-            updateActivities={this.updateActivities}
             updateFilteredActivities={this.props.updateFilteredActivities}
           />
           <CardActions>
@@ -209,4 +188,19 @@ class EventCard extends React.Component {
   }
 }
 
-export default DropTarget(ItemTypes.ACTIVITY, EventCardTarget, collect) (EventCard)
+
+const mapStateToProps = (state) => {
+  return {
+    pofActivities: state.pofActivities,
+    events: state.events
+  }
+}
+
+const DroppableEventCard = DropTarget(ItemTypes.ACTIVITY, EventCardTarget, collect)(EventCard)
+
+export default connect(
+  mapStateToProps,
+  { editEvent, deleteEvent, deleteEventGroup }
+
+)(DroppableEventCard)
+
