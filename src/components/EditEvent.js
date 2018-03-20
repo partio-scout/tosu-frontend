@@ -4,6 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 //import eventgroupService from '../services/eventgroups';
 import moment from 'moment';
 import EventForm from './EventForm';
+import { notify } from '../reducers/notificationReducer'
 import {connect} from 'react-redux'
 import {editEvent} from '../reducers/eventReducer'
 import {bufferZoneInitialization} from '../reducers/bufferZoneReducer'
@@ -74,7 +75,7 @@ class EditEvent extends React.Component {
       this.setState({ open: false });
     } catch (exception) {
       console.error('Error in event PUT:', exception);
-      this.props.setNotification('Eventin muokkaus epäonnistui')
+      this.props.notify('Tapahtuman muokkaus epäonnistui')
 
     }
   };
@@ -155,6 +156,6 @@ class EditEvent extends React.Component {
 
 export default connect(
   null,
-  { editEvent, bufferZoneInitialization }
+  { editEvent, bufferZoneInitialization, notify }
 
 )(EditEvent)

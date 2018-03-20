@@ -1,4 +1,5 @@
 import { connect } from 'react-redux'
+import { notify } from '../reducers/notificationReducer'
 import { DragSource } from 'react-dnd'
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
@@ -77,6 +78,7 @@ const handleRequestDelete = async (activity, props) => {
     }
   } catch (exception) {
     console.error('Error in deleting activity:', exception)
+    props.notify('Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!')
   }
 }
 
@@ -151,6 +153,6 @@ const mapStateToProps = state => {
 }
 export default connect(
   mapStateToProps,
-  { deleteActivityFromEvent, deleteActivityFromBuffer }
+  { deleteActivityFromEvent, deleteActivityFromBuffer, notify }
 
 )(DraggableActivity)
