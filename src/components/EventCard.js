@@ -19,6 +19,7 @@ import ItemTypes from '../ItemTypes'
 import activityService from '../services/activities'
 import { editEvent, deleteEvent, deleteEventGroup, deleteActivityFromEventOnlyLocally, addActivityToEventOnlyLocally } from '../reducers/eventReducer'
 import { deleteActivityFromBufferOnlyLocally, bufferZoneInitialization } from '../reducers/bufferZoneReducer'
+import { green100, white } from 'material-ui/styles/colors';
 
 const moveActivityFromBuffer = async (props, activityId, parentId, targetId) => {
   try {
@@ -48,12 +49,10 @@ const EventCardTarget = {
     const targetId = props.event.id
     const { parentId } = item
     const activityId = item.id
-    console.log(item)
-    console.log(item.bufferzone)
     if (item.bufferzone === 'true') {
       moveActivityFromBuffer(props, activityId, parentId, targetId)
     } else if (targetId !== parentId) {
-        moveActivityFromEvent(props, activityId, parentId, targetId)
+      moveActivityFromEvent(props, activityId, parentId, targetId)
     }
   }
 }
@@ -165,12 +164,14 @@ class EventCard extends React.Component {
         />
       ];
     }
-    const { connectDropTarget } = this.props
+    const { connectDropTarget, canDrop } = this.props
+    const color = canDrop ? green100 : white
     return connectDropTarget(
       <div>
         <Card
           expanded={this.state.expanded}
           onExpandChange={this.handleExpandChange}
+          style={{backgroundColor: color}}
         >
           <CardHeader
             title={title}
