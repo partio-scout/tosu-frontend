@@ -121,7 +121,7 @@ class Activity extends Component {
               <Avatar style={styles.avatarMandatory}>
                 <img
                   style={{ width: '100%' }}
-                  src="https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png"
+                  src={act[0].mandatoryIconUrl}
                   alt="Mandatory activity"
                 />
               </Avatar>
@@ -150,7 +150,7 @@ class Activity extends Component {
             <Avatar style={styles.avatar}>
               <img
                 style={{ width: '100%' }}
-                src="https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3562.png"
+                src={act[0].mandatoryIconUrl}
                 alt="Not-mandatory activity"
               />
             </Avatar>
