@@ -7,7 +7,7 @@ body {
 }
 
 App {
-  padding-top: 20px
+  padding-top: 20px;
 }
 
 .content {
@@ -29,11 +29,11 @@ p.eventTimes::first-letter {
 
 p.eventTimes > span {
   font-family: Source Sans Pro Black, sans-serif;
-  font-weight: bold
+  font-weight: bold;
 }
 
 .buttonRight {
-  float: right
+  float: right;
 }
 
 #bufferzone {
@@ -46,29 +46,37 @@ p.eventTimes > span {
 
 .top-search {
   background: '#5DBCD2';
-  padding: 20 
+  padding: 20;
 }
 
 .activityTitle {
   display: block;
   max-width: 175px;
   word-wrap: break-all;
-  white-space:normal;
+  white-space: normal;
   font-weight: bold;
   line-height: 20px;
   padding: 5px;
 }
 
-.bufferzone-activities{
+.bufferzone-activities {
   overflow: auto;
 }
 
 .pattern {
-  background:
-  radial-gradient(#6eff3f 15%, transparent 16%) 0 0,
-  radial-gradient(#6eff3f 15%, transparent 16%) 8px 8px,
-  radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
-  radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
-  background-color:white;
-  background-size:16px 16px;
+  background: radial-gradient(#6eff3f 15%, transparent 16%) 0 0,
+    radial-gradient(#6eff3f 15%, transparent 16%) 8px 8px,
+    radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 0 1px,
+    radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 8px 9px;
+  background-color: white;
+  background-size: 16px 16px;
+}
+
+.event-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.ReactStickyHeader_midground {
+  height: auto !important;
 }

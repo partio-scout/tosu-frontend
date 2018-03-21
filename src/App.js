@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { default as TouchBackend } from 'react-dnd-touch-backend'
 import NewEvent from './components/NewEvent'
 import Appbar from './components/AppBar'
+import Toggle from 'material-ui/Toggle'
 import Notification from './components/Notification'
 import ListEvents from './components/ListEvents'
 import { notify } from './reducers/notificationReducer'
@@ -18,15 +19,27 @@ import { pofInitialization } from './reducers/pofActivityReducer'
 import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 
+const styles = {
+  toggle: {
+    backgroundColor: '#5DBCD2'
+  }
+}
 class App extends Component {
   constructor() {
     super()
     this.state = {
-      bufferZoneHeight: 0
+      bufferZoneHeight: 0,
+      headerVisible: true
     }
   }
 
   componentDidMount = async () => {
+    if (window.location.pathname === '/new-event') {
+      this.setState({
+        headerVisible: false,
+        bufferZoneHeight: 0
+      })
+    }
     await Promise.all([
       this.props.pofInitialization(),
       this.props.eventsInitialization(),
@@ -40,6 +53,33 @@ class App extends Component {
     }
   }
 
+  toggleTopBar = () => {
+    const oldState = this.state.headerVisible
+
+    if (oldState) {
+      this.setState({
+        bufferZoneHeight: 0,
+        headerVisible: !this.state.headerVisible
+      })
+    } else {
+      this.setState({
+        headerVisible: !this.state.headerVisible
+      })
+    }
+  }
+
+  hideTopBar = () => {
+    if (this.state.headerVisible) {
+      this.toggleTopBar()
+    }
+  }
+
+  openTopBar = () => {
+    if (!this.state.headerVisible) {
+      this.toggleTopBar()
+    }
+  }
+
   render() {
     return (
       <div className="App">
@@ -49,32 +89,45 @@ class App extends Component {
               // This is the sticky part of the header.
               header={
                 <div className="Header_root">
-                  <Appbar
-                    //    bufferZoneUpdater={this.updateBufferZoneActivities}
-                    //  deleteFromBufferZone={this.deleteFromBufferZone}
-                    setHeaderHeight={this.setHeaderHeight}
-                  />
+                  <Toggle style={styles.toggle} onClick={this.toggleTopBar} />
+                  {this.state.headerVisible ? (
+                    <Appbar
+                      //    bufferZoneUpdater={this.updateBufferZoneActivities}
+                      //  deleteFromBufferZone={this.deleteFromBufferZone}
+                      setHeaderHeight={this.setHeaderHeight}
+                    />
+                  ) : null}
                 </div>
               }
             >
-              <section>Determine when stickyness starts!</section>
+              <section />
             </StickyHeader>
+
             <div
               id="container"
-              style={{ paddingTop: this.state.bufferZoneHeight }}
+              style={{ paddingTop: this.state.bufferZoneHeight + 30 }}
             >
               <div className="content">
                 <Link to="/">
-                  <RaisedButton label="Lista tapahtumista" />
+                  <RaisedButton
+                    label="Lista tapahtumista"
+                    onClick={this.openTopBar}
+                  />
                 </Link>
                 &nbsp;
                 <Link to="/new-event">
-                  <RaisedButton label="Uusi tapahtuma" />
+                  <RaisedButton
+                    label="Uusi tapahtuma"
+                    onClick={this.hideTopBar}
+                  />
                 </Link>
                 &nbsp;
                 <Notification />
                 <Route exact path="/" render={() => <ListEvents />} />
-                <Route path="/new-event" render={() => <NewEvent />} />
+                <Route
+                  path="/new-event"
+                  render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
+                />
               </div>
             </div>
           </MuiThemeProvider>
