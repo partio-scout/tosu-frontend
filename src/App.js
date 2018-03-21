@@ -4,12 +4,14 @@ import isTouchDevice from 'is-touch-device'
 import React, { Component } from 'react'
 import HTML5Backend from 'react-dnd-html5-backend'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import RaisedButton from 'material-ui/RaisedButton'
 import 'react-sticky-header/styles.css'
 import StickyHeader from 'react-sticky-header'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { default as TouchBackend } from 'react-dnd-touch-backend'
 import NewEvent from './components/NewEvent'
 import Appbar from './components/AppBar'
 import Notification from './components/Notification'
-import { default as TouchBackend } from 'react-dnd-touch-backend'
 import ListEvents from './components/ListEvents'
 import { notify } from './reducers/notificationReducer'
 import { pofInitialization } from './reducers/pofActivityReducer'
@@ -41,36 +43,42 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <MuiThemeProvider>
-          <StickyHeader
-            // This is the sticky part of the header.
-            header={
-              <div className="Header_root">
-                <Appbar
-                  //    bufferZoneUpdater={this.updateBufferZoneActivities}
-                  //  deleteFromBufferZone={this.deleteFromBufferZone}
-                  setHeaderHeight={this.setHeaderHeight}
-                />
+        <Router>
+          <MuiThemeProvider>
+            <StickyHeader
+              // This is the sticky part of the header.
+              header={
+                <div className="Header_root">
+                  <Appbar
+                    //    bufferZoneUpdater={this.updateBufferZoneActivities}
+                    //  deleteFromBufferZone={this.deleteFromBufferZone}
+                    setHeaderHeight={this.setHeaderHeight}
+                  />
+                </div>
+              }
+            >
+              <section>Determine when stickyness starts!</section>
+            </StickyHeader>
+            <div
+              id="container"
+              style={{ paddingTop: this.state.bufferZoneHeight }}
+            >
+              <div className="content">
+                <Link to="/">
+                  <RaisedButton label="Lista tapahtumista" />
+                </Link>
+                &nbsp;
+                <Link to="/new-event">
+                  <RaisedButton label="Uusi tapahtuma" />
+                </Link>
+                &nbsp;
+                <Notification />
+                <Route exact path="/" render={() => <ListEvents />} />
+                <Route path="/new-event" render={() => <NewEvent />} />
               </div>
-            }
-          >
-    
-            <section>
-            Determine when stickyness starts!
-            </section>
-              
-          </StickyHeader>
-          <div
-            id="container"
-            style={{ paddingTop: this.state.bufferZoneHeight }}
-          >
-            <div className="content">
-              <NewEvent />
-              <Notification />
-              <ListEvents />
             </div>
-          </div>
-        </MuiThemeProvider>
+          </MuiThemeProvider>
+        </Router>
       </div>
     )
   }
