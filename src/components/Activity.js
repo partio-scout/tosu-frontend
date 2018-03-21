@@ -113,7 +113,9 @@ class Activity extends Component {
     const { activity, act } = this.props
     const { connectDragSource } = this.props
     if (activity && act[0]) {
+      
       if (act[0].mandatory) {
+
         return connectDragSource(
           <div>
             <Chip

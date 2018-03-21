@@ -79,7 +79,8 @@ export default class PlanForm extends React.Component {
         <strong>Kesto:</strong> {activity.duration}<br/>
         <strong>Taitoalueet:</strong> {activity.taitoalueet.join(', ')}<br/>
         <strong>Kasvatustavoitteet:</strong> {activity.kasvatustavoitteet.join(', ')}<br/>
-        <strong>Pakollisuus:</strong> {activity.mandatory ? "Pakollinen" : "Ei pakollinen"}</p>
+        <strong>Pakollisuus:</strong> {activity.mandatory ? "Pakollinen " : "Ei pakollinen "} 
+        <img src={activity.mandatoryIconUrl} alt="mandatoryIcon" height="15px"/></p>
         <p><strong>Kuvaus:</strong> {activity.content}</p>
       </div>
     </Tab>
