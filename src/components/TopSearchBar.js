@@ -17,6 +17,10 @@ class TopSearchBar extends React.Component {
     };
   }
 
+  componentDidUpdate = () => {
+    this.props.getHeight()
+  }
+
   handleChange = async selectedActivity => {
     await this.setState({ selectedActivity })
     if (this.state.selectedActivity) {
