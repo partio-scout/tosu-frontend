@@ -72,7 +72,7 @@ export default class PlanForm extends React.Component {
       <div>
 
       <Tabs>
-        <Tab label="Aktiviteetin tiedot" >
+        <Tab label="Tiedot" >
       <div>
         
         <p><strong>Paikka:</strong> {activity.place}<br/>
@@ -84,7 +84,7 @@ export default class PlanForm extends React.Component {
         <p><strong>Kuvaus:</strong> {activity.content}</p>
       </div>
     </Tab>
-    <Tab label="Toteutusvinkit" >
+    <Tab label="Vinkit" >
       <div>      
         <h2 style={styles.headline}>Toteutusvinkit</h2>
       {suggestionDeatails.length !== 0 ? suggestionDeatails : "Ei toteutusvinkkejä"}
