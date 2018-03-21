@@ -11,6 +11,7 @@ import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import Dialog from 'material-ui/Dialog'
 import PlanForm from './PlanForm'
+import ActivityPreview from './ActivityPreview';
 
 const styles = {
   chip: {
@@ -106,10 +107,9 @@ class Activity extends Component {
   }
 
   render() {
-    const { activity, act } = this.props
-    const { connectDragSource } = this.props
+    const { activity, act, connectDragSource, isDragging } = this.props
     if (activity && act[0]) {
-      if (act[0].mandatory) {
+      if (act[0].mandatory && !isDragging) {
         return connectDragSource(
           <div>
             <Chip
@@ -138,35 +138,49 @@ class Activity extends Component {
             </Chip>
           </div>
         )
-      }
-      return connectDragSource(
-        <div>
-          <Chip
-            onRequestDelete={() => handleRequestDelete(activity, this.props)}
-            style={styles.chip}
-            key={activity.id}
-            onClick={this.handleClick}
-          >
-            <Avatar style={styles.avatar}>
-              <img
-                style={{ width: '100%' }}
-                src="https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3562.png"
-                alt="Not-mandatory activity"
-              />
-            </Avatar>
-            <span className="activityTitle">{act[0].title}</span>
-            <Dialog
-              title={act[0].title}
-              modal={false}
-              open={this.state.open}
-              onRequestClose={this.handleClick}
-              autoScrollBodyContent
+      } else if (!isDragging) {
+        return connectDragSource(
+          <div>
+            <Chip
+              onRequestDelete={() => handleRequestDelete(activity, this.props)}
+              style={styles.chip}
+              key={activity.id}
+              onClick={this.handleClick}
             >
-              <PlanForm activity={act[0]} savedActivity={activity} />
-            </Dialog>
-          </Chip>
-        </div>
-      )
+              <Avatar style={styles.avatar}>
+                <img
+                  style={{ width: '100%' }}
+                  src="https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3562.png"
+                  alt="Not-mandatory activity"
+                />
+              </Avatar>
+              <span className="activityTitle">{act[0].title}</span>
+              <Dialog
+                title={act[0].title}
+                modal={false}
+                open={this.state.open}
+                onRequestClose={this.handleClick}
+                autoScrollBodyContent
+              >
+                <PlanForm activity={act[0]} savedActivity={activity} />
+              </Dialog>
+            </Chip>
+          </div>
+        )
+      } else if (act[0].mandatory && isDragging) {
+        return (
+          <div>
+            <ActivityPreview />
+          </div>
+        )
+      } else if (isDragging) {
+        return (
+          <div>
+            <ActivityPreview /> 
+          </div>
+        )
+      }
+
     }
     return <div />
   }
