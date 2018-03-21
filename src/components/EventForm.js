@@ -247,7 +247,6 @@ export default class EventForm extends React.Component {
           onChange={this.handleFrequency}
           disabled={!this.state.checked}
         >
-          <MenuItem value={0} primaryText="Kerran" />
           <MenuItem value={1} primaryText="Päivittäin" />
           <MenuItem value={2} primaryText="Viikottain" />
           <MenuItem value={3} primaryText="Joka toinen viikko" />
