@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import React from 'react';
 import { DropTarget } from 'react-dnd';
+import { notify } from '../reducers/notificationReducer'
 import PropTypes from 'prop-types'
 import {
   Card,
@@ -28,7 +29,7 @@ const moveActivityFromBuffer = async (props, activityId, parentId, targetId) => 
     await props.deleteActivityFromBufferOnlyLocally(activityId)
     return res
   } catch (exception) {
-    return exception
+    props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
 }
 
@@ -39,7 +40,7 @@ const moveActivityFromEvent = async (props, activityId, parentId, targetId) => {
     props.deleteActivityFromEventOnlyLocally(activityId)
     return res
   } catch (exception) {
-    return exception
+    props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
 }
 
@@ -97,6 +98,7 @@ class EventCard extends React.Component {
       this.handleClose();
     } catch (exception) {
       console.error('Error in deleting event:', exception);
+      this.props.notify('Tapahtuman poistamisessa tuli virhe. Yritä uudestaan!')
     }
   };
 
@@ -106,6 +108,7 @@ class EventCard extends React.Component {
       this.handleClose();
     } catch (exception) {
       console.error('Error in deleting event:', exception);
+      this.props.notify('Toistuvan tapahtuman poistamisessa tuli virhe. Yritä uudestaan!')
     }
   };
 
@@ -259,6 +262,7 @@ const DroppableEventCard = DropTarget(ItemTypes.ACTIVITY, EventCardTarget, colle
 export default connect(
   mapStateToProps,
   {
+    notify,
     editEvent,
     deleteEvent,
     bufferZoneInitialization,

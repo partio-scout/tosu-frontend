@@ -1,4 +1,5 @@
 import React from 'react'
+import { notify } from '../reducers/notificationReducer'
 import Dialog from 'material-ui/Dialog'
 import RaisedButton from 'material-ui/RaisedButton'
 import moment from 'moment'
@@ -7,6 +8,7 @@ import FrequentEventsHandler from '../utils/FrequentEventsHandler'
 import EventForm from './EventForm'
 import { addEvent } from '../reducers/eventReducer'
 import { connect } from 'react-redux'
+
 
 class NewEvent extends React.Component {
   state = {
@@ -134,6 +136,7 @@ class NewEvent extends React.Component {
       await this.props.addEvent(eventData)
     } catch (exception) {
       console.error('Error in event POST:', exception)
+      this.props.notify('Yritit luoda tapahtumaa, jonka alkamisaika on jo mennyt!')
     }
   }
 
@@ -186,4 +189,4 @@ class NewEvent extends React.Component {
   }
 }
 
-export default connect(null, { addEvent })(NewEvent)
+export default connect(null, { addEvent, notify })(NewEvent)

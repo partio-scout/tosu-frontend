@@ -17,7 +17,7 @@ const moveActivity = async (props, activityId, parentId, targetId) => {
         props.postActivityToBufferOnlyLocally(res)
         return res
     } catch (exception) {
-        return exception
+        props.notify('Aktiviteettialue on täynnä!')
     }
 }
 

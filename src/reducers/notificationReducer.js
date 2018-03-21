@@ -13,7 +13,7 @@ export const notify = (text, timeout = 5) => {
 
         setTimeout(() => {
             dispatch(hideNotification())
-        }, timeout)
+        }, timeout * 1000)
     }
 }
 const showNotification = (text) => {
