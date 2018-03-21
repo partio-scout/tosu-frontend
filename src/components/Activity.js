@@ -42,7 +42,6 @@ const activitySource = {
   beginDrag(props) {
     return {
       id: props.activity.id,
-      parent: props.parent.constructor.name,
       parentId: props.parentId,
       bufferzone: props.bufferzone
     }
@@ -53,7 +52,6 @@ const activitySource = {
     }
     const activity = monitor.getItem()
     const dropResult = monitor.getDropResult()
-    console.log(`activity: ${activity} result: ${dropResult}`)
   }
 }
 

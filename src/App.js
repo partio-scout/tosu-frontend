@@ -85,7 +85,7 @@ const mapStateToProps = state => {
  const AppDnD = DragDropContext(HTML5Backend)(App)
 // } else {
   // console.log('on')
-  // AppDnD = DragDropContext(TouchBackend)(App)
+  // AppDnD = DragDropContext(TouchBackend({ enableMouseEvents: true }))(App)
 // }
 
 

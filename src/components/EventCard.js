@@ -169,13 +169,11 @@ class EventCard extends React.Component {
       ];
     }
     let patternClass
-    const { connectDropTarget, canDrop, isOver, target } = this.props
-    console.log(target)
+    const { connectDropTarget, canDrop, isOver } = this.props
     let background = { backgroundColor: white }
-    if (canDrop && !target.bufferzone && target.id !== target.parentId) {
+    if (canDrop) {
       background = { backgroundColor: green100 }
     }
-    
     if (isOver) {
       patternClass = 'pattern'
     }

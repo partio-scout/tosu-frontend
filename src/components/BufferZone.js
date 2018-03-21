@@ -62,10 +62,10 @@ class BufferZone extends React.Component {
         })
         let patternClass
         let background = { backgroundColor: white }
-        if (canDrop && !target.bufferzone) {
+        if (canDrop) {
           background = { backgroundColor: green100 }
         }
-        if (isOver && !target.bufferzone) {
+        if (isOver) {
           patternClass = 'pattern'
         }
         return connectDropTarget(
