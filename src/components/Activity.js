@@ -138,7 +138,7 @@ class Activity extends Component {
               autoScrollBodyContent
             >
             <PlanForm
-              activity={activity}
+              activity={act[0]}
             />
         </Dialog>
             </Chip>
@@ -169,7 +169,7 @@ class Activity extends Component {
               autoScrollBodyContent
             >
             <PlanForm
-              activity={activity}
+              activity={act[0]}
             />
         </Dialog>
           </Chip>
