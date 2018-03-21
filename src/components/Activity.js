@@ -139,6 +139,7 @@ class Activity extends Component {
             >
             <PlanForm
               activity={act[0]}
+              savedActivity={activity}
             />
         </Dialog>
             </Chip>
@@ -170,6 +171,7 @@ class Activity extends Component {
             >
             <PlanForm
               activity={act[0]}
+              savedActivity={activity}
             />
         </Dialog>
           </Chip>

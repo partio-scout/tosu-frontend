@@ -12,7 +12,7 @@ const addPlanToActivity = async (data, activityId) => {
 }
 
 const getPlansForActivity = async (activityId) => {
-    const response = await axios.get(`${API_ROOT}/activity/${activityId}/plan`)
+    const response = await axios.get(`${API_ROOT}/activity/${activityId}/plans`)
 }
 
 const getAllPlansForActivity = async (activityId) => {
