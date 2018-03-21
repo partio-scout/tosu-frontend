@@ -44,18 +44,6 @@ p.eventTimes > span {
   border-radius: 8px;
 }
 
-.green {
-  background-color: green
-}
-
-.yellow {
-  background-color: yellow
-}
-
-.red {
-  background-color: red
-}
-
 .top-search {
   background: '#5DBCD2';
   padding: 20 
@@ -73,4 +61,14 @@ p.eventTimes > span {
 
 .bufferzone-activities{
   overflow: auto;
+}
+
+.pattern {
+  background:
+  radial-gradient(#6eff3f 15%, transparent 16%) 0 0,
+  radial-gradient(#6eff3f 15%, transparent 16%) 8px 8px,
+  radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+  radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+  background-color:white;
+  background-size:16px 16px;
 }
