@@ -11,12 +11,8 @@ const addPlanToActivity = async (data, activityId) => {
   return response.data
 }
 
-const getPlansForActivity = async (activityId) => {
-    const response = await axios.get(`${API_ROOT}/activity/${activityId}/plans`)
-}
-
-const getAllPlansForActivity = async (activityId) => {
-  const response = await axios.get(`https://pof-backend.partio.fi/item-json-vinkit/?postGUID=${activityId}&lang=fi`)
-}//toimminnan testaamiseksi alkuun tavalla
+//const getPlansForActivity = async (activityId) => {
+//    const response = await axios.get(`${API_ROOT}/activity/${activityId}/plans`)
+//}
 
 export default { getPlansForActivity, deletePlan, addPlanToActivity, getAllPlansForActivity }
