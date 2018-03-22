@@ -1,14 +1,6 @@
 import React from 'react'
-import planService from '../services/plan'
-import {
-  Card,
-  CardActions,
-  CardHeader,
-  CardTitle,
-  CardText
-} from 'material-ui/Card'
-import FlatButton from 'material-ui/FlatButton'
 import { Tabs, Tab } from 'material-ui/Tabs'
+import PlanCard from './PlanCard'
 
 const styles = {
   headline: {
@@ -19,29 +11,6 @@ const styles = {
   }
 }
 
-const PlanCard = ({ suggestion, saveSuggestion, activityId }) => {
-  return (
-    <Card>
-      <CardHeader
-        title={suggestion.title}
-        // subtitle="Subtitle"
-        actAsExpander={true}
-        showExpandableButton={true}
-      />
-
-      <CardText expandable={true}>
-        {suggestion.content}
-
-        <br />
-        <FlatButton
-          label="Valitse"
-          onClick={() => saveSuggestion(suggestion, activityId)}
-        />
-      </CardText>
-    </Card>
-  )
-}
-
 export default class PlanForm extends React.Component {
   constructor(props) {
     super(props)
@@ -49,40 +18,23 @@ export default class PlanForm extends React.Component {
     this.state = {}
   }
 
-   stripHtml(html){
+  stripHtml = html => {
     // Create a new div element
-    var temporalDivElement = document.createElement("div");
+    const temporalDivElement = document.createElement('div')
     // Set the HTML content with the providen
-    temporalDivElement.innerHTML = html;
+    temporalDivElement.innerHTML = html
     // Retrieve the text property of the element (cross-browser support)
-    return temporalDivElement.textContent || temporalDivElement.innerText || "";
-  }
-
-  saveSuggestion = async (suggestion, activityId) => {
-    const data = {
-      guid: suggestion.guid,
-      title: suggestion.title,
-      content: suggestion.content
-    }
-    try {
-      console.log('Data', data)
-      const res = await planService.addPlanToActivity(data, activityId)
-      console.log('Addded plan to activity', res)
-    } catch (exception) {
-      console.log('Exception', exception)
-    }
+    return temporalDivElement.textContent || temporalDivElement.innerText || ''
   }
 
   render() {
     const { activity, savedActivity } = this.props
-    console.log('activity', activity)
 
     const suggestionDeatails = activity.suggestions.map(suggestion => (
       <PlanCard
         key={suggestion.guid}
         suggestion={suggestion}
-        saveSuggestion={this.saveSuggestion}
-        activityId={savedActivity.id}
+        savedActivity={savedActivity}
       />
     ))
     return (
@@ -92,7 +44,7 @@ export default class PlanForm extends React.Component {
             <div>
               <p>
                 <strong>Paikka:</strong> {activity.place.join(', ')}
-                <br />                
+                <br />
                 <strong>Kesto:</strong> {activity.duration}
                 <br />
                 <strong>Taitoalueet:</strong> {activity.taitoalueet.join(', ')}
@@ -110,7 +62,7 @@ export default class PlanForm extends React.Component {
                   alt="mandatoryIcon"
                   height="15px"
                 />
-              </p>                      
+              </p>
               <p>
                 <strong>Tavoite: </strong> {this.stripHtml(activity.ingress)}
               </p>
@@ -118,7 +70,8 @@ export default class PlanForm extends React.Component {
                 <strong>Kuvaus: </strong> {this.stripHtml(activity.content)}
               </p>
               <p>
-                <strong>Johtajan tehtävät: </strong> {this.stripHtml(activity.leader_tasks)}
+                <strong>Johtajan tehtävät: </strong>{' '}
+                {this.stripHtml(activity.leader_tasks)}
               </p>
             </div>
           </Tab>
