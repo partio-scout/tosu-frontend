@@ -26,6 +26,7 @@ const moveActivityFromBuffer = async (props, activityId, parentId, targetId) => 
     const res = await activityService.moveActivityFromBufferZoneToEvent(activityId, parentId, targetId)
     await props.addActivityToEventOnlyLocally(targetId, res)
     await props.deleteActivityFromBufferOnlyLocally(activityId)
+    props.notify('Aktiviteetti siirretty!', 'success')
     return res
   } catch (exception) {
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
@@ -37,6 +38,7 @@ const moveActivityFromEvent = async (props, activityId, parentId, targetId) => {
     const res = await activityService.moveActivityFromEventToEvent(activityId, parentId, targetId)
     props.addActivityToEventOnlyLocally(targetId, res)
     props.deleteActivityFromEventOnlyLocally(activityId)
+    props.notify('Aktiviteetti siirretty!', 'success')
     return res
   } catch (exception) {
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
@@ -95,6 +97,7 @@ class EventCard extends React.Component {
     try {
       await this.props.deleteEvent(this.props.event.id)
       await this.props.bufferZoneInitialization()
+      this.props.notify('Tapahtuma poistettu!')
       this.handleClose();
     } catch (exception) {
       console.error('Error in deleting event:', exception);
@@ -104,7 +107,9 @@ class EventCard extends React.Component {
 
   deleteEventGroup = async () => {
     try {
-      this.props.deleteEventGroup(this.props.event.groupId);
+      await this.props.deleteEventGroup(this.props.event.groupId);
+      this.props.notify('Tapahtumat poistettu!')
+      await this.props.bufferZoneInitialization()
       this.handleClose();
     } catch (exception) {
       console.error('Error in deleting event:', exception);

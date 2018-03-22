@@ -14,6 +14,7 @@ import { notify} from './reducers/notificationReducer'
 import {pofInitialization} from './reducers/pofActivityReducer'
 import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
+import NotificationFooter from './components/NotificationFooter'
 
 
 class App extends Component {
@@ -51,6 +52,7 @@ class App extends Component {
               <NewEvent />
               <Notification />
               <ListEvents />
+              <NotificationFooter />
             </div>
             <Sticky>
               {({ style }) => (

@@ -73,9 +73,10 @@ class EditEvent extends React.Component {
      // await eventService.edit(data);
       this.props.source();
       this.setState({ open: false });
+      this.props.notify('Tapahtuman muokkaus onnistui!', 'success')
     } catch (exception) {
       console.error('Error in event PUT:', exception);
-      this.props.notify('Tapahtuman muokkaus epäonnistui')
+      this.props.notify('Tapahtuman muokkaus epäonnistui!')
 
     }
   };

@@ -6,13 +6,12 @@ class Notification extends React.Component {
     if (this.props.notification === null) {
       return null
     }
-    const style = {
-      border: 'solid',
-      padding: 10,
-      borderWidth: 1
-    }
-
-    return <div style={style}>{this.props.notification}</div>
+if (this.props.notification.textType === 'error') {
+  return <div className="footerError">{this.props.notification.text}</div>
+} else {
+  return <div className="footerSuccess">{this.props.notification.text}</div>
+}
+   
   }
 }
 

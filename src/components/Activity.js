@@ -73,8 +73,10 @@ const handleRequestDelete = async (activity, props) => {
       ) !== undefined
     ) {
       props.deleteActivityFromBuffer(activity.id)
+      props.notify('Aktiviteetti poistettu!', 'success')
     } else {
       props.deleteActivityFromEvent(activity.id)
+      props.notify('Aktiviteetti poistettu!', 'success')
     }
   } catch (exception) {
     console.error('Error in deleting activity:', exception)

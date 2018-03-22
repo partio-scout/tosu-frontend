@@ -24,11 +24,10 @@ class TopSearchBar extends React.Component {
         guid: this.state.selectedActivity.value
       }
       try {
-        console.log('try lohko')
         await this.props.postActivityToBuffer(data)
         this.setState({ selectedActivity: null })
+        this.props.notify('Aktiviteetti lisätty!', 'success')
       } catch (Exception) {
-        console.log('catch lohko')
         this.props.notify('Aktiviteettialue on täynnä!')
       }
     }

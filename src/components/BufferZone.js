@@ -15,6 +15,7 @@ const moveActivity = async (props, activityId, parentId, targetId) => {
       console.log(res)
         props.deleteActivityFromEventOnlyLocally(activityId)
         props.postActivityToBufferOnlyLocally(res)
+        props.notify('Aktiviteetti siirretty!', 'success')
         return res
     } catch (exception) {
         props.notify('Aktiviteettialue on täynnä!')
