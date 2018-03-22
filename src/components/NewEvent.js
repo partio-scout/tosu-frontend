@@ -124,6 +124,7 @@ class NewEvent extends React.Component {
   sendEventPostRequest = async eventData => {
     try {
       await this.props.addEvent(eventData)
+      this.props.notify('Uusi tapahtuma luotu!', 'success')
     } catch (exception) {
       console.error('Error in event POST:', exception)
       this.props.notify(

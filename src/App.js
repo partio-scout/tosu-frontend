@@ -18,6 +18,7 @@ import { notify } from './reducers/notificationReducer'
 import { pofInitialization } from './reducers/pofActivityReducer'
 import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
+import NotificationFooter from './components/NotificationFooter'
 
 const styles = {
   toggle: {
@@ -122,12 +123,12 @@ class App extends Component {
                   />
                 </Link>
                 &nbsp;
-                <Notification />
                 <Route exact path="/" render={() => <ListEvents />} />
                 <Route
                   path="/new-event"
                   render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
                 />
+                <NotificationFooter />
               </div>
             </div>
           </MuiThemeProvider>
