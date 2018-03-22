@@ -20,6 +20,7 @@ import ItemTypes from '../ItemTypes'
 import activityService from '../services/activities'
 import { editEvent, deleteEvent, deleteEventGroup, deleteActivityFromEventOnlyLocally, addActivityToEventOnlyLocally } from '../reducers/eventReducer'
 import { deleteActivityFromBufferOnlyLocally, bufferZoneInitialization } from '../reducers/bufferZoneReducer'
+import { green100, white, lime100 } from 'material-ui/styles/colors';
 
 const moveActivityFromBuffer = async (props, activityId, parentId, targetId) => {
   try {
@@ -51,12 +52,10 @@ const EventCardTarget = {
     const targetId = props.event.id
     const { parentId } = item
     const activityId = item.id
-    console.log(item)
-    console.log(item.bufferzone)
     if (item.bufferzone === 'true') {
       moveActivityFromBuffer(props, activityId, parentId, targetId)
     } else if (targetId !== parentId) {
-        moveActivityFromEvent(props, activityId, parentId, targetId)
+      moveActivityFromEvent(props, activityId, parentId, targetId)
     }
   }
 }
@@ -65,7 +64,8 @@ function collect(connector, monitor) {
   return {
     connectDropTarget: connector.dropTarget(),
     isOver: monitor.isOver(),
-    canDrop: monitor.canDrop()
+    canDrop: monitor.canDrop(),
+    target: monitor.getItem()
   }
 }
 
@@ -134,7 +134,7 @@ class EventCard extends React.Component {
     if (this.props.event.activities) {
       rows = this.props.event.activities.map(activity => {
         const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
-        return <Activity parentId={this.props.event.id} parent={this} key={activity.id} act={act} activity={activity} delete={this.updateAfterDelete} />
+        return <Activity bufferzone={false} parentId={this.props.event.id} parent={this} key={activity.id} act={act} activity={activity} delete={this.updateAfterDelete} />
       })
     }
     const { event } = this.props;
@@ -173,12 +173,22 @@ class EventCard extends React.Component {
         />
       ];
     }
-    const { connectDropTarget } = this.props
+    let patternClass
+    const { connectDropTarget, canDrop, isOver } = this.props
+    let background = { backgroundColor: white }
+    if (canDrop) {
+      background = { backgroundColor: green100 }
+    }
+    if (isOver) {
+      patternClass = 'pattern'
+    }
     return connectDropTarget(
       <div>
         <Card
           expanded={this.state.expanded}
           onExpandChange={this.handleExpandChange}
+          style={background}
+          className={patternClass}
         >
           <CardHeader
             title={title}
