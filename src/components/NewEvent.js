@@ -1,54 +1,45 @@
 import React from 'react'
-import { notify } from '../reducers/notificationReducer'
-import Dialog from 'material-ui/Dialog'
-import RaisedButton from 'material-ui/RaisedButton'
 import moment from 'moment'
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
 import eventgroupService from '../services/eventgroups'
 import FrequentEventsHandler from '../utils/FrequentEventsHandler'
 import EventForm from './EventForm'
 import { addEvent } from '../reducers/eventReducer'
-import { connect } from 'react-redux'
-
+import { notify } from '../reducers/notificationReducer'
 
 class NewEvent extends React.Component {
   state = {
-    open: false,
     title: '',
     startDate: '',
     startTime: '',
     endDate: '',
     endTime: '',
     checked: false,
-    repeatCount: 1,
-    repeatFrequency: 0,
+    repeatCount: '',
+    repeatFrequency: '',
     type: '',
     information: ''
   }
 
-  handleOpen = () => {
-    this.setState({ open: true })
-  }
-
   handleClose = () => {
     this.setState({
-      open: false,
       title: '',
       startDate: '',
       startTime: '',
       endDate: '',
       endTime: '',
       checked: false,
-      repeatCount: 1,
-      repeatFrequency: 0,
+      repeatCount: '',
+      repeatFrequency: '',
       type: '',
       information: ''
     })
+    this.props.toggleTopBar()
+    this.props.history.push('/')
   }
 
   handleCloseAndSend = async () => {
-    this.setState({
-      open: false
-    })
     const { startDate, endDate } = this.state
     if (!this.state.checked) {
       const data = {
@@ -102,7 +93,6 @@ class NewEvent extends React.Component {
 
       try {
         await Promise.all(promises)
-        
       } catch (exception) {
         console.error('Error in event POST:', exception)
       }
@@ -114,8 +104,8 @@ class NewEvent extends React.Component {
       endDate: null,
       endTime: null,
       checked: false,
-      repeatCount: 1,
-      repeatFrequency: 0,
+      repeatCount: '',
+      repeatFrequency: '',
       type: '',
       information: ''
     })
@@ -136,7 +126,9 @@ class NewEvent extends React.Component {
       await this.props.addEvent(eventData)
     } catch (exception) {
       console.error('Error in event POST:', exception)
-      this.props.notify('Yritit luoda tapahtumaa, jonka alkamisaika on jo mennyt!')
+      this.props.notify(
+        'Yritit luoda tapahtumaa, jonka alkamisaika on jo mennyt!'
+      )
     }
   }
 
@@ -168,25 +160,17 @@ class NewEvent extends React.Component {
 
   render() {
     return (
-      <div>
-        <RaisedButton label="Uusi tapahtuma" onClick={this.handleOpen} />
-        <Dialog
-          title="Luo uusi tapahtuma"
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-          autoScrollBodyContent
-        >
-          <EventForm
-            submitFunction={this.handleCloseAndSend.bind(this)}
-            close={this.handleClose.bind(this)}
-            update={this.update.bind(this)}
-            data={this.state}
-          />
-        </Dialog>
+      <div className="event-form">
+        <EventForm
+          submitFunction={this.handleCloseAndSend.bind(this)}
+          close={this.handleClose.bind(this)}
+          update={this.update.bind(this)}
+          data={this.state}
+        />
       </div>
     )
   }
 }
 
-export default connect(null, { addEvent, notify })(NewEvent)
+const connected = connect(null, { addEvent, notify })(NewEvent)
+export default withRouter(connected)
