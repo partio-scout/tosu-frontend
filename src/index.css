@@ -67,30 +67,29 @@ p.eventTimes > span {
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
-  padding-top: 20px;
+  padding-top: 15px;
   position: fixed;
   bottom: 0;
   margin: 0 auto;
-  min-height: 75px;
+  min-height: 40px;
   height: auto;
   width: 100%;
   max-width: 3000px;
-  background-color: red;
+  background-color: tomato;
 }
 
 .footerSuccess{
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
-  padding-top: 20px;
+  padding-top: 15px;
   position: fixed;
   bottom: 0;
   margin: 0 auto;
-  min-height: 75px;
+  min-height:40px;
   height: auto;
   width: 100%;
-  max-width: 3000px;
-  background-color: green;
+  background-color: lightgreen;
 }
 .pattern {
   background: radial-gradient(#6eff3f 15%, transparent 16%) 0 0,
