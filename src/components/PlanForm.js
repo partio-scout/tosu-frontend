@@ -49,6 +49,15 @@ export default class PlanForm extends React.Component {
     this.state = {}
   }
 
+   stripHtml(html){
+    // Create a new div element
+    var temporalDivElement = document.createElement("div");
+    // Set the HTML content with the providen
+    temporalDivElement.innerHTML = html;
+    // Retrieve the text property of the element (cross-browser support)
+    return temporalDivElement.textContent || temporalDivElement.innerText || "";
+  }
+
   saveSuggestion = async (suggestion, activityId) => {
     const data = {
       guid: suggestion.guid,
@@ -103,13 +112,13 @@ export default class PlanForm extends React.Component {
                 />
               </p>                      
               <p>
-                <strong>Tavoite: </strong> {activity.ingress}
+                <strong>Tavoite: </strong> {this.stripHtml(activity.ingress)}
               </p>
               <p>
-                <strong>Kuvaus: </strong> {activity.content}
+                <strong>Kuvaus: </strong> {this.stripHtml(activity.content)}
               </p>
               <p>
-                <strong>Johtajan tehtävät: </strong> {activity.leader_tasks}
+                <strong>Johtajan tehtävät: </strong> {this.stripHtml(activity.leader_tasks)}
               </p>
             </div>
           </Tab>
