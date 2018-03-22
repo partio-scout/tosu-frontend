@@ -70,7 +70,7 @@ export default class PlanForm extends React.Component {
 
     const suggestionDeatails = activity.suggestions.map(suggestion => (
       <PlanCard
-        key={suggestion.title}
+        key={suggestion.guid}
         suggestion={suggestion}
         saveSuggestion={this.saveSuggestion}
         activityId={savedActivity.id}
@@ -82,14 +82,17 @@ export default class PlanForm extends React.Component {
           <Tab label="Tiedot">
             <div>
               <p>
-                <strong>Paikka:</strong> {activity.place}
-                <br />
+                <strong>Paikka:</strong> {activity.place.join(', ')}
+                <br />                
                 <strong>Kesto:</strong> {activity.duration}
                 <br />
                 <strong>Taitoalueet:</strong> {activity.taitoalueet.join(', ')}
                 <br />
                 <strong>Kasvatustavoitteet:</strong>{' '}
                 {activity.kasvatustavoitteet.join(', ')}
+                <br />
+                <strong>Johtamistaidot:</strong>{' '}
+                {activity.johtamistaito.join(', ')}
                 <br />
                 <strong>Pakollisuus:</strong>{' '}
                 {activity.mandatory ? 'Pakollinen ' : 'Ei pakollinen '}
@@ -98,9 +101,15 @@ export default class PlanForm extends React.Component {
                   alt="mandatoryIcon"
                   height="15px"
                 />
+              </p>                      
+              <p>
+                <strong>Tavoite: </strong> {activity.ingress}
               </p>
               <p>
-                <strong>Kuvaus:</strong> {activity.content}
+                <strong>Kuvaus: </strong> {activity.content}
+              </p>
+              <p>
+                <strong>Johtajan tehtävät: </strong> {activity.leader_tasks}
               </p>
             </div>
           </Tab>
