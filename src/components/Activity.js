@@ -10,6 +10,7 @@ import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import Dialog from 'material-ui/Dialog'
+import FontIcon from 'material-ui/FontIcon'
 import PlanForm from './PlanForm'
 
 const styles = {
@@ -108,6 +109,13 @@ class Activity extends Component {
   render() {
     const { activity, act } = this.props
     const { connectDragSource } = this.props
+    const closeImg = {
+      cursor: 'pointer',
+      float: 'right',
+      marginTop: '5px',
+      width: '20px'
+    }
+
     if (activity && act[0]) {
       if (act[0].mandatory) {
         return connectDragSource(
@@ -127,11 +135,24 @@ class Activity extends Component {
               </Avatar>
               <span className="activityTitle">{act[0].title}</span>
               <Dialog
-                title={act[0].title}
+                title={
+                  <div>
+                    {act[0].title}
+                    <button
+                      className="dialog-close-button"
+                      onClick={this.handleClick}
+                    >
+                      x
+                    </button>
+                  </div>
+                }
                 modal={false}
                 open={this.state.open}
                 onRequestClose={this.handleClick}
                 autoScrollBodyContent
+                bodyClassName="global--modal-body"
+                contentClassName="global--modal-content"
+                paperClassName="global--modal-paper"
               >
                 <PlanForm activity={act[0]} savedActivity={activity} />
               </Dialog>
@@ -156,11 +177,24 @@ class Activity extends Component {
             </Avatar>
             <span className="activityTitle">{act[0].title}</span>
             <Dialog
-              title={act[0].title}
+              title={
+                <div>
+                  {act[0].title}
+                  <button
+                    className="dialog-close-button"
+                    onClick={this.handleClick}
+                  >
+                    x
+                  </button>
+                </div>
+              }
               modal={false}
               open={this.state.open}
               onRequestClose={this.handleClick}
               autoScrollBodyContent
+              bodyClassName="global--modal-body"
+              contentClassName="global--modal-content"
+              paperClassName="global--modal-paper"
             >
               <PlanForm activity={act[0]} savedActivity={activity} />
             </Dialog>
