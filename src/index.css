@@ -41,7 +41,11 @@ p.eventTimes > span {
   background-color: aliceblue;
   min-height: 50px;
   height: auto;
+  max-height: 100px !important;
   border-radius: 8px;
+  z-index: -1;
+  opacity: 0.99;
+  overflow-x: hidden;
 }
 
 .top-search {
@@ -71,4 +75,9 @@ p.eventTimes > span {
   radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
   background-color:white;
   background-size:16px 16px;
+}
+
+.previewChip {
+  z-index: 999;
+  opacity: 0.99;
 }

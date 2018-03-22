@@ -9,6 +9,7 @@ import { postActivityToBufferOnlyLocally } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEventOnlyLocally } from '../reducers/eventReducer'
 import activityService from '../services/activities'
 import { white, green100 } from 'material-ui/styles/colors';
+import { componentWillAppendToBody } from "react-append-to-body";
 
 const moveActivity = async (props, activityId, parentId, targetId) => {
     try {
@@ -28,6 +29,7 @@ const bufferZoneTarget = {
         const { parentId } = item
         const activityId = item.id
         moveActivity(props, activityId, parentId, targetId)
+        console.log('addgsff')
     }
 }
 
@@ -41,6 +43,7 @@ function collect(connector, monitor) {
 }
 
 
+
 class BufferZone extends React.Component {
     static propTypes = {
         isOver: PropTypes.bool.isRequired,
@@ -49,7 +52,7 @@ class BufferZone extends React.Component {
     }
 
     render() {
-        const { isOver, canDrop, connectDropTarget, target } = this.props
+        const { isOver, canDrop, connectDropTarget } = this.props
         if (!this.props.buffer.activities || this.props.buffer.activities.length === 0) {
             return connectDropTarget(
               <div id="bufferzone" />
@@ -70,7 +73,9 @@ class BufferZone extends React.Component {
         }
         return connectDropTarget(
           <div id="bufferzone" style={background} className={patternClass}>
-            <div className="bufferzone-activities">{rows}</div>
+            <div className="bufferzone-activities">
+              {rows} 
+            </div>
           </div>
         )
     }

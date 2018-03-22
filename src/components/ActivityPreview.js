@@ -5,6 +5,7 @@ import DragLayer from 'react-dnd/lib/DragLayer';
 import Chip from 'material-ui/Chip/Chip';
 import { blue300, indigo900, red300, red900 } from 'material-ui/styles/colors';
 import Avatar from 'material-ui/Avatar';
+import { componentWillAppendToBody } from "react-append-to-body";
 
 const styles = {
   chip: {
@@ -33,20 +34,21 @@ function collect(monitor) {
   const item = monitor.getItem();
   return {
     id: item && item.id,
-    name: item && item.name,
-    currentOffset: monitor.getSourceClientOffset(),
+    currentOffset: monitor.getClientOffset(),
+    startPoint: monitor.getInitialClientOffset(),
     isDragging: monitor.isDragging()
   };
 }
 
-function getItemStyles(currentOffset) {
+function getItemStyles(currentOffset, startPoint) {
   if (!currentOffset) {
     return {
       display: 'none'
     };
   }
-
-  const { x, y } = currentOffset;
+  let { x, y } = currentOffset;
+  x -= startPoint.x
+  y -= startPoint.y
   const transform = `translate(${x}px, ${y}px)`;
 
   return {
@@ -54,19 +56,19 @@ function getItemStyles(currentOffset) {
     transform,
     WebkitTransform: transform,
     margin: 4,
-    backgroundColor: blue300,
+    backgroundColor: blue300
   };
 }
 
 
 
 function ItemPreview({
-  id,
   isDragging,
-  currentOffset
+  currentOffset,
+  startPoint
 }) {
   if (!isDragging) {
-    return 'mitä vittua';
+    return '';
   }
 
   return (
@@ -74,7 +76,8 @@ function ItemPreview({
       className="item preview"
     >
       <Chip
-        style={getItemStyles(currentOffset)}
+        style={getItemStyles(currentOffset, startPoint)} 
+        className='previewChip'
       >
         <Avatar style={styles.avatarMandatory}>
           <img
