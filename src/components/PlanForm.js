@@ -19,7 +19,13 @@ const styles = {
   }
 }
 
-const PlanCard = ({ suggestion, saveSuggestion, activityId }) => {
+const PlanCard = ({ suggestion, saveSuggestion, savedActivity }) => {
+  console.log('Saved activity', savedActivity)
+  console.log('Suggestion', suggestion)
+
+  if (savedActivity.plans.filter(plan => plan.guid === suggestion.guid).length !== 0) {
+    console.log('This suggestion is chosen one')
+  }
   return (
     <Card>
       <CardHeader
@@ -35,7 +41,7 @@ const PlanCard = ({ suggestion, saveSuggestion, activityId }) => {
         <br />
         <FlatButton
           label="Valitse"
-          onClick={() => saveSuggestion(suggestion, activityId)}
+          onClick={() => saveSuggestion(suggestion, savedActivity.id)}
         />
       </CardText>
     </Card>
@@ -82,7 +88,7 @@ export default class PlanForm extends React.Component {
         key={suggestion.guid}
         suggestion={suggestion}
         saveSuggestion={this.saveSuggestion}
-        activityId={savedActivity.id}
+        savedActivity={savedActivity}
       />
     ))
     return (
