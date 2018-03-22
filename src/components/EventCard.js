@@ -97,7 +97,7 @@ class EventCard extends React.Component {
     try {
       await this.props.deleteEvent(this.props.event.id)
       await this.props.bufferZoneInitialization()
-      this.props.notify('Tapahtuma poistettu!')
+      this.props.notify('Tapahtuma poistettu!' , 'success')
       this.handleClose();
     } catch (exception) {
       console.error('Error in deleting event:', exception);
@@ -108,7 +108,7 @@ class EventCard extends React.Component {
   deleteEventGroup = async () => {
     try {
       await this.props.deleteEventGroup(this.props.event.groupId);
-      this.props.notify('Tapahtumat poistettu!')
+      this.props.notify('Tapahtumat poistettu!', 'success')
       await this.props.bufferZoneInitialization()
       this.handleClose();
     } catch (exception) {
