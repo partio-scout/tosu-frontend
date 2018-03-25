@@ -89,8 +89,11 @@ class App extends Component {
             <StickyHeader
               // This is the sticky part of the header.
               header={
-                <div className="Header_root">
-                  <Toggle style={styles.toggle} onClick={this.toggleTopBar} />
+                <div className="Header_root">                
+                  <Toggle label="Piiota / näytä aktiviteetit"                      
+                      labelPosition="right" 
+                      style={styles.toggle} 
+                      onClick={this.toggleTopBar} />
                   {this.state.headerVisible ? (
                     <Appbar
                       //    bufferZoneUpdater={this.updateBufferZoneActivities}
