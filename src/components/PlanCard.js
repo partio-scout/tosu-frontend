@@ -2,36 +2,28 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Card, CardHeader, CardText } from 'material-ui/Card'
 import FlatButton from 'material-ui/FlatButton'
+import { green100 } from 'material-ui/styles/colors'
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
-import { green100 } from 'material-ui/styles/colors'
+import { notify } from '../reducers/notificationReducer'
 
 class PlanCard extends React.Component {
   componentDidMount = () => {
-    console.log('DID MOUNT')
+    this.updateSuggestions()
+  }
+  componentDidUpdate = () => {
+    this.updateSuggestions()
+  }
+
+  // Check if suggestions are already saved in store and if not save them
+  updateSuggestions = () => {
     const { savedActivity, plans } = this.props
-    const savePlans = {
-      id: savedActivity.id,
-      plans: savedActivity.plans
-    }
 
-    console.log('Plans', plans)
-
-    const alreadyInit = plans.map(plan => {
-      console.log('Plan id', plan.id)
-      console.log('Saved id', savePlans.id)
-      if (plan.id === savePlans.id) {
-        return plan
-      }
-      return null
-    })
-
-    console.log('Init?', alreadyInit)
-
-    if (alreadyInit.length === 0) {
-      this.props.initPlans(savePlans)
+    if (plans.filter(plan => plan.id === savedActivity.id).length === 0) {
+      this.props.initPlans({ id: savedActivity.id, plans: savedActivity.plans })
     }
   }
+
   saveSuggestion = async (suggestion, activityId) => {
     const data = {
       guid: suggestion.guid,
@@ -39,43 +31,37 @@ class PlanCard extends React.Component {
       content: suggestion.content
     }
     try {
-      console.log('Data', data)
       const res = await planService.addPlanToActivity(data, activityId)
-      console.log('Addded plan to activity', res)
       this.props.savePlan(suggestion, activityId, res.id)
     } catch (exception) {
-      console.log('Exception', exception)
+      this.props.notify('Toteutusvinkin tallentaminen ei onnistunut')
     }
   }
 
   deleteSuggestion = async (id, activityId) => {
-    console.log('Plan id', id)
     try {
-      const res = await planService.deletePlan(id)
-      console.log('Deleted plan from activity', res)
+      await planService.deletePlan(id)
       this.props.deletePlan(id, activityId)
     } catch (exception) {
-      console.log('Exception', exception)
+      this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
     }
   }
   render() {
     const { suggestion, savedActivity, plans } = this.props
 
-    console.log('Propsit', this.props)
-
+    // Find plans for current activity from store
     const activityPlans = plans.filter(plan => plan.id === savedActivity.id)
-
-    console.log('Activity plans', activityPlans)
 
     let selectedPlan = []
 
+    // Check if current suggestion is selected or not
     if (activityPlans.length !== 0) {
       selectedPlan = activityPlans[0].plans.filter(
         plan => plan.guid === suggestion.guid
       )
     }
-    console.log('Selected plan', selectedPlan)
 
+    // Determine button and card style depending on if suggestion is selected or not
     let style
     let button
 
@@ -104,7 +90,6 @@ class PlanCard extends React.Component {
       <Card>
         <CardHeader
           title={suggestion.title}
-          // subtitle="Subtitle"
           actAsExpander={true}
           showExpandableButton={true}
           style={style}
@@ -121,13 +106,13 @@ class PlanCard extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  console.log('State', state)
-  return { plans: state.plans }
-}
+const mapStateToProps = state => ({
+  plans: state.plans
+})
 
 export default connect(mapStateToProps, {
   initPlans,
   savePlan,
-  deletePlan
+  deletePlan,
+  notify
 })(PlanCard)

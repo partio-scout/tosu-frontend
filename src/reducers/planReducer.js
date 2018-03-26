@@ -3,8 +3,7 @@ const reducer = (state = [], action) => {
     case 'INIT_PLANS':
       return state.concat(action.plans)
     case 'SAVE_PLAN':
-    console.log("Original state", state)
-      const saved = state.map(item => {
+      return state.map(item => {
         if (item.id !== action.id) {
           return item
         }
@@ -16,44 +15,44 @@ const reducer = (state = [], action) => {
           })
         }
       })
-      console.log('Saved data', saved)
-      return saved
+
     case 'DELETE_PLAN':
-      const newState = state
-      console.log('After deleting', newState)
-      return newState
+      return state.map(item => {
+        if (item.id !== action.activityId) {
+          return item
+        }
+        return {
+          ...item,
+          plans: item.plans.filter(plan => plan.id !== action.id)
+        }
+      })
     default:
       return state
   }
 }
 
-export const initPlans = plans => {
-  return async dispatch => {
-    dispatch({
-      type: 'INIT_PLANS',
-      plans
-    })
-  }
+export const initPlans = plans => async dispatch => {
+  dispatch({
+    type: 'INIT_PLANS',
+    plans
+  })
 }
 
-export const savePlan = (suggestion, id, suggestionId) => {
-  return async dispatch => {
-    dispatch({
-      type: 'SAVE_PLAN',
-      id,
-      suggestion,
-      suggestionId
-    })
-  }
+export const savePlan = (suggestion, id, suggestionId) => async dispatch => {
+  dispatch({
+    type: 'SAVE_PLAN',
+    id,
+    suggestion,
+    suggestionId
+  })
 }
 
-export const deletePlan = (id, activityId) => {
-  return async dispatch => {
-    dispatch({
-      type: 'DELETE_PLAN',
-      id,
-      activityId
-    })
-  }
+export const deletePlan = (id, activityId) => async dispatch => {
+  dispatch({
+    type: 'DELETE_PLAN',
+    id,
+    activityId
+  })
 }
+
 export default reducer
