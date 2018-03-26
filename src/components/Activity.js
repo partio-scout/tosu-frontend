@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Avatar from 'material-ui/Avatar'
 import Chip from 'material-ui/Chip'
-import { blue300, red300, indigo900, red900 } from 'material-ui/styles/colors'
+import { blue300, green300, indigo900, green900 } from 'material-ui/styles/colors'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
@@ -29,13 +29,13 @@ const styles = {
   chipMandatory: {
     margin: 4,
     float: 'left',
-    backgroundColor: red300,
+    backgroundColor: green300,
     cursor: 'move'
   },
   avatarMandatory: {
     size: 28,
-    color: red900,
-    backgroundColor: red300,
+    color: green900,
+    backgroundColor: green300,
     margin: 4
   }
 }

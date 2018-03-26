@@ -23,6 +23,9 @@ import NotificationFooter from './components/NotificationFooter'
 const styles = {
   toggle: {
     backgroundColor: '#5DBCD2'
+  },
+  labelStyle:{
+    color:'#FFF'
   }
 }
 class App extends Component {
@@ -89,8 +92,13 @@ class App extends Component {
             <StickyHeader
               // This is the sticky part of the header.
               header={
-                <div className="Header_root">
-                  <Toggle style={styles.toggle} onClick={this.toggleTopBar} />
+                <div className="Header_root">                
+                  <Toggle label="Piiota / näytä aktiviteetit"                      
+                      labelPosition="right" 
+                      style={styles.toggle} 
+                      onClick={this.toggleTopBar} 
+                      labelStyle={styles.labelStyle}
+                      />
                   {this.state.headerVisible ? (
                     <Appbar
                       //    bufferZoneUpdater={this.updateBufferZoneActivities}
