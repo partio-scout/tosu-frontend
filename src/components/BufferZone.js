@@ -29,7 +29,7 @@ const bufferZoneTarget = {
         const { parentId } = item
         const activityId = item.id
         moveActivity(props, activityId, parentId, targetId)
-        console.log('addgsff')
+        console.log('adssff')
     }
 }
 
@@ -73,9 +73,7 @@ class BufferZone extends React.Component {
         }
         return connectDropTarget(
           <div id="bufferzone" style={background} className={patternClass}>
-            <div className="bufferzone-activities">
-              {rows} 
-            </div>
+            {rows} 
           </div>
         )
     }

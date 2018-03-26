@@ -40,7 +40,7 @@ function collect(monitor) {
   };
 }
 
-function getItemStyles(currentOffset, startPoint) {
+function getItemStyles(currentOffset, startPoint, mandatory) {
   if (!currentOffset) {
     return {
       display: 'none'
@@ -50,43 +50,43 @@ function getItemStyles(currentOffset, startPoint) {
   x -= startPoint.x
   y -= startPoint.y
   const transform = `translate(${x}px, ${y}px)`;
-
+  const color = mandatory ? red300 : blue300
   return {
     pointerEvents: 'none',
     transform,
     WebkitTransform: transform,
     margin: 4,
-    backgroundColor: blue300
+    backgroundColor: color
   };
 }
 
 
 
-function ItemPreview({
-  isDragging,
-  currentOffset,
-  startPoint
-}) {
+const ItemPreview = ({ isDragging, currentOffset, startPoint, act, mandatory }) => {
   if (!isDragging) {
     return '';
   }
-
+  let img
+  if (mandatory) {
+    img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png"
+  } else {
+    img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3562.png"
+  }
   return (
-    <div
-      className="item preview"
-    >
+    <div>
       <Chip
-        style={getItemStyles(currentOffset, startPoint)} 
+        style={getItemStyles(currentOffset, startPoint, mandatory)}
         className='previewChip'
+        onRequestDelete={() => console.log('')}
       >
-        <Avatar style={styles.avatarMandatory}>
+        <Avatar style={mandatory ? styles.avatarMandatory : styles.avatar}>
           <img
             style={{ width: '100%' }}
-            src="https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png"
+            src={img}
             alt="Mandatory activity"
           />
         </Avatar>
-        <span className="activityTitle">heees</span>
+        <span className="activityTitle">{act.title}</span>
       </Chip>
     </div>
   );

@@ -48,7 +48,8 @@ const activitySource = {
       id: props.activity.id,
       parentId: props.parentId,
       bufferzone: props.bufferzone,
-      startPoint: monitor.getDifferenceFromInitialOffset()
+      startPoint: monitor.getDifferenceFromInitialOffset(),
+      item: monitor.getItem()
     }
   },
   endDrag(props, monitor) {
@@ -110,10 +111,12 @@ class Activity extends Component {
 
   render() {
     const { activity, act, connectDragSource, isDragging } = this.props
+    const visibility = isDragging ? "hidden" : "visible"
+    const display = isDragging ? "none" : "block"
     if (activity && act[0]) {
       if (act[0].mandatory && !isDragging) {
         return connectDragSource(
-          <div>
+          <div style={{ display: "block", visibility: {visibility} }} >
             <Chip
               onRequestDelete={() => handleRequestDelete(activity, this.props)}
               style={styles.chipMandatory}
@@ -142,7 +145,8 @@ class Activity extends Component {
         )
       } else if (!isDragging) {
         return connectDragSource(
-          <div>
+          // <div style={{ visibility: {visibility} }}>
+          <div style={{ display: "block", visibility: {visibility} }} >
             <Chip
               onRequestDelete={() => handleRequestDelete(activity, this.props)}
               style={styles.chip}
@@ -169,21 +173,22 @@ class Activity extends Component {
             </Chip>
           </div>
         )
-      } else if (act[0].mandatory && isDragging) {
+      }
+      if (act[0].mandatory && isDragging) {
         return connectDragSource(
           <div>
-            <ActivityPreview />
+            <ActivityPreview act={act[0]} mandatory />
           </div>
         )
       } else if (isDragging) {
         return connectDragSource(
           <div>
-            <ActivityPreview />
+            <ActivityPreview act={act[0]} mandatory={false} />
           </div>
         )
       }
     }
-    return <div />
+    return <div style={{float: "left", width: "100px", height:"40px"}} />
   }
 }
 
