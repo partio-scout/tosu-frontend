@@ -20,7 +20,7 @@ import ItemTypes from '../ItemTypes'
 import activityService from '../services/activities'
 import { editEvent, deleteEvent, deleteEventGroup, deleteActivityFromEventOnlyLocally, addActivityToEventOnlyLocally } from '../reducers/eventReducer'
 import { deleteActivityFromBufferOnlyLocally, bufferZoneInitialization } from '../reducers/bufferZoneReducer'
-import { green100, white, lime100 } from 'material-ui/styles/colors';
+import { green100, white} from 'material-ui/styles/colors';
 
 const moveActivityFromBuffer = async (props, activityId, parentId, targetId) => {
   try {

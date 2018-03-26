@@ -10,7 +10,6 @@ import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import Dialog from 'material-ui/Dialog'
-import FontIcon from 'material-ui/FontIcon'
 import PlanForm from './PlanForm'
 
 const styles = {
@@ -111,13 +110,7 @@ class Activity extends Component {
   render() {
     const { activity, act } = this.props
     const { connectDragSource } = this.props
-    const closeImg = {
-      cursor: 'pointer',
-      float: 'right',
-      marginTop: '5px',
-      width: '20px'
-    }
-
+  
     if (activity && act[0]) {
       if (act[0].mandatory) {
         return connectDragSource(
