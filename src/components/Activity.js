@@ -1,20 +1,18 @@
 import { getEmptyImage } from 'react-dnd-html5-backend'
 import { connect } from 'react-redux'
-import { notify } from '../reducers/notificationReducer'
+import Dialog from 'material-ui/Dialog'
 import { DragSource } from 'react-dnd'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Avatar from 'material-ui/Avatar'
 import Chip from 'material-ui/Chip'
 import { blue300, green300, indigo900, green900 } from 'material-ui/styles/colors'
+import { notify } from '../reducers/notificationReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
-import Dialog from 'material-ui/Dialog'
-import FontIcon from 'material-ui/FontIcon'
 import PlanForm from './PlanForm'
 import ActivityPreview from './ActivityPreview';
-import { componentWillAppendToBody } from "react-append-to-body";
 
 const styles = {
   chip: {
@@ -84,7 +82,6 @@ const handleRequestDelete = async (activity, props) => {
       props.notify('Aktiviteetti poistettu!', 'success')
     }
   } catch (exception) {
-    console.error('Error in deleting activity:', exception)
     props.notify('Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!')
   }
 }
@@ -147,6 +144,7 @@ class Activity extends Component {
                   <div>
                     {act[0].title}
                     <button
+                      style={closeImg}
                       className="dialog-close-button"
                       onClick={this.handleClick}
                     >
@@ -169,7 +167,6 @@ class Activity extends Component {
         )
       } else if (!isDragging) {
         return connectDragSource(
-          // <div style={{ visibility: {visibility} }}>
           <div style={{ float: 'left', display: "inline-block", visibility: {visibility} }} >
             <Chip
               onRequestDelete={() => handleRequestDelete(activity, this.props)}
@@ -212,7 +209,7 @@ class Activity extends Component {
         )
       }
     }
-    return <div style={{float: "left", width: "100px", height:"40px"}} />
+    return ''
   }
 }
 

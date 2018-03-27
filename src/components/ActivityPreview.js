@@ -5,7 +5,6 @@ import DragLayer from 'react-dnd/lib/DragLayer';
 import Chip from 'material-ui/Chip/Chip';
 import { blue300, indigo900, red300, red900 } from 'material-ui/styles/colors';
 import Avatar from 'material-ui/Avatar';
-import { componentWillAppendToBody } from "react-append-to-body";
 
 const styles = {
   chip: {
@@ -31,9 +30,7 @@ const styles = {
 };
 
 function collect(monitor) {
-  const item = monitor.getItem();
   return {
-    id: item && item.id,
     currentOffset: monitor.getClientOffset(),
     startPoint: monitor.getInitialClientOffset(),
     isDragging: monitor.isDragging()
@@ -62,44 +59,39 @@ function getItemStyles(currentOffset, startPoint, mandatory) {
 
 
 
-const ItemPreview = ({ isDragging, currentOffset, startPoint, act, mandatory }) => {
-  if (!isDragging) {
-    return '';
+class ActivityPreview extends React.Component {
+  render() {
+    const { isDragging, mandatory, currentOffset, startPoint, act } = this.props
+    if (!isDragging) {
+      return '';
+    }
+    let img
+    if (mandatory) {
+      img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png"
+    } else {
+      img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3562.png"
+    }
+    return (
+      <div>
+        <Chip
+          style={getItemStyles(currentOffset, startPoint, mandatory)}
+          className='previewChip'
+          onRequestDelete={() => console.log('')}
+        >
+          <Avatar style={mandatory ? styles.avatarMandatory : styles.avatar}>
+            <img
+              style={{ width: '100%' }}
+              src={img}
+              alt="Mandatory activity"
+            />
+          </Avatar>
+          <span className="activityTitle">{act.title}</span>
+        </Chip>
+      </div>
+    );
   }
-  let img
-  if (mandatory) {
-    img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png"
-  } else {
-    img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3562.png"
-  }
-  return (
-    <div>
-      <Chip
-        style={getItemStyles(currentOffset, startPoint, mandatory)}
-        className='previewChip'
-        onRequestDelete={() => console.log('')}
-      >
-        <Avatar style={mandatory ? styles.avatarMandatory : styles.avatar}>
-          <img
-            style={{ width: '100%' }}
-            src={img}
-            alt="Mandatory activity"
-          />
-        </Avatar>
-        <span className="activityTitle">{act.title}</span>
-      </Chip>
-    </div>
-  );
 }
 
-ItemPreview.propTypes = {
-  id: PropTypes.string,
-  name: PropTypes.string,
-  currentOffset: PropTypes.shape({
-    x: PropTypes.number,
-    y: PropTypes.number
-  }),
-  isDragging: PropTypes.bool.isRequired
-};
 
-export default DragLayer(collect)(ItemPreview);
+
+export default DragLayer(collect)(ActivityPreview);

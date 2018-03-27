@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import React from 'react';
+import { white, green100 } from 'material-ui/styles/colors';
 import { DropTarget } from 'react-dnd';
 import PropTypes from 'prop-types'
 import Activity from './Activity'
@@ -8,8 +9,6 @@ import { notify } from '../reducers/notificationReducer'
 import { postActivityToBufferOnlyLocally } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEventOnlyLocally } from '../reducers/eventReducer'
 import activityService from '../services/activities'
-import { white, green100 } from 'material-ui/styles/colors';
-import { componentWillAppendToBody } from "react-append-to-body";
 
 const moveActivity = async (props, activityId, parentId, targetId) => {
     try {

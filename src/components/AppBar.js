@@ -26,12 +26,6 @@ export default class AppBar extends React.Component {
 
     this.props.setHeaderHeight(bufferZoneHeight)
   }
-
-  // updateActivities = activity => {
-  // this.setState({
-  //   bufferZoneActivities: this.state.bufferZoneActivities.concat(activity)
-  // })
-  // }
   render() {
     return (
       <div
