@@ -16,6 +16,7 @@ const moveActivity = async (props, activityId, parentId, targetId) => {
         const res = await activityService.moveActivityFromEventToBufferZone(activityId, parentId, targetId)
         props.deleteActivityFromEventOnlyLocally(activityId)
         props.postActivityToBufferOnlyLocally(res)
+        props.notify('Aktiviteetti siirretty!', 'success')
         return res
     } catch (exception) {
         props.notify('Aktiviteettialue on täynnä!')

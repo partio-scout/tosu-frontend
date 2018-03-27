@@ -6,11 +6,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Avatar from 'material-ui/Avatar'
 import Chip from 'material-ui/Chip'
-import { blue300, red300, indigo900, red900 } from 'material-ui/styles/colors'
+import { blue300, green300, indigo900, green900 } from 'material-ui/styles/colors'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import Dialog from 'material-ui/Dialog'
+import FontIcon from 'material-ui/FontIcon'
 import PlanForm from './PlanForm'
 import ActivityPreview from './ActivityPreview';
 import { componentWillAppendToBody } from "react-append-to-body";
@@ -33,13 +34,13 @@ const styles = {
     margin: 4,
     // display: 'inline-block',
     float: 'left',
-    backgroundColor: red300,
+    backgroundColor: green300,
     cursor: 'move'
   },
   avatarMandatory: {
     size: 28,
-    color: red900,
-    backgroundColor: red300,
+    color: green900,
+    backgroundColor: green300,
     margin: 4
   }
 }
@@ -77,8 +78,10 @@ const handleRequestDelete = async (activity, props) => {
       ) !== undefined
     ) {
       props.deleteActivityFromBuffer(activity.id)
+      props.notify('Aktiviteetti poistettu!', 'success')
     } else {
       props.deleteActivityFromEvent(activity.id)
+      props.notify('Aktiviteetti poistettu!', 'success')
     }
   } catch (exception) {
     console.error('Error in deleting activity:', exception)
@@ -112,9 +115,21 @@ class Activity extends Component {
   }
 
   render() {
+<<<<<<< HEAD
     const { activity, act, connectDragSource, isDragging } = this.props
     const visibility = isDragging ? "hidden" : "visible"
     const display = isDragging ? "none" : "block"
+=======
+    const { activity, act } = this.props
+    const { connectDragSource } = this.props
+    const closeImg = {
+      cursor: 'pointer',
+      float: 'right',
+      marginTop: '5px',
+      width: '20px'
+    }
+
+>>>>>>> master
     if (activity && act[0]) {
       if (act[0].mandatory && !isDragging) {
         return connectDragSource(
@@ -128,17 +143,30 @@ class Activity extends Component {
               <Avatar style={styles.avatarMandatory}>
                 <img
                   style={{ width: '100%' }}
-                  src="https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png"
+                  src={act[0].mandatoryIconUrl}
                   alt="Mandatory activity"
                 />
               </Avatar>
               <span className="activityTitle">{act[0].title}</span>
               <Dialog
-                title={act[0].title}
+                title={
+                  <div>
+                    {act[0].title}
+                    <button
+                      className="dialog-close-button"
+                      onClick={this.handleClick}
+                    >
+                      x
+                    </button>
+                  </div>
+                }
                 modal={false}
                 open={this.state.open}
                 onRequestClose={this.handleClick}
                 autoScrollBodyContent
+                bodyClassName="global--modal-body"
+                contentClassName="global--modal-content"
+                paperClassName="global--modal-paper"
               >
                 <PlanForm activity={act[0]} savedActivity={activity} />
               </Dialog>

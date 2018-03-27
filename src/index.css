@@ -7,7 +7,7 @@ body {
 }
 
 App {
-  padding-top: 20px
+  padding-top: 20px;
 }
 
 .content {
@@ -24,11 +24,11 @@ p.eventTimes::first-letter {
 
 p.eventTimes > span {
   font-family: Source Sans Pro Black, sans-serif;
-  font-weight: bold
+  font-weight: bold;
 }
 
 .buttonRight {
-  float: right
+  float: right;
 }
 
 #bufferzone {
@@ -41,27 +41,52 @@ p.eventTimes > span {
 
 .top-search {
   background: '#5DBCD2';
-  padding: 20 
+  padding: 20;
 }
 
 .activityTitle {
   display: block;
   max-width: 175px;
   word-wrap: break-all;
-  white-space:normal;
+  white-space: normal;
   font-weight: bold;
   line-height: 20px;
   padding: 5px;
 }
 
 .bufferzone-activities{
-  
   z-index: -1;
   opacity: 0.99;
-  
-  max-height: 100px !important;
 }
 
+.footerError{
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-top: 15px;
+  position: fixed;
+  bottom: 0;
+  margin: 0 auto;
+  min-height: 40px;
+  height: auto;
+  width: 100%;
+  max-width: 3000px;
+  background-color: tomato;
+}
+
+.footerSuccess{
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-top: 15px;
+  position: fixed;
+  bottom: 0;
+  margin: 0 auto;
+  min-height:40px;
+  height: auto;
+  width: 100%;
+  background-color: lightgreen;
+}
 .pattern {
   background:
   radial-gradient(#6eff3f 15%, transparent 16%) 0 0,

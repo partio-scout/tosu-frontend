@@ -12,14 +12,24 @@ const filterOffExistingOnes = (source, events, buffer) => {
     return toFilter;
   }
 
- 
+
   combinedEventActivities.forEach(activity => {
     toFilter = toFilter.filter(pofRow => {
       return pofRow.guid.toString() !== activity.guid.toString()
     })
   });
 
-  return toFilter;
+  const compare = (a, b) => {
+    if (a.mandatory && !b.mandatory) {
+      return -1;
+    } else if (!a.mandatory && b.mandatory) {
+      return 1;
+    }
+    return 0;
+  }
+
+  const sortedPofActivities = toFilter.sort(compare);
+  return sortedPofActivities;
 };
 
-export default filterOffExistingOnes;
+export default filterOffExistingOnes
