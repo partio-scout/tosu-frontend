@@ -29,7 +29,6 @@ const bufferZoneTarget = {
         const { parentId } = item
         const activityId = item.id
         moveActivity(props, activityId, parentId, targetId)
-        console.log('adssff')
     }
 }
 
