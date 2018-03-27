@@ -192,6 +192,7 @@ export default class EventForm extends React.Component {
           onChange={this.handleStartTime}
           validators={['required']}
           errorMessages={['Aloitusaika vaaditaan']}
+          disabled={this.state.startDate === ''}
         />
         <p>Lopetuspäivämäärä ja aika</p>
         <DateValidator
@@ -218,6 +219,7 @@ export default class EventForm extends React.Component {
           errorMessages={[
             'Päättymishetki ei voi olla aiemmin kuin alkamishetki!'
           ]}
+          disabled={this.state.endDate === ''}
         />
         <br />
         <Checkbox

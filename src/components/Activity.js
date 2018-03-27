@@ -19,6 +19,7 @@ const styles = {
   chip: {
     margin: 4,
     float: 'left',
+    // display: 'inline-block',
     backgroundColor: blue300,
     cursor: 'move'
   },
@@ -30,6 +31,7 @@ const styles = {
   },
   chipMandatory: {
     margin: 4,
+    // display: 'inline-block',
     float: 'left',
     backgroundColor: red300,
     cursor: 'move'
@@ -116,7 +118,7 @@ class Activity extends Component {
     if (activity && act[0]) {
       if (act[0].mandatory && !isDragging) {
         return connectDragSource(
-          <div style={{ display: "block", visibility: {visibility} }} >
+          <div style={{ float: 'left', display: "inline-block", visibility: {visibility} }} >
             <Chip
               onRequestDelete={() => handleRequestDelete(activity, this.props)}
               style={styles.chipMandatory}
@@ -146,7 +148,7 @@ class Activity extends Component {
       } else if (!isDragging) {
         return connectDragSource(
           // <div style={{ visibility: {visibility} }}>
-          <div style={{ display: "block", visibility: {visibility} }} >
+          <div style={{ float: 'left', display: "inline-block", visibility: {visibility} }} >
             <Chip
               onRequestDelete={() => handleRequestDelete(activity, this.props)}
               style={styles.chip}
@@ -176,13 +178,13 @@ class Activity extends Component {
       }
       if (act[0].mandatory && isDragging) {
         return connectDragSource(
-          <div>
+          <div style={{float: 'left'}}>
             <ActivityPreview act={act[0]} mandatory />
           </div>
         )
       } else if (isDragging) {
         return connectDragSource(
-          <div>
+          <div style={{float: 'left'}}>
             <ActivityPreview act={act[0]} mandatory={false} />
           </div>
         )
