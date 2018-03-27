@@ -115,13 +115,8 @@ class Activity extends Component {
   }
 
   render() {
-<<<<<<< HEAD
     const { activity, act, connectDragSource, isDragging } = this.props
     const visibility = isDragging ? "hidden" : "visible"
-    const display = isDragging ? "none" : "block"
-=======
-    const { activity, act } = this.props
-    const { connectDragSource } = this.props
     const closeImg = {
       cursor: 'pointer',
       float: 'right',
@@ -129,7 +124,6 @@ class Activity extends Component {
       width: '20px'
     }
 
->>>>>>> master
     if (activity && act[0]) {
       if (act[0].mandatory && !isDragging) {
         return connectDragSource(
