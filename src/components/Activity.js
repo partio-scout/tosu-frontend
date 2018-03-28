@@ -6,13 +6,18 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Avatar from 'material-ui/Avatar'
 import Chip from 'material-ui/Chip'
-import { blue300, green300, indigo900, green900 } from 'material-ui/styles/colors'
+import {
+  blue300,
+  green300,
+  indigo900,
+  green900
+} from 'material-ui/styles/colors'
 import { notify } from '../reducers/notificationReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
-import ActivityPreview from './ActivityPreview';
+import ActivityPreview from './ActivityPreview'
 
 const styles = {
   chip: {
@@ -102,7 +107,7 @@ class Activity extends Component {
   componentDidMount() {
     if (this.props.connectDragPreview) {
       this.props.connectDragPreview(getEmptyImage(), {
-        captureDraggingState: true,
+        captureDraggingState: true
       })
     }
   }
@@ -112,13 +117,8 @@ class Activity extends Component {
   }
 
   render() {
-<<<<<<< HEAD
-    const { activity, act } = this.props
-    const { connectDragSource } = this.props
-  
-=======
     const { activity, act, connectDragSource, isDragging } = this.props
-    const visibility = isDragging ? "hidden" : "visible"
+    const visibility = isDragging ? 'hidden' : 'visible'
     const closeImg = {
       cursor: 'pointer',
       float: 'right',
@@ -126,11 +126,16 @@ class Activity extends Component {
       width: '20px'
     }
 
->>>>>>> master
     if (activity && act[0]) {
       if (act[0].mandatory && !isDragging) {
         return connectDragSource(
-          <div style={{ float: 'left', display: "inline-block", visibility: {visibility} }} >
+          <div
+            style={{
+              float: 'left',
+              display: 'inline-block',
+              visibility: { visibility }
+            }}
+          >
             <Chip
               onRequestDelete={() => handleRequestDelete(activity, this.props)}
               style={styles.chipMandatory}
@@ -173,7 +178,13 @@ class Activity extends Component {
         )
       } else if (!isDragging) {
         return connectDragSource(
-          <div style={{ float: 'left', display: "inline-block", visibility: {visibility} }} >
+          <div
+            style={{
+              float: 'left',
+              display: 'inline-block',
+              visibility: { visibility }
+            }}
+          >
             <Chip
               onRequestDelete={() => handleRequestDelete(activity, this.props)}
               style={styles.chip}
@@ -203,13 +214,13 @@ class Activity extends Component {
       }
       if (act[0].mandatory && isDragging) {
         return connectDragSource(
-          <div style={{float: 'left'}}>
+          <div style={{ float: 'left' }}>
             <ActivityPreview act={act[0]} mandatory />
           </div>
         )
       } else if (isDragging) {
         return connectDragSource(
-          <div style={{float: 'left'}}>
+          <div style={{ float: 'left' }}>
             <ActivityPreview act={act[0]} mandatory={false} />
           </div>
         )
