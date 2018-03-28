@@ -5,6 +5,7 @@ import DragLayer from 'react-dnd/lib/DragLayer';
 import Chip from 'material-ui/Chip/Chip';
 import { blue300, indigo900, red300, red900, green300 } from 'material-ui/styles/colors';
 import Avatar from 'material-ui/Avatar';
+import isTouchDevice from 'is-touch-device'
 
 const styles = {
   chip: {
@@ -44,8 +45,10 @@ function getItemStyles(currentOffset, startPoint, mandatory) {
     };
   }
   let { x, y } = currentOffset;
-  x -= startPoint.x
-  y -= startPoint.y
+  if (isTouchDevice) {
+    x -= startPoint.x
+    y -= startPoint.y
+  }
   const transform = `translate(${x}px, ${y}px)`;
   const color = mandatory ? green300 : blue300
   return {
