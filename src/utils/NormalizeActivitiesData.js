@@ -1,116 +1,38 @@
-/**
-import { normalize, schema } from 'normalizr';
-
+import { normalize, schema } from 'normalizr'
 
 const createSchemas = () => {
   // Luo skeemat JSON datan normalisointia varten
-  const taskSchema = new schema.Entity('tasks', {}, { idAttribute: 'guid' });
 
+  // Tämä hakee kaikki aktiviteetit
+  const taskSchema = new schema.Entity('tasks', {}, { idAttribute: 'guid' })
+
+  // Tämä hakee taskgroupit ja liittää niihin aktiviteettien guidin
   const taskgroupSchema = new schema.Entity(
     'taskgroups',
     { tasks: [taskSchema] },
     { idAttribute: 'guid' }
-  );
+  )
 
-  taskgroupSchema.define({ taskgroups: [taskgroupSchema] });
+  // Tämä hakee alitaskgroupit ja liittää guifit
+  taskgroupSchema.define({ taskgroups: [taskgroupSchema] })
 
-  const agegroupSchema = new schema.Entity(
-    'agegroups',
-    {
-      taskgroups: [taskgroupSchema]
-    },
-    { idAttribute: 'guid' }
-  );
+  return taskgroupSchema
+}
 
-  const programSchema = new schema.Entity(
-    'programs',
-    {
-      agegroups: [agegroupSchema]
-    },
-    { idAttribute: 'guid' }
-  );
+// Palauta lista pelkistä aktiviteeteista
 
-  const programListSchema = new schema.Array(programSchema);
-
-  return programListSchema;
-};
-
-
-const activitiesArray = fetchedActivities => {
+const activities = fetchedActivities => {
   if (!fetchedActivities) {
-    console.log('No activities found yet!');
-    return [];
+    console.log('No activities found yet!')
+    return []
   }
 
-  const programListSchema = createSchemas();
-  const normalizedData = normalize(
-    fetchedActivities.program,
-    programListSchema
-  );
+  const programListSchema = createSchemas()
+  const normalizedData = normalize(fetchedActivities, programListSchema)
 
-  // Hae haluttu ikäryhmä, toistaiseksi kovakoodattu
-  const tarpojat = Object.values(normalizedData.entities.agegroups)[3];
+  const { tasks } = normalizedData.entities
 
-  // Hae ikäryhmän taskgroupit
-  const taskgroupIDs = Object.values(tarpojat.taskgroups);
+  return Object.values(tasks)
+}
 
-  // Hae taskgroupit ID:n perusteella
-  const findTaskgroups = taskgroupIDs => {
-    const taskgroups = taskgroupIDs.map(
-      taskgroupID => normalizedData.entities.taskgroups[taskgroupID]
-    );
-    return taskgroups;
-  };
-
-  const taskgroups = findTaskgroups(taskgroupIDs);
-
-  // Hae alitaskgroupit
-  const findSubtaskgroups = taskgroup => {
-    let subtaskgroups = [];
-    if (taskgroup.taskgroups) {
-      if (taskgroup.taskgroups.length !== 0) {
-        subtaskgroups = findTaskgroups(Object.values(taskgroup.taskgroups));
-      }
-    }
-
-    return subtaskgroups;
-  };
-
-  // Hae yksittäiset aktiviteetit
-
-  const findTasks = taskIDs => {
-    const tasks = taskIDs.map(taskID => normalizedData.entities.tasks[taskID]);
-    return tasks;
-  };
-
-  // Luo Array kaikista aktiviteeteista (=taskeista)
-
-  const getActivities = (taskgroups, activities) => {
-    let foundActivities = [];
-    for (let i = 0; i < taskgroups.length; i += 1) {
-      const subtaskgroups = findSubtaskgroups(taskgroups[i]);
-
-      if (subtaskgroups.length !== 0) {
-        foundActivities = getActivities(subtaskgroups, activities);
-      }
-
-      const tasks = findTasks(Object.values(taskgroups[i].tasks));
-
-      for (let j = 0; j < tasks.length; j += 1) {
-        foundActivities.push(tasks[j]);
-      }
-    }
-
-    return foundActivities;
-  };
-
-  // Hae kaikki aktiviteetteihin liittyvä tieto ja palauta se arrayna 
-  const activities = [];
-  const taskArray = getActivities(taskgroups, activities);
-
-  return taskArray;
-};
-
-
-export default activitiesArray;
-*/
+export default activities
