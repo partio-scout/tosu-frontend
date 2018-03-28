@@ -127,34 +127,34 @@ class Activity extends Component {
     }
 
     if (activity && act[0]) {
-      return connectDragSource(
-        <div           
-          style={{
+      if (!isDragging) {
+        return connectDragSource(
+          <div
+            style={{
               float: 'left',
               // display: 'inline-block',
               visibility: { visibility },
               maxWidth: '230px'
             }}
           >
-
-          <Chip
-            onRequestDelete={() => handleRequestDelete(activity, this.props)}
-            style={act[0].mandatory ? styles.chipMandatory: styles.chip}
-            key={activity.id}
-            onClick={this.handleClick}
-          >
-            <Avatar style={act[0].mandatory ? styles.avatarMandatory : styles.avatar}>
-              <img
-                style={{ width: '100%' }}
-                src={act[0].mandatoryIconUrl}
-                alt="Mandatory Icon"
-              />
-            </Avatar>
-            <span className="activityTitle">{act[0].title}</span>
-            <Dialog
-              title={
-                <div>
-                  {act[0].title}
+            <Chip
+              onRequestDelete={() => handleRequestDelete(activity, this.props)}
+              style={act[0].mandatory ? styles.chipMandatory: styles.chip}
+              key={activity.id}
+              onClick={this.handleClick}
+            >
+              <Avatar style={act[0].mandatory ? styles.avatarMandatory : styles.avatar}>
+                <img
+                  style={{ width: '100%' }}
+                  src={act[0].mandatoryIconUrl}
+                  alt="Mandatory Icon"                  
+                />
+              </Avatar>
+              <span className="activityTitle">{act[0].title}</span>
+              <Dialog
+                title={
+                  <div>
+                    {act[0].title}
                     <button
                       style={closeImg}
                       className="dialog-close-button"
@@ -163,22 +163,32 @@ class Activity extends Component {
                       x
                     </button>
                   </div>
-              }
-              modal={false}
-              open={this.state.open}
-              onRequestClose={this.handleClick}
-              autoScrollBodyContent
-              bodyClassName="global--modal-body"
-              contentClassName="global--modal-content"
-              paperClassName="global--modal-paper"
-            >
-              <PlanForm activity={act[0]} savedActivity={activity} />
-            </Dialog>
-          </Chip>
-        </div>
-      )
+                }
+                modal={false}
+                open={this.state.open}
+                onRequestClose={this.handleClick}
+                autoScrollBodyContent
+                bodyClassName="global--modal-body"
+                contentClassName="global--modal-content"
+                paperClassName="global--modal-paper"
+              >
+                <PlanForm activity={act[0]} savedActivity={activity} />
+              </Dialog>
+            </Chip>
+          </div>
+        )
+      }
+      
+      if (isDragging) {
+        return connectDragSource(
+          <div>
+            <ActivityPreview act={act[0]} mandatory={act[0].mandatory}
+             />
+          </div>
+        )
+      }
     }
-    return <div />
+    return ''
   }
 }
 
