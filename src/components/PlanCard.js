@@ -1,16 +1,26 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Card, CardHeader, CardText } from 'material-ui/Card'
 import FlatButton from 'material-ui/FlatButton'
+import { green100 } from 'material-ui/styles/colors'
 import planService from '../services/plan'
+import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
+import { notify } from '../reducers/notificationReducer'
 
-export default class PlanCard extends React.Component {
-  constructor(props) {
-    super(props)
+class PlanCard extends React.Component {
+  componentDidMount = () => {
+    this.updateSuggestions()
+  }
+  componentDidUpdate = () => {
+    this.updateSuggestions()
+  }
 
-    this.state = {
-      selected: false,
-      updated: false,
-      createdId: null
+  // Check if suggestions are already saved in store and if not save them
+  updateSuggestions = () => {
+    const { savedActivity, plans } = this.props
+
+    if (plans.filter(plan => plan.id === savedActivity.id).length === 0) {
+      this.props.initPlans({ id: savedActivity.id, plans: savedActivity.plans })
     }
   }
 
@@ -21,80 +31,65 @@ export default class PlanCard extends React.Component {
       content: suggestion.content
     }
     try {
-      console.log('Data', data)
       const res = await planService.addPlanToActivity(data, activityId)
-      console.log('Addded plan to activity', res)
-      this.setState({ selected: true, updated: true, createdId: res.id })
+      this.props.savePlan(suggestion, activityId, res.id)
     } catch (exception) {
-      console.log('Exception', exception)
+      this.props.notify('Toteutusvinkin tallentaminen ei onnistunut')
     }
   }
 
-  deleteSuggestion = async id => {
-    console.log('Plan id', id)
+  deleteSuggestion = async (id, activityId) => {
     try {
-      const res = await planService.deletePlan(id)
-      console.log('Deleted plan from activity', res)
-      this.setState({ selected: false, updated: true })
-      console.log('State poiston jälkeen', this.state)
+      await planService.deletePlan(id)
+      this.props.deletePlan(id, activityId)
     } catch (exception) {
-      console.log('Exception', exception)
+      this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
     }
   }
   render() {
-    const { suggestion, savedActivity } = this.props
+    const { suggestion, savedActivity, plans } = this.props
 
-    let button = () => (
-      <FlatButton
-        label="Valitse"
-        onClick={() => this.saveSuggestion(suggestion, savedActivity.id)}
-      />
-    )
-    const selectedPlan = savedActivity.plans.filter(
-      plan => plan.guid === suggestion.guid
-    )
+    // Find plans for current activity from store
+    const activityPlans = plans.filter(plan => plan.id === savedActivity.id)
 
-    console.log('Selected plan', selectedPlan)
+    let selectedPlan = []
 
-    let style = { background: 'none' }
+    // Check if current suggestion is selected or not
+    if (activityPlans.length !== 0) {
+      selectedPlan = activityPlans[0].plans.filter(
+        plan => plan.guid === suggestion.guid
+      )
+    }
 
-    if (
-      (!this.state.updated && selectedPlan.length !== 0) ||
-      this.state.selected
-    ) {
-      console.log('This suggestion is chosen one', selectedPlan)
+    // Determine button and card style depending on if suggestion is selected or not
+    let style
+    let button
 
-      let id
-      if (selectedPlan[0] && !this.state.updated) {
-        id = selectedPlan[0].id
-      } else {
-        id = this.state.createdId
-      }
-
-      style = { background: '#81C784' }
+    if (selectedPlan.length !== 0) {
       button = () => (
         <FlatButton
           label="Poista valituista"
-          onClick={() => this.deleteSuggestion(id)}
+          onClick={() =>
+            this.deleteSuggestion(selectedPlan[0].id, savedActivity.id)
+          }
         />
       )
-    } else if (
-      (!this.state.updated && selectedPlan.length === 0) ||
-      !this.state.selected
-    ) {
-      style = { background: 'none' }
+
+      style = { background: green100 }
+    } else {
       button = () => (
         <FlatButton
           label="Valitse"
           onClick={() => this.saveSuggestion(suggestion, savedActivity.id)}
         />
       )
+      style = { background: 'none' }
     }
+
     return (
       <Card>
         <CardHeader
           title={suggestion.title}
-          // subtitle="Subtitle"
           actAsExpander={true}
           showExpandableButton={true}
           style={style}
@@ -110,3 +105,14 @@ export default class PlanCard extends React.Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  plans: state.plans
+})
+
+export default connect(mapStateToProps, {
+  initPlans,
+  savePlan,
+  deletePlan,
+  notify
+})(PlanCard)
