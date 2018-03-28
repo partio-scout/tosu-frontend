@@ -22,23 +22,23 @@ import ActivityPreview from './ActivityPreview'
 const styles = {
   chip: {
     margin: 4,
-    float: 'left',
+    // float: 'left',
     // display: 'inline-block',
     backgroundColor: blue300,
-    cursor: 'move'
+    cursor: 'move',
   },
   avatar: {
     size: 28,
     color: indigo900,
     backgroundColor: blue300,
-    margin: 4
+    margin: 4,
   },
   chipMandatory: {
     margin: 4,
     // display: 'inline-block',
-    float: 'left',
+    // float: 'left',
     backgroundColor: green300,
-    cursor: 'move'
+    cursor: 'move',
   },
   avatarMandatory: {
     size: 28,
@@ -132,7 +132,7 @@ class Activity extends Component {
           <div
             style={{
               float: 'left',
-              display: 'inline-block',
+              // display: 'inline-block',
               visibility: { visibility }
             }}
           >
@@ -181,7 +181,7 @@ class Activity extends Component {
           <div
             style={{
               float: 'left',
-              display: 'inline-block',
+              // display: 'inline-block',
               visibility: { visibility }
             }}
           >

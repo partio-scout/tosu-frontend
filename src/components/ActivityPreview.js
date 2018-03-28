@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DragLayer from 'react-dnd/lib/DragLayer';
 import Chip from 'material-ui/Chip/Chip';
-import { blue300, indigo900, red300, red900 } from 'material-ui/styles/colors';
+import { blue300, indigo900, red300, red900, green300 } from 'material-ui/styles/colors';
 import Avatar from 'material-ui/Avatar';
 
 const styles = {
@@ -19,12 +19,12 @@ const styles = {
   },
   chipMandatory: {
     margin: 4,
-    backgroundColor: red300,
+    backgroundColor: green300,
   },
   avatarMandatory: {
     size: 28,
     color: red900,
-    backgroundColor: red300,
+    backgroundColor: green300,
     margin: 4
   }
 };
@@ -65,6 +65,7 @@ class ActivityPreview extends React.Component {
     if (!isDragging) {
       return '';
     }
+    console.log('jeffddfffe')
     let img
     if (mandatory) {
       img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png"
