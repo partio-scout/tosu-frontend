@@ -34,9 +34,10 @@ p.eventTimes > span {
 #bufferzone {
   margin: 10px 0 5px;
   min-height: 60px;
-  height: auto;
   background-color: aliceblue;
   border-radius: 8px;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 .top-search {
@@ -52,11 +53,6 @@ p.eventTimes > span {
   font-weight: bold;
   line-height: 20px;
   padding: 5px;
-}
-
-.bufferzone-activities{
-  z-index: -1;
-  opacity: 0.99;
 }
 
 .footerError{
