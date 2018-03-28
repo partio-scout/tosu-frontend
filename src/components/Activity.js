@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import Avatar from 'material-ui/Avatar'
 import Chip from 'material-ui/Chip'
 import {
-  blue300,
+  blue200,
   blue500,
   indigo900
 } from 'material-ui/styles/colors'
@@ -23,13 +23,13 @@ const styles = {
     margin: 4,
     // float: 'left',
     // display: 'inline-block',
-    backgroundColor: blue300,
+    backgroundColor: blue200,
     cursor: 'move',
   },
   avatar: {
     size: 28,
     color: indigo900,
-    backgroundColor: blue300,
+    backgroundColor: blue200,
     margin: 4,
   },
   chipMandatory: {

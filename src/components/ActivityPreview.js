@@ -3,19 +3,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DragLayer from 'react-dnd/lib/DragLayer';
 import Chip from 'material-ui/Chip/Chip';
-import { blue300, indigo900, blue500 } from 'material-ui/styles/colors';
+import { blue200, indigo900, blue500 } from 'material-ui/styles/colors';
 import Avatar from 'material-ui/Avatar';
 import isTouchDevice from 'is-touch-device'
 
 const styles = {
   chip: {
     margin: 4,
-    backgroundColor: blue300
+    backgroundColor: blue200
   },
   avatar: {
     size: 28,
     color: indigo900,
-    backgroundColor: blue300,
+    backgroundColor: blue200,
     margin: 4
   },
   chipMandatory: {
@@ -50,7 +50,7 @@ function getItemStyles(currentOffset, startPoint, mandatory) {
     y -= startPoint.y
   }
   const transform = `translate(${x}px, ${y}px)`;
-  const color = mandatory ? blue500 : blue300
+  const color = mandatory ? blue500 : blue200
   return {
     pointerEvents: 'none',
     transform,
