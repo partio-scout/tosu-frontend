@@ -47,7 +47,7 @@ function getItemStyles(currentOffset, startPoint, mandatory) {
   x -= startPoint.x
   y -= startPoint.y
   const transform = `translate(${x}px, ${y}px)`;
-  const color = mandatory ? red300 : blue300
+  const color = mandatory ? green300 : blue300
   return {
     pointerEvents: 'none',
     transform,
@@ -65,7 +65,6 @@ class ActivityPreview extends React.Component {
     if (!isDragging) {
       return '';
     }
-    console.log('jeffddfffe')
     let img
     if (mandatory) {
       img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png"
