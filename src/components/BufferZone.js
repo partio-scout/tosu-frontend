@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import React from 'react';
+import { white, green100 } from 'material-ui/styles/colors';
 import { DropTarget } from 'react-dnd';
 import PropTypes from 'prop-types'
 import Activity from './Activity'
@@ -8,7 +9,6 @@ import { notify } from '../reducers/notificationReducer'
 import { postActivityToBufferOnlyLocally } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEventOnlyLocally } from '../reducers/eventReducer'
 import activityService from '../services/activities'
-import { white, green100 } from 'material-ui/styles/colors';
 
 const moveActivity = async (props, activityId, parentId, targetId) => {
     try {
@@ -42,6 +42,7 @@ function collect(connector, monitor) {
 }
 
 
+
 class BufferZone extends React.Component {
     static propTypes = {
         isOver: PropTypes.bool.isRequired,
@@ -50,7 +51,7 @@ class BufferZone extends React.Component {
     }
 
     render() {
-        const { isOver, canDrop, connectDropTarget, target } = this.props
+        const { isOver, canDrop, connectDropTarget } = this.props
         if (!this.props.buffer.activities || this.props.buffer.activities.length === 0) {
             return connectDropTarget(
               <div id="bufferzone" />
@@ -71,7 +72,7 @@ class BufferZone extends React.Component {
         }
         return connectDropTarget(
           <div id="bufferzone" style={background} className={patternClass}>
-            <div className="bufferzone-activities">{rows}</div>
+            {rows} 
           </div>
         )
     }

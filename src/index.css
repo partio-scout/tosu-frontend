@@ -14,11 +14,6 @@ App {
   padding: 10px 10px 20px;
 }
 
-#title_image {
-  height: 50px;
-  margin: 10px 0px 10px;
-}
-
 ul.events {
   list-style-type: none;
 }
@@ -38,9 +33,9 @@ p.eventTimes > span {
 
 #bufferzone {
   margin: 10px 0 5px;
-  background-color: aliceblue;
-  min-height: 50px;
+  min-height: 60px;
   height: auto;
+  background-color: aliceblue;
   border-radius: 8px;
 }
 
@@ -59,8 +54,9 @@ p.eventTimes > span {
   padding: 5px;
 }
 
-.bufferzone-activities {
-  overflow: auto;
+.bufferzone-activities{
+  z-index: -1;
+  opacity: 0.99;
 }
 
 .footerError{
@@ -92,59 +88,16 @@ p.eventTimes > span {
   background-color: lightgreen;
 }
 .pattern {
-  background: radial-gradient(#6eff3f 15%, transparent 16%) 0 0,
-    radial-gradient(#6eff3f 15%, transparent 16%) 8px 8px,
-    radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 0 1px,
-    radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 8px 9px;
-  background-color: white;
-  background-size: 16px 16px;
+  background:
+  radial-gradient(#6eff3f 15%, transparent 16%) 0 0,
+  radial-gradient(#6eff3f 15%, transparent 16%) 8px 8px,
+  radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+  radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+  background-color:white;
+  background-size:16px 16px;
 }
 
-.event-form {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.ReactStickyHeader_midground {
-  height: auto !important;
-}
-
-.global--modal-content {
-  transform: translate(0, 0) !important;
-  position: absolute !important;
-  top: 20px !important;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  height: 100vh !important;
-}
-
-@media (max-width: 600px) {
-  .global--modal-content {
-    width: 100% !important;
-    transform: translate(0, 0) !important;
-    position: absolute !important;
-    top: 0 !important;
-    height: 100vh !important;
-  }
-
-  .global--modal-body {
-    padding: 10 !important;
-    max-height: none !important;
-  }
-
-  .global--modal-paper {
-    overflow: auto !important;
-    height: 100vh !important;
-  }
-}
-
-.dialog-close-button {
-  background-color: #ccc;
-  color: #fff;
-  float: right;
-  font-size: 1.2rem;
-  line-height: 1.2rem;
-  border-radius: 100%;
-  box-shadow: 1px 1px 3px;
+.previewChip {
+  z-index: 999;
+  opacity: 0.99;
 }

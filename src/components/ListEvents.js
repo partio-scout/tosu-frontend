@@ -1,6 +1,7 @@
 import React from 'react'
-import EventCard from './EventCard'
 import { connect } from 'react-redux'
+import EventCard from './EventCard'
+
 
 const compare = (a, b) => {
   if(a.startDate < b.startDate) {

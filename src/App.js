@@ -152,15 +152,15 @@ const mapStateToProps = state => {
   }
 }
 
-// let AppDnD
+let AppDnD
 
-/* if (!isTouchDevice()) {
-  console.log('ei oo') */
-const AppDnD = DragDropContext(HTML5Backend)(App)
-// } else {
-// console.log('on')
-// AppDnD = DragDropContext(TouchBackend({ enableMouseEvents: true }))(App)
-// }
+if (!isTouchDevice()) {
+  console.log('ei touch')
+AppDnD = DragDropContext(HTML5Backend)(App)
+} else {
+  console.log('touch')
+AppDnD = DragDropContext(TouchBackend({ enableMouseEvents: true }))(App)
+}
 
 export default connect(mapStateToProps, {
   notify,
