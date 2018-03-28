@@ -32,6 +32,8 @@ class TopSearchBar extends React.Component {
         this.setState({ selectedActivity: null })
         this.props.notify('Aktiviteetti lisätty!', 'success')
       } catch (Exception) {
+        console.log('mitaa')
+        console.log('selAct', selectedActivity)
         this.props.notify('Aktiviteettialue on täynnä!')
       }
     }

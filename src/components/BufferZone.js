@@ -10,7 +10,7 @@ import { postActivityToBufferOnlyLocally } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEventOnlyLocally } from '../reducers/eventReducer'
 import activityService from '../services/activities'
 
-const moveActivity = async (props, activityId, parentId, targetId) => {
+const moveActivity = async (props, activityId, parentId, targetId, bufferzone) => {
     try {
         const res = await activityService.moveActivityFromEventToBufferZone(activityId, parentId, targetId)
         props.deleteActivityFromEventOnlyLocally(activityId)
@@ -18,7 +18,11 @@ const moveActivity = async (props, activityId, parentId, targetId) => {
         props.notify('Aktiviteetti siirretty!', 'success')
         return res
     } catch (exception) {
-        props.notify('Aktiviteettialue on täynnä!')
+        if(bufferzone && parentId === targetId) {
+            
+        } else {
+            props.notify('Aktiviteettialue on täynnä!')
+        }
     }
 }
 
@@ -26,9 +30,9 @@ const bufferZoneTarget = {
     drop(props, monitor) {
         const item = monitor.getItem()
         const targetId = 1
-        const { parentId } = item
+        const { parentId, bufferzone } = item
         const activityId = item.id
-        moveActivity(props, activityId, parentId, targetId)
+        moveActivity(props, activityId, parentId, targetId, bufferzone)
     }
 }
 
