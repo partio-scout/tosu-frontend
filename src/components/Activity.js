@@ -37,6 +37,7 @@ const styles = {
     margin: 4,
     // display: 'inline-block',
     // float: 'left',
+    width: '100%',
     backgroundColor: green300,
     cursor: 'move',
   },
@@ -133,7 +134,8 @@ class Activity extends Component {
             style={{
               float: 'left',
               // display: 'inline-block',
-              visibility: { visibility }
+              visibility: { visibility },
+              maxWidth: '230px'
             }}
           >
             <Chip
@@ -182,7 +184,8 @@ class Activity extends Component {
             style={{
               float: 'left',
               // display: 'inline-block',
-              visibility: { visibility }
+              visibility: { visibility },
+              maxWidth: '230px'
             }}
           >
             <Chip
@@ -200,11 +203,25 @@ class Activity extends Component {
               </Avatar>
               <span className="activityTitle">{act[0].title}</span>
               <Dialog
-                title={act[0].title}
+                title={
+                  <div>
+                    {act[0].title}
+                    <button
+                      style={closeImg}
+                      className="dialog-close-button"
+                      onClick={this.handleClick}
+                    >
+                      x
+                    </button>
+                  </div>
+                }
                 modal={false}
                 open={this.state.open}
                 onRequestClose={this.handleClick}
                 autoScrollBodyContent
+                bodyClassName="global--modal-body"
+                contentClassName="global--modal-content"
+                paperClassName="global--modal-paper"
               >
                 <PlanForm activity={act[0]} savedActivity={activity} />
               </Dialog>
@@ -214,13 +231,13 @@ class Activity extends Component {
       }
       if (act[0].mandatory && isDragging) {
         return connectDragSource(
-          <div style={{ float: 'left' }}>
+          <div>
             <ActivityPreview act={act[0]} mandatory />
           </div>
         )
       } else if (isDragging) {
         return connectDragSource(
-          <div style={{ float: 'left' }}>
+          <div>
             <ActivityPreview act={act[0]} mandatory={false} />
           </div>
         )
