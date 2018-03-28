@@ -19,6 +19,8 @@ import { pofInitialization } from './reducers/pofActivityReducer'
 import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 import NotificationFooter from './components/NotificationFooter'
+import MultiBackend from 'react-dnd-multi-backend'
+import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch'
 
 const styles = {
   toggle: {
@@ -93,7 +95,7 @@ class App extends Component {
               // This is the sticky part of the header.
               header={
                 <div className="Header_root">                
-                  <Toggle label="Piiota / näytä aktiviteetit"                      
+                  <Toggle label="Piilota / näytä aktiviteetit"                      
                       labelPosition="right" 
                       style={styles.toggle} 
                       onClick={this.toggleTopBar} 
@@ -152,15 +154,15 @@ const mapStateToProps = state => {
   }
 }
 
-let AppDnD
+let AppDnD = DragDropContext(MultiBackend(HTML5toTouch))(App)
 
-if (!isTouchDevice()) {
+/* if (!isTouchDevice()) {
   console.log('ei touch')
 AppDnD = DragDropContext(HTML5Backend)(App)
 } else {
   console.log('touch')
 AppDnD = DragDropContext(TouchBackend({ enableMouseEvents: true }))(App)
-}
+} */
 
 export default connect(mapStateToProps, {
   notify,
