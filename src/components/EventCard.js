@@ -108,7 +108,7 @@ class EventCard extends React.Component {
   deleteEventGroup = async () => {
     try {
       await this.props.deleteEventGroup(this.props.event.groupId);
-      this.props.notify('Tapahtumat poistettu!', 'success')
+      this.props.notify('Toistuva tapahtuma poistettu!', 'success')
       await this.props.bufferZoneInitialization()
       this.handleClose();
     } catch (exception) {
