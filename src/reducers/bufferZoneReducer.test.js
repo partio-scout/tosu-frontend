@@ -1,6 +1,6 @@
 import reducer from './bufferZoneReducer'
 
-describe('notification reducer', () => {
+describe('bufferZone reducer', () => {
   it('retuns null as inital state', () => {
     expect(reducer(null, { type: 'UNKNOWN' })).toEqual(null)
   })
