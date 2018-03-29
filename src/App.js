@@ -20,10 +20,14 @@ import { pofTreeInitialization } from './reducers/pofTreeReducer'
 import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 import NotificationFooter from './components/NotificationFooter'
+<<<<<<< Updated upstream
 import MultiBackend from 'react-dnd-multi-backend'
 import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch'
 import TreeSearchBar from './components/TreeSearchBar'
 import { green800, green200 } from 'material-ui/styles/colors';
+=======
+//import convertToBackendActivity from './functions/activityConverter'
+>>>>>>> Stashed changes
 
 const styles = {
   toggle: {
