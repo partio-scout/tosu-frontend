@@ -16,6 +16,7 @@ import Notification from './components/Notification'
 import ListEvents from './components/ListEvents'
 import { notify } from './reducers/notificationReducer'
 import { pofInitialization } from './reducers/pofActivityReducer'
+import { pofTreeInitialization } from './reducers/pofTreeReducer'
 import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 import NotificationFooter from './components/NotificationFooter'
@@ -50,6 +51,7 @@ class App extends Component {
     }
     await Promise.all([
       this.props.pofInitialization(),
+      this.props.pofTreeInitialization(),
       this.props.eventsInitialization(),
       this.props.bufferZoneInitialization(2) // id tulee userista myöhemmin
     ])
@@ -172,6 +174,7 @@ AppDnD = DragDropContext(TouchBackend({ enableMouseEvents: true }))(App)
 export default connect(mapStateToProps, {
   notify,
   pofInitialization,
+  pofTreeInitialization,
   eventsInitialization,
   bufferZoneInitialization
 })(AppDnD)

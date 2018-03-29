@@ -1,21 +1,20 @@
 
 import React from 'react';
-import TreeSelect, { TreeNode, SHOW_PARENT } from 'rc-tree-select';
-import matchSorter from 'match-sorter';
+import TreeSelect/*, { TreeNode, SHOW_PARENT }*/ from 'rc-tree-select';
 //import 'react-select/dist/react-select.css';
 import 'rc-tree-select/assets/index.css';
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
-import filterOffExistingOnes from '../functions/searchBarFiltering';
-import { gData } from '../utils/gData';
+//import filterOffExistingOnes from '../functions/searchBarFiltering';
+//import { gData } from '../utils/gData';
 import { pink100 } from 'material-ui/styles/colors';
 
 class TreeSearchBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '0-0-0-value1'
+            value: 'lisää aktiviteetti'
         };
     }
 
@@ -24,29 +23,49 @@ class TreeSearchBar extends React.Component {
     }
 
     onChange = (value) => {
+        console.log(value)
         console.log('onChange', arguments);
         this.setState({ value });
     }
 
 
     filterTreeNode = (input, child) => {
-        return String(child.props.title).indexOf(input) === 0;
+        return child.props.title.toLowerCase().includes(input.toLowerCase())
     }
 
     onChangeChildren = (value) => {
-        console.log('onChangeChildren', arguments);
+        console.log('onChangeChildren', arguments, value);
         const pre = value ? this.state.value : undefined;
-        this.setState({ value: isLeaf(value) ? value : pre });
+        this.setState({ value: this.isLeaf(value) ? value : pre });
     }
 
+    isLeaf = (value) => {
+        if (!value) {
+          return false;
+        }
+        let queues = [...this.props.pofTree.taskgroups];
+        while (queues.length) { // BFS
+          const item = queues.shift();
+          if (item.value.toString() === value.toString()) {
+            if (!item.children) {
+              return true;
+            }
+            return false;
+          }
+          if (item.children) {
+            queues = queues.concat(item.children);
+          }
+        }
+        return false;
+      }
+
     render() {
-        const { selectedActivity } = this.state;
-        const value = selectedActivity && selectedActivity.value;
-        const filteredPofActivities = filterOffExistingOnes(
+      /* const filteredPofActivities = filterOffExistingOnes(
             this.props.pofActivities,
             this.props.events,
             this.props.buffer
-        )
+        )*/
+        const filteredPofActivities = this.props.pofTree.taskgroups
         return (
             <div style={{ margin: 10, width: 800 }}>
                 <TreeSelect
@@ -58,7 +77,7 @@ class TreeSearchBar extends React.Component {
                     searchPlaceholder="please search"
                     showSearch allowClear treeLine
                     value={this.state.value}
-                    treeData={gData}
+                    treeData={filteredPofActivities}
                     treeNodeFilterProp="label"
                     filterTreeNode={this.filterTreeNode}
                     onChange={this.onChangeChildren}
@@ -68,54 +87,12 @@ class TreeSearchBar extends React.Component {
     }
 }
 
-function isLeaf(value) {
-    if (!value) {
-        return false;
-    }
-    let queues = [...gData];
-    while (queues.length) { // BFS
-        const item = queues.shift();
-        if (item.value === value) {
-            if (!item.children) {
-                return true;
-            }
-            return false;
-        }
-        if (item.children) {
-            queues = queues.concat(item.children);
-        }
-    }
-    return false;
-}
-
-function findPath(value, data) {
-    const sel = [];
-    function loop(selected, children) {
-        for (let i = 0; i < children.length; i++) {
-            const item = children[i];
-            if (selected === item.value) {
-                sel.push(item);
-                return;
-            }
-            if (item.children) {
-                loop(selected, item.children, item);
-                if (sel.length) {
-                    sel.push(item);
-                    return;
-                }
-            }
-        }
-    }
-    loop(value, data);
-    return sel;
-}
-
-
 const mapStateToProps = (state) => {
     return {
         pofActivities: state.pofActivities,
         events: state.events,
-        buffer: state.buffer
+        buffer: state.buffer,
+        pofTree: state.pofTree
     }
 }
 
