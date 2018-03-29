@@ -100,7 +100,8 @@ class App extends Component {
                 // This is the sticky part of the header.
                 header={
                   <div className="Header_root">
-                    <Toggle label="Piilota / näytä aktiviteetit"
+                    <Toggle
+                      label="Piilota / näytä aktiviteetit"
                       labelPosition="right"
                       style={styles.toggle}
                       onClick={this.toggleTopBar}
@@ -132,14 +133,14 @@ class App extends Component {
                     />
                   </Link>
                   &nbsp;
-                <Link to="/new-event">
+                  <Link to="/new-event">
                     <RaisedButton
                       label="Uusi tapahtuma"
                       onClick={this.hideTopBar}
                     />
                   </Link>
                   &nbsp;
-                <Route exact path="/" render={() => <ListEvents />} />
+                  <Route exact path="/" render={() => <ListEvents />} />
                   <Route
                     path="/new-event"
                     render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
