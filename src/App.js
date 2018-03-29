@@ -26,8 +26,8 @@ const styles = {
   toggle: {
     backgroundColor: '#5DBCD2'
   },
-  labelStyle:{
-    color:'#FFF'
+  labelStyle: {
+    color: '#FFF'
   }
 }
 class App extends Component {
@@ -91,54 +91,57 @@ class App extends Component {
       <div className="App">
         <Router>
           <MuiThemeProvider>
-            <StickyHeader
-              // This is the sticky part of the header.
-              header={
-                <div className="Header_root">                
-                  <Toggle label="Piilota / näytä aktiviteetit"                      
-                      labelPosition="right" 
-                      style={styles.toggle} 
-                      onClick={this.toggleTopBar} 
+            <div>
+              <StickyHeader
+                // This is the sticky part of the header.
+                header={
+                  <div className="Header_root">
+                    <Toggle
+                      label="Piilota / näytä aktiviteetit"
+                      labelPosition="right"
+                      style={styles.toggle}
+                      onClick={this.toggleTopBar}
                       labelStyle={styles.labelStyle}
-                      />
-                  {this.state.headerVisible ? (
-                    <Appbar
-                      //    bufferZoneUpdater={this.updateBufferZoneActivities}
-                      //  deleteFromBufferZone={this.deleteFromBufferZone}
-                      setHeaderHeight={this.setHeaderHeight}
                     />
-                  ) : null}
-                </div>
-              }
-            >
-              <section />
-            </StickyHeader>
+                    {this.state.headerVisible ? (
+                      <Appbar
+                        //    bufferZoneUpdater={this.updateBufferZoneActivities}
+                        //  deleteFromBufferZone={this.deleteFromBufferZone}
+                        setHeaderHeight={this.setHeaderHeight}
+                      />
+                    ) : null}
+                  </div>
+                }
+              >
+                <section />
+              </StickyHeader>
 
-            <div
-              id="container"
-              style={{ paddingTop: this.state.bufferZoneHeight + 30 }}
-            >
-              <div className="content">
-                <Link to="/">
-                  <RaisedButton
-                    label="Lista tapahtumista"
-                    onClick={this.openTopBar}
+              <div
+                id="container"
+                style={{ paddingTop: this.state.bufferZoneHeight + 30 }}
+              >
+                <div className="content">
+                  <Link to="/">
+                    <RaisedButton
+                      label="Lista tapahtumista"
+                      onClick={this.openTopBar}
+                    />
+                  </Link>
+                  &nbsp;
+                  <Link to="/new-event">
+                    <RaisedButton
+                      label="Uusi tapahtuma"
+                      onClick={this.hideTopBar}
+                    />
+                  </Link>
+                  &nbsp;
+                  <Route exact path="/" render={() => <ListEvents />} />
+                  <Route
+                    path="/new-event"
+                    render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
                   />
-                </Link>
-                &nbsp;
-                <Link to="/new-event">
-                  <RaisedButton
-                    label="Uusi tapahtuma"
-                    onClick={this.hideTopBar}
-                  />
-                </Link>
-                &nbsp;
-                <Route exact path="/" render={() => <ListEvents />} />
-                <Route
-                  path="/new-event"
-                  render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
-                />
-                <NotificationFooter />
+                  <NotificationFooter />
+                </div>
               </div>
             </div>
           </MuiThemeProvider>
