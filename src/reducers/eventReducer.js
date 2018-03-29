@@ -13,6 +13,7 @@ const addToEvent = (state, action) => {
 }
 
 const deleteFromEvent = (state, action) => {
+  console.log("State when deleting activities", state)
   const deleteFrom = state.find(
     e => e.activities.find(a => a.id === action.activityId) !== undefined
   )
@@ -91,6 +92,7 @@ export const addEvent = event => async dispatch => {
 
 export const editEvent = event => async dispatch => {
   const modded = await eventService.edit(event)
+  console.log("Modded", modded)
   dispatch({
     type: 'UPDATE_EVENT',
     modded
