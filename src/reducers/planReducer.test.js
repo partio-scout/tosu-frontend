@@ -1,5 +1,4 @@
 import reducer from './planReducer'
-import { stat } from 'fs'
 
 describe('plan reducer', () => {
   it('INIT_PLANS should return given plans', () => {
@@ -14,7 +13,10 @@ describe('plan reducer', () => {
   })
 
   it('SAVE_PLANS should add plan to list', () => {
-    const plans = { id: 1, plans: [{ id: 'abc', content: 'testi' }] }
+    const plans = {
+      id: 1,
+      plans: [{ id: 'abc', content: 'testi' }, { id: 'def', content: 'testi2' }]
+    }
 
     const expectedAction = {
       type: 'INIT_PLANS',
@@ -24,8 +26,8 @@ describe('plan reducer', () => {
     const stateFirst = reducer([], expectedAction)
 
     const id = 1
-    const suggestion = { content: 'Testi2' }
-    const suggestionId = 'def'
+    const suggestion = { content: 'testi3' }
+    const suggestionId = 'ghi'
 
     const expectedAction2 = {
       type: 'SAVE_PLAN',
@@ -39,7 +41,8 @@ describe('plan reducer', () => {
         id: 1,
         plans: [
           { content: 'testi', id: 'abc' },
-          { content: 'Testi2', id: 'def' }
+          { content: 'testi2', id: 'def' },
+          { content: 'testi3', id: 'ghi' }
         ]
       }
     ])
