@@ -7,17 +7,14 @@ const reducer = (state = [], action) => {
     default:
       return state
   }
-
 }
 
-export const pofInitialization = () => {
-  return async (dispatch) => {
-    const pofActivities = await pofService.getAll()
-    dispatch({
-      type: 'INIT_POF',
-      pofActivities
-    })
-  }
+export const pofInitialization = () => async dispatch => {
+  const pofActivities = await pofService.getAll()
+  dispatch({
+    type: 'INIT_POF',
+    pofActivities
+  })
 }
 
 export default reducer

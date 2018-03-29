@@ -6,11 +6,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Avatar from 'material-ui/Avatar'
 import Chip from 'material-ui/Chip'
-import {
-  blue200,
-  blue500,
-  indigo900
-} from 'material-ui/styles/colors'
+import { blue200, blue500, indigo900 } from 'material-ui/styles/colors'
 import { notify } from '../reducers/notificationReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
@@ -24,13 +20,13 @@ const styles = {
     // float: 'left',
     // display: 'inline-block',
     backgroundColor: blue200,
-    cursor: 'move',
+    cursor: 'move'
   },
   avatar: {
     size: 28,
     color: indigo900,
     backgroundColor: blue200,
-    margin: 4,
+    margin: 4
   },
   chipMandatory: {
     margin: 4,
@@ -38,7 +34,7 @@ const styles = {
     // float: 'left',
     width: '100%',
     backgroundColor: blue500,
-    cursor: 'move',
+    cursor: 'move'
   },
   avatarMandatory: {
     size: 28,
@@ -139,15 +135,19 @@ class Activity extends Component {
           >
             <Chip
               onRequestDelete={() => handleRequestDelete(activity, this.props)}
-              style={act[0].mandatory ? styles.chipMandatory: styles.chip}
+              style={act[0].mandatory ? styles.chipMandatory : styles.chip}
               key={activity.id}
               onClick={this.handleClick}
             >
-              <Avatar style={act[0].mandatory ? styles.avatarMandatory : styles.avatar}>
+              <Avatar
+                style={
+                  act[0].mandatory ? styles.avatarMandatory : styles.avatar
+                }
+              >
                 <img
                   style={{ width: '100%' }}
                   src={act[0].mandatoryIconUrl}
-                  alt="Mandatory Icon"                  
+                  alt="Mandatory Icon"
                 />
               </Avatar>
               <span className="activityTitle">{act[0].title}</span>
@@ -178,12 +178,11 @@ class Activity extends Component {
           </div>
         )
       }
-      
+
       if (isDragging) {
         return connectDragSource(
           <div>
-            <ActivityPreview act={act[0]} mandatory={act[0].mandatory}
-             />
+            <ActivityPreview act={act[0]} mandatory={act[0].mandatory} />
           </div>
         )
       }
@@ -198,12 +197,11 @@ const DraggableActivity = DragSource(
   collect
 )(Activity)
 
-const mapStateToProps = state => {
-  return {
-    notification: state.notification,
-    buffer: state.buffer
-  }
-}
+const mapStateToProps = state => ({
+  notification: state.notification,
+  buffer: state.buffer
+})
+
 export default connect(mapStateToProps, {
   deleteActivityFromEvent,
   deleteActivityFromBuffer,
