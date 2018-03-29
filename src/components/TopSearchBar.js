@@ -64,7 +64,7 @@ class TopSearchBar extends React.Component {
           })}
         />
         <div>
-          <BufferZone  />
+          <BufferZone />
         </div>
       </div>
     );

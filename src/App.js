@@ -21,13 +21,15 @@ import { eventsInitialization } from './reducers/eventReducer'
 import NotificationFooter from './components/NotificationFooter'
 import MultiBackend from 'react-dnd-multi-backend'
 import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch'
+import TreeSearchBar from './components/TreeSearchBar'
+import { green800, green200 } from 'material-ui/styles/colors';
 
 const styles = {
   toggle: {
     backgroundColor: '#5DBCD2'
   },
-  labelStyle:{
-    color:'#FFF'
+  labelStyle: {
+    color: '#FFF'
   }
 }
 class App extends Component {
@@ -91,54 +93,57 @@ class App extends Component {
       <div className="App">
         <Router>
           <MuiThemeProvider>
-            <StickyHeader
-              // This is the sticky part of the header.
-              header={
-                <div className="Header_root">                
-                  <Toggle label="Piilota / näytä aktiviteetit"                      
-                      labelPosition="right" 
-                      style={styles.toggle} 
-                      onClick={this.toggleTopBar} 
+            <div>
+              <StickyHeader
+                // This is the sticky part of the header.
+                header={
+                  <div className="Header_root">
+                    <Toggle label="Piilota / näytä aktiviteetit"
+                      labelPosition="right"
+                      style={styles.toggle}
+                      onClick={this.toggleTopBar}
                       labelStyle={styles.labelStyle}
-                      />
-                  {this.state.headerVisible ? (
-                    <Appbar
-                      //    bufferZoneUpdater={this.updateBufferZoneActivities}
-                      //  deleteFromBufferZone={this.deleteFromBufferZone}
-                      setHeaderHeight={this.setHeaderHeight}
                     />
-                  ) : null}
-                </div>
-              }
-            >
-              <section />
-            </StickyHeader>
+                    {this.state.headerVisible ? (
+                      <Appbar
+                        setHeaderHeight={this.setHeaderHeight}
+                      />
+                    ) : null}
+                  </div>
+                }
+              >
+                <section />
+              </StickyHeader>
 
-            <div
-              id="container"
-              style={{ paddingTop: this.state.bufferZoneHeight + 30 }}
-            >
-              <div className="content">
-                <Link to="/">
-                  <RaisedButton
-                    label="Lista tapahtumista"
-                    onClick={this.openTopBar}
-                  />
-                </Link>
-                &nbsp;
+              <div
+                id="container"
+                style={{ paddingTop: this.state.bufferZoneHeight + 30 }}
+              >
+                <div style={{ height: 70, paddingTop: 10, backgroundColor: green200 }}>
+                  <TreeSearchBar />
+                </div>
+                <div className="content">
+                  <Link to="/">
+                    <RaisedButton
+                      label="Lista tapahtumista"
+                      onClick={this.openTopBar}
+                    />
+                  </Link>
+                  &nbsp;
                 <Link to="/new-event">
-                  <RaisedButton
-                    label="Uusi tapahtuma"
-                    onClick={this.hideTopBar}
-                  />
-                </Link>
-                &nbsp;
+                    <RaisedButton
+                      label="Uusi tapahtuma"
+                      onClick={this.hideTopBar}
+                    />
+                  </Link>
+                  &nbsp;
                 <Route exact path="/" render={() => <ListEvents />} />
-                <Route
-                  path="/new-event"
-                  render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
-                />
-                <NotificationFooter />
+                  <Route
+                    path="/new-event"
+                    render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
+                  />
+                  <NotificationFooter />
+                </div>
               </div>
             </div>
           </MuiThemeProvider>
