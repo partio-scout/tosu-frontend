@@ -16,11 +16,14 @@ import Notification from './components/Notification'
 import ListEvents from './components/ListEvents'
 import { notify } from './reducers/notificationReducer'
 import { pofInitialization } from './reducers/pofActivityReducer'
+import { pofTreeInitialization } from './reducers/pofTreeReducer'
 import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 import NotificationFooter from './components/NotificationFooter'
 import MultiBackend from 'react-dnd-multi-backend'
 import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch'
+import TreeSearchBar from './components/TreeSearchBar'
+import { green800, green200 } from 'material-ui/styles/colors';
 
 const styles = {
   toggle: {
@@ -48,6 +51,7 @@ class App extends Component {
     }
     await Promise.all([
       this.props.pofInitialization(),
+      this.props.pofTreeInitialization(),
       this.props.eventsInitialization(),
       this.props.bufferZoneInitialization(2) // id tulee userista myöhemmin
     ])
@@ -105,8 +109,6 @@ class App extends Component {
                     />
                     {this.state.headerVisible ? (
                       <Appbar
-                        //    bufferZoneUpdater={this.updateBufferZoneActivities}
-                        //  deleteFromBufferZone={this.deleteFromBufferZone}
                         setHeaderHeight={this.setHeaderHeight}
                       />
                     ) : null}
@@ -120,6 +122,9 @@ class App extends Component {
                 id="container"
                 style={{ paddingTop: this.state.bufferZoneHeight + 30 }}
               >
+                <div style={{ height: 70, paddingTop: 10, backgroundColor: green200 }}>
+                  <TreeSearchBar />
+                </div>
                 <div className="content">
                   <Link to="/">
                     <RaisedButton
@@ -170,6 +175,7 @@ AppDnD = DragDropContext(TouchBackend({ enableMouseEvents: true }))(App)
 export default connect(mapStateToProps, {
   notify,
   pofInitialization,
+  pofTreeInitialization,
   eventsInitialization,
   bufferZoneInitialization
 })(AppDnD)
