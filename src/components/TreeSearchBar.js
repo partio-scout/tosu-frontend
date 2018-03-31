@@ -8,7 +8,7 @@ import { notify } from '../reducers/notificationReducer'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
 //import filterOffExistingOnes from '../functions/searchBarFiltering';
 //import { gData } from '../utils/gData';
-import { pink100 } from 'material-ui/styles/colors';
+import {  blue200, blue500 } from 'material-ui/styles/colors';
 
 class TreeSearchBar extends React.Component {
     constructor(props) {
@@ -44,7 +44,7 @@ class TreeSearchBar extends React.Component {
             this.setState({ activityGuid: null })
             this.props.notify('Aktiviteetti lisätty!', 'success')
           } catch (Exception) {
-            this.props.notify('Aktiviteettialue on täynnä!')
+            this.props.notify('Aktiviteettialue on täynnä tai aktiviteetti on jo lisätty!')
           }
         }
       };
@@ -82,7 +82,7 @@ class TreeSearchBar extends React.Component {
                     style={{ width: 300 }}
                     transitionName="rc-tree-select-dropdown-slide-up"
                     choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                    dropdownStyle={{ maxHeight: 400, overflow: 'auto', backgroundColor: pink100 }}
+                    dropdownStyle={{ maxHeight: 400, overflow: 'auto'}}
                     placeholder={<i>Lisää aktiviteetti</i>}
                     searchPlaceholder="Search..."
                     showSearch allowClear treeLine
