@@ -14,7 +14,7 @@ class TreeSearchBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: 'lisää aktiviteetti'
+            value: <i>Lisää aktiviteetti</i>
         };
     }
 
@@ -33,11 +33,21 @@ class TreeSearchBar extends React.Component {
         return child.props.title.toLowerCase().includes(input.toLowerCase())
     }
 
-    onChangeChildren = (value) => {
-        console.log('onChangeChildren', arguments, value);
-        const pre = value ? this.state.value : undefined;
-        this.setState({ value: this.isLeaf(value) ? value : pre });
-    }
+    onChangeChildren = async activityGuid => {
+        await this.setState({ activityGuid })
+        if (this.state.activityGuid) {
+          const data = {
+            guid: activityGuid
+          }
+          try {
+            await this.props.postActivityToBuffer(data)
+            this.setState({ activityGuid: null })
+            this.props.notify('Aktiviteetti lisätty!', 'success')
+          } catch (Exception) {
+            this.props.notify('Aktiviteettialue on täynnä!')
+          }
+        }
+      };
 
     isLeaf = (value) => {
         if (!value) {
@@ -73,8 +83,8 @@ class TreeSearchBar extends React.Component {
                     transitionName="rc-tree-select-dropdown-slide-up"
                     choiceTransitionName="rc-tree-select-selection__choice-zoom"
                     dropdownStyle={{ maxHeight: 400, overflow: 'auto', backgroundColor: pink100 }}
-                    placeholder={<i>placeholder</i>}
-                    searchPlaceholder="please search"
+                    placeholder={<i>Lisää aktiviteetti</i>}
+                    searchPlaceholder="Search..."
                     showSearch allowClear treeLine
                     value={this.state.value}
                     treeData={filteredPofActivities}
