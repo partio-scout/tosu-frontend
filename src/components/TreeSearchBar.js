@@ -16,8 +16,7 @@ class TreeSearchBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: 'Lisää aktiviteetti',
-            tarppo: 1
+
         };
     }
 
@@ -74,8 +73,10 @@ class TreeSearchBar extends React.Component {
         return false;
     }
 
-    handleChange = (event, index, value) => this.setState({tarppo:value});
-
+    onChangenTarppo = async taskgroupId => {
+    
+    }
+    
     render() {
         
         /* const filteredPofActivities = filterOffExistingOnes(
@@ -84,28 +85,38 @@ class TreeSearchBar extends React.Component {
               this.props.buffer
           )*/
         const filteredPofActivities = this.props.pofTree.taskgroups
+        const tarppos = [
+            "Paussi", 
+            "Leiri-tarppo", 
+            "Yhteiskunta-tarppo", 
+            "Selviytyminen-tarppo", 
+            "Kaupunki-tarppo",
+            "Luovuus-tarppo",
+            "Minäminä-tarppo",
+            "Tervetuloa tarpojaksi",
+            "Siirtymä"]
+
         return (
          
             <div style={{ margin: 20, width: 800 }}>
              
-                <TreeSelect
+                
+             <TreeSelect
+                    style={{ width: 180}}
                     transitionName="rc-tree-select-dropdown-slide-up"
                     choiceTransitionName="rc-tree-select-selection__choice-zoom"
                     dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                    placeholder={'Lisää aktiviteetti'}
+                    placeholder={'Valitse tarppo'}
                     searchPlaceholder="Search..."
                     showSearch allowClear treeLine
                     value={this.state.value}
-                    treeData={filteredPofActivities}
+                    treeData={tarppos.map(title => ({"title": title}))}
                     treeNodeFilterProp="label"
                     filterTreeNode={this.filterTreeNode}
-                    onChange={this.onChangeChildren}
-                    
+                    onChange={this.onChangenTarppo}
                 />
-                                
-                
                 <TreeSelect
-                    
+                    style={{margin:15, width: 300}}
                     transitionName="rc-tree-select-dropdown-slide-up"
                     choiceTransitionName="rc-tree-select-selection__choice-zoom"
                     dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
