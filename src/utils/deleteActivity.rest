@@ -1,0 +1,1 @@
+DELETE https://suunnittelu.partio-ohjelma.fi:3001/activities/28

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import PropTypes from 'prop-types';
+//import PropTypes from 'prop-types';
 import DragLayer from 'react-dnd/lib/DragLayer';
 import Chip from 'material-ui/Chip/Chip';
 import { blue200, indigo900, blue500 } from 'material-ui/styles/colors';
