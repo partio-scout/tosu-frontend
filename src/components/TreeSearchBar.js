@@ -6,6 +6,8 @@ import 'rc-tree-select/assets/index.css';
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 //import filterOffExistingOnes from '../functions/searchBarFiltering';
 //import { gData } from '../utils/gData';
 //import {  blue200, blue500 } from 'material-ui/styles/colors';
@@ -14,7 +16,8 @@ class TreeSearchBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: 'Lisää aktiviteetti'
+            value: 'Lisää aktiviteetti',
+            tarppo: 1
         };
     }
 
@@ -71,7 +74,10 @@ class TreeSearchBar extends React.Component {
         return false;
     }
 
+    handleChange = (event, index, value) => this.setState({tarppo:value});
+
     render() {
+        
         /* const filteredPofActivities = filterOffExistingOnes(
               this.props.pofActivities,
               this.props.events,
@@ -79,13 +85,31 @@ class TreeSearchBar extends React.Component {
           )*/
         const filteredPofActivities = this.props.pofTree.taskgroups
         return (
-            <div style={{ margin: 10, width: 800 }}>
+         
+            <div style={{ margin: 20, width: 800 }}>
+             
                 <TreeSelect
-                    style={{ width: 300 }}
                     transitionName="rc-tree-select-dropdown-slide-up"
                     choiceTransitionName="rc-tree-select-selection__choice-zoom"
                     dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                    placeholder={<i>Lisää aktiviteetti</i>}
+                    placeholder={'Lisää aktiviteetti'}
+                    searchPlaceholder="Search..."
+                    showSearch allowClear treeLine
+                    value={this.state.value}
+                    treeData={filteredPofActivities}
+                    treeNodeFilterProp="label"
+                    filterTreeNode={this.filterTreeNode}
+                    onChange={this.onChangeChildren}
+                    
+                />
+                                
+                
+                <TreeSelect
+                    
+                    transitionName="rc-tree-select-dropdown-slide-up"
+                    choiceTransitionName="rc-tree-select-selection__choice-zoom"
+                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                    placeholder={'Lisää aktiviteetti'}
                     searchPlaceholder="Search..."
                     showSearch allowClear treeLine
                     value={this.state.value}

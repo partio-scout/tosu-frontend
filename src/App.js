@@ -122,7 +122,7 @@ class App extends Component {
                 id="container"
                 style={{ paddingTop: this.state.bufferZoneHeight + 30 }}
               >
-                <div style={{ height: 70, paddingTop: 10, backgroundColor: green200 }}>
+                <div style={{ height: 94, paddingTop: 10, backgroundColor: green200 }}>
                   <TreeSearchBar />
                 </div>
                 <div className="content">
