@@ -45,10 +45,8 @@ function getItemStyles(currentOffset, startPoint, mandatory) {
     };
   }
   let { x, y } = currentOffset;
-  if (isTouchDevice) {
-    x -= startPoint.x
-    y -= startPoint.y
-  }
+  x -= startPoint.x
+  y -= startPoint.y
   const transform = `translate(${x}px, ${y}px)`;
   const color = mandatory ? blue500 : blue200
   return {
