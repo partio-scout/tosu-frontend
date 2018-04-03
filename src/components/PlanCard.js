@@ -48,7 +48,6 @@ class PlanCard extends React.Component {
   }
   render() {
     const { suggestion, savedActivity, plans } = this.props
-
     // Find plans for current activity from store
     const activityPlans = plans.filter(plan => plan.id === savedActivity.id)
 

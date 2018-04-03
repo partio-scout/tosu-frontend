@@ -31,14 +31,14 @@ const reducer = (state = [], action) => {
   }
 }
 
-export const initPlans = plans => async dispatch => {
+export const initPlans = plans => dispatch => {
   dispatch({
     type: 'INIT_PLANS',
     plans
   })
 }
 
-export const savePlan = (suggestion, id, suggestionId) => async dispatch => {
+export const savePlan = (suggestion, id, suggestionId) => dispatch => {
   dispatch({
     type: 'SAVE_PLAN',
     id,
@@ -47,7 +47,7 @@ export const savePlan = (suggestion, id, suggestionId) => async dispatch => {
   })
 }
 
-export const deletePlan = (id, activityId) => async dispatch => {
+export const deletePlan = (id, activityId) => dispatch => {
   dispatch({
     type: 'DELETE_PLAN',
     id,

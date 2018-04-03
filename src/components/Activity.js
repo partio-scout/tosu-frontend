@@ -6,12 +6,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Avatar from 'material-ui/Avatar'
 import Chip from 'material-ui/Chip'
-import {
-  blue300,
-  green300,
-  indigo900,
-  green900
-} from 'material-ui/styles/colors'
+import { blue200, blue500, indigo900 } from 'material-ui/styles/colors'
 import { notify } from '../reducers/notificationReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
@@ -24,26 +19,27 @@ const styles = {
     margin: 4,
     // float: 'left',
     // display: 'inline-block',
-    backgroundColor: blue300,
-    cursor: 'move',
+    backgroundColor: blue200,
+    cursor: 'move'
   },
   avatar: {
     size: 28,
     color: indigo900,
-    backgroundColor: blue300,
-    margin: 4,
+    backgroundColor: blue200,
+    margin: 4
   },
   chipMandatory: {
     margin: 4,
     // display: 'inline-block',
     // float: 'left',
-    backgroundColor: green300,
-    cursor: 'move',
+    width: '100%',
+    backgroundColor: blue500,
+    cursor: 'move'
   },
   avatarMandatory: {
     size: 28,
-    color: green900,
-    backgroundColor: green300,
+    color: indigo900,
+    backgroundColor: blue500,
     margin: 4
   }
 }
@@ -127,7 +123,7 @@ class Activity extends Component {
     }
 
     if (activity && act[0]) {
-      if (act[0].mandatory && !isDragging) {
+      if (!isDragging) {
         return connectDragSource(
           <div
             style={{
@@ -138,64 +134,19 @@ class Activity extends Component {
           >
             <Chip
               onRequestDelete={() => handleRequestDelete(activity, this.props)}
-              style={styles.chipMandatory}
+              style={act[0].mandatory ? styles.chipMandatory : styles.chip}
               key={activity.id}
               onClick={this.handleClick}
             >
-              <Avatar style={styles.avatarMandatory}>
+              <Avatar
+                style={
+                  act[0].mandatory ? styles.avatarMandatory : styles.avatar
+                }
+              >
                 <img
                   style={{ width: '100%' }}
                   src={act[0].mandatoryIconUrl}
-                  alt="Mandatory activity"
-                />
-              </Avatar>
-              <span className="activityTitle">{act[0].title}</span>
-              <Dialog
-                title={
-                  <div>
-                    {act[0].title}
-                    <button
-                      style={closeImg}
-                      className="dialog-close-button"
-                      onClick={this.handleClick}
-                    >
-                      x
-                    </button>
-                  </div>
-                }
-                modal={false}
-                open={this.state.open}
-                onRequestClose={this.handleClick}
-                autoScrollBodyContent
-                bodyClassName="global--modal-body"
-                contentClassName="global--modal-content"
-                paperClassName="global--modal-paper"
-              >
-                <PlanForm activity={act[0]} savedActivity={activity} />
-              </Dialog>
-            </Chip>
-          </div>
-        )
-      } else if (!isDragging) {
-        return connectDragSource(
-          <div
-            style={{
-              float: 'left',
-              // display: 'inline-block',
-              visibility: { visibility }
-            }}
-          >
-            <Chip
-              onRequestDelete={() => handleRequestDelete(activity, this.props)}
-              style={styles.chip}
-              key={activity.id}
-              onClick={this.handleClick}
-            >
-              <Avatar style={styles.avatar}>
-                <img
-                  style={{ width: '100%' }}
-                  src="https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3562.png"
-                  alt="Not-mandatory activity"
+                  alt="Mandatory Icon"
                 />
               </Avatar>
               <span className="activityTitle">{act[0].title}</span>
@@ -226,16 +177,11 @@ class Activity extends Component {
           </div>
         )
       }
-      if (act[0].mandatory && isDragging) {
+
+      if (isDragging) {
         return connectDragSource(
           <div>
-            <ActivityPreview act={act[0]} mandatory />
-          </div>
-        )
-      } else if (isDragging) {
-        return connectDragSource(
-          <div>
-            <ActivityPreview act={act[0]} mandatory={false} />
+            <ActivityPreview act={act[0]} mandatory={act[0].mandatory} />
           </div>
         )
       }
@@ -250,12 +196,11 @@ const DraggableActivity = DragSource(
   collect
 )(Activity)
 
-const mapStateToProps = state => {
-  return {
-    notification: state.notification,
-    buffer: state.buffer
-  }
-}
+const mapStateToProps = state => ({
+  notification: state.notification,
+  buffer: state.buffer
+})
+
 export default connect(mapStateToProps, {
   deleteActivityFromEvent,
   deleteActivityFromBuffer,

@@ -6,4 +6,9 @@ const getAll = async () => {
   return response.data
 }
 
-export default { getAll }
+const getAllTree = async () => {
+  const response = await axios.get(`${API_ROOT}/filledpof/tarppo`)
+  return response.data
+}
+
+export default { getAll, getAllTree }
