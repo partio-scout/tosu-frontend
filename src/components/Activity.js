@@ -13,6 +13,7 @@ import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
 import ActivityPreview from './ActivityPreview'
+import FlatButton from 'material-ui/FlatButton';
 
 const styles = {
   chip: {
@@ -154,14 +155,13 @@ class Activity extends Component {
               <Dialog
                 title={
                   <div>
-                    {act[0].title}
-                    <button
-                      style={closeImg}
-                      className="dialog-close-button"
+                    {act[0].title}                    
+                    <FlatButton
+                      style={{ float: 'right' }}
+                      label="Close"
+                      primary={true}
                       onClick={this.handleClick}
-                    >
-                      x
-                    </button>
+                    />
                   </div>
                 }
                 modal={false}

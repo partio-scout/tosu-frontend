@@ -8,6 +8,7 @@ import { notify } from '../reducers/notificationReducer'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import Select from 'react-select'
 //import filterOffExistingOnes from '../functions/searchBarFiltering';
 //import { gData } from '../utils/gData';
 //import {  blue200, blue500 } from 'material-ui/styles/colors';
@@ -16,7 +17,7 @@ class TreeSearchBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            selectedTaskGroup: null
         };
     }
 
@@ -73,50 +74,46 @@ class TreeSearchBar extends React.Component {
         return false;
     }
 
-    onChangenTarppo = async taskgroupId => {
-    
+    onChangeTaskgroup = async taskgroupId => {
+        console.log(taskgroupId)
     }
-    
+
     render() {
-        
+
         /* const filteredPofActivities = filterOffExistingOnes(
               this.props.pofActivities,
               this.props.events,
               this.props.buffer
           )*/
         const filteredPofActivities = this.props.pofTree.taskgroups
-        const tarppos = [
-            "Paussi", 
-            "Leiri-tarppo", 
-            "Yhteiskunta-tarppo", 
-            "Selviytyminen-tarppo", 
-            "Kaupunki-tarppo",
-            "Luovuus-tarppo",
-            "Minäminä-tarppo",
-            "Tervetuloa tarpojaksi",
-            "Siirtymä"]
+        if (filteredPofActivities === undefined) {
+            return null
+        }
 
         return (
-         
+
             <div style={{ margin: 20, width: 800 }}>
-             
-                
-             <TreeSelect
-                    style={{ width: 180}}
-                    transitionName="rc-tree-select-dropdown-slide-up"
-                    choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                    dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                    placeholder={'Valitse tarppo'}
-                    searchPlaceholder="Search..."
-                    showSearch allowClear treeLine
-                    value={this.state.value}
-                    treeData={tarppos.map(title => ({"title": title}))}
-                    treeNodeFilterProp="label"
-                    filterTreeNode={this.filterTreeNode}
-                    onChange={this.onChangenTarppo}
-                />
+            
+                <div style={{ float: 'left', marginRight: 20 }}>
+                    <Select
+                        menuContainerStyle={{ width: 200 }}
+                        style={{ width: 200 }}
+                        name="form-field-name"
+                        value={this.state.selectedTaskGroup}
+                        onChange={this.onChangeTaskgroup}
+
+                        options={filteredPofActivities.map(rootgroup => {
+                            console.log(rootgroup)
+                            let obj = {}
+                            obj = { value: rootgroup.guid, label: rootgroup.title }
+                            return obj
+                        })}
+
+                    />
+                </div>
+
                 <TreeSelect
-                    style={{margin:15, width: 300}}
+                    style={{ width: 300 }}
                     transitionName="rc-tree-select-dropdown-slide-up"
                     choiceTransitionName="rc-tree-select-selection__choice-zoom"
                     dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
@@ -129,6 +126,7 @@ class TreeSearchBar extends React.Component {
                     filterTreeNode={this.filterTreeNode}
                     onChange={this.onChangeChildren}
                 />
+                
             </div>
         );
     }
