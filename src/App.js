@@ -103,8 +103,6 @@ class App extends Component {
                       />
                   {this.state.headerVisible ? (
                     <Appbar
-                      //    bufferZoneUpdater={this.updateBufferZoneActivities}
-                      //  deleteFromBufferZone={this.deleteFromBufferZone}
                       setHeaderHeight={this.setHeaderHeight}
                     />
                   ) : null}
@@ -113,7 +111,6 @@ class App extends Component {
             >
               <section />
             </StickyHeader>
-
             <div
               id="container"
               style={{ paddingTop: this.state.bufferZoneHeight + 30 }}

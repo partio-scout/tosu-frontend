@@ -37,7 +37,6 @@ const styles = {
     margin: 4,
     // display: 'inline-block',
     // float: 'left',
-    width: '100%',
     backgroundColor: green300,
     cursor: 'move',
   },
@@ -134,8 +133,7 @@ class Activity extends Component {
             style={{
               float: 'left',
               // display: 'inline-block',
-              visibility: { visibility },
-              maxWidth: '230px'
+              visibility: { visibility }
             }}
           >
             <Chip
@@ -184,8 +182,7 @@ class Activity extends Component {
             style={{
               float: 'left',
               // display: 'inline-block',
-              visibility: { visibility },
-              maxWidth: '230px'
+              visibility: { visibility }
             }}
           >
             <Chip
