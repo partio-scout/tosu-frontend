@@ -129,8 +129,7 @@ class Activity extends Component {
             style={{
               float: 'left',
               // display: 'inline-block',
-              visibility: { visibility },
-              maxWidth: '230px'
+              visibility: { visibility }
             }}
           >
             <Chip

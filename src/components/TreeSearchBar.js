@@ -32,7 +32,8 @@ class TreeSearchBar extends React.Component {
 
 
     filterTreeNode = (input, child) => {
-        return child.props.title.toLowerCase().includes(input.toLowerCase())
+        console.log(child)
+        return child.props.title.props.name.toLowerCase().includes(input.toLowerCase())
     }
 
     onChangeChildren = async activityGuid => {
@@ -85,6 +86,7 @@ class TreeSearchBar extends React.Component {
               this.props.buffer
           )*/
         const filteredPofActivities = this.props.pofTree.taskgroups
+        console.log(filteredPofActivities)
         const tarppos = [
             "Paussi", 
             "Leiri-tarppo", 
