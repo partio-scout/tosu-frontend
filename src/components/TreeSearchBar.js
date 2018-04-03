@@ -13,6 +13,7 @@ import Select from 'react-select'
 //import { gData } from '../utils/gData';
 //import {  blue200, blue500 } from 'material-ui/styles/colors';
 
+
 class TreeSearchBar extends React.Component {
     constructor(props) {
         super(props);
@@ -22,12 +23,12 @@ class TreeSearchBar extends React.Component {
     }
 
     onSearch = (value) => {
-        console.log(value, arguments);
+        //console.log(value, arguments);
     }
 
     onChange = (value) => {
-        console.log(value)
-        console.log('onChange', arguments);
+        //console.log(value)
+        //console.log('onChange', arguments);
         this.setState({ value });
     }
 
@@ -75,11 +76,31 @@ class TreeSearchBar extends React.Component {
     }
 
     onChangeTaskgroup = async taskgroupId => {
-        console.log(taskgroupId)
+        //console.log(taskgroupId)
     }
 
-    render() {
+    addMandatoryActivitiesFromTarppoToBufferzone = async (pofTree, selectedTaskGroup) => {
+        //const mandatoryActivities = pofTree.taskgroups.mandatory_tasks
+        
+        
+        
+        try {
+            const mandatoryActivities = pofTree.taskgroups.find(group => group.guid === selectedTaskGroup).mandatory_tasks
+            await console.log('TASK' ,pofTree.taskgroups)
+            console.log('wut', pofTree )
+            console.log('man', mandatoryActivities)
+            await Promise.all([
+                
+            ]) 
+        } catch (exception) {
+            console.log('virhe')
+            //this.props.notify('')
+        }
+    }
+    
 
+    render() {
+        this.addMandatoryActivitiesFromTaskgroupToBufferzone(this.pofTree, this.state.selectedTaskGroup)
         /* const filteredPofActivities = filterOffExistingOnes(
               this.props.pofActivities,
               this.props.events,
@@ -92,7 +113,7 @@ class TreeSearchBar extends React.Component {
 
         return (
 
-            <div style={{ margin: 20, width: 800 }}>
+            <div style={{ margin: 20 }}>
             
                 <div style={{ float: 'left', marginRight: 20 }}>
                     <Select
@@ -103,7 +124,7 @@ class TreeSearchBar extends React.Component {
                         onChange={this.onChangeTaskgroup}
 
                         options={filteredPofActivities.map(rootgroup => {
-                            console.log(rootgroup)
+                            //console.log(rootgroup)
                             let obj = {}
                             obj = { value: rootgroup.guid, label: rootgroup.title }
                             return obj
@@ -134,7 +155,6 @@ class TreeSearchBar extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        pofActivities: state.pofActivities,
         events: state.events,
         buffer: state.buffer,
         pofTree: state.pofTree
