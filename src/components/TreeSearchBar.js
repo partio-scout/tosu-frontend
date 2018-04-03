@@ -17,10 +17,11 @@ import Select from 'react-select'
 class TreeSearchBar extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            selectedTaskGroup: null
-        };
+
     }
+    state = {
+        selectedTaskGroup: null
+    };
 
     onSearch = (value) => {
         //console.log(value, arguments);
@@ -40,17 +41,8 @@ class TreeSearchBar extends React.Component {
     onChangeChildren = async activityGuid => {
         if (this.isLeaf(activityGuid)) {
             await this.setState({ activityGuid })
-            if (this.state.activityGuid) {
-                const data = {
-                    guid: activityGuid
-                }
-                try {
-                    await this.props.postActivityToBuffer(data)
-                    this.setState({ activityGuid: null })
-                    this.props.notify('Aktiviteetti lisätty!', 'success')
-                } catch (Exception) {
-                    this.props.notify('Aktiviteettialue on täynnä tai aktiviteetti on jo lisätty!')
-                }
+            if (this.state.activityGuid) {                
+            this.activityToBuffer(activityGuid)
             }
         }
     };
@@ -75,32 +67,59 @@ class TreeSearchBar extends React.Component {
         return false;
     }
 
-    onChangeTaskgroup = async taskgroupId => {
-        //console.log(taskgroupId)
+    onChangeTaskgroup = async taskgroup => {
+        this.state.selectedTaskGroup = taskgroup;
+        this.addMandatoryActivitiesTOBufferzone(this.state.selectedTaskGroup)
+        
     }
 
-    addMandatoryActivitiesFromTarppoToBufferzone = async (pofTree, selectedTaskGroup) => {
-        //const mandatoryActivities = pofTree.taskgroups.mandatory_tasks
+    addMandatoryActivitiesTOBufferzone = async (selectedTaskGroup) => {
+        const taskgroupId = selectedTaskGroup.value;
+        const taskgroups = this.props.pofTree.taskgroups;
+
         
-        
-        
-        try {
-            const mandatoryActivities = pofTree.taskgroups.find(group => group.guid === selectedTaskGroup).mandatory_tasks
-            await console.log('TASK' ,pofTree.taskgroups)
-            console.log('wut', pofTree )
-            console.log('man', mandatoryActivities)
-            await Promise.all([
-                
-            ]) 
-        } catch (exception) {
-            console.log('virhe')
-            //this.props.notify('')
+        for(var i=0; i < taskgroups.length; i++){
+            if(taskgroups[i].guid === taskgroupId){
+                console.log('task', taskgroups[i])
+                const mandatoryActivities = taskgroups[i].mandatory_tasks
+                console.log('man', mandatoryActivities)
+
+                this.getMandatoryTasksFromList(mandatoryActivities)
+
+            }
         }
+
     }
-    
+
+    getMandatoryTasksFromList = async (mandatoryActivities) => {
+        
+        var array = mandatoryActivities.split(",");
+
+        console.log('array', array)
+
+        for(var i = 0; i<array.length; i++){
+            this.activityToBuffer(array[i])
+        }
+
+
+        
+    }
+
+    activityToBuffer = async (activityGuid) => {    
+            const data = {
+                guid: activityGuid
+            }
+            try {
+                await this.props.postActivityToBuffer(data)
+                this.setState({ activityGuid: null })
+                this.props.notify('Aktiviteetti lisätty!', 'success')
+            } catch (Exception) {
+                this.props.notify('Aktiviteettialue on täynnä tai aktiviteetti on jo lisätty!')
+            }
+        
+    }
 
     render() {
-        this.addMandatoryActivitiesFromTaskgroupToBufferzone(this.pofTree, this.state.selectedTaskGroup)
         /* const filteredPofActivities = filterOffExistingOnes(
               this.props.pofActivities,
               this.props.events,
