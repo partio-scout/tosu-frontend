@@ -1,5 +1,8 @@
 import { connect } from 'react-redux'
 import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend';
+import TouchBackend from 'react-dnd-touch-backend';
+import MultiBackend, { TouchTransition } from 'react-dnd-multi-backend';
 //import isTouchDevice from 'is-touch-device'
 import React, { Component } from 'react'
 //import HTML5Backend from 'react-dnd-html5-backend'
@@ -19,8 +22,8 @@ import { pofTreeInitialization } from './reducers/pofTreeReducer'
 import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 import NotificationFooter from './components/NotificationFooter'
-import MultiBackend from 'react-dnd-multi-backend'
-import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch'
+// import MultiBackend from 'react-dnd-multi-backend'
+// import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch'
 import TreeSearchBar from './components/TreeSearchBar'
 import { green200 } from 'material-ui/styles/colors';
 //import convertToBackendActivity from './functions/activityConverter'
@@ -162,7 +165,20 @@ const mapStateToProps = state => {
   }
 }
 
-let AppDnD = DragDropContext(MultiBackend(HTML5toTouch))(App)
+const HTML5toTouch = {
+  backends: [
+    {
+      backend: HTML5Backend
+    },
+    {
+      backend: TouchBackend({enableMouseEvents: true}), // Note that you can call your backends with options
+      // preview: true,
+      transition: TouchTransition
+    }
+  ]
+};
+
+const AppDnD = DragDropContext(MultiBackend(HTML5toTouch))(App)
 
 /* if (!isTouchDevice()) {
   console.log('ei touch')
