@@ -129,6 +129,7 @@ class Activity extends Component {
           <div
             style={{
               float: 'left',
+              margin: 4,
               // display: 'inline-block',
               visibility: { visibility }
             }}
