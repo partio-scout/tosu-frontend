@@ -25,7 +25,7 @@ const addActivity = async (id, data) => {
 }
 
 const edit = async(event) => {
-  console.log(event)
+  //console.log(event)
   const response = await axios.put(`${baseUrl}/${event.id}`, event)
   return response.data
 }

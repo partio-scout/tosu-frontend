@@ -1,5 +1,6 @@
 import { getEmptyImage } from 'react-dnd-html5-backend'
 import { connect } from 'react-redux'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import Dialog from 'material-ui/Dialog'
 import { DragSource } from 'react-dnd'
 import React, { Component } from 'react'
@@ -86,6 +87,7 @@ const handleRequestDelete = async (activity, props) => {
   } catch (exception) {
     props.notify('Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!')
   }
+  props.pofTreeUpdate(props.buffer, props.events)
 }
 
 class Activity extends Component {
@@ -199,11 +201,13 @@ const DraggableActivity = DragSource(
 
 const mapStateToProps = state => ({
   notification: state.notification,
-  buffer: state.buffer
+  buffer: state.buffer,
+  events: state.events
 })
 
 export default connect(mapStateToProps, {
   deleteActivityFromEvent,
   deleteActivityFromBuffer,
-  notify
+  notify,
+  pofTreeUpdate
 })(DraggableActivity)

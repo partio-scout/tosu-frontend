@@ -1,4 +1,5 @@
 import { connect } from 'react-redux'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import React from 'react';
 import { white, green100 } from 'material-ui/styles/colors';
 import { DropTarget } from 'react-dnd';
@@ -24,6 +25,7 @@ const moveActivity = async (props, activityId, parentId, targetId, bufferzone) =
             props.notify('Aktiviteettialue on täynnä!')
         }
     }
+    props.pofTreeUpdate(props.buffer, props.events)
 }
 
 const bufferZoneTarget = {
@@ -97,6 +99,7 @@ export default connect(
     {
         notify,
         deleteActivityFromEventOnlyLocally,
-        postActivityToBufferOnlyLocally
+        postActivityToBufferOnlyLocally,
+        pofTreeUpdate
     }
 )(DroppableBufferZone)

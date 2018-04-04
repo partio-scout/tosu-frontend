@@ -1,4 +1,5 @@
 import { connect } from 'react-redux'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import React from 'react';
 import { DropTarget } from 'react-dnd';
 import { notify } from '../reducers/notificationReducer'
@@ -32,6 +33,7 @@ const moveActivityFromBuffer = async (props, activityId, parentId, targetId) => 
   } catch (exception) {
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
+  props.pofTreeUpdate(props.buffer, props.events)
 }
 
 const moveActivityFromEvent = async (props, activityId, parentId, targetId) => {
@@ -44,6 +46,7 @@ const moveActivityFromEvent = async (props, activityId, parentId, targetId) => {
   } catch (exception) {
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
+  props.pofTreeUpdate(props.buffer, props.events)
 }
 
 const EventCardTarget = {
@@ -256,7 +259,8 @@ class EventCard extends React.Component {
 const mapStateToProps = (state) => {
   return {
     pofActivities: state.pofActivities,
-    events: state.events
+    events: state.events,
+    buffer: state.buffer
   }
 }
 
@@ -272,7 +276,8 @@ export default connect(
     deleteEventGroup,
     addActivityToEventOnlyLocally,
     deleteActivityFromEventOnlyLocally,
-    deleteActivityFromBufferOnlyLocally
+    deleteActivityFromBufferOnlyLocally,
+    pofTreeUpdate
   }
 
 )(DroppableEventCard)

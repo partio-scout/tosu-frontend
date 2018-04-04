@@ -46,7 +46,7 @@ const postOrderUpdate = (pof, existingActivityGuids) => {
 
   if (root !== undefined && root.tasks !== undefined) {
     root.children.forEach(task => {
-      console.log(task.value, existingActivityGuids)
+      //console.log(task.value, existingActivityGuids)
       if (existingActivityGuids.includes(task.value))
         task.disabled = true
       else {
