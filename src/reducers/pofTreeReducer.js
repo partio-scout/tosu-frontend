@@ -49,7 +49,9 @@ const postOrderUpdate = (pof, existingActivityGuids) => {
       console.log(task.value, existingActivityGuids)
       if (existingActivityGuids.includes(task.value))
         task.disabled = true
-
+      else {
+        task.disabled = false
+      }
     })
   }
   return root

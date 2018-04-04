@@ -5,6 +5,7 @@ import 'rc-tree-select/assets/index.css';
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import Select from 'react-select'
 
 
@@ -74,6 +75,7 @@ class TreeSearchBar extends React.Component {
                 this.props.notify('Kaikki pakolliset aktiviiteetit eivät mahtuneet alueelle tai ovat jo lisätty!')
             }
         }
+        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
     }
 
     render() {
@@ -130,6 +132,6 @@ const mapStateToProps = (state) => {
 
 export default connect(
     mapStateToProps,
-    { notify, postActivityToBuffer }
+    { notify, postActivityToBuffer, pofTreeUpdate }
 
 )(TreeSearchBar)
