@@ -35,6 +35,7 @@ class TreeSearchBar extends React.Component {
                 this.props.notify('Aktiviteettialue on täynnä!!')
             }
         }
+        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
     };
 
     isLeaf = (value) => {

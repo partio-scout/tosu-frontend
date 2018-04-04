@@ -85,7 +85,7 @@ export function generateData(x = 4, y = 3, z = 2, gData = []) {
     const rec = (n) => n >= 0 ? x * Math.pow(y, n--) + rec(n) : 0;
     return rec(z + 1);
   }
-  console.log('总节点数（单个tree）：', calcTotal());
+  //console.log('总节点数（单个tree）：', calcTotal());
   export const gData = generateData();
   
   export function generateTreeNodes(treeNode) {
