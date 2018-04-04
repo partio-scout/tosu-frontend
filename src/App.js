@@ -18,7 +18,7 @@ import Toggle from 'material-ui/Toggle'
 import ListEvents from './components/ListEvents'
 import { notify } from './reducers/notificationReducer'
 import { pofInitialization } from './reducers/pofActivityReducer'
-import { pofTreeInitialization } from './reducers/pofTreeReducer'
+import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 import NotificationFooter from './components/NotificationFooter'
@@ -58,6 +58,7 @@ class App extends Component {
       this.props.eventsInitialization(),
       this.props.bufferZoneInitialization(2) // id tulee userista myöhemmin
     ])
+    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
 
   setHeaderHeight = height => {
@@ -161,7 +162,9 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    notification: state.notification
+    notification: state.notification,
+    buffer: state.buffer,
+    events: state.events
   }
 }
 
@@ -192,6 +195,7 @@ export default connect(mapStateToProps, {
   notify,
   pofInitialization,
   pofTreeInitialization,
+  pofTreeUpdate,
   eventsInitialization,
   bufferZoneInitialization
 })(AppDnD)

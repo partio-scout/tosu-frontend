@@ -1,49 +1,38 @@
 
 import React from 'react';
 import TreeSelect/*, { TreeNode, SHOW_PARENT }*/ from 'rc-tree-select';
-//import 'react-select/dist/react-select.css';
 import 'rc-tree-select/assets/index.css';
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
-//import SelectField from 'material-ui/SelectField';
-//import MenuItem from 'material-ui/MenuItem';
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import Select from 'react-select'
-//import filterOffExistingOnes from '../functions/searchBarFiltering';
-//import { gData } from '../utils/gData';
-//import {  blue200, blue500 } from 'material-ui/styles/colors';
 
 
 class TreeSearchBar extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedTaskGroup: null
+            selectedTaskGroup: null,
+            treePlaceHolder: 'Valitse ensin tarppo'
         }
     }
 
-
-    onSearch = (value) => {
-        //console.log(value, arguments);
-    }
-
     onChange = (value) => {
-        //console.log(value)
-        //console.log('onChange', arguments);
         this.setState({ value });
     }
 
-
     filterTreeNode = (input, child) => {
-        console.log(child)
         return child.props.title.props.name.toLowerCase().includes(input.toLowerCase())
     }
 
     onChangeChildren = async activityGuid => {
         if (this.isLeaf(activityGuid)) {
-            await this.setState({ activityGuid })
-            if (this.state.activityGuid) {
-                this.activityToBuffer(activityGuid)
+            try {
+                await this.props.postActivityToBuffer({ guid: activityGuid })
+                this.props.notify('Aktiviteetti on lisätty!', 'success')
+            } catch (exception) {
+                this.props.notify('Aktiviteettialue on täynnä!!')
             }
         }
     };
@@ -71,34 +60,37 @@ class TreeSearchBar extends React.Component {
     onChangeTaskgroup = async (taskgroup) => {
         this.setState({ selectedTaskGroup: taskgroup })
         if (taskgroup === null) {
+            this.setState({ treePlaceHolder: 'Valitse ensin tarppo' })
             return
         }
+        this.setState({ treePlaceHolder: 'Lisää aktiviteetti' })
         const selectedGroup = this.props.pofTree.taskgroups.find(group => group.guid === taskgroup.value)
         const mandatoryActivities = selectedGroup.mandatory_tasks.split(',')
-        const promises = mandatoryActivities.map(activity => ( this.props.postActivityToBuffer({ guid: activity }) ))
-        try {
-            await Promise.all(promises)
-            this.props.notify('Pakolliset aktiviteetit lisätty!', 'success')
-        } catch (exception) {
-            this.props.notify('Kaikki pakolliset aktiviiteetit eivät mahtuneet alueelle tai ovat jo lisätty!')
+        if (mandatoryActivities[0] !== "") {//empty split return and array with only value as ""
+            const promises = mandatoryActivities.map(activity => (this.props.postActivityToBuffer({ guid: activity })))
+            try {
+                await Promise.all(promises)
+                this.props.notify('Pakolliset aktiviteetit lisätty!', 'success')
+            } catch (exception) {
+                this.props.notify('Kaikki pakolliset aktiviiteetit eivät mahtuneet alueelle tai ovat jo lisätty!')
+            }
         }
+        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
     }
 
     render() {
-        /* const filteredPofActivities = filterOffExistingOnes(
-              this.props.pofActivities,
-              this.props.events,
-              this.props.buffer
-          )*/
-        const filteredPofActivities = this.props.pofTree.taskgroups
-        if (filteredPofActivities === undefined) {
+        const taskGroupTree = this.props.pofTree.taskgroups
+        if (taskGroupTree === undefined) {
             return null
+        }
+        let selectedTaskGroupPofData = []
+        if (this.state.selectedTaskGroup !== undefined && this.state.selectedTaskGroup !== null) {
+            const groupfound = taskGroupTree.find(group => group.guid === this.state.selectedTaskGroup.value)
+            selectedTaskGroupPofData = selectedTaskGroupPofData.concat(groupfound.children)
         }
 
         return (
-
             <div style={{ margin: 20 }}>
-
                 <div style={{ float: 'left', marginRight: 20 }}>
                     <Select
                         menuContainerStyle={{ width: 200 }}
@@ -106,28 +98,25 @@ class TreeSearchBar extends React.Component {
                         name="form-field-name"
                         value={this.state.selectedTaskGroup}
                         onChange={this.onChangeTaskgroup}
-                        options={filteredPofActivities.map(rootgroup => {
+                        options={taskGroupTree.map(rootgroup => {
                             return { value: rootgroup.guid, label: rootgroup.title }
                         })}
-
                     />
                 </div>
-
                 <TreeSelect
                     style={{ width: 300 }}
                     transitionName="rc-tree-select-dropdown-slide-up"
                     choiceTransitionName="rc-tree-select-selection__choice-zoom"
                     dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                    placeholder={'Lisää aktiviteetti'}
+                    placeholder={this.state.treePlaceHolder}
                     searchPlaceholder="Search..."
                     showSearch allowClear treeLine
                     value={this.state.value}
-                    treeData={filteredPofActivities}
+                    treeData={selectedTaskGroupPofData}
                     treeNodeFilterProp="label"
                     filterTreeNode={this.filterTreeNode}
                     onChange={this.onChangeChildren}
                 />
-
             </div>
         );
     }
@@ -143,6 +132,6 @@ const mapStateToProps = (state) => {
 
 export default connect(
     mapStateToProps,
-    { notify, postActivityToBuffer }
+    { notify, postActivityToBuffer, pofTreeUpdate }
 
 )(TreeSearchBar)

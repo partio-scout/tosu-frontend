@@ -5,27 +5,64 @@ import React from 'react'
 const reducer = (state = [], action) => {
   switch (action.type) {
     case 'INIT_TREE_POF':
-      return postOrder(action.pofActivities)
+      return postOrderInit(action.pofActivities)
+    case 'SET_TREE_POF':
+      return updateState(state, action.existingActivityGuids)
+    //return state
     default:
       return state
   }
-
 }
 
-const orderSorter = (a, b) => {
-  if (a.tags.pakollisuus[0].slug === 'mandatory' && b.tags.pakollisuus[0].slug === 'not_mandatory') {
-    return -1
-  } else if (b.tags.pakollisuus[0].slug === 'mandatory' && a.tags.pakollisuus[0].slug === 'not_mandatory') {
-    return 1
+export const pofTreeInitialization = () => {
+  return async (dispatch) => {
+    const pofActivities = await pofService.getAllTree()
+    dispatch({
+      type: 'INIT_TREE_POF',
+      pofActivities
+    })
   }
-  return 0
 }
 
-const postOrder = (pof) => {
-  let root = pof
-  if (root == null) return;
+export const pofTreeUpdate = (buffer, events) => {
+  return async (dispatch) => {
+    const existingActivityGuids = arrayActivityGuidsFromBufferAndEvents(buffer, events)
+    dispatch({
+      type: 'SET_TREE_POF',
+      existingActivityGuids: existingActivityGuids
+    })
+  }
+}
 
-  root.taskgroups.forEach(postOrder);
+const updateState = (state, existingActivityGuids) => {
+  let updatedState = Object.assign({}, state)
+  return postOrderUpdate(updatedState, existingActivityGuids)
+}
+
+const postOrderUpdate = (pof, existingActivityGuids) => {
+  let root = pof
+  if (root === null || root === undefined) return;
+  root.taskgroups.forEach(group => postOrderUpdate(group, existingActivityGuids))
+
+  if (root !== undefined && root.tasks !== undefined) {
+    root.children.forEach(task => {
+      console.log(task.value, existingActivityGuids)
+      if (existingActivityGuids.includes(task.value))
+        task.disabled = true
+      else {
+        task.disabled = false
+      }
+    })
+  }
+  return root
+}
+
+
+const postOrderInit = (pof) => {
+  let root = pof
+  if (root === null) return;
+
+  root.taskgroups.forEach(postOrderInit);
 
   root.key = root.guid
   root.label = root.title
@@ -50,14 +87,27 @@ const postOrder = (pof) => {
   return root
 };
 
-export const pofTreeInitialization = () => {
-  return async (dispatch) => {
-    const pofActivities = await pofService.getAllTree()
-    dispatch({
-      type: 'INIT_TREE_POF',
-      pofActivities
+//helpers
+const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
+  let activities = []
+  buffer.activities.forEach(activity => {
+    activities = activities.concat(activity.guid)
+  });
+  events.forEach(event => {
+    event.activities.forEach(activity => {
+      activities = activities.concat(activity.guid)
     })
+  })
+  return activities
+}
+
+const orderSorter = (a, b) => {
+  if (a.tags.pakollisuus[0].slug === 'mandatory' && b.tags.pakollisuus[0].slug === 'not_mandatory') {
+    return -1
+  } else if (b.tags.pakollisuus[0].slug === 'mandatory' && a.tags.pakollisuus[0].slug === 'not_mandatory') {
+    return 1
   }
+  return 0
 }
 
 export default reducer
