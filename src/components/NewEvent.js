@@ -92,6 +92,7 @@ class NewEvent extends React.Component {
       }
 
       try {
+        console.log(promises)
         await Promise.all(promises)
       } catch (exception) {
         console.error('Error in event POST:', exception)

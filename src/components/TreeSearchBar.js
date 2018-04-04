@@ -6,8 +6,8 @@ import 'rc-tree-select/assets/index.css';
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+//import SelectField from 'material-ui/SelectField';
+//import MenuItem from 'material-ui/MenuItem';
 import Select from 'react-select'
 //import filterOffExistingOnes from '../functions/searchBarFiltering';
 //import { gData } from '../utils/gData';
@@ -16,12 +16,12 @@ import Select from 'react-select'
 
 class TreeSearchBar extends React.Component {
     constructor(props) {
-        super(props);
-
+        super(props)
+        this.state = {
+            selectedTaskGroup: null
+        }
     }
-    state = {
-        selectedTaskGroup: null
-    };
+
 
     onSearch = (value) => {
         //console.log(value, arguments);
@@ -42,8 +42,8 @@ class TreeSearchBar extends React.Component {
     onChangeChildren = async activityGuid => {
         if (this.isLeaf(activityGuid)) {
             await this.setState({ activityGuid })
-            if (this.state.activityGuid) {                
-            this.activityToBuffer(activityGuid)
+            if (this.state.activityGuid) {
+                this.activityToBuffer(activityGuid)
             }
         }
     };
@@ -68,56 +68,20 @@ class TreeSearchBar extends React.Component {
         return false;
     }
 
-    onChangeTaskgroup = async taskgroup => {
-        this.state.selectedTaskGroup = taskgroup;
-        this.addMandatoryActivitiesTOBufferzone(this.state.selectedTaskGroup)
-        
-    }
-
-    addMandatoryActivitiesTOBufferzone = async (selectedTaskGroup) => {
-        const taskgroupId = selectedTaskGroup.value;
-        const taskgroups = this.props.pofTree.taskgroups;
-
-        
-        for(var i=0; i < taskgroups.length; i++){
-            if(taskgroups[i].guid === taskgroupId){
-                console.log('task', taskgroups[i])
-                const mandatoryActivities = taskgroups[i].mandatory_tasks
-                console.log('man', mandatoryActivities)
-
-                this.getMandatoryTasksFromList(mandatoryActivities)
-
-            }
+    onChangeTaskgroup = async (taskgroup) => {
+        this.setState({ selectedTaskGroup: taskgroup })
+        if (taskgroup === null) {
+            return
         }
-
-    }
-
-    getMandatoryTasksFromList = async (mandatoryActivities) => {
-        
-        var array = mandatoryActivities.split(",");
-
-        console.log('array', array)
-
-        for(var i = 0; i<array.length; i++){
-            this.activityToBuffer(array[i])
+        const selectedGroup = this.props.pofTree.taskgroups.find(group => group.guid === taskgroup.value)
+        const mandatoryActivities = selectedGroup.mandatory_tasks.split(',')
+        const promises = mandatoryActivities.map(activity => ( this.props.postActivityToBuffer({ guid: activity }) ))
+        try {
+            await Promise.all(promises)
+            this.props.notify('Pakolliset aktiviteetit lisätty!', 'success')
+        } catch (exception) {
+            this.props.notify('Kaikki pakolliset aktiviiteetit eivät mahtuneet alueelle tai ovat jo lisätty!')
         }
-
-
-        
-    }
-
-    activityToBuffer = async (activityGuid) => {    
-            const data = {
-                guid: activityGuid
-            }
-            try {
-                await this.props.postActivityToBuffer(data)
-                this.setState({ activityGuid: null })
-                this.props.notify('Aktiviteetti lisätty!', 'success')
-            } catch (Exception) {
-                this.props.notify('Aktiviteettialue on täynnä tai aktiviteetti on jo lisätty!')
-            }
-        
     }
 
     render() {
@@ -134,7 +98,7 @@ class TreeSearchBar extends React.Component {
         return (
 
             <div style={{ margin: 20 }}>
-            
+
                 <div style={{ float: 'left', marginRight: 20 }}>
                     <Select
                         menuContainerStyle={{ width: 200 }}
@@ -142,12 +106,8 @@ class TreeSearchBar extends React.Component {
                         name="form-field-name"
                         value={this.state.selectedTaskGroup}
                         onChange={this.onChangeTaskgroup}
-
                         options={filteredPofActivities.map(rootgroup => {
-                            //console.log(rootgroup)
-                            let obj = {}
-                            obj = { value: rootgroup.guid, label: rootgroup.title }
-                            return obj
+                            return { value: rootgroup.guid, label: rootgroup.title }
                         })}
 
                     />
@@ -167,7 +127,7 @@ class TreeSearchBar extends React.Component {
                     filterTreeNode={this.filterTreeNode}
                     onChange={this.onChangeChildren}
                 />
-                
+
             </div>
         );
     }
