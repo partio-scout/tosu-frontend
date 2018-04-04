@@ -22,7 +22,6 @@ class TreeSearchBar extends React.Component {
     }
 
     filterTreeNode = (input, child) => {
-        console.log(child)
         return child.props.title.props.name.toLowerCase().includes(input.toLowerCase())
     }
 
@@ -78,29 +77,6 @@ class TreeSearchBar extends React.Component {
     }
 
     render() {
-
-        const grayOutExistingActivitiesRoot = (taskgroup) => {
-            let grayedTree = Object.assign([], taskgroup)
-            const activityGuids = arrayActivityGuidsFromBufferAndEvents(this.props.buffer, this.props.events)
-            activityGuids.forEach(activityGuid => {
-                markInTreePof(activityGuid, this.props.pofTree)
-            })
-            return grayedTree
-        }
-
-        const markInTreePof = (activityGuid, root) => {
-            if (root === null || root.children === undefined) return;
-            const found = root.children.find(task => task.guid === activityGuid)
-            if (found !== undefined) {
-                found.disabled = true
-            }
-            if (root.taskgroups !== undefined) {//is a group
-                root.children.forEach(childGroup => {
-                    markInTreePof(activityGuid, childGroup)
-                })
-            }
-        }
-
         const taskGroupTree = this.props.pofTree.taskgroups
         if (taskGroupTree === undefined) {
             return null
@@ -109,7 +85,6 @@ class TreeSearchBar extends React.Component {
         if (this.state.selectedTaskGroup !== undefined && this.state.selectedTaskGroup !== null) {
             const groupfound = taskGroupTree.find(group => group.guid === this.state.selectedTaskGroup.value)
             selectedTaskGroupPofData = selectedTaskGroupPofData.concat(groupfound.children)
-            selectedTaskGroupPofData = grayOutExistingActivitiesRoot(selectedTaskGroupPofData)
         }
 
         return (
@@ -143,19 +118,6 @@ class TreeSearchBar extends React.Component {
             </div>
         );
     }
-}
-
-const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
-    let activities = []
-    buffer.activities.forEach(activity => {
-        activities = activities.concat(activity.guid)
-    });
-    events.forEach(event => {
-        event.activities.forEach(activity => {
-            activities = activities.concat(activity.guid)
-        })
-    })
-    return activities
 }
 
 const mapStateToProps = (state) => {
