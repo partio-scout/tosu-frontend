@@ -5,10 +5,12 @@ import React from 'react'
 const reducer = (state = [], action) => {
   switch (action.type) {
     case 'INIT_TREE_POF':
+      //add variables that TreeSearchBar uses
       return postOrderInit(action.pofActivities)
     case 'SET_TREE_POF':
+      //update data by diasbling existing activities &
+      // locking non-mandatory tasks if a tarppo has mandatort tasks left to pick
       return updateState(state, action.existingActivityGuids)
-    //return state
     default:
       return state
   }
@@ -36,51 +38,48 @@ export const pofTreeUpdate = (buffer, events) => {
 
 const updateState = (state, existingActivityGuids) => {
   let updatedState = Object.assign({}, state)
-  updatedState = postOrderFilterExistingActivities(updatedState, existingActivityGuids)
-  updatedState = postOrderFilterAllIfMandatoryLeft(updatedState, existingActivityGuids)
+  updatedState = disableTasksInFilterIfExists(updatedState, existingActivityGuids)
+  updatedState = lockOptionalTasksIfMandatoryLeftToPickInAGroup(updatedState, existingActivityGuids)
   return updatedState
 }
 
 
-const postOrderFilterAllIfMandatoryLeft = (pof, existingActivityGuids) => {
+const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (pof, existingActivityGuids) => {
   pof.taskgroups.forEach(majorTaskGroup => {
-    lockOptionalTasksIfMandatoriesLeftToTake(majorTaskGroup, existingActivityGuids)
+    const mandatoryTaskGuids = majorTaskGroup.mandatory_tasks.split(',')//mandatory tasks are listed in major group
+    if (mandatoryTaskGuids[0] === "") {//empty split return and array with only value as ""
+      return
+    }
+    //if existing activities do not contain all mandatory tasks -> disable all optional
+    mandatoryTaskGuids.forEach(mandatoryTaskGuid => {
+      if (existingActivityGuids.includes(mandatoryTaskGuid) === false) {
+        setChildrenTasksDisabled(majorTaskGroup)
+      }
+    });
   });
   return pof
 }
-
-const lockOptionalTasksIfMandatoriesLeftToTake = (majorTaskGroup, existingActivityGuids) => {
-  const mandatoryTaskGuids = majorTaskGroup.mandatory_tasks.split(',')
-  if (mandatoryTaskGuids[0] === "") {//empty split return and array with only value as ""
-    return
+//recursively go into taskgroups of taskgroups and disable all optional tasks
+const setChildrenTasksDisabled = (pofChild) => {
+  let root = pofChild
+  if (root === null || root === undefined) return;
+  if (root.children !== undefined) {//groups have children, tasks do not ->recursion into groups
+    root.children.forEach(setChildrenTasksDisabled)
   }
-  let foundAllMandatories = true
-  mandatoryTaskGuids.forEach(taskGuid => {
-    if (existingActivityGuids.includes(taskGuid) === false) {
-      foundAllMandatories = false
-      return
+  if (root.tasks === undefined) {//it's a task
+    if (root.tags.pakollisuus[0].slug !== 'mandatory') {
+      root.disabled = true;
     }
-  });
-  if (foundAllMandatories === true) {
-    return
   }
-  majorTaskGroup.children.forEach(child => {
-    if (child.tasks === undefined) {//it's a task
-      if (child.tags.pakollisuus[0].slug !== 'mandatory') {
-        child.disabled = true;
-      }
-    }
-  });
 }
 
-const postOrderFilterExistingActivities = (pof, existingActivityGuids) => {
-  let root = pof
+//recursively disable existing tasks and enable if removed
+const disableTasksInFilterIfExists = (root, existingActivityGuids) => {
   if (root === null || root === undefined) return;
-  root.taskgroups.forEach(group => postOrderFilterExistingActivities(group, existingActivityGuids))
+  root.taskgroups.forEach(group => disableTasksInFilterIfExists(group, existingActivityGuids))
 
   if (root !== undefined && root.tasks !== undefined) {
     root.children.forEach(task => {
-      console.log(task.value, existingActivityGuids)
       if (existingActivityGuids.includes(task.value))
         task.disabled = true
       else {
@@ -91,7 +90,8 @@ const postOrderFilterExistingActivities = (pof, existingActivityGuids) => {
   return root
 }
 
-
+//TreeSearchBar needs specific variables addedto our pofdata
+//which is done here recursively 
 const postOrderInit = (pof) => {
   let root = pof
   if (root === null) return;
@@ -122,6 +122,8 @@ const postOrderInit = (pof) => {
 };
 
 //helpers
+//put all picked activities from events and buffer into a string array made of their guid
+//we use that to search/filter from pofdata
 const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
   let activities = []
   buffer.activities.forEach(activity => {
@@ -134,7 +136,7 @@ const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
   })
   return activities
 }
-
+//pof contains a specific order which is why we sort
 const orderSorter = (a, b) => {
   if (a.tags.pakollisuus[0].slug === 'mandatory' && b.tags.pakollisuus[0].slug === 'not_mandatory') {
     return -1
