@@ -36,13 +36,16 @@ export const pofTreeUpdate = (buffer, events) => {
 
 const updateState = (state, existingActivityGuids) => {
   let updatedState = Object.assign({}, state)
-  return postOrderUpdate(updatedState, existingActivityGuids)
+  updatedState =  postOrderFilterExistingActivities(updatedState, existingActivityGuids)
+  updatedState =  postOrderFilterAllIfMandatoryLeft(updatedState, existingActivityGuids)
+  return updatedState
 }
 
-const postOrderUpdate = (pof, existingActivityGuids) => {
+
+const postOrderFilterExistingActivities = (pof, existingActivityGuids) => {
   let root = pof
   if (root === null || root === undefined) return;
-  root.taskgroups.forEach(group => postOrderUpdate(group, existingActivityGuids))
+  root.taskgroups.forEach(group => postOrderFilterExistingActivities(group, existingActivityGuids))
 
   if (root !== undefined && root.tasks !== undefined) {
     root.children.forEach(task => {
