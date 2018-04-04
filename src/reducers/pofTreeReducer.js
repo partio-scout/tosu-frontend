@@ -36,11 +36,42 @@ export const pofTreeUpdate = (buffer, events) => {
 
 const updateState = (state, existingActivityGuids) => {
   let updatedState = Object.assign({}, state)
-  updatedState =  postOrderFilterExistingActivities(updatedState, existingActivityGuids)
-  updatedState =  postOrderFilterAllIfMandatoryLeft(updatedState, existingActivityGuids)
+  updatedState = postOrderFilterExistingActivities(updatedState, existingActivityGuids)
+  updatedState = postOrderFilterAllIfMandatoryLeft(updatedState, existingActivityGuids)
   return updatedState
 }
 
+
+const postOrderFilterAllIfMandatoryLeft = (pof, existingActivityGuids) => {
+  pof.taskgroups.forEach(majorTaskGroup => {
+    lockOptionalTasksIfMandatoriesLeftToTake(majorTaskGroup, existingActivityGuids)
+  });
+  return pof
+}
+
+const lockOptionalTasksIfMandatoriesLeftToTake = (majorTaskGroup, existingActivityGuids) => {
+  const mandatoryTaskGuids = majorTaskGroup.mandatory_tasks.split(',')
+  if (mandatoryTaskGuids[0] === "") {//empty split return and array with only value as ""
+    return
+  }
+  let foundAllMandatories = true
+  mandatoryTaskGuids.forEach(taskGuid => {
+    if (existingActivityGuids.includes(taskGuid) === false) {
+      foundAllMandatories = false
+      return
+    }
+  });
+  if (foundAllMandatories === true) {
+    return
+  }
+  majorTaskGroup.children.forEach(child => {
+    if (child.tasks === undefined) {//it's a task
+      if (child.tags.pakollisuus[0].slug !== 'mandatory') {
+        child.disabled = true;
+      }
+    }
+  });
+}
 
 const postOrderFilterExistingActivities = (pof, existingActivityGuids) => {
   let root = pof
