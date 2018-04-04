@@ -18,13 +18,9 @@ class TreeSearchBar extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedTaskGroup: null
+            selectedTaskGroup: null,
+            treePlaceHolder: 'Valitse ensin tarppo'
         }
-    }
-
-
-    onSearch = (value) => {
-        //console.log(value, arguments);
     }
 
     onChange = (value) => {
@@ -71,11 +67,13 @@ class TreeSearchBar extends React.Component {
     onChangeTaskgroup = async (taskgroup) => {
         this.setState({ selectedTaskGroup: taskgroup })
         if (taskgroup === null) {
+            this.setState({treePlaceHolder: 'Valitse ensin tarppo'})
             return
         }
+        this.setState({treePlaceHolder: 'Lisää aktiviteetti'})
         const selectedGroup = this.props.pofTree.taskgroups.find(group => group.guid === taskgroup.value)
         const mandatoryActivities = selectedGroup.mandatory_tasks.split(',')
-        const promises = mandatoryActivities.map(activity => ( this.props.postActivityToBuffer({ guid: activity }) ))
+        const promises = mandatoryActivities.map(activity => (this.props.postActivityToBuffer({ guid: activity })))
         try {
             await Promise.all(promises)
             this.props.notify('Pakolliset aktiviteetit lisätty!', 'success')
@@ -90,15 +88,18 @@ class TreeSearchBar extends React.Component {
               this.props.events,
               this.props.buffer
           )*/
-        const filteredPofActivities = this.props.pofTree.taskgroups
-        if (filteredPofActivities === undefined) {
+        const taskGroupTree = this.props.pofTree.taskgroups
+        if (taskGroupTree === undefined) {
             return null
+        }
+        let selectedTaskGroupPofData = []
+        if (this.state.selectedTaskGroup !== undefined && this.state.selectedTaskGroup !== null) {
+            const groupfound = taskGroupTree.find(group => group.guid === this.state.selectedTaskGroup.value)
+            selectedTaskGroupPofData=selectedTaskGroupPofData.concat(groupfound.children)
         }
 
         return (
-
             <div style={{ margin: 20 }}>
-
                 <div style={{ float: 'left', marginRight: 20 }}>
                     <Select
                         menuContainerStyle={{ width: 200 }}
@@ -106,28 +107,25 @@ class TreeSearchBar extends React.Component {
                         name="form-field-name"
                         value={this.state.selectedTaskGroup}
                         onChange={this.onChangeTaskgroup}
-                        options={filteredPofActivities.map(rootgroup => {
+                        options={taskGroupTree.map(rootgroup => {
                             return { value: rootgroup.guid, label: rootgroup.title }
                         })}
-
                     />
                 </div>
-
                 <TreeSelect
                     style={{ width: 300 }}
                     transitionName="rc-tree-select-dropdown-slide-up"
                     choiceTransitionName="rc-tree-select-selection__choice-zoom"
                     dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                    placeholder={'Lisää aktiviteetti'}
+                    placeholder={this.state.treePlaceHolder}
                     searchPlaceholder="Search..."
                     showSearch allowClear treeLine
                     value={this.state.value}
-                    treeData={filteredPofActivities}
+                    treeData={selectedTaskGroupPofData}
                     treeNodeFilterProp="label"
                     filterTreeNode={this.filterTreeNode}
                     onChange={this.onChangeChildren}
                 />
-
             </div>
         );
     }
