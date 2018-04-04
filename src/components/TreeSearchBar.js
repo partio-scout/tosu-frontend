@@ -1,17 +1,11 @@
 
 import React from 'react';
 import TreeSelect/*, { TreeNode, SHOW_PARENT }*/ from 'rc-tree-select';
-//import 'react-select/dist/react-select.css';
 import 'rc-tree-select/assets/index.css';
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
-//import SelectField from 'material-ui/SelectField';
-//import MenuItem from 'material-ui/MenuItem';
 import Select from 'react-select'
-//import filterOffExistingOnes from '../functions/searchBarFiltering';
-//import { gData } from '../utils/gData';
-//import {  blue200, blue500 } from 'material-ui/styles/colors';
 
 
 class TreeSearchBar extends React.Component {
@@ -24,11 +18,8 @@ class TreeSearchBar extends React.Component {
     }
 
     onChange = (value) => {
-        //console.log(value)
-        //console.log('onChange', arguments);
         this.setState({ value });
     }
-
 
     filterTreeNode = (input, child) => {
         console.log(child)
@@ -37,9 +28,11 @@ class TreeSearchBar extends React.Component {
 
     onChangeChildren = async activityGuid => {
         if (this.isLeaf(activityGuid)) {
-            await this.setState({ activityGuid })
-            if (this.state.activityGuid) {
-                this.activityToBuffer(activityGuid)
+            try {
+                await this.props.postActivityToBuffer({ guid: activityGuid })
+                this.props.notify('Aktiviteetti on lisätty!', 'success')
+            } catch (exception) {
+                this.props.notify('Aktiviteettialue on täynnä!!')
             }
         }
     };
@@ -67,27 +60,47 @@ class TreeSearchBar extends React.Component {
     onChangeTaskgroup = async (taskgroup) => {
         this.setState({ selectedTaskGroup: taskgroup })
         if (taskgroup === null) {
-            this.setState({treePlaceHolder: 'Valitse ensin tarppo'})
+            this.setState({ treePlaceHolder: 'Valitse ensin tarppo' })
             return
         }
-        this.setState({treePlaceHolder: 'Lisää aktiviteetti'})
+        this.setState({ treePlaceHolder: 'Lisää aktiviteetti' })
         const selectedGroup = this.props.pofTree.taskgroups.find(group => group.guid === taskgroup.value)
         const mandatoryActivities = selectedGroup.mandatory_tasks.split(',')
-        const promises = mandatoryActivities.map(activity => (this.props.postActivityToBuffer({ guid: activity })))
-        try {
-            await Promise.all(promises)
-            this.props.notify('Pakolliset aktiviteetit lisätty!', 'success')
-        } catch (exception) {
-            this.props.notify('Kaikki pakolliset aktiviiteetit eivät mahtuneet alueelle tai ovat jo lisätty!')
+        if (mandatoryActivities[0] !== "") {//empty split return and array with only value as ""
+            const promises = mandatoryActivities.map(activity => (this.props.postActivityToBuffer({ guid: activity })))
+            try {
+                await Promise.all(promises)
+                this.props.notify('Pakolliset aktiviteetit lisätty!', 'success')
+            } catch (exception) {
+                this.props.notify('Kaikki pakolliset aktiviiteetit eivät mahtuneet alueelle tai ovat jo lisätty!')
+            }
         }
     }
 
     render() {
-        /* const filteredPofActivities = filterOffExistingOnes(
-              this.props.pofActivities,
-              this.props.events,
-              this.props.buffer
-          )*/
+
+        const grayOutExistingActivitiesRoot = (taskgroup) => {
+            let grayedTree = Object.assign([], taskgroup)
+            const activityGuids = arrayActivityGuidsFromBufferAndEvents(this.props.buffer, this.props.events)
+            activityGuids.forEach(activityGuid => {
+                markInTreePof(activityGuid, this.props.pofTree)
+            })
+            return grayedTree
+        }
+
+        const markInTreePof = (activityGuid, root) => {
+            if (root === null || root.children === undefined) return;
+            const found = root.children.find(task => task.guid === activityGuid)
+            if (found !== undefined) {
+                found.disabled = true
+            }
+            if (root.taskgroups !== undefined) {//is a group
+                root.children.forEach(childGroup => {
+                    markInTreePof(activityGuid, childGroup)
+                })
+            }
+        }
+
         const taskGroupTree = this.props.pofTree.taskgroups
         if (taskGroupTree === undefined) {
             return null
@@ -95,7 +108,8 @@ class TreeSearchBar extends React.Component {
         let selectedTaskGroupPofData = []
         if (this.state.selectedTaskGroup !== undefined && this.state.selectedTaskGroup !== null) {
             const groupfound = taskGroupTree.find(group => group.guid === this.state.selectedTaskGroup.value)
-            selectedTaskGroupPofData=selectedTaskGroupPofData.concat(groupfound.children)
+            selectedTaskGroupPofData = selectedTaskGroupPofData.concat(groupfound.children)
+            selectedTaskGroupPofData = grayOutExistingActivitiesRoot(selectedTaskGroupPofData)
         }
 
         return (
@@ -129,6 +143,19 @@ class TreeSearchBar extends React.Component {
             </div>
         );
     }
+}
+
+const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
+    let activities = []
+    buffer.activities.forEach(activity => {
+        activities = activities.concat(activity.guid)
+    });
+    events.forEach(event => {
+        event.activities.forEach(activity => {
+            activities = activities.concat(activity.guid)
+        })
+    })
+    return activities
 }
 
 const mapStateToProps = (state) => {
