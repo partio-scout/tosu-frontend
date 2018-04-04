@@ -66,17 +66,36 @@ class TreeSearchBar extends React.Component {
         this.setState({ treePlaceHolder: 'Lisää aktiviteetti' })
         const selectedGroup = this.props.pofTree.taskgroups.find(group => group.guid === taskgroup.value)
         const mandatoryActivities = selectedGroup.mandatory_tasks.split(',')
-        if (mandatoryActivities[0] !== "") {//empty split return and array with only value as ""
-            const promises = mandatoryActivities.map(activity => (this.props.postActivityToBuffer({ guid: activity })))
+        if (mandatoryActivities[0] !== "") {//empty split return and array with only value as ""                        
+            
+            let activities = []
+            this.props.buffer.activities.forEach(activity => {
+              activities = activities.concat(activity.guid)
+            });
+            this.props.events.forEach(event => {
+              event.activities.forEach(activity => {
+                activities = activities.concat(activity.guid)
+              })
+            })
+            console.log("all activities:", activities)                       
+            console.log("before", mandatoryActivities)
+
+
+            const promises = mandatoryActivities.map(activity => {
+
+                
+                return (activities.includes(activity) ? null : this.props.postActivityToBuffer({ guid: activity }))
+            })
+            console.log("promises", promises)
             try {
                 await Promise.all(promises)
-                this.props.notify('Pakolliset aktiviteetit lisätty!', 'success')
+                this.props.notify('Pakolliset aktiviteetit lisätty tai olemassa!', 'success')
             } catch (exception) {
-                this.props.notify('Kaikki pakolliset aktiviiteetit eivät mahtuneet alueelle tai ovat jo lisätty!')
+                    this.props.notify('Kaikki pakolliset aktiviiteetit eivät mahtuneet alueelle tai ovat jo lisätty!')
             }
         }
-        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-    }
+            this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+    }   
 
     render() {
         const taskGroupTree = this.props.pofTree.taskgroups
