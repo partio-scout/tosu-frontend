@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { API_ROOT } from '../api-config';
+import { POF_ROOT } from '../api-config';
 
 const getAll = async () => {
-  const response = await axios.get(`${API_ROOT}/pofdata/tarppo`)
+  const response = await axios.get(`${POF_ROOT}/pofdata/tarppo`)
   return response.data
 }
 
