@@ -115,11 +115,12 @@ const postOrderInit = pof => {
 
   root.key = root.guid
   root.label = root.title
-  root.title = <span name={root.title}>{root.title}</span>
+  root.title = <span name={root.title} >{root.title}</span>
   root.value = root.guid
   root.children = [].concat(root.taskgroups)
 
   if (root !== undefined && root.tasks !== undefined) {
+    
     root.children = root.children.concat(root.tasks.sort(orderSorter))
     root.tasks.forEach(task => {
       task.key = task.guid

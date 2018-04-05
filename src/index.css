@@ -97,21 +97,16 @@ p.eventTimes > span {
   opacity: 0.99;
 }
 
+
 .rc-tree-select-tree li {
-  margin: 0;
-  padding: 0;
-  height: 50px;
-  line-height: 50px;
+  height: 35px;
+  line-height: 35px;
 }
 
 .tree-search-title-span {
-  padding-left: 10px;
+  padding-left: 5px;
   display: block;
   max-width: 100%;
   overflow: hidden;
-  font-size: 0.82rem;
-}
-
-.tree-search-title-span:hover {
-  background-color: #90caf9 !important;
+  font-size: 0.9rem;
 }
