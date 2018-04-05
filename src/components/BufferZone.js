@@ -10,6 +10,8 @@ import { notify } from '../reducers/notificationReducer'
 import { postActivityToBufferOnlyLocally } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEventOnlyLocally } from '../reducers/eventReducer'
 import activityService from '../services/activities'
+import FlatButton from 'material-ui/FlatButton';
+import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 
 const moveActivity = async (props, activityId, parentId, targetId, bufferzone) => {
     try {
@@ -56,17 +58,39 @@ class BufferZone extends React.Component {
         connectDropTarget: PropTypes.func.isRequired
     }
 
+    handleClick = async() => {
+        const bufferActivities = this.props.buffer.activities
+        
+        const promises = bufferActivities.map(activity => {
+            this.props.deleteActivityFromBuffer(activity.id)
+        })
+
+        try {
+            await Promise.all(promises)
+            this.props.notify('Aktiviteetit poistettu!', 'success')
+        } catch (exception) {
+                this.props.notify('Kaikkia aktiviteetteja ei voitu poistaa!')
+        }
+
+    }
+
     render() {
+        
         const { isOver, canDrop, connectDropTarget } = this.props
         if (!this.props.buffer.activities || this.props.buffer.activities.length === 0) {
             return connectDropTarget(
-              <div id="bufferzone" />
+                <div id="bufferzone" />
             )
         }
 
         const rows = this.props.buffer.activities.map(activity => {
             const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
-            return <Activity bufferzone='true' parentId={this.props.buffer.id} parent={this} key={activity.id} act={act} activity={activity} delete={this.props.deleteFromBufferZone} />
+            return <Activity 
+                    bufferzone='true' 
+                    parentId={this.props.buffer.id} 
+                    parent={this} key={activity.id} 
+                    act={act} activity={activity} 
+                    delete={this.props.deleteFromBufferZone} />
         })
         let patternClass
         let background = { backgroundColor: white }
@@ -76,13 +100,22 @@ class BufferZone extends React.Component {
         if (isOver) {
           patternClass = 'pattern'
         }
+        
         return connectDropTarget(
-          <div id="bufferzone" style={background} className={patternClass}>
-            {rows} 
-          </div>
-        )
+            <div>
+                <div id="bufferzone" style={background} className={patternClass}>
+                    {rows} 
+                </div>
+                <div>
+                    <FlatButton label="Tyhjennä"
+                    onClick={this.handleClick}
+                    />
+                </div>
+            </div>
+        )    
     }
 }
+
 
 const mapStateToProps = (state) => {
     return {
@@ -100,6 +133,7 @@ export default connect(
         notify,
         deleteActivityFromEventOnlyLocally,
         postActivityToBufferOnlyLocally,
-        pofTreeUpdate
+        pofTreeUpdate,
+        deleteActivityFromBuffer
     }
 )(DroppableBufferZone)
