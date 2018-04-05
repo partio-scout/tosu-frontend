@@ -11,8 +11,8 @@ const addPlanToActivity = async (data, activityId) => {
   return response.data
 }
 
-//const getPlansForActivity = async (activityId) => {
+// const getPlansForActivity = async (activityId) => {
 //    const response = await axios.get(`${API_ROOT}/activity/${activityId}/plans`)
-//}
+// }
 
 export default { deletePlan, addPlanToActivity }
