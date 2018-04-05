@@ -7,6 +7,7 @@ import { notify } from '../reducers/notificationReducer'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import Select from 'react-select'
+import BufferZone from './BufferZone'
 
 
 class TreeSearchBar extends React.Component {
@@ -17,6 +18,10 @@ class TreeSearchBar extends React.Component {
             treePlaceHolder: 'Valitse ensin tarppo'
         }
     }
+
+    componentDidUpdate = () => {
+        this.props.getHeight()
+      }
 
     onChange = (value) => {
         this.setState({ value });
@@ -137,6 +142,9 @@ class TreeSearchBar extends React.Component {
                     filterTreeNode={this.filterTreeNode}
                     onChange={this.onChangeChildren}
                 />
+                <div>
+                    <BufferZone />
+                </div>
             </div>
         );
     }
