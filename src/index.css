@@ -7,16 +7,11 @@ body {
 }
 
 App {
-  padding-top: 20px
+  padding-top: 20px;
 }
 
 .content {
   padding: 10px 10px 20px;
-}
-
-#title_image {
-  height: 50px;
-  margin: 10px 0px 10px;
 }
 
 ul.events {
@@ -29,40 +24,65 @@ p.eventTimes::first-letter {
 
 p.eventTimes > span {
   font-family: Source Sans Pro Black, sans-serif;
-  font-weight: bold
+  font-weight: bold;
 }
 
 .buttonRight {
-  float: right
+  float: right;
 }
 
 #bufferzone {
   margin: 10px 0 5px;
+  min-height: 60px;
   background-color: aliceblue;
-  min-height: 50px;
-  height: auto;
   border-radius: 8px;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 .top-search {
   background: '#5DBCD2';
-  padding: 20 
+  padding: 20;
 }
 
 .activityTitle {
   display: block;
   max-width: 175px;
   word-wrap: break-all;
-  white-space:normal;
+  white-space: normal;
   font-weight: bold;
   line-height: 20px;
   padding: 5px;
 }
 
-.bufferzone-activities{
-  overflow: auto;
+.footerError{
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-top: 15px;
+  position: fixed;
+  bottom: 0;
+  margin: 0 auto;
+  min-height: 40px;
+  height: auto;
+  width: 100%;
+  max-width: 3000px;
+  background-color: tomato;
 }
 
+.footerSuccess{
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-top: 15px;
+  position: fixed;
+  bottom: 0;
+  margin: 0 auto;
+  min-height:40px;
+  height: auto;
+  width: 100%;
+  background-color: lightgreen;
+}
 .pattern {
   background:
   radial-gradient(#6eff3f 15%, transparent 16%) 0 0,
@@ -71,4 +91,9 @@ p.eventTimes > span {
   radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
   background-color:white;
   background-size:16px 16px;
+}
+
+.previewChip {
+  z-index: 999;
+  opacity: 0.99;
 }

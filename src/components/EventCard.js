@@ -1,4 +1,5 @@
 import { connect } from 'react-redux'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import React from 'react';
 import { DropTarget } from 'react-dnd';
 import { notify } from '../reducers/notificationReducer'
@@ -20,17 +21,19 @@ import ItemTypes from '../ItemTypes'
 import activityService from '../services/activities'
 import { editEvent, deleteEvent, deleteEventGroup, deleteActivityFromEventOnlyLocally, addActivityToEventOnlyLocally } from '../reducers/eventReducer'
 import { deleteActivityFromBufferOnlyLocally, bufferZoneInitialization } from '../reducers/bufferZoneReducer'
-import { green100, white, lime100 } from 'material-ui/styles/colors';
+import { green100, white} from 'material-ui/styles/colors';
 
 const moveActivityFromBuffer = async (props, activityId, parentId, targetId) => {
   try {
     const res = await activityService.moveActivityFromBufferZoneToEvent(activityId, parentId, targetId)
     await props.addActivityToEventOnlyLocally(targetId, res)
     await props.deleteActivityFromBufferOnlyLocally(activityId)
+    props.notify('Aktiviteetti siirretty!', 'success')
     return res
   } catch (exception) {
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
+  props.pofTreeUpdate(props.buffer, props.events)
 }
 
 const moveActivityFromEvent = async (props, activityId, parentId, targetId) => {
@@ -38,10 +41,12 @@ const moveActivityFromEvent = async (props, activityId, parentId, targetId) => {
     const res = await activityService.moveActivityFromEventToEvent(activityId, parentId, targetId)
     props.addActivityToEventOnlyLocally(targetId, res)
     props.deleteActivityFromEventOnlyLocally(activityId)
+    props.notify('Aktiviteetti siirretty!', 'success')
     return res
   } catch (exception) {
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
+  props.pofTreeUpdate(props.buffer, props.events)
 }
 
 const EventCardTarget = {
@@ -95,6 +100,7 @@ class EventCard extends React.Component {
     try {
       await this.props.deleteEvent(this.props.event.id)
       await this.props.bufferZoneInitialization()
+      this.props.notify('Tapahtuma poistettu!' , 'success')
       this.handleClose();
     } catch (exception) {
       console.error('Error in deleting event:', exception);
@@ -104,7 +110,9 @@ class EventCard extends React.Component {
 
   deleteEventGroup = async () => {
     try {
-      this.props.deleteEventGroup(this.props.event.groupId);
+      await this.props.deleteEventGroup(this.props.event.groupId);
+      this.props.notify('Toistuva tapahtuma poistettu!', 'success')
+      await this.props.bufferZoneInitialization()
       this.handleClose();
     } catch (exception) {
       console.error('Error in deleting event:', exception);
@@ -251,7 +259,8 @@ class EventCard extends React.Component {
 const mapStateToProps = (state) => {
   return {
     pofActivities: state.pofActivities,
-    events: state.events
+    events: state.events,
+    buffer: state.buffer
   }
 }
 
@@ -267,7 +276,8 @@ export default connect(
     deleteEventGroup,
     addActivityToEventOnlyLocally,
     deleteActivityFromEventOnlyLocally,
-    deleteActivityFromBufferOnlyLocally
+    deleteActivityFromBufferOnlyLocally,
+    pofTreeUpdate
   }
 
 )(DroppableEventCard)

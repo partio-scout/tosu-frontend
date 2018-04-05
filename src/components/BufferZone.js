@@ -1,5 +1,7 @@
 import { connect } from 'react-redux'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import React from 'react';
+import { white, green100 } from 'material-ui/styles/colors';
 import { DropTarget } from 'react-dnd';
 import PropTypes from 'prop-types'
 import Activity from './Activity'
@@ -8,26 +10,31 @@ import { notify } from '../reducers/notificationReducer'
 import { postActivityToBufferOnlyLocally } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEventOnlyLocally } from '../reducers/eventReducer'
 import activityService from '../services/activities'
-import { white, green100 } from 'material-ui/styles/colors';
 
-const moveActivity = async (props, activityId, parentId, targetId) => {
+const moveActivity = async (props, activityId, parentId, targetId, bufferzone) => {
     try {
         const res = await activityService.moveActivityFromEventToBufferZone(activityId, parentId, targetId)
         props.deleteActivityFromEventOnlyLocally(activityId)
         props.postActivityToBufferOnlyLocally(res)
+        props.notify('Aktiviteetti siirretty!', 'success')
         return res
     } catch (exception) {
-        props.notify('Aktiviteettialue on täynnä!')
+        if(bufferzone && parentId === targetId) {
+            
+        } else {
+            props.notify('Aktiviteettialue on täynnä!')
+        }
     }
+    props.pofTreeUpdate(props.buffer, props.events)
 }
 
 const bufferZoneTarget = {
     drop(props, monitor) {
         const item = monitor.getItem()
         const targetId = 1
-        const { parentId } = item
+        const { parentId, bufferzone } = item
         const activityId = item.id
-        moveActivity(props, activityId, parentId, targetId)
+        moveActivity(props, activityId, parentId, targetId, bufferzone)
     }
 }
 
@@ -41,6 +48,7 @@ function collect(connector, monitor) {
 }
 
 
+
 class BufferZone extends React.Component {
     static propTypes = {
         isOver: PropTypes.bool.isRequired,
@@ -49,7 +57,7 @@ class BufferZone extends React.Component {
     }
 
     render() {
-        const { isOver, canDrop, connectDropTarget, target } = this.props
+        const { isOver, canDrop, connectDropTarget } = this.props
         if (!this.props.buffer.activities || this.props.buffer.activities.length === 0) {
             return connectDropTarget(
               <div id="bufferzone" />
@@ -70,7 +78,7 @@ class BufferZone extends React.Component {
         }
         return connectDropTarget(
           <div id="bufferzone" style={background} className={patternClass}>
-            <div className="bufferzone-activities">{rows}</div>
+            {rows} 
           </div>
         )
     }
@@ -91,6 +99,7 @@ export default connect(
     {
         notify,
         deleteActivityFromEventOnlyLocally,
-        postActivityToBufferOnlyLocally
+        postActivityToBufferOnlyLocally,
+        pofTreeUpdate
     }
 )(DroppableBufferZone)

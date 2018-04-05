@@ -1,19 +1,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-class Notification extends React.Component {
-  render() {
-    if (this.props.notification === null) {
-      return null
-    }
-    const style = {
-      border: 'solid',
-      padding: 10,
-      borderWidth: 1
-    }
+const Notification = props => {
 
-    return <div style={style}>{this.props.notification}</div>
+  if (props.notification === null) {
+    return null
   }
+  if (props.notification.textType === 'error') {
+    return <div className="footerError">{props.notification.text}</div>
+  }
+  return <div className="footerSuccess">{props.notification.text}</div>
+
+
+
 }
 
 const mapStateToProps = state => {
