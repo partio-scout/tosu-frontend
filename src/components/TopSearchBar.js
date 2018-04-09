@@ -3,6 +3,7 @@ import React from 'react';
 import matchSorter from 'match-sorter';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
@@ -61,6 +62,7 @@ class TopSearchBar extends React.Component {
             return obj;
           })}
         />
+        
         <div>
           <BufferZone />
         </div>
