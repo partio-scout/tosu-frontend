@@ -130,7 +130,7 @@ const postOrderInit = pof => {
         task.title = (
           <span
             name={task.title}
-            className="tree-search-title-span"
+            className="tree-search-title"
             style={{ backgroundColor: blue500 }}
           >
             {task.title}
@@ -141,7 +141,7 @@ const postOrderInit = pof => {
         task.title = (
           <span
             name={task.title}
-            className="tree-search-title-span"
+            className="tree-search-title"
             style={{ backgroundColor: blue50 }}
           >
             {task.title}
