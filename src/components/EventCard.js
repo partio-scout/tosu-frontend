@@ -22,6 +22,8 @@ import activityService from '../services/activities'
 import { editEvent, deleteEvent, deleteEventGroup, deleteActivityFromEventOnlyLocally, addActivityToEventOnlyLocally } from '../reducers/eventReducer'
 import { deleteActivityFromBufferOnlyLocally, bufferZoneInitialization } from '../reducers/bufferZoneReducer'
 import { green100, white} from 'material-ui/styles/colors';
+import convertToSimpleActivity from '../functions/activityConverter'
+import findActivity from '../functions/findActivity'
 
 const moveActivityFromBuffer = async (props, activityId, parentId, targetId) => {
   try {
@@ -136,8 +138,8 @@ class EventCard extends React.Component {
     let rows
     if (this.props.event.activities) {
       rows = this.props.event.activities.map(activity => {
-        const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
-        return <Activity bufferzone={false} parentId={this.props.event.id} parent={this} key={activity.id} act={act} activity={activity} delete={this.updateAfterDelete} />
+        const pofActivity = convertToSimpleActivity(findActivity(activity, this.props.pofTree))
+        return <Activity bufferzone={false} parentId={this.props.event.id} parent={this} key={activity.id} pofActivity={pofActivity} activity={activity} delete={this.updateAfterDelete} />
       })
     }
     const { event } = this.props;
@@ -260,7 +262,8 @@ const mapStateToProps = (state) => {
   return {
     pofActivities: state.pofActivities,
     events: state.events,
-    buffer: state.buffer
+    buffer: state.buffer,
+    pofTree: state.pofTree
   }
 }
 

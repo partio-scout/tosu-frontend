@@ -62,7 +62,7 @@ function getItemStyles(currentOffset, startPoint, mandatory) {
 
 class ActivityPreview extends React.Component {
   render() {
-    const { isDragging, mandatory, currentOffset, startPoint, act } = this.props
+    const { isDragging, mandatory, currentOffset, startPoint, pofActivity } = this.props
     if (!isDragging) {
       return '';
     }
@@ -86,7 +86,7 @@ class ActivityPreview extends React.Component {
               alt="Mandatory activity"
             />
           </Avatar>
-          <span className="activityTitle">{act.title}</span>
+          <span className="activityTitle">{pofActivity.title}</span>
         </Chip>
       </div>
     );

@@ -116,7 +116,10 @@ class Activity extends Component {
   }
 
   render() {
-    const { activity, act, connectDragSource, isDragging } = this.props
+    const { activity, pofActivity, connectDragSource, isDragging } = this.props
+    console.log(pofActivity)
+    const act = [].concat(pofActivity)
+    console.log(act)
     const visibility = isDragging ? 'hidden' : 'visible'
     /*const closeImg = {
       cursor: 'pointer',
@@ -192,6 +195,7 @@ class Activity extends Component {
     return ''
   }
 }
+
 
 const DraggableActivity = DragSource(
   ItemTypes.ACTIVITY,

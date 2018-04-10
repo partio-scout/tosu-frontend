@@ -12,6 +12,8 @@ import { deleteActivityFromEventOnlyLocally } from '../reducers/eventReducer'
 import activityService from '../services/activities'
 import FlatButton from 'material-ui/FlatButton';
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
+import convertToSimpleActivity from '../functions/activityConverter'
+import findActivity from '../functions/findActivity'
 
 const moveActivity = async (props, activityId, parentId, targetId, bufferzone) => {
     try {
@@ -84,14 +86,21 @@ class BufferZone extends React.Component {
         }
 
         const rows = this.props.buffer.activities.map(activity => {
-            const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
-            return <Activity 
-                    bufferzone='true' 
-                    parentId={this.props.buffer.id} 
-                    parent={this} key={activity.id} 
-                    act={act} activity={activity} 
-                    delete={this.props.deleteFromBufferZone} />
+            const pofActivity = convertToSimpleActivity(findActivity(activity, this.props.pofTree))
+        
+            return pofActivity === null ? undefined :
+                <Activity
+                    deleteActivity={this.deleteActivity}
+                    bufferzone='true'
+                    parentId={this.props.buffer.id}
+                    parent={this}
+                    key={activity.id}
+                    pofActivity={pofActivity}
+                    activity={activity}
+                    delete={this.props.deleteFromBufferZone}
+                />
         })
+        console.log(rows)
         let patternClass
         let background = { backgroundColor: white }
         if (canDrop) {
@@ -121,7 +130,8 @@ const mapStateToProps = (state) => {
     return {
         pofActivities: state.pofActivities,
         buffer: state.buffer,
-        events: state.events
+        events: state.events,
+        pofTree: state.pofTree
     }
 }
 
