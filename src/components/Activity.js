@@ -71,25 +71,6 @@ function collect(connector, monitor) {
   }
 }
 
-const handleRequestDelete = async (activity, props) => {
-  try {
-    if (
-      props.buffer.activities.find(
-        a => a.id.toString() === activity.id.toString()
-      ) !== undefined
-    ) {
-      props.deleteActivityFromBuffer(activity.id)
-      props.notify('Aktiviteetti poistettu!', 'success')
-    } else {
-      props.deleteActivityFromEvent(activity.id)
-      props.notify('Aktiviteetti poistettu!', 'success')
-    }
-  } catch (exception) {
-    props.notify('Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!')
-  }
-  props.pofTreeUpdate(props.buffer, props.events)
-}
-
 class Activity extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
@@ -137,7 +118,7 @@ class Activity extends Component {
             }}
           >
             <Chip
-              onRequestDelete={() => handleRequestDelete(activity, this.props)}
+              onRequestDelete={() => this.props.deleteActivity(activity)}
               style={pofActivity.mandatory ? styles.chipMandatory : styles.chip}
               key={activity.id}
               onClick={this.handleClick}
@@ -157,7 +138,7 @@ class Activity extends Component {
               <Dialog
                 title={
                   <div>
-                    {pofActivity.title}                    
+                    {pofActivity.title}
                     <FlatButton
                       style={{ float: 'right' }}
                       label="Close"
@@ -184,7 +165,7 @@ class Activity extends Component {
       if (isDragging) {
         return connectDragSource(
           <div>
-            <ActivityPreview act={pofActivity} mandatory={pofActivity.mandatory} />
+            <ActivityPreview pofActivity={pofActivity} mandatory={pofActivity.mandatory} />
           </div>
         )
       }

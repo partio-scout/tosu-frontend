@@ -28,7 +28,7 @@ const convertToBackendActivity = (wut) => {
   }
   let backendActivity = {
     guid: wut.guid,
-    title: wut.title,
+    title: wut.title.props.name,
     content: wut.content,
     mandatory: pakollisuus(wut.tags.pakollisuus[0].name),
 

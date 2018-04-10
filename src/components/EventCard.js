@@ -19,9 +19,9 @@ import Activity from './Activity';
 import EditEvent from './EditEvent';
 import ItemTypes from '../ItemTypes'
 import activityService from '../services/activities'
-import { editEvent, deleteEvent, deleteEventGroup, deleteActivityFromEventOnlyLocally, addActivityToEventOnlyLocally } from '../reducers/eventReducer'
+import { editEvent, deleteActivityFromEvent, deleteEvent, deleteEventGroup, deleteActivityFromEventOnlyLocally, addActivityToEventOnlyLocally } from '../reducers/eventReducer'
 import { deleteActivityFromBufferOnlyLocally, bufferZoneInitialization } from '../reducers/bufferZoneReducer'
-import { green100, white} from 'material-ui/styles/colors';
+import { green100, white } from 'material-ui/styles/colors';
 import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
 
@@ -98,11 +98,23 @@ class EventCard extends React.Component {
     this.setState({ expanded: false });
   };
 
+  deleteActivity = async (activity) => {
+    try {
+      await this.props.deleteActivityFromEvent(activity.id)
+      this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+      this.props.notify('Aktiviteetti poistettu!', 'success')
+
+    } catch (exception) {
+      console.log(exception)
+      this.props.notify('Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!')
+    }
+  }
+
   deleteEvent = async () => {
     try {
       await this.props.deleteEvent(this.props.event.id)
       await this.props.bufferZoneInitialization()
-      this.props.notify('Tapahtuma poistettu!' , 'success')
+      this.props.notify('Tapahtuma poistettu!', 'success')
       this.handleClose();
     } catch (exception) {
       console.error('Error in deleting event:', exception);
@@ -139,7 +151,14 @@ class EventCard extends React.Component {
     if (this.props.event.activities) {
       rows = this.props.event.activities.map(activity => {
         const pofActivity = convertToSimpleActivity(findActivity(activity, this.props.pofTree))
-        return <Activity bufferzone={false} parentId={this.props.event.id} parent={this} key={activity.id} pofActivity={pofActivity} activity={activity} delete={this.updateAfterDelete} />
+        return <Activity
+          bufferzone={false}
+          parentId={this.props.event.id}
+          parent={this} key={activity.id}
+          pofActivity={pofActivity}
+          activity={activity}
+          deleteActivity={this.deleteActivity}
+        />
       })
     }
     const { event } = this.props;
@@ -237,12 +256,6 @@ class EventCard extends React.Component {
             <p>Aktiviteetit:</p>
             {rows}
             <br style={{ clear: 'both' }} />
-            <ActivitySearch
-              dataSource={this.props.pofActivities}
-              event={this.props.event}
-              updateActivities={this.updateActivities}
-              updateFilteredActivities={this.props.updateFilteredActivities}
-            />
             <CardActions>
               <FlatButton
                 label="Sulje"
@@ -260,7 +273,6 @@ class EventCard extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    pofActivities: state.pofActivities,
     events: state.events,
     buffer: state.buffer,
     pofTree: state.pofTree
@@ -275,6 +287,7 @@ export default connect(
     notify,
     editEvent,
     deleteEvent,
+    deleteActivityFromEvent,
     bufferZoneInitialization,
     deleteEventGroup,
     addActivityToEventOnlyLocally,

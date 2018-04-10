@@ -62,24 +62,24 @@ function getItemStyles(currentOffset, startPoint, mandatory) {
 
 class ActivityPreview extends React.Component {
   render() {
-    const { isDragging, mandatory, currentOffset, startPoint, pofActivity } = this.props
+    const { isDragging, currentOffset, startPoint, pofActivity } = this.props
     if (!isDragging) {
       return '';
     }
-    let img
-    if (mandatory) {
+    const img = pofActivity.mandatoryIconUrl
+    /*if (pofActivity.mandatory) {
       img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png"
     } else {
       img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3562.png"
-    }
+    }*/
     return (
       <div>
         <Chip
-          style={getItemStyles(currentOffset, startPoint, mandatory)}
+          style={getItemStyles(currentOffset, startPoint, pofActivity.mandatory)}
           className='previewChip'
           onRequestDelete={() => console.log('')}
         >
-          <Avatar style={mandatory ? styles.avatarMandatory : styles.avatar}>
+          <Avatar style={pofActivity.mandatory ? styles.avatarMandatory : styles.avatar}>
             <img
               style={{ width: '100%' }}
               src={img}
