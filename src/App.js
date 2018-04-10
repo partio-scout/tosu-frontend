@@ -98,7 +98,7 @@ class App extends Component {
         <Router>
           <MuiThemeProvider>
             <div>
-              <StickyHeader style
+              <StickyHeader
                 // This is the sticky part of the header.
                 header={
                   <div className="Header_root">
