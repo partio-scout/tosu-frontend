@@ -67,17 +67,15 @@ class App extends Component {
     }
   }
 
-  toggleTopBar = () => {
-    const oldState = this.state.headerVisible
-
-    if (oldState) {
+  toggleTopBar = () => {   
+    if (this.state.headerVisible) {
       this.setState({
-        bufferZoneHeight: 0,
-        headerVisible: !this.state.headerVisible
+        headerVisible: false,
+        bufferZoneHeight: 0
       })
     } else {
       this.setState({
-        headerVisible: !this.state.headerVisible
+        headerVisible: true
       })
     }
   }
@@ -100,7 +98,7 @@ class App extends Component {
         <Router>
           <MuiThemeProvider>
             <div>
-              <StickyHeader
+              <StickyHeader style
                 // This is the sticky part of the header.
                 header={
                   <div className="Header_root">
@@ -111,11 +109,11 @@ class App extends Component {
                       onClick={this.toggleTopBar}
                       labelStyle={styles.labelStyle}
                     />
-                    {this.state.headerVisible ? (
+                    {this.state.headerVisible ?
                       <Appbar
                         setHeaderHeight={this.setHeaderHeight}
                       />
-                    ) : null}
+                     : this.setHeaderHeight(10)}
                   </div>
                 }
               >
