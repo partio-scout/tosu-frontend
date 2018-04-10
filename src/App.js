@@ -6,7 +6,7 @@ import MultiBackend, { TouchTransition } from 'react-dnd-multi-backend';
 //import isTouchDevice from 'is-touch-device'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import GoogleLogin from 'react-google-login'
+import { GoogleLogin, GoogleLogout } from 'react-google-login'
 //import HTML5Backend from 'react-dnd-html5-backend'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -126,7 +126,12 @@ class App extends Component {
                       onFailure={responseGoogle}  
                     >
                     </GoogleLogin>
-
+                    <GoogleLogout
+                      buttonText="Logout"
+                      style={styles.googleLogin}
+                      //onLogoutSuccess={logout}
+                    >
+                    </GoogleLogout>
                     {this.state.headerVisible ?
                       <Appbar
                         setHeaderHeight={this.setHeaderHeight}
