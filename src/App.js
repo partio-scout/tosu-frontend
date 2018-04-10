@@ -5,6 +5,8 @@ import TouchBackend from 'react-dnd-touch-backend';
 import MultiBackend, { TouchTransition } from 'react-dnd-multi-backend';
 //import isTouchDevice from 'is-touch-device'
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import GoogleLogin from 'react-google-login'
 //import HTML5Backend from 'react-dnd-html5-backend'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -34,6 +36,12 @@ const styles = {
   },
   labelStyle: {
     color: '#FFF'
+  },
+  googleLogin: {
+    float: "right",
+    marginRight: "20px",
+    marginTop: "5px",
+    fontSize: "14px"
   }
 }
 class App extends Component {
@@ -111,6 +119,14 @@ class App extends Component {
                       onClick={this.toggleTopBar}
                       labelStyle={styles.labelStyle}
                     />
+                    <GoogleLogin
+                      clientId="7360124073-g6v17rganpibf9pglm8anhgv2te34un0.apps.googleusercontent.com"
+                      buttonText="Login with Google"
+                      style={styles.googleLogin}
+                      onSuccess={responseGoogle}
+                      onFailure={responseGoogle}  
+                    >
+                    </GoogleLogin>
                     {this.state.headerVisible ? (
                       <Appbar
                         setHeaderHeight={this.setHeaderHeight}
@@ -158,6 +174,10 @@ class App extends Component {
       </div>
     )
   }
+}
+
+const responseGoogle = (response) => {
+  console.log(response)
 }
 
 const mapStateToProps = state => {
