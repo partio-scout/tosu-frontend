@@ -75,17 +75,15 @@ class App extends Component {
     }
   }
 
-  toggleTopBar = () => {
-    const oldState = this.state.headerVisible
-
-    if (oldState) {
+  toggleTopBar = () => {   
+    if (this.state.headerVisible) {
       this.setState({
-        bufferZoneHeight: 0,
-        headerVisible: !this.state.headerVisible
+        headerVisible: false,
+        bufferZoneHeight: 0
       })
     } else {
       this.setState({
-        headerVisible: !this.state.headerVisible
+        headerVisible: true
       })
     }
   }
@@ -119,6 +117,7 @@ class App extends Component {
                       onClick={this.toggleTopBar}
                       labelStyle={styles.labelStyle}
                     />
+
                     <GoogleLogin
                       clientId="7360124073-g6v17rganpibf9pglm8anhgv2te34un0.apps.googleusercontent.com"
                       buttonText="Login with Google"
@@ -127,11 +126,12 @@ class App extends Component {
                       onFailure={responseGoogle}  
                     >
                     </GoogleLogin>
-                    {this.state.headerVisible ? (
+
+                    {this.state.headerVisible ?
                       <Appbar
                         setHeaderHeight={this.setHeaderHeight}
                       />
-                    ) : null}
+                     : this.setHeaderHeight(10)}
                   </div>
                 }
               >
