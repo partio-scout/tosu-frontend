@@ -3,17 +3,14 @@ import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend';
 import TouchBackend from 'react-dnd-touch-backend';
 import MultiBackend, { TouchTransition } from 'react-dnd-multi-backend';
-//import isTouchDevice from 'is-touch-device'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { GoogleLogin, GoogleLogout } from 'react-google-login'
-//import HTML5Backend from 'react-dnd-html5-backend'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import RaisedButton from 'material-ui/RaisedButton'
 import 'react-sticky-header/styles.css'
 import StickyHeader from 'react-sticky-header'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-//import { default as TouchBackend } from 'react-dnd-touch-backend'
 import NewEvent from './components/NewEvent'
 import Appbar from './components/AppBar'
 import Toggle from 'material-ui/Toggle'
@@ -24,11 +21,8 @@ import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 import NotificationFooter from './components/NotificationFooter'
-// import MultiBackend from 'react-dnd-multi-backend'
-// import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch'
-import TreeSearchBar from './components/TreeSearchBar'
-import { green200 } from 'material-ui/styles/colors';
-//import convertToBackendActivity from './functions/activityConverter'
+import UserInfo from './components/UserInfo'
+import FontAwesome from 'react-fontawesome'
 
 const styles = {
   toggle: {
@@ -36,12 +30,6 @@ const styles = {
   },
   labelStyle: {
     color: '#FFF'
-  },
-  googleLogin: {
-    float: "right",
-    marginRight: "20px",
-    marginTop: "5px",
-    fontSize: "14px"
   }
 }
 class App extends Component {
@@ -76,7 +64,7 @@ class App extends Component {
     }
   }
 
-  toggleTopBar = () => {   
+  toggleTopBar = () => {
     if (this.state.headerVisible) {
       this.setState({
         headerVisible: false,
@@ -120,26 +108,40 @@ class App extends Component {
                     />
                     {!this.state.isLoggedIn ?
                       <GoogleLogin
+                        className='customBtn'
+                        scope='profile email'
                         clientId="7360124073-g6v17rganpibf9pglm8anhgv2te34un0.apps.googleusercontent.com"
-                        buttonText="Login with Google"
-                        style={styles.googleLogin}
-                        onSuccess={(response) => { this.state(() => { return { isLoggedIn: true }})}}
-                        onFailure={(response) => { this.state(() => { return { isLoggedIn: false }})}} 
+                        onSuccess={(response) => { this.state(() => { return { isLoggedIn: true } }) }}
+                        onFailure={(response) => { this.state(() => { return { isLoggedIn: false } }) }}
                       >
+                        <FontAwesome className='icon' name='google' size='2x' />
+                        <span className='label'>LOGIN WITH GOOGLE</span>
                       </GoogleLogin>
                       :
-                      <GoogleLogout
-                        buttonText="Logout"
-                        style={styles.googleLogin}
-                        onLogoutSuccess={(response) => {this.state(() => { return { isLoggedIn: false }})}}
+                      <div>
+                        <Link to="/user-info">
+                          <RaisedButton
+                            label='Omat tiedot'
+                            style={{ float: 'right', marginRight: 5, marginTop: 20 }}
+                            onClick={this.hideTopBar}
+                          />
+                        </Link>
+                        <GoogleLogout
+                          className='customBtn'
+                          scope='profile email'
+                          onLogoutSuccess={(response) => { this.state(() => { return { isLoggedIn: false } }) }}
                         >
-                      </GoogleLogout>
+                          <FontAwesome className='icon' name="sign-out" size='2x' />
+                          <span className='label'>SIGN OUT</span>
+                        </GoogleLogout>
+                      </div>
+
                     }
                     {this.state.headerVisible ?
                       <Appbar
                         setHeaderHeight={this.setHeaderHeight}
                       />
-                     : this.setHeaderHeight(10)}
+                      : this.setHeaderHeight(10)}
                   </div>
                 }
               >
@@ -150,9 +152,6 @@ class App extends Component {
                 id="container"
                 style={{ paddingTop: this.state.bufferZoneHeight + 30 }}
               >
-{/*                 <div style={{ height: 94, paddingTop: 10, backgroundColor: green200 }}>
-                  <TreeSearchBar />
-                </div> */}
                 <div className="content">
                   <Link to="/">
                     <RaisedButton
@@ -172,6 +171,10 @@ class App extends Component {
                   <Route
                     path="/new-event"
                     render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
+                  />
+                  <Route
+                    path='/user-info'
+                    render={() => <UserInfo toggleTopBar={this.toggleTopBar} />}
                   />
                   <NotificationFooter />
                 </div>
@@ -202,7 +205,7 @@ const HTML5toTouch = {
       backend: HTML5Backend
     },
     {
-      backend: TouchBackend({enableMouseEvents: true}), // Note that you can call your backends with options
+      backend: TouchBackend({ enableMouseEvents: true }), // Note that you can call your backends with options
       // preview: true,
       transition: TouchTransition
     }

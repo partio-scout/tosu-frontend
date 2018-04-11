@@ -43,6 +43,7 @@
     "react-dnd-multi-backend": "^3.1.2",
     "react-dnd-touch-backend": "^0.3.21",
     "react-dom": "^16.2.0",
+    "react-fontawesome": "^1.6.1",
     "react-google-login": "^3.2.0",
     "react-material-ui-form-validator": "^1.1.0",
     "react-redux": "^5.0.7",

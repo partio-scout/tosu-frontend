@@ -42,7 +42,7 @@ p.eventTimes > span {
 
 .top-search {
   background: '#5DBCD2';
-  padding: 20;
+  padding: 0;
 }
 
 .activityTitle {
@@ -67,7 +67,40 @@ p.eventTimes > span {
   height: auto;
   width: 100%;
   max-width: 3000px;
-  background-color: tomato;
+  background-color: tomato;#customBtn {
+    display: inline-block;
+    background: white;
+    color: #444;
+    width: 190px;
+    border-radius: 5px;
+    border: thin solid #888;
+    box-shadow: 1px 1px 1px grey;
+    white-space: nowrap;
+  }
+  #customBtn:hover {
+    cursor: pointer;
+  }
+  span.label {
+    font-family: serif;
+    font-weight: normal;
+  }
+  span.icon {
+    background: url('/identity/sign-in/g-normal.png') transparent 5px 50% no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+    width: 42px;
+    height: 42px;
+  }
+  span.buttonText {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 42px;
+    padding-right: 42px;
+    font-size: 14px;
+    font-weight: bold;
+    /* Use the Roboto font that is loaded in the <head> */
+    font-family: 'Roboto', sans-serif;
+  }
 }
 
 .footerSuccess {
@@ -106,11 +139,39 @@ p.eventTimes > span {
   overflow: hidden;
   cursor: pointer;
 }
-
+googleuser
 .tree-search-title:hover {
 background:#90CAF9 !important;
 }
 
 .rc-tree-select-tree-treenode-disabled .tree-search-title{
   pointer-events:none;
+}
+
+.customBtn {
+  font-family: 'Roboto', sans-serif;
+  display: inline-block;
+  background: white;
+  color: #444;
+  width: 190px;
+  border-radius: 1px;
+  border: none;
+  box-shadow: 1px 1px 1px lightslategray;
+  white-space: nowrap;
+  float: right;
+  margin: 20px 5px 0 0;
+  font-size: 14px;
+  height: 35px;
+}
+
+.customBtn:hover {
+  cursor: pointer;
+}
+span.label {
+  margin: 20px 5px 0 0;
+}
+
+.icon {
+  float: left;
+  margin-right: 10px;
 }
