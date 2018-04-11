@@ -87,15 +87,12 @@ class TreeSearchBar extends React.Component {
           activities = activities.concat(activity.guid)
         })
       })
-      console.log('all activities:', activities)
-      console.log('before', mandatoryActivities)
 
       const promises = mandatoryActivities.map(activity => {
         return activities.includes(activity)
           ? null
           : this.props.postActivityToBuffer({ guid: activity })
       })
-      console.log('promises', promises)
       try {
         await Promise.all(promises)
         this.props.notify(

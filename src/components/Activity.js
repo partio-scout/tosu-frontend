@@ -71,25 +71,6 @@ function collect(connector, monitor) {
   }
 }
 
-const handleRequestDelete = async (activity, props) => {
-  try {
-    if (
-      props.buffer.activities.find(
-        a => a.id.toString() === activity.id.toString()
-      ) !== undefined
-    ) {
-      props.deleteActivityFromBuffer(activity.id)
-      props.notify('Aktiviteetti poistettu!', 'success')
-    } else {
-      props.deleteActivityFromEvent(activity.id)
-      props.notify('Aktiviteetti poistettu!', 'success')
-    }
-  } catch (exception) {
-    props.notify('Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!')
-  }
-  props.pofTreeUpdate(props.buffer, props.events)
-}
-
 class Activity extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
@@ -116,7 +97,7 @@ class Activity extends Component {
   }
 
   render() {
-    const { activity, act, connectDragSource, isDragging } = this.props
+    const { activity, pofActivity, connectDragSource, isDragging } = this.props
     const visibility = isDragging ? 'hidden' : 'visible'
     /*const closeImg = {
       cursor: 'pointer',
@@ -125,7 +106,7 @@ class Activity extends Component {
       width: '20px'
     }*/
 
-    if (activity && act[0]) {
+    if (activity && pofActivity) {
       if (!isDragging) {
         return connectDragSource(
           <div
@@ -137,27 +118,27 @@ class Activity extends Component {
             }}
           >
             <Chip
-              onRequestDelete={() => handleRequestDelete(activity, this.props)}
-              style={act[0].mandatory ? styles.chipMandatory : styles.chip}
+              onRequestDelete={() => this.props.deleteActivity(activity)}
+              style={pofActivity.mandatory ? styles.chipMandatory : styles.chip}
               key={activity.id}
               onClick={this.handleClick}
             >
               <Avatar
                 style={
-                  act[0].mandatory ? styles.avatarMandatory : styles.avatar
+                  pofActivity.mandatory ? styles.avatarMandatory : styles.avatar
                 }
               >
                 <img
                   style={{ width: '100%' }}
-                  src={act[0].mandatoryIconUrl}
+                  src={pofActivity.mandatoryIconUrl}
                   alt="Mandatory Icon"
                 />
               </Avatar>
-              <span className="activityTitle">{act[0].title}</span>
+              <span className="activityTitle">{pofActivity.title}</span>
               <Dialog
                 title={
                   <div>
-                    {act[0].title}                    
+                    {pofActivity.title}
                     <FlatButton
                       style={{ float: 'right' }}
                       label="Close"
@@ -174,7 +155,7 @@ class Activity extends Component {
                 contentClassName="global--modal-content"
                 paperClassName="global--modal-paper"
               >
-                <PlanForm activity={act[0]} savedActivity={activity} />
+                <PlanForm activity={pofActivity} savedActivity={activity} />
               </Dialog>
             </Chip>
           </div>
@@ -184,7 +165,7 @@ class Activity extends Component {
       if (isDragging) {
         return connectDragSource(
           <div>
-            <ActivityPreview act={act[0]} mandatory={act[0].mandatory} />
+            <ActivityPreview pofActivity={pofActivity} mandatory={pofActivity.mandatory} />
           </div>
         )
       }

@@ -12,6 +12,8 @@ import { deleteActivityFromEventOnlyLocally } from '../reducers/eventReducer'
 import activityService from '../services/activities'
 import FlatButton from 'material-ui/FlatButton';
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
+import convertToSimpleActivity from '../functions/activityConverter'
+import findActivity from '../functions/findActivity'
 
 const moveActivity = async (props, activityId, parentId, targetId, bufferzone) => {
     try {
@@ -21,8 +23,8 @@ const moveActivity = async (props, activityId, parentId, targetId, bufferzone) =
         props.notify('Aktiviteetti siirretty!', 'success')
         return res
     } catch (exception) {
-        if(bufferzone && parentId === targetId) {
-            
+        if (bufferzone && parentId === targetId) {
+
         } else {
             props.notify('Aktiviteettialue on täynnä!')
         }
@@ -58,9 +60,9 @@ class BufferZone extends React.Component {
         connectDropTarget: PropTypes.func.isRequired
     }
 
-    handleClick = async() => {
+    handleClick = async () => {
         const bufferActivities = this.props.buffer.activities
-        
+
         const promises = bufferActivities.map(activity => {
             this.props.deleteActivityFromBuffer(activity.id)
         })
@@ -69,13 +71,25 @@ class BufferZone extends React.Component {
             await Promise.all(promises)
             this.props.notify('Aktiviteetit poistettu!', 'success')
         } catch (exception) {
-                this.props.notify('Kaikkia aktiviteetteja ei voitu poistaa!')
+            this.props.notify('Kaikkia aktiviteetteja ei voitu poistaa!')
         }
 
     }
 
+    deleteActivity = async (activity) => {
+
+        try {
+            await this.props.deleteActivityFromBuffer(activity.id)
+            this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+            this.props.notify('Aktiviteetti poistettu!', 'success')
+
+        } catch (exception) {
+            this.props.notify('Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!')
+        }
+    }
+
     render() {
-        
+
         const { isOver, canDrop, connectDropTarget } = this.props
         if (!this.props.buffer.activities || this.props.buffer.activities.length === 0) {
             return connectDropTarget(
@@ -84,44 +98,49 @@ class BufferZone extends React.Component {
         }
 
         const rows = this.props.buffer.activities.map(activity => {
-            const act = this.props.pofActivities.filter(a => a.guid === activity.guid);
-            return <Activity 
-                    bufferzone='true' 
-                    parentId={this.props.buffer.id} 
-                    parent={this} key={activity.id} 
-                    act={act} activity={activity} 
-                    delete={this.props.deleteFromBufferZone} />
+            const pofActivity = convertToSimpleActivity(findActivity(activity, this.props.pofTree))
+            return pofActivity === null ? undefined :
+                <Activity
+                    deleteActivity={this.deleteActivity}
+                    bufferzone='true'
+                    parentId={this.props.buffer.id}
+                    parent={this} key={activity.id}
+                    key={activity.id}
+                    pofActivity={pofActivity}
+                    activity={activity}
+
+                />
         })
         let patternClass
         let background = { backgroundColor: white }
         if (canDrop) {
-          background = { backgroundColor: green100 }
+            background = { backgroundColor: green100 }
         }
         if (isOver) {
-          patternClass = 'pattern'
+            patternClass = 'pattern'
         }
-        
+
         return connectDropTarget(
             <div>
                 <div id="bufferzone" style={background} className={patternClass}>
-                    {rows} 
+                    {rows}
                 </div>
                 <div>
                     <FlatButton label="Tyhjennä"
-                    onClick={this.handleClick}
+                        onClick={this.handleClick}
                     />
                 </div>
             </div>
-        )    
+        )
     }
 }
 
 
 const mapStateToProps = (state) => {
     return {
-        pofActivities: state.pofActivities,
         buffer: state.buffer,
-        events: state.events
+        events: state.events,
+        pofTree: state.pofTree
     }
 }
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import TopSearchBar from './TopSearchBar'
 import TreeSearchBar from './TreeSearchBar'
 
 /**
