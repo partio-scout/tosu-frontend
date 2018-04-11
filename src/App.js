@@ -106,13 +106,6 @@ class App extends Component {
                       onClick={this.toggleTopBar}
                       labelStyle={styles.labelStyle}
                     />
-                    <Link to="/user-info">
-                      <RaisedButton
-                        label='Omat tiedot'
-                        style={{ float: 'right', marginRight: 5, marginTop: 20 }}
-                        onClick={this.hideTopBar}
-                      />
-                    </Link>
                     {!this.state.isLoggedIn ?
                       <GoogleLogin
                         className='customBtn'
@@ -125,14 +118,24 @@ class App extends Component {
                         <span className='label'>LOGIN WITH GOOGLE</span>
                       </GoogleLogin>
                       :
-                      <GoogleLogout
-                        className='customBtn'
-                        scope='profile email'
-                        onLogoutSuccess={(response) => { this.state(() => { return { isLoggedIn: false } }) }}
-                      >
-                        <FontAwesome className='icon' name="sign-out" size='2x' />
-                        <span className='label'>SIGN OUT</span>
-                      </GoogleLogout>
+                      <div>
+                        <Link to="/user-info">
+                          <RaisedButton
+                            label='Omat tiedot'
+                            style={{ float: 'right', marginRight: 5, marginTop: 20 }}
+                            onClick={this.hideTopBar}
+                          />
+                        </Link>
+                        <GoogleLogout
+                          className='customBtn'
+                          scope='profile email'
+                          onLogoutSuccess={(response) => { this.state(() => { return { isLoggedIn: false } }) }}
+                        >
+                          <FontAwesome className='icon' name="sign-out" size='2x' />
+                          <span className='label'>SIGN OUT</span>
+                        </GoogleLogout>
+                      </div>
+
                     }
                     {this.state.headerVisible ?
                       <Appbar
