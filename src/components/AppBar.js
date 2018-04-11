@@ -1,6 +1,6 @@
 import React from 'react'
 import TreeSearchBar from './TreeSearchBar'
-
+import StatusMessage from './StatusMessage'
 /**
  * A simple example of `AppBar` with an icon on the right.
  * By default, the left icon is a navigation-menu.
@@ -33,6 +33,9 @@ export default class AppBar extends React.Component {
         id="top-bar-header"
         style={{ background: '#5DBCD2', padding: 1 }}
       >
+
+      <StatusMessage />
+
         <TreeSearchBar getHeight={this.getHeight} />
         {/* <TopSearchBar getHeight={this.getHeight} /> */}
       </div>
