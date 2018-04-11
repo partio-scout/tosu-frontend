@@ -117,7 +117,10 @@ class App extends Component {
                       onClick={this.toggleTopBar}
                       labelStyle={styles.labelStyle}
                     />
-
+                    <RaisedButton
+                      label='Omat tiedot'
+                      style={styles.googleLogin}
+                    /> 
                     <GoogleLogin
                       clientId="7360124073-g6v17rganpibf9pglm8anhgv2te34un0.apps.googleusercontent.com"
                       buttonText="Login with Google"

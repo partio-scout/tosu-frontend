@@ -31,7 +31,7 @@ export default class AppBar extends React.Component {
       <div
         className="top-search"
         id="top-bar-header"
-        style={{ background: '#5DBCD2', padding: 20 }}
+        style={{ background: '#5DBCD2', padding: 1 }}
       >
         <TreeSearchBar getHeight={this.getHeight} />
         {/* <TopSearchBar getHeight={this.getHeight} /> */}
