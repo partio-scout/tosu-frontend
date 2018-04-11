@@ -22,7 +22,6 @@ import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
-
 import FontAwesome from 'react-fontawesome'
 
 const styles = {
@@ -38,7 +37,8 @@ class App extends Component {
     super()
     this.state = {
       bufferZoneHeight: 0,
-      headerVisible: true
+      headerVisible: true,
+      isLoggedIn: false
     }
   }
 
@@ -113,24 +113,27 @@ class App extends Component {
                         onClick={this.hideTopBar}
                       />
                     </Link>
-                    <GoogleLogin
-                      className='customBtn'
-                      scope='profile email'
-                      clientId="7360124073-g6v17rganpibf9pglm8anhgv2te34un0.apps.googleusercontent.com"
-                      onSuccess={responseGoogle}
-                      onFailure={responseGoogle}
-                    >
-                      <FontAwesome className='icon' name='google' size='2x' />
-                      <span className='label'>LOGIN WITH GOOGLE</span>
-                    </GoogleLogin>
-                    <GoogleLogout
-                      className='customBtn'
-                      scope='profile email'
-                    //onLogoutSuccess={logout}
-                    >
-                      <FontAwesome className='icon' name="sign-out" size='2x' />
-                      <span className='label'>SIGN OUT</span>
-                    </GoogleLogout>
+                    {!this.state.isLoggedIn ?
+                      <GoogleLogin
+                        className='customBtn'
+                        scope='profile email'
+                        clientId="7360124073-g6v17rganpibf9pglm8anhgv2te34un0.apps.googleusercontent.com"
+                        onSuccess={(response) => { this.state(() => { return { isLoggedIn: true } }) }}
+                        onFailure={(response) => { this.state(() => { return { isLoggedIn: false } }) }}
+                      >
+                        <FontAwesome className='icon' name='google' size='2x' />
+                        <span className='label'>LOGIN WITH GOOGLE</span>
+                      </GoogleLogin>
+                      :
+                      <GoogleLogout
+                        className='customBtn'
+                        scope='profile email'
+                        onLogoutSuccess={(response) => { this.state(() => { return { isLoggedIn: false } }) }}
+                      >
+                        <FontAwesome className='icon' name="sign-out" size='2x' />
+                        <span className='label'>SIGN OUT</span>
+                      </GoogleLogout>
+                    }
                     {this.state.headerVisible ?
                       <Appbar
                         setHeaderHeight={this.setHeaderHeight}
@@ -146,9 +149,6 @@ class App extends Component {
                 id="container"
                 style={{ paddingTop: this.state.bufferZoneHeight + 30 }}
               >
-                {/*                 <div style={{ height: 94, paddingTop: 10, backgroundColor: green200 }}>
-                  <TreeSearchBar />
-                </div> */}
                 <div className="content">
                   <Link to="/">
                     <RaisedButton
