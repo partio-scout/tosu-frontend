@@ -111,8 +111,8 @@ class App extends Component {
                         className='customBtn'
                         scope='profile email'
                         clientId="7360124073-g6v17rganpibf9pglm8anhgv2te34un0.apps.googleusercontent.com"
-                        onSuccess={(response) => { this.state(() => { return { isLoggedIn: true } }) }}
-                        onFailure={(response) => { this.state(() => { return { isLoggedIn: false } }) }}
+                        onSuccess={ this.state.isLoggedIn = true }
+                        onFailure={ this.state.isLoggedIn = false }
                       >
                         <FontAwesome className='icon' name='google' size='2x' />
                         <span className='label'>LOGIN WITH GOOGLE</span>
@@ -129,7 +129,7 @@ class App extends Component {
                         <GoogleLogout
                           className='customBtn'
                           scope='profile email'
-                          onLogoutSuccess={(response) => { this.state(() => { return { isLoggedIn: false } }) }}
+                          onLogoutSuccess={this.state.isLoggedIn = false }
                         >
                           <FontAwesome className='icon' name="sign-out" size='2x' />
                           <span className='label'>SIGN OUT</span>
