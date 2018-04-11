@@ -49,7 +49,8 @@ class App extends Component {
     super()
     this.state = {
       bufferZoneHeight: 0,
-      headerVisible: true
+      headerVisible: true,
+      isLoggedIn: false
     }
   }
 
@@ -117,21 +118,23 @@ class App extends Component {
                       onClick={this.toggleTopBar}
                       labelStyle={styles.labelStyle}
                     />
-
-                    <GoogleLogin
-                      clientId="7360124073-g6v17rganpibf9pglm8anhgv2te34un0.apps.googleusercontent.com"
-                      buttonText="Login with Google"
-                      style={styles.googleLogin}
-                      onSuccess={responseGoogle}
-                      onFailure={responseGoogle}  
-                    >
-                    </GoogleLogin>
-                    <GoogleLogout
-                      buttonText="Logout"
-                      style={styles.googleLogin}
-                      //onLogoutSuccess={logout}
-                    >
-                    </GoogleLogout>
+                    {!this.state.isLoggedIn ?
+                      <GoogleLogin
+                        clientId="7360124073-g6v17rganpibf9pglm8anhgv2te34un0.apps.googleusercontent.com"
+                        buttonText="Login with Google"
+                        style={styles.googleLogin}
+                        onSuccess={(response) => { this.state(() => { return { isLoggedIn: true }})}}
+                        onFailure={(response) => { this.state(() => { return { isLoggedIn: false }})}} 
+                      >
+                      </GoogleLogin>
+                      :
+                      <GoogleLogout
+                        buttonText="Logout"
+                        style={styles.googleLogin}
+                        onLogoutSuccess={(response) => {this.state(() => { return { isLoggedIn: false }})}}
+                        >
+                      </GoogleLogout>
+                    }
                     {this.state.headerVisible ?
                       <Appbar
                         setHeaderHeight={this.setHeaderHeight}
