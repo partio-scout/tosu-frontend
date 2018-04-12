@@ -1,8 +1,8 @@
 import { connect } from 'react-redux'
 import { DragDropContext } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend';
-import TouchBackend from 'react-dnd-touch-backend';
-import MultiBackend, { TouchTransition } from 'react-dnd-multi-backend';
+import HTML5Backend from 'react-dnd-html5-backend'
+import TouchBackend from 'react-dnd-touch-backend'
+import MultiBackend, { TouchTransition } from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { GoogleLogin, GoogleLogout } from 'react-google-login'
@@ -19,9 +19,11 @@ import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
+import { addStatusInfo } from './reducers/statusMessageReducer'
 import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
 import FontAwesome from 'react-fontawesome'
+import { createStatusMessage } from './utils/createStatusMessage'
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
 
 const styles = {
@@ -55,6 +57,14 @@ class App extends Component {
       this.props.bufferZoneInitialization(2) // id tulee userista myöhemmin
     ])
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+  }
+
+  componentDidUpdate = () => {
+  const status = createStatusMessage(
+      this.props.events,
+      this.props.pofTree
+    )
+    this.props.addStatusInfo(status)
   }
 
   setHeaderHeight = height => {
@@ -93,6 +103,68 @@ class App extends Component {
       <div className="App">
         <Router>
           <MuiThemeProvider>
+<<<<<<< HEAD
+            <div>
+              <StickyHeader
+                // This is the sticky part of the header.
+                header={
+                  <div className="Header_root">
+                    <Toggle
+                      label="Piilota / näytä aktiviteetit"
+                      labelPosition="right"
+                      style={styles.toggle}
+                      onClick={this.toggleTopBar}
+                      labelStyle={styles.labelStyle}
+                    />
+                    {!this.state.isLoggedIn ? (
+                      <GoogleLogin
+                        className="customBtn"
+                        scope="profile email"
+                        clientId="7360124073-g6v17rganpibf9pglm8anhgv2te34un0.apps.googleusercontent.com"
+                        onSuccess={(this.state.isLoggedIn = true)}
+                        onFailure={(this.state.isLoggedIn = false)}
+                      >
+                        <FontAwesome className="icon" name="google" size="2x" />
+                        <span className="label">LOGIN WITH GOOGLE</span>
+                      </GoogleLogin>
+                    ) : (
+                      <div>
+                        <Link to="/user-info">
+                          <RaisedButton
+                            label="Omat tiedot"
+                            style={{
+                              float: 'right',
+                              marginRight: 5,
+                              marginTop: 20
+                            }}
+                            onClick={this.hideTopBar}
+                          />
+                        </Link>
+                        <GoogleLogout
+                          className="customBtn"
+                          scope="profile email"
+                          onLogoutSuccess={(this.state.isLoggedIn = false)}
+                        >
+                          <FontAwesome
+                            className="icon"
+                            name="sign-out"
+                            size="2x"
+                          />
+                          <span className="label">SIGN OUT</span>
+                        </GoogleLogout>
+                      </div>
+                    )}
+                    {this.state.headerVisible ? (
+                      <Appbar setHeaderHeight={this.setHeaderHeight} />
+                    ) : (
+                      this.setHeaderHeight(10)
+                    )}
+                  </div>
+                }
+              >
+                <section />
+              </StickyHeader>
+=======
             <StickyHeader
               // This is the sticky part of the header.
               header={
@@ -152,6 +224,7 @@ class App extends Component {
                   setHeaderHeight={this.setHeaderHeight}
                 />
                 : this.setHeaderHeight(10)
+>>>>>>> master
 
               }
             </div>
@@ -165,12 +238,18 @@ class App extends Component {
                     label="Lista tapahtumista"
                     onClick={this.openTopBar}
                   />
+<<<<<<< HEAD
+                  <Route
+                    path="/user-info"
+                    render={() => <UserInfo toggleTopBar={this.toggleTopBar} />}
+=======
                 </Link>
                 &nbsp;
                   <Link to="/new-event">
                   <RaisedButton
                     label="Uusi tapahtuma"
                     onClick={this.hideTopBar}
+>>>>>>> master
                   />
                 </Link>
                 &nbsp;
@@ -193,7 +272,7 @@ class App extends Component {
   }
 }
 
-const responseGoogle = (response) => {
+const responseGoogle = response => {
   console.log(response)
 }
 
@@ -201,7 +280,8 @@ const mapStateToProps = state => {
   return {
     notification: state.notification,
     buffer: state.buffer,
-    events: state.events
+    events: state.events,
+    pofTree: state.pofTree
   }
 }
 
@@ -216,7 +296,7 @@ const HTML5toTouch = {
       transition: TouchTransition
     }
   ]
-};
+}
 
 const AppDnD = DragDropContext(MultiBackend(HTML5toTouch))(App)
 
@@ -233,5 +313,6 @@ export default connect(mapStateToProps, {
   pofTreeInitialization,
   pofTreeUpdate,
   eventsInitialization,
-  bufferZoneInitialization
+  bufferZoneInitialization,
+  addStatusInfo
 })(AppDnD)
