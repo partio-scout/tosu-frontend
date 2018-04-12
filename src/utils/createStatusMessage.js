@@ -1,4 +1,3 @@
-import actitivyService from '../services/activities'
 import findActivity from '../functions/findActivity'
 
 const arrayActivityGuidsFromBufferAndEvents = (events, pofTree) => {
@@ -33,9 +32,9 @@ const createStatusMessage = (events, pofTree) => {
       }
     })
   }
-  const text = `Pakollisia valittu ${mandatory} ja vapaaehtoisia ${nonMandatory}`
+  const status = {mandatory, nonMandatory}
 
-  return text
+  return status
 }
 
 export { createStatusMessage }
