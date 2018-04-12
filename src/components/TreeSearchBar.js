@@ -1,11 +1,12 @@
 import React from 'react'
+import Select from 'react-select'
 import TreeSelect /*, { TreeNode, SHOW_PARENT }*/ from 'rc-tree-select'
 import 'rc-tree-select/assets/index.css'
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import Select from 'react-select'
+import { addStatusMessage } from '../reducers/statusMessageReducer'
 import BufferZone from './BufferZone'
 
 class TreeSearchBar extends React.Component {
@@ -19,6 +20,10 @@ class TreeSearchBar extends React.Component {
 
   componentDidUpdate = () => {
     this.props.getHeight()
+
+    if (!this.state.selectedTaskGroup) {
+      this.props.addStatusMessage('Valitse ensin tarppo')
+    }
   }
 
   onChange = value => {
@@ -68,7 +73,13 @@ class TreeSearchBar extends React.Component {
     this.setState({ selectedTaskGroup: taskgroup })
     if (taskgroup === null) {
       this.setState({ treePlaceHolder: 'Valitse ensin tarppo' })
+      this.props.addStatusMessage('Valitse ensin tarppo!')
+
       return
+    }
+
+    if(!this.state.selectedTaskGroup){
+      this.props.addStatusMessage("Valitse aktiviteetit!")
     }
     this.setState({ treePlaceHolder: 'Lisää aktiviteetti' })
     const selectedGroup = this.props.pofTree.taskgroups.find(
@@ -163,7 +174,7 @@ class TreeSearchBar extends React.Component {
 
         {this.state.selectedTaskGroup ? treeSearchBar() : null}
 
-        <div style={{clear: 'both', paddingTop: 10}}>
+        <div style={{ clear: 'both', paddingTop: 10 }}>
           <BufferZone />
         </div>
       </div>
@@ -182,5 +193,6 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   notify,
   postActivityToBuffer,
-  pofTreeUpdate
+  pofTreeUpdate,
+  addStatusMessage
 })(TreeSearchBar)

@@ -7,6 +7,7 @@ import pofTreeReducer from './reducers/pofTreeReducer'
 import BufferReducer from './reducers/bufferZoneReducer'
 import EventsReducer from './reducers/eventReducer'
 import PlanReducer from './reducers/planReducer'
+import StatusMessageReducer from './reducers/statusMessageReducer'
 
 const reducer = combineReducers({
   notification: notificationReducer,
@@ -14,7 +15,8 @@ const reducer = combineReducers({
   pofTree: pofTreeReducer,
   buffer: BufferReducer,
   events: EventsReducer,
-  plans: PlanReducer
+  plans: PlanReducer,
+  statusMessage: StatusMessageReducer
 })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
