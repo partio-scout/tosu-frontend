@@ -37,7 +37,6 @@ export default class AppBar extends React.Component {
       <StatusMessage />
 
         <TreeSearchBar getHeight={this.getHeight} />
-        {/* <TopSearchBar getHeight={this.getHeight} /> */}
       </div>
     )
   }
