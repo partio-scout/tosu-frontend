@@ -25,6 +25,7 @@ import UserInfo from './components/UserInfo'
 import FontAwesome from 'react-fontawesome'
 import { createStatusMessage } from './utils/createStatusMessage'
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
+import GoogleButtons from './components/GoogleButtons'
 
 const styles = {
   toggle: {
@@ -39,8 +40,7 @@ class App extends Component {
     super()
     this.state = {
       bufferZoneHeight: 0,
-      headerVisible: true,
-      isLoggedIn: false
+      headerVisible: true
     }
   }
 
@@ -118,37 +118,7 @@ class App extends Component {
                       />
                     </ToolbarGroup>
                     <ToolbarGroup>
-                      {!this.state.isLoggedIn ?
-                        <GoogleLogin
-                          className='customBtn'
-                          scope='profile email'
-                          clientId="7360124073-g6v17rganpibf9pglm8anhgv2te34un0.apps.googleusercontent.com"
-                          onSuccess={(response) => { this.state(() => { return { isLoggedIn: true } }) }}
-                          onFailure={(response) => { this.state(() => { return { isLoggedIn: false } }) }}
-                        >
-                          <FontAwesome className='icon' name='google' size='2x' />
-                          <span className='label'>LOGIN WITH GOOGLE</span>
-                        </GoogleLogin>
-                        :
-                        <div>
-                          <Link to="/user-info">
-                            <RaisedButton
-                              label='Omat tiedot'
-                              style={{ float: 'right', marginRight: 5, marginTop: 20 }}
-                              onClick={this.hideTopBar}
-                            />
-                          </Link>
-                          <GoogleLogout
-                            className='customBtn'
-                            scope='profile email'
-                            onLogoutSuccess={(response) => { this.state(() => { return { isLoggedIn: false } }) }}
-                          >
-                            <FontAwesome className='icon' name="sign-out" size='2x' />
-                            <span className='label'>SIGN OUT</span>
-                          </GoogleLogout>
-                        </div>
-
-                      }
+                      <GoogleButtons />
                     </ToolbarGroup>
                   </Toolbar>
                 </div>
@@ -203,9 +173,6 @@ class App extends Component {
   }
 }
 
-const responseGoogle = response => {
-  console.log(response)
-}
 
 const mapStateToProps = state => {
   return {
