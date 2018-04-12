@@ -1,17 +1,7 @@
 let found = null
 
-const findActivity = (activity, pofTree) => {
-    found = null
-    if (activity === undefined || pofTree === undefined) {
-        console.log('null input')
-        return null
-    }
-    findInTreePof(activity, pofTree)
-    return found
-
-}
-
 const findInTreePof = (activity, root) => {
+
     if (root === undefined || found !== null) {
         return
     }
@@ -30,5 +20,18 @@ const findInTreePof = (activity, root) => {
     }
 
 }
+
+
+const findActivity = (activity, pofTree) => {
+    found = null
+    if (activity === undefined || pofTree === undefined) {
+        console.log('null input')
+        return null
+    }
+    findInTreePof(activity, pofTree)
+    return found
+
+}
+
 
 export default findActivity
