@@ -22,7 +22,7 @@ class TreeSearchBar extends React.Component {
     this.props.getHeight()
 
     if (!this.state.selectedTaskGroup) {
-      this.props.addStatusMessage('Valitse ensin tarppo!')
+      this.props.addStatusMessage('Valitse ensin tarppo')
     }
   }
 

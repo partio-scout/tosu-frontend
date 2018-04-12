@@ -21,7 +21,7 @@ const Instruction = ({ handleClose, text }) => (
         }}
         onClick={() => handleClose()}
       />
-      {text}
+      {text} ... ja muu tarvittava statustieto
     </Paper>
   </div>
 )
