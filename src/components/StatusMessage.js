@@ -16,7 +16,8 @@ const Instruction = ({ handleClose, statusMessage }) => (
       <Clear
         style={{
           marginRight: 10,
-          color: '#ccc'
+          color: '#ccc',
+          marginTop: 35
         }}
         onClick={() => handleClose()}
       />
@@ -32,7 +33,8 @@ const InfoButton = ({ handleOpen }) => (
       width: 72,
       height: 72,
       padding: 18,
-      color: 'white'
+      color: 'white',
+      marginTop: 35
     }}
     onClick={() => handleOpen()}
   />
@@ -60,7 +62,8 @@ class StatusMessage extends React.Component {
     const element = this.state.open ? (
       <Instruction
         handleClose={this.handleClose}
-        statusMessage={this.props.statusMessage}
+        text={this.props.statusMessage}
+        style={{ marginTop: 30 }}
       />
     ) : (
       <InfoButton handleOpen={this.handleOpen} />
