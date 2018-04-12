@@ -1,6 +1,10 @@
 import axios from 'axios'
 import { API_ROOT } from '../api-config';
 
+const getAllActivities = async () => {
+  const response = await axios.get(`${API_ROOT}/activities/`)
+  return response.data
+}
 const deleteActivity = async (id) => {
   const response = await axios.delete(`${API_ROOT}/activities/${id}`)
   return response.data
@@ -33,4 +37,4 @@ const moveActivityFromEventToEvent = async (activityId, parentId, targetId) => {
   return response.data
 }
 
-export default { deleteActivity, addActivityToBufferZone, getBufferZoneActivities, moveActivityFromBufferZoneToEvent, moveActivityFromEventToBufferZone, moveActivityFromEventToEvent }
+export default { getAllActivities, deleteActivity, addActivityToBufferZone, getBufferZoneActivities, moveActivityFromBufferZoneToEvent, moveActivityFromEventToBufferZone, moveActivityFromEventToEvent }

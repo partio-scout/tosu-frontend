@@ -1,8 +1,8 @@
 import { connect } from 'react-redux'
 import { DragDropContext } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend';
-import TouchBackend from 'react-dnd-touch-backend';
-import MultiBackend, { TouchTransition } from 'react-dnd-multi-backend';
+import HTML5Backend from 'react-dnd-html5-backend'
+import TouchBackend from 'react-dnd-touch-backend'
+import MultiBackend, { TouchTransition } from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { GoogleLogin, GoogleLogout } from 'react-google-login'
@@ -19,9 +19,11 @@ import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
+import { addStatusInfo } from './reducers/statusMessageReducer'
 import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
 import FontAwesome from 'react-fontawesome'
+import { createStatusMessage } from './utils/createStatusMessage'
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
 
 const styles = {
@@ -55,6 +57,14 @@ class App extends Component {
       this.props.bufferZoneInitialization(2) // id tulee userista myöhemmin
     ])
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+  }
+
+  componentDidUpdate = () => {
+  const status = createStatusMessage(
+      this.props.events,
+      this.props.pofTree
+    )
+    this.props.addStatusInfo(status)
   }
 
   setHeaderHeight = height => {
@@ -193,7 +203,7 @@ class App extends Component {
   }
 }
 
-const responseGoogle = (response) => {
+const responseGoogle = response => {
   console.log(response)
 }
 
@@ -201,7 +211,8 @@ const mapStateToProps = state => {
   return {
     notification: state.notification,
     buffer: state.buffer,
-    events: state.events
+    events: state.events,
+    pofTree: state.pofTree
   }
 }
 
@@ -216,7 +227,7 @@ const HTML5toTouch = {
       transition: TouchTransition
     }
   ]
-};
+}
 
 const AppDnD = DragDropContext(MultiBackend(HTML5toTouch))(App)
 
@@ -233,5 +244,6 @@ export default connect(mapStateToProps, {
   pofTreeInitialization,
   pofTreeUpdate,
   eventsInitialization,
-  bufferZoneInitialization
+  bufferZoneInitialization,
+  addStatusInfo
 })(AppDnD)

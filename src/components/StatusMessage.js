@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Paper from 'material-ui/Paper'
-import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ActionHelp from 'material-ui/svg-icons/action/help'
 import Clear from 'material-ui/svg-icons/content/clear'
 
@@ -11,7 +10,7 @@ const style = {
   padding: 10
 }
 
-const Instruction = ({ handleClose, text }) => (
+const Instruction = ({ handleClose, statusMessage }) => (
   <div>
     <Paper style={style} zDepth={1}>
       <Clear
@@ -22,7 +21,8 @@ const Instruction = ({ handleClose, text }) => (
         }}
         onClick={() => handleClose()}
       />
-      {text} ... ja muu tarvittava statustieto
+      {statusMessage.text}<br />
+      {statusMessage.status}
     </Paper>
   </div>
 )
@@ -61,7 +61,7 @@ class StatusMessage extends React.Component {
     const element = this.state.open ? (
       <Instruction
         handleClose={this.handleClose}
-        text={this.props.statusMessage}
+        statusMessage={this.props.statusMessage}
         style={{ marginTop: 30 }}
       />
     ) : (
