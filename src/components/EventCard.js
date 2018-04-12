@@ -14,7 +14,7 @@ import {
 import moment from 'moment-with-locales-es6';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import ActivitySearch from './SearchBar';
+//import ActivitySearch from './SearchBar';
 import Activity from './Activity';
 import EditEvent from './EditEvent';
 import ItemTypes from '../ItemTypes'

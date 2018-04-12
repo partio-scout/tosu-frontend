@@ -8,6 +8,7 @@ import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
 import BufferZone from './BufferZone'
+import 'react-select/dist/react-select.css'
 
 class TreeSearchBar extends React.Component {
   constructor(props) {
