@@ -30,8 +30,8 @@ const Instruction = ({ handleClose, statusMessage }) => (
 const InfoButton = ({ handleOpen }) => (
   <ActionHelp
     style={{
-      width: 72,
-      height: 72,
+      width: 54,
+      height: 54,
       padding: 18,
       color: 'white',
       marginTop: 35

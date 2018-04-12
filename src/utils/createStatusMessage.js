@@ -1,4 +1,3 @@
-import actitivyService from '../services/activities'
 import findActivity from '../functions/findActivity'
 
 const arrayActivityGuidsFromBufferAndEvents = (events, pofTree) => {
@@ -25,7 +24,6 @@ const createStatusMessage = (events, pofTree) => {
   if (selectedActivities.length !== 0) {
     selectedActivities.forEach(activity => {
       if (activity) {
-        console.log(activity)
         if (activity.tags.pakollisuus[0].name === 'Pakollinen') {
           mandatory += 1
         } else {
@@ -34,10 +32,9 @@ const createStatusMessage = (events, pofTree) => {
       }
     })
   }
-  const text = `Pakollisia valittu ${mandatory} ja vapaaehtoisia ${nonMandatory}`
+  const status = {mandatory, nonMandatory}
 
-  console.log('Teksti: ', text)
-  return text
+  return status
 }
 
 export { createStatusMessage }

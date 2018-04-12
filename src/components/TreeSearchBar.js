@@ -21,20 +21,11 @@ class TreeSearchBar extends React.Component {
 
   componentDidUpdate = () => {
     this.props.getHeight()
-
-    if (!this.state.selectedTaskGroup) {
-      this.props.addStatusMessage('Valitse ensin tarppo')
-    }
+    this.updateStatusMessage()
   }
 
   onChange = value => {
     this.setState({ value })
-  }
-
-  filterTreeNode = (input, child) => {
-    return child.props.title.props.name
-      .toLowerCase()
-      .includes(input.toLowerCase())
   }
 
   onChangeChildren = async activityGuid => {
@@ -49,27 +40,6 @@ class TreeSearchBar extends React.Component {
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
 
-  isLeaf = value => {
-    if (!value) {
-      return false
-    }
-    let queues = [...this.props.pofTree.taskgroups]
-    while (queues.length) {
-      // BFS
-      const item = queues.shift()
-      if (item.value.toString() === value.toString()) {
-        if (!item.children) {
-          return true
-        }
-        return false
-      }
-      if (item.children) {
-        queues = queues.concat(item.children)
-      }
-    }
-    return false
-  }
-
   onChangeTaskgroup = async taskgroup => {
     this.setState({ selectedTaskGroup: taskgroup })
     if (taskgroup === null) {
@@ -79,9 +49,8 @@ class TreeSearchBar extends React.Component {
       return
     }
 
-    if(!this.state.selectedTaskGroup){
-      this.props.addStatusMessage("Valitse aktiviteetit!")
-    }
+    this.updateStatusMessage()
+
     this.setState({ treePlaceHolder: 'Lisää aktiviteetti' })
     const selectedGroup = this.props.pofTree.taskgroups.find(
       group => group.guid === taskgroup.value
@@ -118,6 +87,45 @@ class TreeSearchBar extends React.Component {
       }
     }
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+  }
+
+  filterTreeNode = (input, child) => {
+    return child.props.title.props.name
+      .toLowerCase()
+      .includes(input.toLowerCase())
+  }
+  isLeaf = value => {
+    if (!value) {
+      return false
+    }
+    let queues = [...this.props.pofTree.taskgroups]
+    while (queues.length) {
+      // BFS
+      const item = queues.shift()
+      if (item.value.toString() === value.toString()) {
+        if (!item.children) {
+          return true
+        }
+        return false
+      }
+      if (item.children) {
+        queues = queues.concat(item.children)
+      }
+    }
+    return false
+  }
+
+  updateStatusMessage = () => {
+    if (!this.state.selectedTaskGroup) {
+      this.props.addStatusMessage(1)
+    } else if (
+      this.props.buffer.activities &&
+      this.props.buffer.activities.length !== 0
+    ) {
+      this.props.addStatusMessage(2)
+    } else {
+      this.props.addStatusMessage(3)
+    }
   }
 
   render() {
