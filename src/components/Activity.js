@@ -141,7 +141,7 @@ class Activity extends Component {
                     {pofActivity.title}
                     <FlatButton
                       style={{ float: 'right' }}
-                      label="Close"
+                      label="Sulje"
                       primary={true}
                       onClick={this.handleClick}
                     />
