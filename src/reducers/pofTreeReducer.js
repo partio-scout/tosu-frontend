@@ -5,8 +5,10 @@ import React from 'react'
 const reducer = (state = [], action) => {
   switch (action.type) {
     case 'INIT_TREE_POF':
-      //add variables that TreeSearchBar uses
-      return postOrderInit(action.pofActivities)
+      //add variables and sort that TreeSearchBar uses
+      const sortedTree = sortTreeByOrder(action.pofJson)
+      const filledTree = fillWithNeededVariable(sortedTree)
+      return filledTree
     case 'SET_TREE_POF':
       //update data by diasbling existing activities &
       // locking non-mandatory tasks if a tarppo has mandatort tasks left to pick
@@ -18,10 +20,10 @@ const reducer = (state = [], action) => {
 
 export const pofTreeInitialization = () => {
   return async dispatch => {
-    const pofActivities = await pofService.getAllTree()
+    const pofJson = await pofService.getAllTree()
     dispatch({
       type: 'INIT_TREE_POF',
-      pofActivities
+      pofJson
     })
   }
 }
@@ -104,14 +106,13 @@ const disableTasksInFilterIfExists = (root, existingActivityGuids) => {
   }
   return root
 }
-console.log('wop')
 //TreeSearchBar needs specific variables addedto our pofdata
 //which is done here recursively
-const postOrderInit = pof => {
+const fillWithNeededVariable = pof => {
   let root = pof
   if (root === null) return
 
-  root.taskgroups.forEach(postOrderInit)
+  root.taskgroups.forEach(fillWithNeededVariable)
 
   root.key = root.guid
   root.label = root.title
@@ -120,7 +121,7 @@ const postOrderInit = pof => {
   root.children = [].concat(root.taskgroups)
 
   if (root !== undefined && root.tasks !== undefined) {
-    
+
     root.children = root.children.concat(root.tasks.sort(orderSorter))
     root.tasks.forEach(task => {
       task.key = task.guid
@@ -151,6 +152,18 @@ const postOrderInit = pof => {
     })
   }
   return root
+}
+
+const sortTreeByOrder = (root) => {
+  let taskgroup = root
+  if (taskgroup === undefined) {
+    return
+  }
+  taskgroup.taskgroups.forEach(sortTreeByOrder)
+  taskgroup.taskgroup = taskgroup.taskgroups.sort((a, b) => {
+    return a.order - b.order
+  })
+  return taskgroup
 }
 
 //helpers

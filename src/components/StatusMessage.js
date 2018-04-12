@@ -56,7 +56,6 @@ class StatusMessage extends React.Component {
   }
 
   render() {
-    console.log('Status props', this.props)
     const element = this.state.open ? (
       <Instruction
         handleClose={this.handleClose}
