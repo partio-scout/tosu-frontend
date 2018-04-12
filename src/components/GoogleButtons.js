@@ -1,10 +1,9 @@
 import React from 'react'
 import FontAwesome from 'react-fontawesome'
 import { GoogleLogin, GoogleLogout } from 'react-google-login'
-import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Link } from 'react-router-dom'
 import RaisedButton from 'material-ui/RaisedButton'
-import { notify } from '../reducers/notificationReducer'
+
 
 class googleButtons extends React.Component {
     constructor(props) {

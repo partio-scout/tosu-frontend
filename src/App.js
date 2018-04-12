@@ -4,16 +4,16 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import TouchBackend from 'react-dnd-touch-backend'
 import MultiBackend, { TouchTransition } from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-import { GoogleLogin, GoogleLogout } from 'react-google-login'
+//import { GoogleLogin, GoogleLogout } from 'react-google-login'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import Toggle from 'material-ui/Toggle'
+import { Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
 import RaisedButton from 'material-ui/RaisedButton'
 import 'react-sticky-header/styles.css'
 import StickyHeader from 'react-sticky-header'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import NewEvent from './components/NewEvent'
 import Appbar from './components/AppBar'
-import Toggle from 'material-ui/Toggle'
 import ListEvents from './components/ListEvents'
 import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
@@ -22,9 +22,7 @@ import { eventsInitialization } from './reducers/eventReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
-import FontAwesome from 'react-fontawesome'
 import { createStatusMessage } from './utils/createStatusMessage'
-import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
 import GoogleButtons from './components/GoogleButtons'
 
 const styles = {
@@ -103,6 +101,7 @@ class App extends Component {
       <div className="App">
         <Router>
           <MuiThemeProvider>
+            <div>
             <StickyHeader
               // This is the sticky part of the header.
               header={
@@ -165,6 +164,7 @@ class App extends Component {
                 />
                 <NotificationFooter />
               </div>
+            </div>
             </div>
           </MuiThemeProvider>
         </Router>
