@@ -8,16 +8,30 @@ import Clear from 'material-ui/svg-icons/content/clear'
 const style = {
   width: '95%',
   margin: 10,
-  padding: 10
+  padding: 10,
+  fontSize: '0.9rem'
 }
 
+const done = (
+  <Done
+    style={{
+      width: 15,
+      height: 15,
+      padding: 0,
+      marginRight: 5,
+      color: 'green'
+    }}
+  />
+)
 const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   const specialPlanInformation = () => (
     <p style={{ fontSize: '0.8rem' }}>
-      <big>{taskgroup.title}</big>
+      <big>
+        <strong>{taskgroup.title}</strong>
+      </big>
       <br />
       {statusMessage.status.mandatory === taskgroup.tasks.length ? (
-        <Done />
+        done
       ) : null}{' '}
       Valitse pakolliset aktiviteetit {statusMessage.status.mandatory} /{' '}
       {taskgroup.tasks.length}
@@ -27,21 +41,25 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
 
   const basicPlanInformation = () => (
     <p style={{ fontSize: '0.8rem' }}>
-      <big>{taskgroup.title}</big>
+      <big>
+        <strong>{taskgroup.title}</strong>
+      </big>
       <br />
-      {statusMessage.status.firstTask === 1 ? <Done /> : null} Valitse suuntaus<br />
-      {statusMessage.status.mandatory === 5 ? <Done /> : null} Valitse
+      {statusMessage.status.firstTask === 1 ? done : null} Valitse suuntaus<br />
+      {statusMessage.status.mandatory === 5 ? done : null} Valitse
       pakolliset aktiviteetit {statusMessage.status.mandatory}/5<br />
       Valitse johtamis- ja vastuutehtävä<br />
-      {statusMessage.status.leaderTask === 1 ? <Done /> : null}
-      {statusMessage.status.nonMandatory === 4 ? <Done /> : null} Valitse
+      {statusMessage.status.leaderTask === 1 ? done : null}
+      {statusMessage.status.nonMandatory === 4 ? done : null} Valitse
       vapaaehtoiset aktiviteetit {statusMessage.status.nonMandatory}/4<br />
     </p>
   )
 
   const extraPlanInformation = () => (
     <p style={{ fontSize: '0.8rem' }}>
-      <big>{taskgroup.title}</big>
+      <big>
+        <strong>{taskgroup.title}</strong>
+      </big>
       <br />
       Valittuja aktiviteetteja {statusMessage.status.nonMandatory}
       <br />
@@ -53,8 +71,11 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
       <Paper style={style} zDepth={1}>
         <Clear
           style={{
+            width: 20,
+            height: 20,
+            padding: 0,
             marginRight: 10,
-            color: '#ccc',
+            color: '#ccc'
           }}
           onClick={() => handleClose()}
         />
