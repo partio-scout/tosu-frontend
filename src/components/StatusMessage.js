@@ -6,8 +6,8 @@ import Done from 'material-ui/svg-icons/action/done'
 import Clear from 'material-ui/svg-icons/content/clear'
 
 const style = {
-  width: '90%',
-  margin: 20,
+  width: '95%',
+  margin: 10,
   padding: 10
 }
 

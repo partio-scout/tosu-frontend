@@ -21,7 +21,6 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
   let leaderTask = 0
   let nonMandatory = 0
 
-  console.log("Taskgroup", taskgroup)
   if (taskgroup.order === 0) {
     firstTaskgroup = true
   }

@@ -32,7 +32,7 @@ p.eventTimes > span {
 }
 
 #bufferzone {
-  margin: 10px 0 5px;
+  margin: 10px 10px 5px;
   min-height: 60px;
   background-color: aliceblue;
   border-radius: 8px;
@@ -107,13 +107,12 @@ p.eventTimes > span {
   cursor: pointer;
 }
 
-googleuser
-.tree-search-title:hover {
-background:#90CAF9 !important;
+googleuser .tree-search-title:hover {
+  background: #90caf9 !important;
 }
 
-.rc-tree-select-tree-treenode-disabled .tree-search-title{
-  pointer-events:none;
+.rc-tree-select-tree-treenode-disabled .tree-search-title {
+  pointer-events: none;
 }
 
 .customBtn {
@@ -150,4 +149,17 @@ span.label {
   border-radius: 8px;
   display: flex;
   flex-flow: row wrap;
+}
+
+@media only screen and (min-width: 768px) {
+  /* For desktop: */
+  .top-bar-left {
+    float: left;
+    width: 35%;
+  }
+
+  .top-bar-right {
+    float: right;
+    max-width: 65%;
+  }
 }

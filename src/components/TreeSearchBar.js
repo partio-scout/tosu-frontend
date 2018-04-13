@@ -150,7 +150,7 @@ class TreeSearchBar extends React.Component {
 
     const treeSearchBar = () => (
       <TreeSelect
-        style={{ width: 200 }}
+        style={{ width: '100%' }}
         transitionName="rc-tree-select-dropdown-slide-up"
         choiceTransitionName="rc-tree-select-selection__choice-zoom"
         dropdownStyle={{ position: 'absolute', maxHeight: 400, overflow: 'auto' }}
@@ -172,7 +172,7 @@ class TreeSearchBar extends React.Component {
       <div style={{ margin: 20 }}>
         <div style={{ float: 'left', marginRight: 20, marginBottom: 10 }}>
           <Select
-            menuContainerStyle={{ width: 200 }}
+            menuContainerStyle={{ width: '100%' }}
             style={{ width: 200 }}
             name="form-field-name"
             value={this.props.taskgroup}

@@ -64,12 +64,12 @@ export default class AppBar extends React.Component {
 
         {this.props.headerVisible ? (
           <div>
-            <div style={{ float: 'left', width: '40%' }}>
+            <div className="top-bar-left">
               <TreeSearchBar getHeight={this.getHeight} />
               <div style={{ clear: 'both' }} />
               <StatusMessage />
             </div>
-            <div style={{ float: 'right', width: '60%' }}>
+            <div className="top-bar-right">
               <BufferZone />
             </div>
             <div style={{ clear: 'both' }} />
