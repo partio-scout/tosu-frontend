@@ -20,19 +20,19 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
   let mandatory = 0
   let leaderTask = 0
   let nonMandatory = 0
+  let extraTask = 0
 
   if (taskgroup.order === 0) {
     firstTaskgroup = true
   }
 
-  if(taskgroup.order === 7) {
+  if (taskgroup.order === 7) {
     extraTaskgroup = true
   }
 
-  if(taskgroup.order === 8) {
+  if (taskgroup.order === 8) {
     lastTaskgroup = true
   }
-
 
   selectedActivities.forEach(activity => {
     if (activity && taskgroup) {
@@ -50,11 +50,16 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
           activity.order !== 8
         ) {
           mandatory += 1
-        } else if(!activity.tags.pakollisuus[0].name === 'Pakollinen' &&
-        activity.order !== 0 &&
-        activity.order !== 6 &&
-        activity.order !== 8) {
+        }
+        if (
+          !activity.tags.pakollisuus[0].name === 'Pakollinen' &&
+          activity.order !== 0 &&
+          activity.order !== 6 &&
+          activity.order !== 8
+        ) {
           nonMandatory += 1
+        } if ( activity.order !== 8){
+          extraTask += 1
         }
       }
     }
@@ -66,7 +71,8 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     firstTask,
     mandatory,
     nonMandatory,
-    leaderTask
+    leaderTask,
+    extraTask
   }
   return status
 }

@@ -60,7 +60,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
         <strong>{taskgroup.title}</strong>
       </big>
       <br />
-      Valittuja aktiviteetteja {statusMessage.status.nonMandatory}
+      Valittuja aktiviteetteja {statusMessage.status.extraTask}
       <br />
     </p>
   )

@@ -31,7 +31,8 @@ export const addStatusInfo = status => dispatch => {
     firstTask: status.firstTask,
     mandatory: status.mandatory,
     nonMandatory: status.nonMandatory,
-    leaderTask: status.leaderTask
+    leaderTask: status.leaderTask,
+    extraTask: status.extraTask
   }
 
   dispatch({
