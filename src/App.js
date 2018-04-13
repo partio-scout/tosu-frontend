@@ -6,8 +6,6 @@ import MultiBackend, { TouchTransition } from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
 //import { GoogleLogin, GoogleLogout } from 'react-google-login'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import Toggle from 'material-ui/Toggle'
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar'
 import RaisedButton from 'material-ui/RaisedButton'
 import 'react-sticky-header/styles.css'
 import StickyHeader from 'react-sticky-header'
@@ -23,16 +21,7 @@ import { addStatusInfo } from './reducers/statusMessageReducer'
 import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
 import { createStatusMessage } from './utils/createStatusMessage'
-import GoogleButtons from './components/GoogleButtons'
 
-const styles = {
-  toggle: {
-    backgroundColor: '#5DBCD2'
-  },
-  labelStyle: {
-    color: '#FFF'
-  }
-}
 class App extends Component {
   constructor() {
     super()
@@ -97,9 +86,9 @@ class App extends Component {
     }
   }
   render() {
-    const padding = this.state.headerVisible ? 0 : 60
-    return (
-      <div className="App">
+    const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 60
+
+    <div className="App">
         <Router>
           <MuiThemeProvider>
             <div>
@@ -107,30 +96,11 @@ class App extends Component {
                 // This is the sticky part of the header.
                 header={
                   <div>
-                    <div className="Header_root" id="header_root">
-                      <Toolbar style={styles.toggle}>
-                        <ToolbarGroup firstChild={true}>
-                          <Toggle
-                            label="Piilota / näytä aktiviteetit"
-                            labelPosition="right"
-                            style={styles.toggle}
-                            onClick={this.toggleTopBar}
-                            labelStyle={styles.labelStyle}
-                          />
-                        </ToolbarGroup>
-                        <ToolbarGroup>
-                          <GoogleButtons />
-                        </ToolbarGroup>
-                      </Toolbar>
-                    </div>
-
-                    <div>
-                      {this.state.headerVisible ? (
-                        <Appbar setHeaderHeight={this.setHeaderHeight} />
-                      ) : (
-                        this.setHeaderHeight(10)
-                      )}
-                    </div>
+                    <Appbar
+                      setHeaderHeight={this.setHeaderHeight}
+                      toggleTopBar={this.toggleTopBar}
+                      headerVisible={this.state.headerVisible}
+                    />
                   </div>
                 }
               />

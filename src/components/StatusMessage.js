@@ -12,8 +12,6 @@ const style = {
 }
 
 const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
-  console.log('Status message: ', statusMessage)
-
   const specialPlanInformation = () => (
     <p style={{ fontSize: '0.8rem' }}>
       <big>{taskgroup.title}</big>
