@@ -65,6 +65,8 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
     </p>
   )
 
+
+
   return (
     <div>
       <Paper style={style} zDepth={1}>

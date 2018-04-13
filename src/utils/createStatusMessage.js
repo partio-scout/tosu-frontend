@@ -47,16 +47,17 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
           activity.tags.pakollisuus[0].name === 'Pakollinen' &&
           activity.order !== 0 &&
           activity.order !== 6 &&
-          activity.order !== 8
+          taskgroup.order !== 8
         ) {
           mandatory += 1
         }
         if (
-          !activity.tags.pakollisuus[0].name === 'Pakollinen' &&
+          activity.tags.pakollisuus[0].name !== 'Pakollinen' &&
           activity.order !== 0 &&
           activity.order !== 6 &&
-          activity.order !== 8
+          taskgroup.order !== 8
         ) {
+          console.log("Non mandatory")
           nonMandatory += 1
         } if ( activity.order !== 8){
           extraTask += 1
