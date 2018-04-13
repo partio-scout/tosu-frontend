@@ -24,16 +24,17 @@ export const addStatusMessage = id => dispatch => {
 }
 
 export const addStatusInfo = status => dispatch => {
-status = {
-  firstTask: status.firstTask,
-  mandatory: status.mandatory,
-  nonMandatory: status.nonMandatory,
-  leaderTask: status.leaderTask
-}
-  
+  const newStatus = {
+    firstTaskgroup: status.firstTaskgroup,
+    firstTask: status.firstTask,
+    mandatory: status.mandatory,
+    nonMandatory: status.nonMandatory,
+    leaderTask: status.leaderTask
+  }
+
   dispatch({
     type: 'SHOW_STATUS',
-    status
+    status: newStatus
   })
 }
 

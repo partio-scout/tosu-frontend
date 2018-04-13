@@ -12,40 +12,60 @@ const arrayActivityGuidsFromBufferAndEvents = (events, pofTree) => {
   return activities
 }
 
-const createStatusMessage = (events, pofTree, taskgroup) => {
-  const selectedActivities = arrayActivityGuidsFromBufferAndEvents(
-    events,
-    pofTree
-  )
+const composeStatusMessage = (selectedActivities, taskgroup) => {
+  let firstTaskgroup = false
   let firstTask = 0
   let mandatory = 0
   let leaderTask = 0
   let nonMandatory = 0
 
-  if (selectedActivities.length !== 0) {
-    selectedActivities.forEach(activity => {
-      if (activity && taskgroup) {
-        if (activity.parents[2].guid === taskgroup.guid) {
-          console.log(activity)
-          if (activity.order === 0) {
-            firstTask += 1
-          }
-          if (activity.order === 6) {
-            leaderTask += 1
-          }
-          if (
-            activity.tags.pakollisuus[0].name === 'Pakollinen' &&
-            activity.order !== 0 && activity.order !== 6
-          ) {
-            mandatory += 1
-          } else {
-            nonMandatory += 1
-          }
+  if (taskgroup.order === 0) {
+    firstTaskgroup = true
+  }
+
+  selectedActivities.forEach(activity => {
+    if (activity && taskgroup) {
+      if (activity.parents[2].guid === taskgroup.guid) {
+        if (activity.order === 0) {
+          firstTask += 1
+        }
+        if (activity.order === 6) {
+          leaderTask += 1
+        }
+        if (
+          activity.tags.pakollisuus[0].name === 'Pakollinen' &&
+          activity.order !== 0 &&
+          activity.order !== 6
+        ) {
+          mandatory += 1
+        } else {
+          nonMandatory += 1
         }
       }
-    })
+    }
+  })
+  const status = {
+    firstTaskgroup,
+    firstTask,
+    mandatory,
+    nonMandatory,
+    leaderTask
   }
-  const status = { firstTask, mandatory, nonMandatory, leaderTask }
+  return status
+}
+
+const createStatusMessage = (events, pofTree, taskgroup) => {
+  console.log('Create new status message')
+  const selectedActivities = arrayActivityGuidsFromBufferAndEvents(
+    events,
+    pofTree
+  )
+
+  let status = {}
+
+  if (selectedActivities && taskgroup) {
+    status = composeStatusMessage(selectedActivities, taskgroup)
+  }
 
   return status
 }
