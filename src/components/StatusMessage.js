@@ -6,7 +6,7 @@ import Done from 'material-ui/svg-icons/action/done'
 import Clear from 'material-ui/svg-icons/content/clear'
 
 const style = {
-  width: '70%',
+  width: '90%',
   margin: 20,
   padding: 10
 }
@@ -55,7 +55,6 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
           style={{
             marginRight: 10,
             color: '#ccc',
-            marginTop: 35
           }}
           onClick={() => handleClose()}
         />
@@ -81,11 +80,12 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
 const InfoButton = ({ handleOpen }) => (
   <ActionHelp
     style={{
-      width: 54,
-      height: 54,
-      padding: 18,
+      width: 30,
+      height: 30,
+      padding: 0,
       color: 'white',
-      marginTop: 35
+      margin: 10,
+      marginLeft: 20
     }}
     onClick={() => handleOpen()}
   />

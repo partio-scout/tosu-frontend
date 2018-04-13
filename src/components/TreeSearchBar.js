@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom';
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
 import TreeSelect /*, { TreeNode, SHOW_PARENT }*/ from 'rc-tree-select'
@@ -9,7 +10,7 @@ import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
-import BufferZone from './BufferZone'
+
 
 class TreeSearchBar extends React.Component {
   constructor(props) {
@@ -45,7 +46,7 @@ class TreeSearchBar extends React.Component {
       this.setState({ treePlaceHolder: 'Valitse ensin tarppo' })
       this.props.addStatusMessage('Valitse ensin tarppo!')
       this.props.emptyTaskgroup()
-      
+
       return
     }
 
@@ -149,15 +150,16 @@ class TreeSearchBar extends React.Component {
 
     const treeSearchBar = () => (
       <TreeSelect
-        style={{ width: 300 }}
+        style={{ width: 200 }}
         transitionName="rc-tree-select-dropdown-slide-up"
         choiceTransitionName="rc-tree-select-selection__choice-zoom"
-        dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+        dropdownStyle={{ position: 'absolute', maxHeight: 400, overflow: 'auto' }}
         placeholder={this.state.treePlaceHolder}
         searchPlaceholder="Hae aktiviteettia"
         showSearch
         allowClear
         treeLine
+        getPopupContainer={() => ReactDOM.findDOMNode(this).parentNode}
         value={this.state.value}
         treeData={selectedTaskGroupPofData}
         treeNodeFilterProp="label"
@@ -168,7 +170,7 @@ class TreeSearchBar extends React.Component {
 
     return (
       <div style={{ margin: 20 }}>
-        <div style={{ float: 'left', marginRight: 20 }}>
+        <div style={{ float: 'left', marginRight: 20, marginBottom: 10 }}>
           <Select
             menuContainerStyle={{ width: 200 }}
             style={{ width: 200 }}
@@ -183,10 +185,6 @@ class TreeSearchBar extends React.Component {
         </div>
 
         {this.props.taskgroup ? treeSearchBar() : null}
-
-        <div style={{ clear: 'both', paddingTop: 10 }}>
-          <BufferZone />
-        </div>
       </div>
     )
   }

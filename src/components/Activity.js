@@ -14,7 +14,7 @@ import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
 import ActivityPreview from './ActivityPreview'
-import FlatButton from 'material-ui/FlatButton'
+import FlatButton from 'material-ui/FlatButton';
 
 const styles = {
   chip: {
@@ -22,11 +22,10 @@ const styles = {
     // float: 'left',
     // display: 'inline-block',
     backgroundColor: blue200,
-    cursor: 'move',
-    maxHeight: 20
+    cursor: 'move'
   },
   avatar: {
-    size: 10,
+    size: 28,
     color: indigo900,
     backgroundColor: blue200,
     margin: 4
@@ -40,7 +39,7 @@ const styles = {
     cursor: 'move'
   },
   avatarMandatory: {
-    size: 10,
+    size: 28,
     color: indigo900,
     backgroundColor: blue500,
     margin: 4
@@ -166,10 +165,7 @@ class Activity extends Component {
       if (isDragging) {
         return connectDragSource(
           <div>
-            <ActivityPreview
-              pofActivity={pofActivity}
-              mandatory={pofActivity.mandatory}
-            />
+            <ActivityPreview pofActivity={pofActivity} mandatory={pofActivity.mandatory} />
           </div>
         )
       }

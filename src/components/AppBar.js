@@ -4,13 +4,15 @@ import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar'
 import TreeSearchBar from './TreeSearchBar'
 import StatusMessage from './StatusMessage'
 import GoogleButtons from './GoogleButtons'
+import BufferZone from './BufferZone'
 
 const styles = {
   toggle: {
     backgroundColor: '#5DBCD2'
   },
   labelStyle: {
-    color: '#FFF'
+    color: '#FFF',
+    fontSize: '0.8rem'
   }
 }
 
@@ -45,7 +47,9 @@ export default class AppBar extends React.Component {
           <Toolbar style={styles.toggle}>
             <ToolbarGroup firstChild={true}>
               <Toggle
-                label="Piilota / näytä aktiviteetit"
+                label={
+                  this.props.headerVisible ? 'Piilota' : 'Suunnittelunäkymä'
+                }
                 labelPosition="right"
                 style={styles.toggle}
                 onClick={() => this.props.toggleTopBar()}
@@ -60,8 +64,15 @@ export default class AppBar extends React.Component {
 
         {this.props.headerVisible ? (
           <div>
-            <StatusMessage />
-            <TreeSearchBar getHeight={this.getHeight} />
+            <div style={{ float: 'left', width: '40%' }}>
+              <TreeSearchBar getHeight={this.getHeight} />
+              <div style={{ clear: 'both' }} />
+              <StatusMessage />
+            </div>
+            <div style={{ float: 'right', width: '60%' }}>
+              <BufferZone />
+            </div>
+            <div style={{ clear: 'both' }} />
           </div>
         ) : null}
       </div>

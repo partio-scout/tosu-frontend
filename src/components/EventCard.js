@@ -253,7 +253,7 @@ class EventCard extends React.Component {
             actAsExpander
             showExpandableButton
           />
-          {!this.state.expanded ? (
+          {!this.state.expanded && this.props.event.activities.length !== 0 ? (
             <CardMedia>
               <div className="activity-header">{rows}</div>
             </CardMedia>

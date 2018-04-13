@@ -87,8 +87,8 @@ class App extends Component {
   }
   render() {
     const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 60
-
-    <div className="App">
+    return (
+      <div className="App">
         <Router>
           <MuiThemeProvider>
             <div>
