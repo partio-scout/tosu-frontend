@@ -51,8 +51,8 @@ p.eventTimes > span {
   word-wrap: break-all;
   white-space: normal;
   font-weight: bold;
-  line-height: 20px;
-  padding: 5px;
+  line-height: 18px;
+  padding: 3px;
 }
 
 .footerError {
@@ -141,4 +141,13 @@ span.label {
 .icon {
   float: left;
   margin-right: 10px;
+}
+
+.activity-header {
+  margin: 10px 0 5px;
+  min-height: 60px;
+  background-color: aliceblue;
+  border-radius: 8px;
+  display: flex;
+  flex-flow: row wrap;
 }
