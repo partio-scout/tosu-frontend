@@ -1,5 +1,6 @@
 import React from 'react'
 import Select from 'react-select'
+import 'react-select/dist/react-select.css'
 import TreeSelect /*, { TreeNode, SHOW_PARENT }*/ from 'rc-tree-select'
 import 'rc-tree-select/assets/index.css'
 import { connect } from 'react-redux'
@@ -7,14 +8,13 @@ import { notify } from '../reducers/notificationReducer'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
+import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import BufferZone from './BufferZone'
-import 'react-select/dist/react-select.css'
 
 class TreeSearchBar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedTaskGroup: null,
       treePlaceHolder: 'Valitse ensin tarppo'
     }
   }
@@ -41,7 +41,12 @@ class TreeSearchBar extends React.Component {
   }
 
   onChangeTaskgroup = async taskgroup => {
-    this.setState({ selectedTaskGroup: taskgroup })
+    const selectedGroup = this.props.pofTree.taskgroups.find(
+      group => group.guid === taskgroup.value
+    )
+
+    this.props.selectTaskgroup(selectedGroup)
+
     if (taskgroup === null) {
       this.setState({ treePlaceHolder: 'Valitse ensin tarppo' })
       this.props.addStatusMessage('Valitse ensin tarppo!')
@@ -52,9 +57,7 @@ class TreeSearchBar extends React.Component {
     this.updateStatusMessage()
 
     this.setState({ treePlaceHolder: 'Lisää aktiviteetti' })
-    const selectedGroup = this.props.pofTree.taskgroups.find(
-      group => group.guid === taskgroup.value
-    )
+
     const mandatoryActivities = selectedGroup.mandatory_tasks.split(',')
     if (mandatoryActivities[0] !== '') {
       //empty split return and array with only value as ""
@@ -116,7 +119,7 @@ class TreeSearchBar extends React.Component {
   }
 
   updateStatusMessage = () => {
-    if (!this.state.selectedTaskGroup) {
+    if (!this.props.taskgroup) {
       this.props.addStatusMessage(1)
     } else if (
       this.props.buffer.activities &&
@@ -134,12 +137,9 @@ class TreeSearchBar extends React.Component {
       return null
     }
     let selectedTaskGroupPofData = []
-    if (
-      this.state.selectedTaskGroup !== undefined &&
-      this.state.selectedTaskGroup !== null
-    ) {
+    if (this.props.taskgroup !== undefined && this.props.taskgroup !== null) {
       const groupfound = taskGroupTree.find(
-        group => group.guid === this.state.selectedTaskGroup.value
+        group => group.guid === this.props.taskgroup.value
       )
       selectedTaskGroupPofData = selectedTaskGroupPofData.concat(
         groupfound.children
@@ -172,7 +172,7 @@ class TreeSearchBar extends React.Component {
             menuContainerStyle={{ width: 200 }}
             style={{ width: 200 }}
             name="form-field-name"
-            value={this.state.selectedTaskGroup}
+            value={this.props.taskgroup}
             placeholder="Valitse tarppo..."
             onChange={this.onChangeTaskgroup}
             options={taskGroupTree.map(rootgroup => {
@@ -181,7 +181,7 @@ class TreeSearchBar extends React.Component {
           />
         </div>
 
-        {this.state.selectedTaskGroup ? treeSearchBar() : null}
+        {this.props.taskgroup ? treeSearchBar() : null}
 
         <div style={{ clear: 'both', paddingTop: 10 }}>
           <BufferZone />
@@ -195,7 +195,8 @@ const mapStateToProps = state => {
   return {
     events: state.events,
     buffer: state.buffer,
-    pofTree: state.pofTree
+    pofTree: state.pofTree,
+    taskgroup: state.taskgroup
   }
 }
 
@@ -203,5 +204,7 @@ export default connect(mapStateToProps, {
   notify,
   postActivityToBuffer,
   pofTreeUpdate,
-  addStatusMessage
+  addStatusMessage,
+  selectTaskgroup,
+  emptyTaskgroup
 })(TreeSearchBar)

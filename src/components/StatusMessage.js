@@ -10,7 +10,7 @@ const style = {
   padding: 10
 }
 
-const Instruction = ({ handleClose, statusMessage }) => (
+const Instruction = ({ handleClose, statusMessage, taskgroup }) => (
   <div>
     <Paper style={style} zDepth={1}>
       <Clear
@@ -21,7 +21,10 @@ const Instruction = ({ handleClose, statusMessage }) => (
         }}
         onClick={() => handleClose()}
       />
-      {statusMessage.text}<br />
+      {statusMessage.text}
+      <br />
+      Valittu tarppo: {taskgroup ? taskgroup.title : 'ei valittu'}
+      <br />
       {statusMessage.status}
     </Paper>
   </div>
@@ -62,6 +65,7 @@ class StatusMessage extends React.Component {
       <Instruction
         handleClose={this.handleClose}
         statusMessage={this.props.statusMessage}
+        taskgroup={this.props.taskgroup}
         style={{ marginTop: 30 }}
       />
     ) : (
@@ -73,7 +77,8 @@ class StatusMessage extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    statusMessage: state.statusMessage
+    statusMessage: state.statusMessage,
+    taskgroup: state.taskgroup
   }
 }
 

@@ -60,7 +60,8 @@ class App extends Component {
   componentDidUpdate = () => {
   const status = createStatusMessage(
       this.props.events,
-      this.props.pofTree
+      this.props.pofTree,
+      this.props.taskgroup
     )
     this.props.addStatusInfo(status)
   }
@@ -179,7 +180,8 @@ const mapStateToProps = state => {
     notification: state.notification,
     buffer: state.buffer,
     events: state.events,
-    pofTree: state.pofTree
+    pofTree: state.pofTree,
+    taskgroup: state.taskgroup
   }
 }
 

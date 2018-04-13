@@ -7,6 +7,7 @@ import BufferReducer from './reducers/bufferZoneReducer'
 import EventsReducer from './reducers/eventReducer'
 import PlanReducer from './reducers/planReducer'
 import StatusMessageReducer from './reducers/statusMessageReducer'
+import TaskgroupReducer from './reducers/taskgroupReducer'
 
 const reducer = combineReducers({
   notification: notificationReducer,
@@ -14,7 +15,8 @@ const reducer = combineReducers({
   buffer: BufferReducer,
   events: EventsReducer,
   plans: PlanReducer,
-  statusMessage: StatusMessageReducer
+  statusMessage: StatusMessageReducer,
+  taskgroup: TaskgroupReducer
 })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))

@@ -12,7 +12,7 @@ const arrayActivityGuidsFromBufferAndEvents = (events, pofTree) => {
   return activities
 }
 
-const createStatusMessage = (events, pofTree) => {
+const createStatusMessage = (events, pofTree, taskgroup) => {
   const selectedActivities = arrayActivityGuidsFromBufferAndEvents(
     events,
     pofTree
@@ -23,12 +23,14 @@ const createStatusMessage = (events, pofTree) => {
 
   if (selectedActivities.length !== 0) {
     selectedActivities.forEach(activity => {
-      if (activity) {
+      if (activity && taskgroup) {
+        if(activity.parents[2].guid === taskgroup.guid){
         if (activity.tags.pakollisuus[0].name === 'Pakollinen') {
           mandatory += 1
         } else {
           nonMandatory += 1
         }
+      }
       }
     })
   }
