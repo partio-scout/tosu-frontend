@@ -48,8 +48,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
       {statusMessage.status.firstTask === 1 ? done : null} Valitse suuntaus<br />
       {statusMessage.status.mandatory === 5 ? done : null} Valitse
       pakolliset aktiviteetit {statusMessage.status.mandatory}/5<br />
-      Valitse johtamis- ja vastuutehtävä<br />
-      {statusMessage.status.leaderTask === 1 ? done : null}
+      {statusMessage.status.leaderTask === 1 ? done : null} Valitse johtamis- ja vastuutehtävä<br />
       {statusMessage.status.nonMandatory === 4 ? done : null} Valitse
       vapaaehtoiset aktiviteetit {statusMessage.status.nonMandatory}/4<br />
     </p>

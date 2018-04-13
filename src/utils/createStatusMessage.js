@@ -50,7 +50,10 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
           activity.order !== 8
         ) {
           mandatory += 1
-        } else if(activity.order !== 7) {
+        } else if(!activity.tags.pakollisuus[0].name === 'Pakollinen' &&
+        activity.order !== 0 &&
+        activity.order !== 6 &&
+        activity.order !== 8) {
           nonMandatory += 1
         }
       }
