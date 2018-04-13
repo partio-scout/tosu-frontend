@@ -57,9 +57,9 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
           activity.order !== 6 &&
           taskgroup.order !== 8
         ) {
-          console.log("Non mandatory")
           nonMandatory += 1
-        } if ( activity.order !== 8){
+        }
+        if (activity.order !== 8) {
           extraTask += 1
         }
       }
