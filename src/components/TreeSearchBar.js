@@ -41,18 +41,19 @@ class TreeSearchBar extends React.Component {
   }
 
   onChangeTaskgroup = async taskgroup => {
+    if (taskgroup === null) {
+      this.setState({ treePlaceHolder: 'Valitse ensin tarppo' })
+      this.props.addStatusMessage('Valitse ensin tarppo!')
+      this.props.emptyTaskgroup()
+      
+      return
+    }
+
     const selectedGroup = this.props.pofTree.taskgroups.find(
       group => group.guid === taskgroup.value
     )
 
     this.props.selectTaskgroup(selectedGroup)
-
-    if (taskgroup === null) {
-      this.setState({ treePlaceHolder: 'Valitse ensin tarppo' })
-      this.props.addStatusMessage('Valitse ensin tarppo!')
-
-      return
-    }
 
     this.updateStatusMessage()
 

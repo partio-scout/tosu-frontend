@@ -24,12 +24,16 @@ export const addStatusMessage = id => dispatch => {
 }
 
 export const addStatusInfo = status => dispatch => {
-
-  const statusText = `Pakollisia valittu ${status.mandatory} ja vapaaehtoisia ${status.nonMandatory}`
+status = {
+  firstTask: status.firstTask,
+  mandatory: status.mandatory,
+  nonMandatory: status.nonMandatory,
+  leaderTask: status.leaderTask
+}
   
   dispatch({
     type: 'SHOW_STATUS',
-    status: statusText
+    status
   })
 }
 
