@@ -14,7 +14,7 @@ const style = {
 const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   console.log('Status message: ', statusMessage)
 
-  const firstPlanInformation = () => (
+  const specialPlanInformation = () => (
     <p style={{ fontSize: '0.8rem' }}>
       <big>{taskgroup.title}</big>
       <br />
@@ -41,6 +41,15 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
     </p>
   )
 
+  const extraPlanInformation = () => (
+    <p style={{ fontSize: '0.8rem' }}>
+      <big>{taskgroup.title}</big>
+      <br />
+      Valittuja aktiviteetteja {statusMessage.status.nonMandatory}
+      <br />
+    </p>
+  )
+
   return (
     <div>
       <Paper style={style} zDepth={1}>
@@ -53,11 +62,18 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
           onClick={() => handleClose()}
         />
         {statusMessage.text}
-        {taskgroup && statusMessage.status.firstTaskgroup
-          ? firstPlanInformation()
+        {(taskgroup && statusMessage.status.firstTaskgroup) ||
+        (taskgroup && statusMessage.status.lastTaskgroup)
+          ? specialPlanInformation()
           : null}
-        {taskgroup && !statusMessage.status.firstTaskgroup
+        {taskgroup &&
+        !statusMessage.status.firstTaskgroup &&
+        !statusMessage.status.lastTaskgroup &&
+        !statusMessage.status.extraTaskgroup
           ? basicPlanInformation()
+          : null}
+        {taskgroup && statusMessage.status.extraTaskgroup
+          ? extraPlanInformation()
           : null}
       </Paper>
     </div>

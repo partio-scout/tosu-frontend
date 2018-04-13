@@ -14,14 +14,26 @@ const arrayActivityGuidsFromBufferAndEvents = (events, pofTree) => {
 
 const composeStatusMessage = (selectedActivities, taskgroup) => {
   let firstTaskgroup = false
+  let lastTaskgroup = false
+  let extraTaskgroup = false
   let firstTask = 0
   let mandatory = 0
   let leaderTask = 0
   let nonMandatory = 0
 
+  console.log("Taskgroup", taskgroup)
   if (taskgroup.order === 0) {
     firstTaskgroup = true
   }
+
+  if(taskgroup.order === 7) {
+    extraTaskgroup = true
+  }
+
+  if(taskgroup.order === 8) {
+    lastTaskgroup = true
+  }
+
 
   selectedActivities.forEach(activity => {
     if (activity && taskgroup) {
@@ -35,10 +47,11 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
         if (
           activity.tags.pakollisuus[0].name === 'Pakollinen' &&
           activity.order !== 0 &&
-          activity.order !== 6
+          activity.order !== 6 &&
+          activity.order !== 8
         ) {
           mandatory += 1
-        } else {
+        } else if(activity.order !== 7) {
           nonMandatory += 1
         }
       }
@@ -46,6 +59,8 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
   })
   const status = {
     firstTaskgroup,
+    lastTaskgroup,
+    extraTaskgroup,
     firstTask,
     mandatory,
     nonMandatory,
@@ -55,7 +70,6 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
 }
 
 const createStatusMessage = (events, pofTree, taskgroup) => {
-  console.log('Create new status message')
   const selectedActivities = arrayActivityGuidsFromBufferAndEvents(
     events,
     pofTree
