@@ -1,10 +1,20 @@
 import React from 'react'
+import Toggle from 'material-ui/Toggle'
+import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar'
 import TreeSearchBar from './TreeSearchBar'
 import StatusMessage from './StatusMessage'
-/**
- * A simple example of `AppBar` with an icon on the right.
- * By default, the left icon is a navigation-menu.
- */
+import GoogleButtons from './GoogleButtons'
+import BufferZone from './BufferZone'
+
+const styles = {
+  toggle: {
+    backgroundColor: '#5DBCD2'
+  },
+  labelStyle: {
+    color: '#FFF',
+    fontSize: '0.8rem'
+  }
+}
 
 export default class AppBar extends React.Component {
   constructor(props) {
@@ -33,10 +43,38 @@ export default class AppBar extends React.Component {
         id="top-bar-header"
         style={{ background: '#5DBCD2', padding: 1 }}
       >
+        <div className="Header_root" id="header_root">
+          <Toolbar style={styles.toggle}>
+            <ToolbarGroup firstChild={true}>
+              <Toggle
+                label={
+                  this.props.headerVisible ? 'Piilota' : 'Suunnittelunäkymä'
+                }
+                labelPosition="right"
+                style={styles.toggle}
+                onClick={() => this.props.toggleTopBar()}
+                labelStyle={styles.labelStyle}
+              />
+            </ToolbarGroup>
+            <ToolbarGroup>
+              <GoogleButtons />
+            </ToolbarGroup>
+          </Toolbar>
+        </div>
 
-      <StatusMessage />
-
-        <TreeSearchBar getHeight={this.getHeight} />
+        {this.props.headerVisible ? (
+          <div>
+            <div className="top-bar-left">
+              <TreeSearchBar getHeight={this.getHeight} />
+              <div style={{ clear: 'both' }} />
+              <StatusMessage />
+            </div>
+            <div className="top-bar-right">
+              <BufferZone />
+            </div>
+            <div style={{ clear: 'both' }} />
+          </div>
+        ) : null}
       </div>
     )
   }

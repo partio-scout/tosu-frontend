@@ -6,8 +6,6 @@ import MultiBackend, { TouchTransition } from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
 //import { GoogleLogin, GoogleLogout } from 'react-google-login'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import Toggle from 'material-ui/Toggle'
-import { Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
 import RaisedButton from 'material-ui/RaisedButton'
 import 'react-sticky-header/styles.css'
 import StickyHeader from 'react-sticky-header'
@@ -23,16 +21,7 @@ import { addStatusInfo } from './reducers/statusMessageReducer'
 import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
 import { createStatusMessage } from './utils/createStatusMessage'
-import GoogleButtons from './components/GoogleButtons'
 
-const styles = {
-  toggle: {
-    backgroundColor: '#5DBCD2'
-  },
-  labelStyle: {
-    color: '#FFF'
-  }
-}
 class App extends Component {
   constructor() {
     super()
@@ -58,9 +47,10 @@ class App extends Component {
   }
 
   componentDidUpdate = () => {
-  const status = createStatusMessage(
+    const status = createStatusMessage(
       this.props.events,
-      this.props.pofTree
+      this.props.pofTree,
+      this.props.taskgroup
     )
     this.props.addStatusInfo(status)
   }
@@ -96,90 +86,69 @@ class App extends Component {
     }
   }
   render() {
-    const padding = this.state.headerVisible ? 0 : 60
+    const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 60
     return (
       <div className="App">
         <Router>
           <MuiThemeProvider>
             <div>
-            <StickyHeader
-              // This is the sticky part of the header.
-              header={
-                <div className="Header_root" id="header_root">
-                  <Toolbar style={styles.toggle}>
-                    <ToolbarGroup firstChild={true}>
-                      <Toggle
-                        label="Piilota / näytä aktiviteetit"
-                        labelPosition="right"
-                        style={styles.toggle}
-                        onClick={this.toggleTopBar}
-                        labelStyle={styles.labelStyle}
-                      />
-                    </ToolbarGroup>
-                    <ToolbarGroup>
-                      <GoogleButtons />
-                    </ToolbarGroup>
-                  </Toolbar>
-                </div>
-              }
-            >
-            </StickyHeader>
-            <section />
-            <div>
-              {this.state.headerVisible ?
-                <Appbar
-                  setHeaderHeight={this.setHeaderHeight}
-                />
-                : this.setHeaderHeight(10)
+              <StickyHeader
+                // This is the sticky part of the header.
+                header={
+                  <div>
+                    <Appbar
+                      setHeaderHeight={this.setHeaderHeight}
+                      toggleTopBar={this.toggleTopBar}
+                      headerVisible={this.state.headerVisible}
+                    />
+                  </div>
+                }
+              />
+              <section />
 
-              }
-            </div>
-            <div
-              id="container"
-              style={{ paddingTop: padding }}
-            >
-              <div className="content">
-                <Link to="/">
-                  <RaisedButton
-                    label="Lista tapahtumista"
-                    onClick={this.openTopBar}
-                  />
-                </Link>
-                &nbsp;
+              <div id="container" style={{ paddingTop: padding }}>
+                <div className="content">
+                  <Link to="/">
+                    <RaisedButton
+                      label="Lista tapahtumista"
+                      onClick={this.openTopBar}
+                    />
+                  </Link>
+                  &nbsp;
                   <Link to="/new-event">
-                  <RaisedButton
-                    label="Uusi tapahtuma"
-                    onClick={this.hideTopBar}
-                  />
-                </Link>
-                &nbsp;
+                    <RaisedButton
+                      label="Uusi tapahtuma"
+                      onClick={this.hideTopBar}
+                    />
+                  </Link>
+                  &nbsp;
                   <Route exact path="/" render={() => <ListEvents />} />
-                <Route
-                  path="/new-event"
-                  render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
-                />
-                <Route
-                  path='/user-info'
-                  render={() => <UserInfo toggleTopBar={this.toggleTopBar} />}
-                />
-                <NotificationFooter />
+                  <Route
+                    path="/new-event"
+                    render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
+                  />
+                  <Route
+                    path="/user-info"
+                    render={() => <UserInfo toggleTopBar={this.toggleTopBar} />}
+                  />
+                  <NotificationFooter />
+                </div>
               </div>
-            </div>
             </div>
           </MuiThemeProvider>
         </Router>
-      </div >
+      </div>
     )
   }
 }
-
 
 const mapStateToProps = state => {
   return {
     notification: state.notification,
     buffer: state.buffer,
     events: state.events,
-    pofTree: state.pofTree
+    pofTree: state.pofTree,
+    taskgroup: state.taskgroup
   }
 }
 

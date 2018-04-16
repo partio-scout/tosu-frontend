@@ -1,33 +1,53 @@
 import { connect } from 'react-redux'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import React from 'react';
-import { DropTarget } from 'react-dnd';
+import React from 'react'
+import { DropTarget } from 'react-dnd'
 import { notify } from '../reducers/notificationReducer'
 import PropTypes from 'prop-types'
 import {
   Card,
   CardActions,
   CardHeader,
+  CardMedia,
   CardTitle,
   CardText
-} from 'material-ui/Card';
-import moment from 'moment-with-locales-es6';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-//import ActivitySearch from './SearchBar';
-import Activity from './Activity';
-import EditEvent from './EditEvent';
+} from 'material-ui/Card'
+import moment from 'moment-with-locales-es6'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import Badge from 'material-ui/Badge'
+import Activity from './Activity'
+import EditEvent from './EditEvent'
 import ItemTypes from '../ItemTypes'
 import activityService from '../services/activities'
-import { editEvent, deleteActivityFromEvent, deleteEvent, deleteEventGroup, deleteActivityFromEventOnlyLocally, addActivityToEventOnlyLocally } from '../reducers/eventReducer'
-import { deleteActivityFromBufferOnlyLocally, bufferZoneInitialization } from '../reducers/bufferZoneReducer'
-import { green100, white } from 'material-ui/styles/colors';
+import {
+  editEvent,
+  deleteActivityFromEvent,
+  deleteEvent,
+  deleteEventGroup,
+  deleteActivityFromEventOnlyLocally,
+  addActivityToEventOnlyLocally
+} from '../reducers/eventReducer'
+import {
+  deleteActivityFromBufferOnlyLocally,
+  bufferZoneInitialization
+} from '../reducers/bufferZoneReducer'
+import { green100, white } from 'material-ui/styles/colors'
 import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
 
-const moveActivityFromBuffer = async (props, activityId, parentId, targetId) => {
+const moveActivityFromBuffer = async (
+  props,
+  activityId,
+  parentId,
+  targetId
+) => {
   try {
-    const res = await activityService.moveActivityFromBufferZoneToEvent(activityId, parentId, targetId)
+    const res = await activityService.moveActivityFromBufferZoneToEvent(
+      activityId,
+      parentId,
+      targetId
+    )
     await props.addActivityToEventOnlyLocally(targetId, res)
     await props.deleteActivityFromBufferOnlyLocally(activityId)
     props.notify('Aktiviteetti siirretty!', 'success')
@@ -40,7 +60,11 @@ const moveActivityFromBuffer = async (props, activityId, parentId, targetId) => 
 
 const moveActivityFromEvent = async (props, activityId, parentId, targetId) => {
   try {
-    const res = await activityService.moveActivityFromEventToEvent(activityId, parentId, targetId)
+    const res = await activityService.moveActivityFromEventToEvent(
+      activityId,
+      parentId,
+      targetId
+    )
     props.addActivityToEventOnlyLocally(targetId, res)
     props.deleteActivityFromEventOnlyLocally(activityId)
     props.notify('Aktiviteetti siirretty!', 'success')
@@ -81,32 +105,31 @@ class EventCard extends React.Component {
     connectDropTarget: PropTypes.func.isRequired
   }
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       expanded: false,
       open: false
-    };
+    }
   }
 
-
-
   handleExpandChange = expanded => {
-    this.setState({ expanded });
-  };
+    this.setState({ expanded })
+  }
 
   handleReduce = () => {
-    this.setState({ expanded: false });
-  };
+    this.setState({ expanded: false })
+  }
 
-  deleteActivity = async (activity) => {
+  deleteActivity = async activity => {
     try {
       await this.props.deleteActivityFromEvent(activity.id)
       this.props.pofTreeUpdate(this.props.buffer, this.props.events)
       this.props.notify('Aktiviteetti poistettu!', 'success')
-
     } catch (exception) {
       console.log(exception)
-      this.props.notify('Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!')
+      this.props.notify(
+        'Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!'
+      )
     }
   }
 
@@ -115,63 +138,72 @@ class EventCard extends React.Component {
       await this.props.deleteEvent(this.props.event.id)
       await this.props.bufferZoneInitialization()
       this.props.notify('Tapahtuma poistettu!', 'success')
-      this.handleClose();
+      this.handleClose()
     } catch (exception) {
-      console.error('Error in deleting event:', exception);
+      console.error('Error in deleting event:', exception)
       this.props.notify('Tapahtuman poistamisessa tuli virhe. Yritä uudestaan!')
     }
-  };
+  }
 
   deleteEventGroup = async () => {
     try {
-      await this.props.deleteEventGroup(this.props.event.groupId);
+      await this.props.deleteEventGroup(this.props.event.groupId)
       this.props.notify('Toistuva tapahtuma poistettu!', 'success')
       await this.props.bufferZoneInitialization()
-      this.handleClose();
+      this.handleClose()
     } catch (exception) {
-      console.error('Error in deleting event:', exception);
-      this.props.notify('Toistuvan tapahtuman poistamisessa tuli virhe. Yritä uudestaan!')
+      console.error('Error in deleting event:', exception)
+      this.props.notify(
+        'Toistuvan tapahtuman poistamisessa tuli virhe. Yritä uudestaan!'
+      )
     }
-  };
+  }
 
   handleDelete = () => {
-    this.handleOpen();
-  };
+    this.handleOpen()
+  }
 
   handleOpen = () => {
-    this.setState({ open: true });
-  };
+    this.setState({ open: true })
+  }
 
   handleClose = () => {
-    this.setState({ open: false });
-  };
+    this.setState({ open: false })
+  }
 
   render() {
     let rows
     if (this.props.event.activities) {
       rows = this.props.event.activities.map(activity => {
-        const pofActivity = convertToSimpleActivity(findActivity(activity, this.props.pofTree))
-        return <Activity
-          bufferzone={false}
-          parentId={this.props.event.id}
-          parent={this} key={activity.id}
-          pofActivity={pofActivity}
-          activity={activity}
-          deleteActivity={this.deleteActivity}
-        />
+        const pofActivity = convertToSimpleActivity(
+          findActivity(activity, this.props.pofTree)
+        )
+
+        return (
+          <Activity
+            bufferzone={false}
+            parentId={this.props.event.id}
+            parent={this}
+            key={activity.id}
+            pofActivity={pofActivity}
+            activity={activity}
+            deleteActivity={this.deleteActivity}
+          />
+        )
       })
     }
-    const { event } = this.props;
 
-    moment.locale('fi');
-    const title = this.state.expanded ? '' : event.title;
+    const { event } = this.props
+
+    moment.locale('fi')
+    const title = this.state.expanded ? '' : event.title
     const subtitle = this.state.expanded
       ? ''
       : `${moment(event.startDate, 'YYYY-MM-DD')
-        .locale('fi')
-        .format('ddd D. MMMM YYYY')} ${event.startTime}`;
+          .locale('fi')
+          .format('ddd D. MMMM YYYY')} ${event.startTime}`
 
-    let actions = [];
+    let actions = []
     if (event.groupId) {
       actions = [
         <FlatButton label="Peruuta" primary onClick={this.handleClose} />,
@@ -186,7 +218,7 @@ class EventCard extends React.Component {
           primary
           onClick={this.deleteEventGroup}
         />
-      ];
+      ]
     } else {
       actions = [
         <FlatButton label="Peruuta" primary onClick={this.handleClose} />,
@@ -195,7 +227,7 @@ class EventCard extends React.Component {
           primary
           onClick={this.deleteEvent}
         />
-      ];
+      ]
     }
     let patternClass
     const { connectDropTarget, canDrop, isOver } = this.props
@@ -206,6 +238,7 @@ class EventCard extends React.Component {
     if (isOver) {
       patternClass = 'pattern'
     }
+
     return connectDropTarget(
       <div>
         <Card
@@ -220,6 +253,12 @@ class EventCard extends React.Component {
             actAsExpander
             showExpandableButton
           />
+          {!this.state.expanded && this.props.event.activities.length !== 0 ? (
+            <CardMedia>
+              <div className="activity-header">{rows}</div>
+            </CardMedia>
+          ) : null}
+
           <CardTitle title={event.title} subtitle="Lokaatio?" expandable />
           <CardText expandable>
             <EditEvent
@@ -246,7 +285,8 @@ class EventCard extends React.Component {
 
             <p className="eventTimes">
               <span>{event.type} alkaa:</span>{' '}
-              {moment(event.startDate).format('D.M.YYYY')} kello {event.startTime}
+              {moment(event.startDate).format('D.M.YYYY')} kello{' '}
+              {event.startTime}
             </p>
             <p className="eventTimes">
               <span>{event.type} päättyy:</span>{' '}
@@ -267,11 +307,11 @@ class EventCard extends React.Component {
           </CardText>
         </Card>
       </div>
-    );
+    )
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     events: state.events,
     buffer: state.buffer,
@@ -279,21 +319,21 @@ const mapStateToProps = (state) => {
   }
 }
 
-const DroppableEventCard = DropTarget(ItemTypes.ACTIVITY, EventCardTarget, collect)(EventCard)
+const DroppableEventCard = DropTarget(
+  ItemTypes.ACTIVITY,
+  EventCardTarget,
+  collect
+)(EventCard)
 
-export default connect(
-  mapStateToProps,
-  {
-    notify,
-    editEvent,
-    deleteEvent,
-    deleteActivityFromEvent,
-    bufferZoneInitialization,
-    deleteEventGroup,
-    addActivityToEventOnlyLocally,
-    deleteActivityFromEventOnlyLocally,
-    deleteActivityFromBufferOnlyLocally,
-    pofTreeUpdate
-  }
-
-)(DroppableEventCard)
+export default connect(mapStateToProps, {
+  notify,
+  editEvent,
+  deleteEvent,
+  deleteActivityFromEvent,
+  bufferZoneInitialization,
+  deleteEventGroup,
+  addActivityToEventOnlyLocally,
+  deleteActivityFromEventOnlyLocally,
+  deleteActivityFromBufferOnlyLocally,
+  pofTreeUpdate
+})(DroppableEventCard)

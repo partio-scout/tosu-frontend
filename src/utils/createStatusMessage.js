@@ -12,27 +12,83 @@ const arrayActivityGuidsFromBufferAndEvents = (events, pofTree) => {
   return activities
 }
 
-const createStatusMessage = (events, pofTree) => {
+const composeStatusMessage = (selectedActivities, taskgroup) => {
+  let firstTaskgroup = false
+  let lastTaskgroup = false
+  let extraTaskgroup = false
+  let firstTask = 0
+  let mandatory = 0
+  let leaderTask = 0
+  let nonMandatory = 0
+  let extraTask = 0
+
+  if (taskgroup.order === 0) {
+    firstTaskgroup = true
+  }
+
+  if (taskgroup.order === 7) {
+    extraTaskgroup = true
+  }
+
+  if (taskgroup.order === 8) {
+    lastTaskgroup = true
+  }
+
+  selectedActivities.forEach(activity => {
+    if (activity && taskgroup) {
+      if (activity.parents[2].guid === taskgroup.guid) {
+        if (activity.order === 0) {
+          firstTask += 1
+        }
+        if (activity.order === 6) {
+          leaderTask += 1
+        }
+        if (
+          activity.tags.pakollisuus[0].name === 'Pakollinen' &&
+          activity.order !== 0 &&
+          activity.order !== 6 &&
+          taskgroup.order !== 8
+        ) {
+          mandatory += 1
+        }
+        if (
+          activity.tags.pakollisuus[0].name !== 'Pakollinen' &&
+          activity.order !== 0 &&
+          activity.order !== 6 &&
+          taskgroup.order !== 8
+        ) {
+          nonMandatory += 1
+        }
+        if (activity.order !== 8) {
+          extraTask += 1
+        }
+      }
+    }
+  })
+  const status = {
+    firstTaskgroup,
+    lastTaskgroup,
+    extraTaskgroup,
+    firstTask,
+    mandatory,
+    nonMandatory,
+    leaderTask,
+    extraTask
+  }
+  return status
+}
+
+const createStatusMessage = (events, pofTree, taskgroup) => {
   const selectedActivities = arrayActivityGuidsFromBufferAndEvents(
     events,
     pofTree
   )
 
-  let mandatory = 0
-  let nonMandatory = 0
+  let status = {}
 
-  if (selectedActivities.length !== 0) {
-    selectedActivities.forEach(activity => {
-      if (activity) {
-        if (activity.tags.pakollisuus[0].name === 'Pakollinen') {
-          mandatory += 1
-        } else {
-          nonMandatory += 1
-        }
-      }
-    })
+  if (selectedActivities && taskgroup) {
+    status = composeStatusMessage(selectedActivities, taskgroup)
   }
-  const status = {mandatory, nonMandatory}
 
   return status
 }
