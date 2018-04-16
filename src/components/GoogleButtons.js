@@ -3,18 +3,21 @@ import FontAwesome from 'react-fontawesome'
 import { GoogleLogin, GoogleLogout } from 'react-google-login'
 import { BrowserRouter as Link } from 'react-router-dom'
 import RaisedButton from 'material-ui/RaisedButton'
+import { getGoogleToken, setGoogleToken, removeGoogleToken } from '../services/googleToken'
+
+
 class googleButtons extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            isLoggedIn: window.localStorage.getItem('googleToken') !== null
+            isLoggedIn: getGoogleToken().headers !== null
         }
-        console.log(window.localStorage.getItem('googleToken'))
+        console.log(getGoogleToken)
     }
 
      forceMyOwnLogout = (response) => {
          console.log('forcelogout')
-         window.localStorage.removeItem('googleToken')
+         removeGoogleToken()
          this.setState({ isLoggedIn: false })
        /* if (window.gapi) {
             const auth2 = window.gapi.auth2.getAuthInstance()
@@ -29,11 +32,8 @@ class googleButtons extends React.Component {
     googleLogin = (response) => {
         if (this.state.isLoggedIn === false) {
             this.setState({ isLoggedIn: true })
-            
+            setGoogleToken(response)
         }
-        window.localStorage.setItem('googleToken', response)
-        //window.localStorage.setItem('', '')
-        console.log(response)
         console.log('user signed in.')
     }
 
