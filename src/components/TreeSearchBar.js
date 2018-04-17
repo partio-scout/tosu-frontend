@@ -179,7 +179,7 @@ class TreeSearchBar extends React.Component {
             placeholder="Valitse tarppo..."
             onChange={this.onChangeTaskgroup}
             options={taskGroupTree.map(rootgroup => {
-              return { value: rootgroup.guid, label: rootgroup.title }
+              return { value: rootgroup.guid, label: rootgroup.title.props.name }
             })}
           />
         </div>
