@@ -18,7 +18,7 @@ const done = (
       width: 15,
       height: 15,
       padding: 0,
-      marginRight: 5,
+      marginLeft: 5,
       color: 'green'
     }}
   />
@@ -27,32 +27,78 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   const specialPlanInformation = () => (
     <p style={{ fontSize: '0.8rem' }}>
       <big>
-        <strong>{taskgroup.title}</strong>
+        <strong>
+          {taskgroup.title}{' '}
+          {statusMessage.status.taskgroupDone ? <span>(valmis)</span> : null}
+        </strong>
       </big>
       <br />
-      {statusMessage.status.mandatory === taskgroup.tasks.length ? (
-        done
-      ) : null}{' '}
+      {statusMessage.status.mandatory === taskgroup.tasks.length
+        ? done
+        : null}{' '}
       Valitse pakolliset aktiviteetit {statusMessage.status.mandatory} /{' '}
       {taskgroup.tasks.length}
       <br />
     </p>
   )
 
-  const basicPlanInformation = () => (
-    <p style={{ fontSize: '0.8rem' }}>
-      <big>
-        <strong>{taskgroup.title}</strong>
-      </big>
-      <br />
-      {statusMessage.status.firstTask === 1 ? done : null} Valitse suuntaus<br />
-      {statusMessage.status.mandatory === 5 ? done : null} Valitse
-      pakolliset aktiviteetit {statusMessage.status.mandatory}/5<br />
-      {statusMessage.status.leaderTask === 1 ? done : null} Valitse johtamis- ja vastuutehtävä<br />
-      {statusMessage.status.nonMandatory === 4 ? done : null} Valitse
-      vapaaehtoiset aktiviteetit {statusMessage.status.nonMandatory}/4<br />
-    </p>
-  )
+  const basicPlanInformation = () => {
+    return (
+      <div style={{ fontSize: '0.8rem', lineHeight: 1.6 }}>
+        <p style={{ marginBottom: 0 }}>
+          <big>
+            <strong>
+              {taskgroup.title}{' '}
+              {statusMessage.status.taskgroupDone ? (
+                <span>(valmis)</span>
+              ) : null}
+            </strong>
+          </big>
+          <br />
+          Valitse suuntaus {statusMessage.status.firstTask === 1 ? done : null}
+          <br />
+          Valitse pakolliset aktiviteetit {
+            statusMessage.status.mandatory
+          }/5 {statusMessage.status.mandatory === 5 ? done : null}
+          <br />
+          Valitse johtamis- ja vastuutehtävä{' '}
+          {statusMessage.status.leaderTask === 1 ? done : null}
+          <br />
+          Valitse vapaaehtoiset aktiviteetit, valittu{' '}
+          {statusMessage.status.nonMandatory
+            ? statusMessage.status.nonMandatory.total
+            : 0}{' '}
+          {statusMessage.status.nonMandatory.done ? done : null}
+        </p>
+        <p style={{ margin: 0, marginLeft: 10 }}>
+          Suhde itseen, valittu {statusMessage.status.nonMandatory.suhdeItseen}
+          {statusMessage.status.nonMandatory.suhdeItseen >= 1 ? done : null}
+          <br />
+          Suhde toiseen, valittu{' '}
+          {statusMessage.status.nonMandatory.suhdeToiseen}
+          {statusMessage.status.nonMandatory.suhdeToiseen >= 1 ? done : null}
+          <br />
+          Suhde yhteiskuntaan, valittu{' '}
+          {statusMessage.status.nonMandatory.suhdeYhteiskuntaan}
+          {statusMessage.status.nonMandatory.suhdeYhteiskuntaan >= 1
+            ? done
+            : null}
+          <br />
+          Suhde ympäristöön, valittu{' '}
+          {statusMessage.status.nonMandatory.suhdeYmparistoon}
+          {statusMessage.status.nonMandatory.suhdeYmparistoon >= 1
+            ? done
+            : null}
+        </p>
+        <p style={{ marginTop: 0 }}>
+          Valitse majakkavaihtoehto{statusMessage.status.nonMandatory
+            .majakka === 1
+            ? done
+            : null}
+        </p>
+      </div>
+    )
+  }
 
   const extraPlanInformation = () => (
     <p style={{ fontSize: '0.8rem' }}>
@@ -65,8 +111,23 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
     </p>
   )
 
-
-
+  const statusbox = () => (
+    <div>
+      {(taskgroup && statusMessage.status.firstTaskgroup) ||
+      (taskgroup && statusMessage.status.lastTaskgroup)
+        ? specialPlanInformation()
+        : null}
+      {taskgroup &&
+      !statusMessage.status.firstTaskgroup &&
+      !statusMessage.status.lastTaskgroup &&
+      !statusMessage.status.extraTaskgroup
+        ? basicPlanInformation()
+        : null}
+      {taskgroup && statusMessage.status.extraTaskgroup
+        ? extraPlanInformation()
+        : null}
+    </div>
+  )
   return (
     <div>
       <Paper style={style} zDepth={1}>
@@ -81,18 +142,8 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
           onClick={() => handleClose()}
         />
         {statusMessage.text}
-        {(taskgroup && statusMessage.status.firstTaskgroup) ||
-        (taskgroup && statusMessage.status.lastTaskgroup)
-          ? specialPlanInformation()
-          : null}
-        {taskgroup &&
-        !statusMessage.status.firstTaskgroup &&
-        !statusMessage.status.lastTaskgroup &&
-        !statusMessage.status.extraTaskgroup
-          ? basicPlanInformation()
-          : null}
-        {taskgroup && statusMessage.status.extraTaskgroup
-          ? extraPlanInformation()
+        {statusMessage.status && statusMessage.status.nonMandatory
+          ? statusbox()
           : null}
       </Paper>
     </div>
@@ -116,30 +167,19 @@ const InfoButton = ({ handleOpen }) => (
 class StatusMessage extends React.Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      open: true
-    }
-  }
-
-  handleOpen = () => {
-    this.setState({ open: true })
-  }
-
-  handleClose = () => {
-    this.setState({ open: false })
+    this.state = {}
   }
 
   render() {
-    const element = this.state.open ? (
+    const element = this.props.showStatusBox ? (
       <Instruction
-        handleClose={this.handleClose}
+        handleClose={this.props.handleClose}
         statusMessage={this.props.statusMessage}
         taskgroup={this.props.taskgroup}
         style={{ marginTop: 30 }}
       />
     ) : (
-      <InfoButton handleOpen={this.handleOpen} />
+      <InfoButton handleOpen={this.props.handleOpen} />
     )
     return element
   }

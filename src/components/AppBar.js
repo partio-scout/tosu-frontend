@@ -19,7 +19,9 @@ const styles = {
 export default class AppBar extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      showStatusBox: true
+    }
   }
 
   componentDidMount = () => {
@@ -36,6 +38,15 @@ export default class AppBar extends React.Component {
 
     this.props.setHeaderHeight(bufferZoneHeight)
   }
+
+  handleOpen = () => {
+    this.setState({ showStatusBox: true })
+  }
+
+  handleClose = () => {
+    this.setState({ showStatusBox: false })
+  }
+
   render() {
     return (
       <div
@@ -66,14 +77,39 @@ export default class AppBar extends React.Component {
 
         {this.props.headerVisible ? (
           <div>
-            <div className="top-bar-left">
-              <TreeSearchBar getHeight={this.getHeight} />
-              <div style={{ clear: 'both' }} />
-              <StatusMessage />
-            </div>
-            <div className="top-bar-right">
-              <BufferZone />
-            </div>
+            {this.state.showStatusBox ? (
+              <div className="top-bar-left" style={{ width: '35%' }}>
+                <StatusMessage
+                  showStatusBox={this.state.showStatusBox}
+                  handleClose={this.handleClose}
+                  handleOpen={this.handleOpen}
+                />
+              </div>
+            ) : (
+              <div className="top-bar-left" style={{ width: '5%' }}>
+                <StatusMessage
+                  showStatusBox={this.state.showStatusBox}
+                  handleClose={this.handleClose}
+                  handleOpen={this.handleOpen}
+                />
+              </div>
+            )}
+
+            {this.state.showStatusBox ? (
+              <div className="top-bar-right" style={{ width: '65%' }}>
+                {' '}
+                <TreeSearchBar getHeight={this.getHeight} />
+                <div style={{ clear: 'both' }} />
+                <BufferZone />
+              </div>
+            ) : (
+              <div className="top-bar-right" style={{ width: '95%' }}>
+                {' '}
+                <TreeSearchBar getHeight={this.getHeight} />
+                <div style={{ clear: 'both' }} />
+                <BufferZone />
+              </div>
+            )}
             <div style={{ clear: 'both' }} />
           </div>
         ) : null}

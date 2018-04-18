@@ -156,11 +156,9 @@ span.label {
   /* For desktop: */
   .top-bar-left {
     float: left;
-    width: 35%;
   }
 
   .top-bar-right {
     float: right;
-    max-width: 65%;
   }
 }

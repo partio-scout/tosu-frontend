@@ -25,6 +25,7 @@ export const addStatusMessage = id => dispatch => {
 
 export const addStatusInfo = status => dispatch => {
   const newStatus = {
+    taskgroupDone: status.taskgroupDone,
     firstTaskgroup: status.firstTaskgroup,
     lastTaskgroup: status.lastTaskgroup,
     extraTaskgroup: status.extraTaskgroup,

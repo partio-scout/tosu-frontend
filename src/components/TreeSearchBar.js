@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
 import TreeSelect /*, { TreeNode, SHOW_PARENT }*/ from 'rc-tree-select'
@@ -10,7 +10,6 @@ import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
-
 
 class TreeSearchBar extends React.Component {
   constructor(props) {
@@ -153,7 +152,11 @@ class TreeSearchBar extends React.Component {
         style={{ width: '100%' }}
         transitionName="rc-tree-select-dropdown-slide-up"
         choiceTransitionName="rc-tree-select-selection__choice-zoom"
-        dropdownStyle={{ position: 'absolute', maxHeight: 400, overflow: 'auto' }}
+        dropdownStyle={{
+          position: 'absolute',
+          maxHeight: 400,
+          overflow: 'auto'
+        }}
         placeholder={this.state.treePlaceHolder}
         searchPlaceholder="Hae aktiviteettia"
         showSearch
@@ -179,12 +182,16 @@ class TreeSearchBar extends React.Component {
             placeholder="Valitse tarppo..."
             onChange={this.onChangeTaskgroup}
             options={taskGroupTree.map(rootgroup => {
-              return { value: rootgroup.guid, label: rootgroup.title.props.name }
+              return {
+                value: rootgroup.guid,
+                label: rootgroup.title.props.name
+              }
             })}
           />
         </div>
-
-        {this.props.taskgroup ? treeSearchBar() : null}
+        <div style={{ float: 'right', width: '60%' }}>
+          {this.props.taskgroup ? treeSearchBar() : null}
+        </div>
       </div>
     )
   }
