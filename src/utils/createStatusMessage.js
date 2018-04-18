@@ -24,6 +24,7 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     suhdeToiseen: 0,
     suhdeYhteiskuntaan: 0,
     suhdeYmparistoon: 0,
+    majakka: 0,
     total: 0,
     done: false
   }
@@ -74,6 +75,11 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
             nonMandatory.suhdeYhteiskuntaan += 1
           }
           nonMandatory.total += 1
+
+          if (activity.label.match(/Majakkavaihtoehto/)) {
+            nonMandatory.total -= 1
+            nonMandatory.majakka += 1
+          }
         }
         if (activity.order !== 8) {
           extraTask += 1
@@ -90,7 +96,7 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
   ) {
     nonMandatory.done = true
   }
-  
+
   const status = {
     firstTaskgroup,
     lastTaskgroup,

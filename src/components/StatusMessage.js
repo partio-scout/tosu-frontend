@@ -82,6 +82,9 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
               ? done
               : null}
           </p>
+          Valitse majakkavaihtoehto{statusMessage.status.nonMandatory.majakka === 1
+              ? done
+              : null}
         </p>
       )
     }
