@@ -43,8 +43,6 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   )
 
   const basicPlanInformation = () => {
-    console.log(statusMessage.status.taskgroupDone)
-
     return (
       <div style={{ fontSize: '0.8rem', lineHeight: 1.6 }}>
         <p style={{ marginBottom: 0 }}>
@@ -169,30 +167,19 @@ const InfoButton = ({ handleOpen }) => (
 class StatusMessage extends React.Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      open: true
-    }
-  }
-
-  handleOpen = () => {
-    this.setState({ open: true })
-  }
-
-  handleClose = () => {
-    this.setState({ open: false })
+    this.state = {}
   }
 
   render() {
-    const element = this.state.open ? (
+    const element = this.props.showStatusBox ? (
       <Instruction
-        handleClose={this.handleClose}
+        handleClose={this.props.handleClose}
         statusMessage={this.props.statusMessage}
         taskgroup={this.props.taskgroup}
         style={{ marginTop: 30 }}
       />
     ) : (
-      <InfoButton handleOpen={this.handleOpen} />
+      <InfoButton handleOpen={this.props.handleOpen} />
     )
     return element
   }
