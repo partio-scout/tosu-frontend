@@ -18,7 +18,7 @@ const done = (
       width: 15,
       height: 15,
       padding: 0,
-      marginRight: 5,
+      marginLeft: 5,
       color: 'green'
     }}
   />
@@ -42,22 +42,46 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   const basicPlanInformation = () => {
     if (statusMessage.status.nonMandatory) {
       return (
-        <p style={{ fontSize: '0.8rem' }}>
+        <p style={{ fontSize: '0.8rem', lineHeight: 1.6 }}>
           <big>
             <strong>{taskgroup.title}</strong>
           </big>
           <br />
-          {statusMessage.status.firstTask === 1 ? done : null} Valitse suuntaus<br />
-          {statusMessage.status.mandatory === 5 ? done : null} Valitse
-          pakolliset aktiviteetit {statusMessage.status.mandatory}/5<br />
-          {statusMessage.status.leaderTask === 1 ? done : null} Valitse
-          johtamis- ja vastuutehtävä<br />
-          {statusMessage.status.nonMandatory.done ? done : null}
-          Valitse vapaaehtoiset aktiviteetit{' '}
+          Valitse suuntaus {statusMessage.status.firstTask === 1 ? done : null}
+          <br />
+          Valitse pakolliset aktiviteetit {
+            statusMessage.status.mandatory
+          }/5 {statusMessage.status.mandatory === 5 ? done : null}
+          <br />
+          Valitse johtamis- ja vastuutehtävä{' '}
+          {statusMessage.status.leaderTask === 1 ? done : null}
+          <br />
+          Valitse vapaaehtoiset aktiviteetit, valittu yhteensä{' '}
           {statusMessage.status.nonMandatory
             ? statusMessage.status.nonMandatory.total
-            : 0}
-          <br />
+            : 0}{' '}
+          {statusMessage.status.nonMandatory.done ? done : null}
+          <p style={{ margin: 0, marginLeft: 10 }}>
+            Suhde itseen, valittu{' '}
+            {statusMessage.status.nonMandatory.suhdeItseen}
+            {statusMessage.status.nonMandatory.suhdeItseen >= 1 ? done : null}
+            <br />
+            Suhde toiseen, valittu{' '}
+            {statusMessage.status.nonMandatory.suhdeToiseen}
+            {statusMessage.status.nonMandatory.suhdeToiseen >= 1 ? done : null}
+            <br />
+            Suhde yhteiskuntaan, valittu{' '}
+            {statusMessage.status.nonMandatory.suhdeYhteiskuntaan}
+            {statusMessage.status.nonMandatory.suhdeYhteiskuntaan >= 1
+              ? done
+              : null}
+            <br />
+            Suhde ympäristöön, valittu{' '}
+            {statusMessage.status.nonMandatory.suhdeYmparistoon}
+            {statusMessage.status.nonMandatory.suhdeYmparistoon >= 1
+              ? done
+              : null}
+          </p>
         </p>
       )
     }

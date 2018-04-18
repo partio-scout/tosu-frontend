@@ -81,6 +81,16 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
       }
     }
   })
+
+  if (
+    nonMandatory.suhdeItseen >= 1 &&
+    nonMandatory.suhdeToiseen >= 1 &&
+    nonMandatory.suhdeYhteiskuntaan >= 1 &&
+    nonMandatory.suhdeYmparistoon >= 1
+  ) {
+    nonMandatory.done = true
+  }
+  
   const status = {
     firstTaskgroup,
     lastTaskgroup,
