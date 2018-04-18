@@ -100,6 +100,15 @@ class App extends Component {
                       setHeaderHeight={this.setHeaderHeight}
                       toggleTopBar={this.toggleTopBar}
                       headerVisible={this.state.headerVisible}
+                      selfInfo={
+                        <Link to="/user-info">
+                          <RaisedButton
+                            label='Omat tiedot'
+                            style={{ float: 'right', marginRight: 5, marginTop: 20 }}
+                            onClick={this.hideTopBar}
+                          />
+                        </Link>
+                      }
                     />
                   </div>
                 }
