@@ -13,6 +13,7 @@ const arrayActivityGuidsFromBufferAndEvents = (events, pofTree) => {
 }
 
 const composeStatusMessage = (selectedActivities, taskgroup) => {
+  let taskgroupDone = false
   let firstTaskgroup = false
   let lastTaskgroup = false
   let extraTaskgroup = false
@@ -97,7 +98,21 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     nonMandatory.done = true
   }
 
+  if (firstTaskgroup) {
+    if (mandatory === taskgroup.children.length) {
+      taskgroupDone = true
+    }
+  } else if (lastTaskgroup) {
+    if (mandatory === taskgroup.children.lenght) {
+      taskgroupDone = true
+    }
+  } else if (!firstTaskgroup && !lastTaskgroup && !extraTaskgroup) {
+   if(firstTask === 1 && leaderTask === 1 && mandatory === 5 && nonMandatory.done && nonMandatory.majakka === 1){
+     taskgroupDone = true
+   }
+  } 
   const status = {
+    taskgroupDone,
     firstTaskgroup,
     lastTaskgroup,
     extraTaskgroup,
