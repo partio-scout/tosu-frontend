@@ -5,8 +5,9 @@ export const getGoogleToken = () => {
     return config
  }
  
- export const setGoogleToken = (response) => {
-    window.localStorage.setItem('googleLogin', response)
+ export const setGoogleToken = (token) => {
+    window.localStorage.setItem('googleLogin', token)
+    console.log(token)
  }
  
  export const removeGoogleToken = () => {

@@ -8,8 +8,12 @@ const deleteScout = async (scoutId,token) => {
 }
  
 const findOrCreateScout = async (token) => {
-  const response = await axios.post(`${API_ROOT}/newscout`, getGoogleToken)
-  return response.data
+  /* const response = await axios.post(`${API_ROOT}/newscout`, getGoogleToken)
+  return response.data */
 }
 
-export default { deleteScout, findOrCreateScout }
+const logout = async (token) => {
+  // waiting for backend url
+}
+
+export default { deleteScout, findOrCreateScout, logout }
