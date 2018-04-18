@@ -116,12 +116,11 @@ const fillWithNeededVariable = pof => {
 
   root.key = root.guid
   root.label = root.title
-  root.title = <span name={root.title} >{root.title}</span>
+  root.title = <span name={root.title}>{root.title}</span>
   root.value = root.guid
   root.children = [].concat(root.taskgroups)
 
   if (root !== undefined && root.tasks !== undefined) {
-
     root.children = root.children.concat(root.tasks.sort(orderSorter))
     root.tasks.forEach(task => {
       task.key = task.guid
@@ -154,7 +153,7 @@ const fillWithNeededVariable = pof => {
   return root
 }
 
-const sortTreeByOrder = (root) => {
+const sortTreeByOrder = root => {
   let taskgroup = root
   if (taskgroup === undefined) {
     return
@@ -171,14 +170,17 @@ const sortTreeByOrder = (root) => {
 //we use that to search/filter from pofdata
 const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
   let activities = []
-  buffer.activities.forEach(activity => {
-    activities = activities.concat(activity.guid)
-  })
-  events.forEach(event => {
-    event.activities.forEach(activity => {
+  if (buffer.activities && events.activities) {
+    buffer.activities.forEach(activity => {
       activities = activities.concat(activity.guid)
     })
-  })
+    events.forEach(event => {
+      event.activities.forEach(activity => {
+        activities = activities.concat(activity.guid)
+      })
+    })
+  }
+
   return activities
 }
 //pof contains a specific order which is why we sort

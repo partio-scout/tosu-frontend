@@ -14,7 +14,7 @@ import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
 import ActivityPreview from './ActivityPreview'
-import FlatButton from 'material-ui/FlatButton';
+import FlatButton from 'material-ui/FlatButton'
 
 const styles = {
   chip: {
@@ -99,13 +99,10 @@ class Activity extends Component {
   render() {
     const { activity, pofActivity, connectDragSource, isDragging } = this.props
     const visibility = isDragging ? 'hidden' : 'visible'
-    /*const closeImg = {
-      cursor: 'pointer',
-      float: 'right',
-      marginTop: '5px',
-      width: '20px'
-    }*/
 
+    const lastParentIndex = pofActivity.parents.length -1
+    const lastGuid = pofActivity.parents[lastParentIndex].guid
+    
     if (activity && pofActivity) {
       if (!isDragging) {
         return connectDragSource(
@@ -139,6 +136,17 @@ class Activity extends Component {
                 title={
                   <div>
                     {pofActivity.title}
+                    <br />
+
+                    {pofActivity.parents.map(parent => (
+                      <span
+                        style={{ fontSize: '0.9rem'}}
+                        key={parent.guid}
+                      >
+                        {parent.title} {parent.guid === lastGuid ? null : " - " } 
+                      </span>
+                    ))}
+
                     <FlatButton
                       style={{ float: 'right' }}
                       label="Sulje"
@@ -165,7 +173,10 @@ class Activity extends Component {
       if (isDragging) {
         return connectDragSource(
           <div>
-            <ActivityPreview pofActivity={pofActivity} mandatory={pofActivity.mandatory} />
+            <ActivityPreview
+              pofActivity={pofActivity}
+              mandatory={pofActivity.mandatory}
+            />
           </div>
         )
       }
