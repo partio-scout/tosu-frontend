@@ -68,7 +68,9 @@ export default class AppBar extends React.Component {
               />
             </ToolbarGroup>
             <ToolbarGroup>
-              <GoogleButtons />
+              <GoogleButtons 
+              selfInfo={this.props.selfInfo}
+              />
             </ToolbarGroup>
           </Toolbar>
         </div>
