@@ -2,6 +2,7 @@ const convertToBackendActivity = (wut) => {
   if (wut === undefined || wut === null) {
     return wut
   }
+
   const pakollisuus = (mandatory) => (
     mandatory === "Pakollinen"
   )
@@ -51,7 +52,8 @@ const convertToBackendActivity = (wut) => {
     task_term: wut.task_term.name,
     place: wut.tags.paikka.map(jtn => (jtn.name)),       
     mandatoryIconUrl: wut.tags.pakollisuus[0].icon,
-    originUrl: wut.languages[0].details
+    originUrl: wut.languages[0].details,
+    parents: wut.parents
 
 
   }
