@@ -15,7 +15,7 @@ import {
 import moment from 'moment-with-locales-es6'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
-import Badge from 'material-ui/Badge'
+//import Badge from 'material-ui/Badge'
 import Activity from './Activity'
 import EditEvent from './EditEvent'
 import ItemTypes from '../ItemTypes'

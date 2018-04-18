@@ -21,6 +21,8 @@ import { addStatusInfo } from './reducers/statusMessageReducer'
 import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
 import { createStatusMessage } from './utils/createStatusMessage'
+import { userLogin } from './reducers/userReducer'
+import { getGoogleToken } from './services/googleToken'
 
 class App extends Component {
   constructor() {
@@ -37,6 +39,9 @@ class App extends Component {
         headerVisible: false,
         bufferZoneHeight: 0
       })
+    }
+    if(getGoogleToken().headers.Authorization !== null) {
+      await this.props.userLogin()
     }
     await Promise.all([
       this.props.pofTreeInitialization(),
@@ -190,5 +195,6 @@ export default connect(mapStateToProps, {
   pofTreeUpdate,
   eventsInitialization,
   bufferZoneInitialization,
-  addStatusInfo
+  addStatusInfo,
+  userLogin
 })(AppDnD)
