@@ -19,7 +19,14 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
   let firstTask = 0
   let mandatory = 0
   let leaderTask = 0
-  let nonMandatory = 0
+  const nonMandatory = {
+    suhdeItseen: 0,
+    suhdeToiseen: 0,
+    suhdeYhteiskuntaan: 0,
+    suhdeYmparistoon: 0,
+    total: 0,
+    done: false
+  }
   let extraTask = 0
 
   if (taskgroup.order === 0) {
@@ -57,7 +64,16 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
           activity.order !== 6 &&
           taskgroup.order !== 8
         ) {
-          nonMandatory += 1
+          if (activity.label.match(/Suhde itseen/)) {
+            nonMandatory.suhdeItseen += 1
+          } else if (activity.label.match(/Suhde toiseen/)) {
+            nonMandatory.suhdeToiseen += 1
+          } else if (activity.label.match(/Suhde ympäristöön/)) {
+            nonMandatory.suhdeYmparistoon += 1
+          } else if (activity.label.match(/Suhde yhteiskuntaan/)) {
+            nonMandatory.suhdeYhteiskuntaan += 1
+          }
+          nonMandatory.total += 1
         }
         if (activity.order !== 8) {
           extraTask += 1

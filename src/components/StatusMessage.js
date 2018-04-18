@@ -30,29 +30,39 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
         <strong>{taskgroup.title}</strong>
       </big>
       <br />
-      {statusMessage.status.mandatory === taskgroup.tasks.length ? (
-        done
-      ) : null}{' '}
+      {statusMessage.status.mandatory === taskgroup.tasks.length
+        ? done
+        : null}{' '}
       Valitse pakolliset aktiviteetit {statusMessage.status.mandatory} /{' '}
       {taskgroup.tasks.length}
       <br />
     </p>
   )
 
-  const basicPlanInformation = () => (
-    <p style={{ fontSize: '0.8rem' }}>
-      <big>
-        <strong>{taskgroup.title}</strong>
-      </big>
-      <br />
-      {statusMessage.status.firstTask === 1 ? done : null} Valitse suuntaus<br />
-      {statusMessage.status.mandatory === 5 ? done : null} Valitse
-      pakolliset aktiviteetit {statusMessage.status.mandatory}/5<br />
-      {statusMessage.status.leaderTask === 1 ? done : null} Valitse johtamis- ja vastuutehtävä<br />
-      {statusMessage.status.nonMandatory === 4 ? done : null} Valitse
-      vapaaehtoiset aktiviteetit {statusMessage.status.nonMandatory}/4<br />
-    </p>
-  )
+  const basicPlanInformation = () => {
+    if (statusMessage.status.nonMandatory) {
+      return (
+        <p style={{ fontSize: '0.8rem' }}>
+          <big>
+            <strong>{taskgroup.title}</strong>
+          </big>
+          <br />
+          {statusMessage.status.firstTask === 1 ? done : null} Valitse suuntaus<br />
+          {statusMessage.status.mandatory === 5 ? done : null} Valitse
+          pakolliset aktiviteetit {statusMessage.status.mandatory}/5<br />
+          {statusMessage.status.leaderTask === 1 ? done : null} Valitse
+          johtamis- ja vastuutehtävä<br />
+          {statusMessage.status.nonMandatory.done ? done : null}
+          Valitse vapaaehtoiset aktiviteetit{' '}
+          {statusMessage.status.nonMandatory
+            ? statusMessage.status.nonMandatory.total
+            : 0}
+          <br />
+        </p>
+      )
+    }
+    return <p style={{ fontSize: '0.8rem' }}>Haetaan tietoja...</p>
+  }
 
   const extraPlanInformation = () => (
     <p style={{ fontSize: '0.8rem' }}>
@@ -64,8 +74,6 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
       <br />
     </p>
   )
-
-
 
   return (
     <div>
