@@ -19,7 +19,9 @@ const styles = {
 export default class AppBar extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      visible:false
+    }
   }
 
   componentDidMount = () => {
@@ -37,6 +39,7 @@ export default class AppBar extends React.Component {
     this.props.setHeaderHeight(bufferZoneHeight)
   }
   render() {
+    console.log(this.props.selfInfo)
     return (
       <div
         className="top-search"
@@ -57,7 +60,9 @@ export default class AppBar extends React.Component {
               />
             </ToolbarGroup>
             <ToolbarGroup>
-              <GoogleButtons />
+              <GoogleButtons 
+              selfInfo={this.props.selfInfo}
+              />
             </ToolbarGroup>
           </Toolbar>
         </div>

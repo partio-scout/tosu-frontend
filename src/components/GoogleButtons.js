@@ -61,13 +61,7 @@ class googleButtons extends React.Component {
                         style={{ float: 'right', marginRight: 5, marginTop: 20 }}
                         onClick={(this.forceMyOwnLogout)}
                     />
-                    <Link to="/user-info">
-                        <RaisedButton
-                            label='Omat tiedot'
-                            style={{ float: 'right', marginRight: 5, marginTop: 20 }}
-                            onClick={this.hideTopBar}
-                        />
-                    </Link>
+                    {this.props.selfInfo}
                 </div>
             }
     </div>
