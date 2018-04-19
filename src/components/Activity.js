@@ -100,8 +100,11 @@ class Activity extends Component {
     const { activity, pofActivity, connectDragSource, isDragging } = this.props
     const visibility = isDragging ? 'hidden' : 'visible'
 
-    const lastParentIndex = pofActivity.parents.length -1
-    const lastGuid = pofActivity.parents[lastParentIndex].guid
+    let lastGuid = 0
+    if (pofActivity) {
+      const lastParentIndex = pofActivity.parents.length - 1
+      lastGuid = pofActivity.parents[lastParentIndex].guid
+    }
     
     if (activity && pofActivity) {
       if (!isDragging) {
@@ -139,11 +142,8 @@ class Activity extends Component {
                     <br />
 
                     {pofActivity.parents.map(parent => (
-                      <span
-                        style={{ fontSize: '0.9rem'}}
-                        key={parent.guid}
-                      >
-                        {parent.title} {parent.guid === lastGuid ? null : " - " } 
+                      <span style={{ fontSize: '0.9rem' }} key={parent.guid}>
+                        {parent.title} {parent.guid === lastGuid ? null : ' - '}
                       </span>
                     ))}
 

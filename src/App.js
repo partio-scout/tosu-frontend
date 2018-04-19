@@ -61,6 +61,7 @@ class App extends Component {
   }
 
   setHeaderHeight = height => {
+    console.log("Height", height)
     if (height !== this.state.bufferZoneHeight) {
       this.setState({ bufferZoneHeight: height })
     }
