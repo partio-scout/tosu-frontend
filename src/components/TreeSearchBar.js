@@ -60,10 +60,7 @@ class TreeSearchBar extends React.Component {
     this.setState({ treePlaceHolder: 'Lisää aktiviteetti' })
 
     const mandatoryActivities = selectedGroup.mandatory_tasks.split(',')
-    if (
-      this.props.buffer.activites &&
-      mandatoryActivities[0] !== ''
-    ) {
+    if (mandatoryActivities[0] !== '') {
       //empty split return and array with only value as ""
 
       let activities = []
