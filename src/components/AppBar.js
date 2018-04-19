@@ -35,7 +35,6 @@ export default class AppBar extends React.Component {
   getHeight = () => {
     const bufferZoneHeight = document.getElementById('top-bar-header')
       .clientHeight
-
     this.props.setHeaderHeight(bufferZoneHeight)
   }
 
@@ -68,9 +67,7 @@ export default class AppBar extends React.Component {
               />
             </ToolbarGroup>
             <ToolbarGroup>
-              <GoogleButtons 
-              selfInfo={this.props.selfInfo}
-              />
+              <GoogleButtons selfInfo={this.props.selfInfo} />
             </ToolbarGroup>
           </Toolbar>
         </div>
@@ -83,6 +80,7 @@ export default class AppBar extends React.Component {
                   showStatusBox={this.state.showStatusBox}
                   handleClose={this.handleClose}
                   handleOpen={this.handleOpen}
+                  getHeight={this.getHeight}
                 />
               </div>
             ) : (
@@ -91,6 +89,7 @@ export default class AppBar extends React.Component {
                   showStatusBox={this.state.showStatusBox}
                   handleClose={this.handleClose}
                   handleOpen={this.handleOpen}
+                  getHeight={this.getHeight}
                 />
               </div>
             )}
