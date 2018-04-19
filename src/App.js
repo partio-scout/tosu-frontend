@@ -17,10 +17,10 @@ import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
-import { addStatusInfo } from './reducers/statusMessageReducer'
 import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
 import { createStatusMessage } from './utils/createStatusMessage'
+import { addStatusInfo } from './reducers/statusMessageReducer'
 import { userLogin } from './reducers/userReducer'
 import { getGoogleToken } from './services/googleToken'
 
@@ -61,7 +61,6 @@ class App extends Component {
   }
 
   setHeaderHeight = height => {
-    console.log("Height", height)
     if (height !== this.state.bufferZoneHeight) {
       this.setState({ bufferZoneHeight: height })
     }
