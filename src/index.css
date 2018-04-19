@@ -108,7 +108,7 @@ p.eventTimes > span {
   cursor: pointer;
 }
 
-googleuser .tree-search-title:hover {
+.tree-search-title:hover {
   background: #90caf9 !important;
 }
 
