@@ -170,7 +170,6 @@ const sortTreeByOrder = root => {
 //we use that to search/filter from pofdata
 const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
   let activities = []
-  if (buffer.activities && events.activities) {
     buffer.activities.forEach(activity => {
       activities = activities.concat(activity.guid)
     })
@@ -179,8 +178,6 @@ const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
         activities = activities.concat(activity.guid)
       })
     })
-  }
-
   return activities
 }
 //pof contains a specific order which is why we sort
