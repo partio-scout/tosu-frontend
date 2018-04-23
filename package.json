@@ -38,6 +38,7 @@
     "rc-tree-select": "^1.12.9",
     "react": "^16.2.0",
     "react-append-to-body": "^2.0.20",
+    "react-cookie-consent": "^1.0.4",
     "react-dnd": "^2.5.4",
     "react-dnd-html5-backend": "^2.5.4",
     "react-dnd-multi-backend": "^3.1.2",

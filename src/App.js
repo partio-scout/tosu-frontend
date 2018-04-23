@@ -23,6 +23,7 @@ import { createStatusMessage } from './utils/createStatusMessage'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import { userLogin } from './reducers/userReducer'
 import { getGoogleToken } from './services/googleToken'
+import CookieConsent from "react-cookie-consent"
 
 class App extends Component {
   constructor() {
@@ -115,6 +116,14 @@ class App extends Component {
                         </Link>
                       }
                     />
+                    <CookieConsent
+                      buttonText="Hyväksyn evästeiden käytön"
+                      cookieName="myAwesomeCookieName2"
+                      style={{ background: "linear-gradient(to right, orange , yellow, green, cyan, blue, violet)", textShadow: "2px 2px black" }}
+                      buttonStyle={{background: "linear-gradient(to left, orange , yellow, green, cyan, blue, violet)", color:"white", fontWeight: "bolder", textShadow: "2px 2px black"}}
+                    >
+                      Tämä sivusto käyttää evästeitä.{" "}
+                    </CookieConsent>
                   </div>
                 }
               />
