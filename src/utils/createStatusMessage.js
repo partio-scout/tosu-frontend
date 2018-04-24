@@ -1,4 +1,5 @@
 import findActivity from '../functions/findActivity'
+import moment from 'moment-with-locales-es6'
 
 const arrayActivityGuidsFromBufferAndEvents = (events, pofTree) => {
   let activities = []
@@ -45,7 +46,12 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     suhdeYhteiskuntaan: null,
     suhdeYmparistoon: null,
     majakka: null,
-    extraTask
+    extraTask: null
+  }
+
+  const warnings = {
+    firstTaskTooLate: false,
+    lastTaskTooSoon: false
   }
 
   if (taskgroup.order === 0) {
@@ -143,6 +149,26 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     }
   }
 
+  if (
+    moment(dates.firstTask) > moment(dates.leaderTask) ||
+    moment(dates.firstTask) > moment(dates.mandatory) ||
+    moment(dates.firstTask) > moment(dates.nonMandatory) ||
+    moment(dates.firstTask) > moment(dates.extraTask) ||
+    moment(dates.firstTask) > moment(dates.majakka)
+  ) {
+    warnings.firstTaskTooLate = true
+  }
+
+  if (
+    moment(dates.majakka) < moment(dates.firstTask) ||
+    moment(dates.majakka) < moment(dates.leaderTask) ||
+    moment(dates.majakka) < moment(dates.mandatory) ||
+    moment(dates.majakka) < moment(dates.nonMandatory) ||
+    moment(dates.majakka) < moment(dates.extraTask)
+  ) {
+    warnings.lastTaskTooSoon = true
+  }
+
   const status = {
     taskgroupDone,
     firstTaskgroup,
@@ -153,7 +179,8 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     nonMandatory,
     leaderTask,
     extraTask,
-    dates
+    dates,
+    warnings
   }
   return status
 }

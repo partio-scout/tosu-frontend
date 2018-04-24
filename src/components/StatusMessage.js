@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import Paper from 'material-ui/Paper'
 import ActionHelp from 'material-ui/svg-icons/action/help'
 import Done from 'material-ui/svg-icons/action/done'
+import Warning from 'material-ui/svg-icons/alert/warning'
 import Clear from 'material-ui/svg-icons/content/clear'
 
 const style = {
@@ -24,6 +25,18 @@ const done = (
   />
 )
 
+const warning = (
+  <Warning
+    style={{
+      width: 15,
+      height: 15,
+      padding: 0,
+      marginLeft: 5,
+      color: 'orange'
+    }}
+  />
+)
+
 const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   console.log(statusMessage)
   const specialPlanInformation = () => (
@@ -35,11 +48,12 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
         </strong>
       </big>
       <br />
-      {statusMessage.status.mandatory === taskgroup.tasks.length
-        ? done
-        : null}{' '}
-      Valitse pakolliset aktiviteetit {statusMessage.status.mandatory} /{' '}
-      {taskgroup.tasks.length}
+      {statusMessage.status.taskgroupDone
+        ? `Pakolliset aktiviteetit valittu ${
+            statusMessage.status.dates.mandatory
+          }`
+        : `Valitse pakolliset aktiviteetit ${statusMessage.status.mandatory}/${taskgroup.children.length}`}
+      {statusMessage.status.taskgroupDone ? done : null}
       <br />
     </p>
   )
@@ -60,7 +74,11 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
           {statusMessage.status.firstTask === 1
             ? `Suuntaus valittu ${statusMessage.status.dates.firstTask}`
             : 'Valitse suuntaus'}
-          {statusMessage.status.firstTask === 1 ? done : null}
+          {statusMessage.status.firstTask === 1 &&
+          !statusMessage.status.warnings.firstTaskTooLate
+            ? done
+            : null}
+          {statusMessage.status.warnings.firstTaskTooLate ? warning : null}
           <br />
           {statusMessage.status.mandatory === 5
             ? `Pakolliset aktiviteetit valittu ${
@@ -122,8 +140,12 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
         <p style={{ marginTop: 0 }}>
           {statusMessage.status.nonMandatory.majakka === 1
             ? `Majakkavaihtoehto valittu ${statusMessage.status.dates.majakka}`
-            : 'Valitse majakakvaihtoehto'}
-          {statusMessage.status.nonMandatory.majakka === 1 ? done : null}
+            : 'Valitse majakkavaihtoehto'}
+          {statusMessage.status.nonMandatory.majakka === 1 &&
+          !statusMessage.status.warnings.lastTaskTooSoon
+            ? done
+            : null}
+          {statusMessage.status.warnings.lastTaskTooSoon ? warning : null}
         </p>
       </div>
     )
