@@ -23,7 +23,9 @@ const done = (
     }}
   />
 )
+
 const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
+  console.log(statusMessage)
   const specialPlanInformation = () => (
     <p style={{ fontSize: '0.8rem' }}>
       <big>
@@ -55,46 +57,73 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
             </strong>
           </big>
           <br />
-          Valitse suuntaus {statusMessage.status.firstTask === 1 ? done : null}
+          {statusMessage.status.firstTask === 1
+            ? `Suuntaus valittu ${statusMessage.status.dates.firstTask}`
+            : 'Valitse suuntaus'}
+          {statusMessage.status.firstTask === 1 ? done : null}
           <br />
-          Valitse pakolliset aktiviteetit {
-            statusMessage.status.mandatory
-          }/5 {statusMessage.status.mandatory === 5 ? done : null}
+          {statusMessage.status.mandatory === 5
+            ? `Pakolliset aktiviteetit valittu ${
+                statusMessage.status.dates.mandatory
+              }`
+            : `Valitse pakolliset aktiviteetit ${
+                statusMessage.status.mandatory
+              }/5`}
+          {statusMessage.status.mandatory === 5 ? done : null}
           <br />
-          Valitse johtamis- ja vastuutehtävä{' '}
+          {statusMessage.status.leaderTask === 1
+            ? `Johtamis- tai vastuutehtävä valittu ${
+                statusMessage.status.dates.leaderTask
+              }`
+            : 'Valitse johtamis- tai vastuutehtävä'}
           {statusMessage.status.leaderTask === 1 ? done : null}
           <br />
-          Valitse vapaaehtoiset aktiviteetit, valittu{' '}
-          {statusMessage.status.nonMandatory
-            ? statusMessage.status.nonMandatory.total
-            : 0}{' '}
-          {statusMessage.status.nonMandatory.done ? done : null}
+          {statusMessage.status.nonMandatory.total === 4
+            ? `Pakolliset aktiviteetit valittu ${
+                statusMessage.status.dates.nonMandatory
+              }`
+            : `Valitse pakolliset aktiviteetit ${
+                statusMessage.status.nonMandatory.total
+              }/4`}
+          {statusMessage.status.nonMandatory.total === 4 ? done : null}
         </p>
         <p style={{ margin: 0, marginLeft: 10 }}>
           Suhde itseen, valittu {statusMessage.status.nonMandatory.suhdeItseen}
+          {statusMessage.status.nonMandatory.suhdeItseen >= 1
+            ? statusMessage.status.dates.suhdeItseen
+            : null}
           {statusMessage.status.nonMandatory.suhdeItseen >= 1 ? done : null}
           <br />
           Suhde toiseen, valittu{' '}
           {statusMessage.status.nonMandatory.suhdeToiseen}
+          {statusMessage.status.nonMandatory.suhdeToiseen >= 1
+            ? statusMessage.status.dates.suhdeToiseen
+            : null}
           {statusMessage.status.nonMandatory.suhdeToiseen >= 1 ? done : null}
           <br />
           Suhde yhteiskuntaan, valittu{' '}
           {statusMessage.status.nonMandatory.suhdeYhteiskuntaan}
           {statusMessage.status.nonMandatory.suhdeYhteiskuntaan >= 1
+            ? statusMessage.status.dates.suhdeYhteiskuntaan
+            : null}
+          {statusMessage.status.nonMandatory.suhdeYhteiskuntaan >= 1
             ? done
             : null}
           <br />
           Suhde ympäristöön, valittu{' '}
-          {statusMessage.status.nonMandatory.suhdeYmparistoon}
+          {statusMessage.status.nonMandatory.suhdeYmparistoon}{' '}
+          {statusMessage.status.nonMandatory.suhdeYmparistoon >= 1
+            ? statusMessage.status.dates.suhdeYmparistoon
+            : null}
           {statusMessage.status.nonMandatory.suhdeYmparistoon >= 1
             ? done
             : null}
         </p>
         <p style={{ marginTop: 0 }}>
-          Valitse majakkavaihtoehto{statusMessage.status.nonMandatory
-            .majakka === 1
-            ? done
-            : null}
+          {statusMessage.status.nonMandatory.majakka === 1
+            ? `Majakkavaihtoehto valittu ${statusMessage.status.dates.majakka}`
+            : 'Valitse majakakvaihtoehto'}
+          {statusMessage.status.nonMandatory.majakka === 1 ? done : null}
         </p>
       </div>
     )

@@ -6,7 +6,11 @@ const arrayActivityGuidsFromBufferAndEvents = (events, pofTree) => {
   events.forEach(event => {
     event.activities.forEach(activity => {
       const found = findActivity(activity, pofTree)
-      activities = activities.concat(found)
+      const savedActivity = Object.assign(
+        { ...found },
+        { date: event.startDate }
+      )
+      activities = activities.concat(savedActivity)
     })
   })
   return activities
@@ -31,6 +35,19 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
   }
   let extraTask = 0
 
+  const dates = {
+    firstTask: null,
+    mandatory: null,
+    nonMandatory: null,
+    leaderTask: null,
+    suhdeItseen: null,
+    suhdeToiseen: null,
+    suhdeYhteiskuntaan: null,
+    suhdeYmparistoon: null,
+    majakka: null,
+    extraTask
+  }
+
   if (taskgroup.order === 0) {
     firstTaskgroup = true
   }
@@ -48,17 +65,19 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
       if (activity.parents[2].guid === taskgroup.guid) {
         if (activity.order === 0) {
           firstTask += 1
+          dates.firstTask = activity.date
         }
-        if (activity.order === 6) {
+        if (activity.label.match(/Johtamis- tai vastuutehtävä/)) {
           leaderTask += 1
+          dates.leaderTask = activity.date
         }
         if (
           activity.tags.pakollisuus[0].name === 'Pakollinen' &&
           activity.order !== 0 &&
-          activity.order !== 6 &&
-          taskgroup.order !== 8
+          !activity.label.match(/Johtamis- tai vastuutehtävä/)
         ) {
           mandatory += 1
+          dates.mandatory = activity.date
         }
         if (
           activity.tags.pakollisuus[0].name !== 'Pakollinen' &&
@@ -68,22 +87,28 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
         ) {
           if (activity.label.match(/Suhde itseen/)) {
             nonMandatory.suhdeItseen += 1
+            dates.suhdeItseen = activity.date
           } else if (activity.label.match(/Suhde toiseen/)) {
             nonMandatory.suhdeToiseen += 1
+            dates.suhdeToiseen = activity.date
           } else if (activity.label.match(/Suhde ympäristöön/)) {
             nonMandatory.suhdeYmparistoon += 1
+            dates.suhdeYmparistoon = activity.date
           } else if (activity.label.match(/Suhde yhteiskuntaan/)) {
             nonMandatory.suhdeYhteiskuntaan += 1
+            dates.suhdeYhteiskuntaan = activity.date
           }
-          nonMandatory.total += 1
-
           if (activity.label.match(/Majakkavaihtoehto/)) {
-            nonMandatory.total -= 1
             nonMandatory.majakka += 1
+            dates.majakka = activity.date
+          } else {
+            nonMandatory.total += 1
+            dates.nonMandatory = activity.date
           }
         }
         if (activity.order !== 8) {
           extraTask += 1
+          dates.extraTask = activity.date
         }
       }
     }
@@ -103,14 +128,21 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
       taskgroupDone = true
     }
   } else if (lastTaskgroup) {
-    if (mandatory === taskgroup.children.lenght) {
+    if (mandatory === taskgroup.children.length) {
       taskgroupDone = true
     }
   } else if (!firstTaskgroup && !lastTaskgroup && !extraTaskgroup) {
-   if(firstTask === 1 && leaderTask === 1 && mandatory === 5 && nonMandatory.done && nonMandatory.majakka === 1){
-     taskgroupDone = true
-   }
-  } 
+    if (
+      firstTask === 1 &&
+      leaderTask === 1 &&
+      mandatory === 5 &&
+      nonMandatory.done &&
+      nonMandatory.majakka === 1
+    ) {
+      taskgroupDone = true
+    }
+  }
+
   const status = {
     taskgroupDone,
     firstTaskgroup,
@@ -120,7 +152,8 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     mandatory,
     nonMandatory,
     leaderTask,
-    extraTask
+    extraTask,
+    dates
   }
   return status
 }

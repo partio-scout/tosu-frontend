@@ -11,19 +11,7 @@ import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import { createStatusMessage } from '../utils/createStatusMessage'
-import Done from 'material-ui/svg-icons/action/done'
 
-const done = (
-  <Done
-    style={{
-      width: 15,
-      height: 15,
-      padding: 0,
-      marginLeft: 5,
-      color: 'green'
-    }}
-  />
-)
 class TreeSearchBar extends React.Component {
   constructor(props) {
     super(props)
