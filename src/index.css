@@ -152,13 +152,18 @@ span.label {
   flex-flow: row wrap;
 }
 
-@media only screen and (min-width: 768px) {
-  /* For desktop: */
-  .top-bar-left {
-    float: left;
-  }
+.top-bar-left {
+  float: left;
+}
 
-  .top-bar-right {
-    float: right;
+.top-bar-right {
+  float: right;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile: */
+  .top-bar-left, .top-bar-right{
+    clear: both;
+    width: 100% !important;
   }
 }
