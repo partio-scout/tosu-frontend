@@ -10,6 +10,7 @@ const style = {
   width: '95%',
   margin: 10,
   padding: 10,
+  paddingLeft: 25,
   fontSize: '0.9rem'
 }
 
@@ -119,10 +120,10 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
           {statusMessage.status.nonMandatory.total === 4 ? done : null}
 
           {statusMessage.status.nonMandatory.total === 4
-            ? `Pakolliset aktiviteetit valittu - ${
+            ? `Vapaaehtoiset aktiviteetit valittu - ${
                 statusMessage.status.dates.nonMandatory
               }`
-            : `Valitse pakolliset aktiviteetit ${
+            : `Valitse vapaaehtoiset aktiviteetit ${
                 statusMessage.status.nonMandatory.total
               }/4`}
         </p>
@@ -160,7 +161,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
             ? ` - ${statusMessage.status.dates.suhdeYmparistoon}`
             : null}
         </p>
-        <p style={{ marginTop: 0 }}>
+        <p style={{ marginTop: 0, marginBottom: 0 }}>
           {statusMessage.status.nonMandatory.majakka === 1 &&
           !statusMessage.status.warnings.lastTaskTooSoon
             ? done
@@ -204,7 +205,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   )
   return (
     <div>
-      <Paper style={style} zDepth={1}>
+      <Paper style={style} zDepth={1}> 
         <Clear
           style={{
             width: 20,
