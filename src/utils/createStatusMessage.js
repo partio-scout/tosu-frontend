@@ -1,5 +1,5 @@
+import moment from 'moment'
 import findActivity from '../functions/findActivity'
-import moment from 'moment-with-locales-es6'
 
 const arrayActivityGuidsFromBufferAndEvents = (events, pofTree) => {
   let activities = []
@@ -168,6 +168,19 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
   ) {
     warnings.lastTaskTooSoon = true
   }
+
+  dates.firstTask = moment(dates.firstTask).format('DD.MM.YYYY')
+  dates.leaderTask = moment(dates.leaderTask).format('DD.MM.YYYY')
+  dates.mandatory = moment(dates.mandatory).format('DD.MM.YYYY')
+  dates.nonMandatory = moment(dates.nonMandatory).format('DD.MM.YYYY')
+  dates.suhdeItseen = moment(dates.suhdeItseen).format('DD.MM.YYYY')
+  dates.suhdeToiseen = moment(dates.suhdeToiseen).format('DD.MM.YYYY')
+  dates.suhdeYhteiskuntaan = moment(dates.suhdeYhteiskuntaan).format(
+    'DD.MM.YYYY'
+  )
+  dates.suhdeYmparistoon = moment(dates.suhdeYmparistoon).format('DD.MM.YYYY')
+  dates.majakka = moment(dates.majakka).format('DD.MM.YYYY')
+  dates.extraTask = moment(dates.extraTask).format('DD.MM.YYYY')
 
   const status = {
     taskgroupDone,
