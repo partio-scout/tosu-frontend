@@ -6,6 +6,7 @@ import Done from 'material-ui/svg-icons/action/done'
 import Warning from 'material-ui/svg-icons/alert/warning'
 import Clear from 'material-ui/svg-icons/content/clear'
 
+// Style for whole statusbox
 const style = {
   width: '95%',
   margin: 10,
@@ -14,6 +15,7 @@ const style = {
   fontSize: '0.9rem'
 }
 
+// Done icon
 const done = (
   <Done
     style={{
@@ -26,6 +28,7 @@ const done = (
   />
 )
 
+// Small done icon for sub-taskgroups (suhteet)
 const smallDone = (
   <Done
     style={{
@@ -38,6 +41,7 @@ const smallDone = (
   />
 )
 
+// Warning icon
 const warning = (
   <Warning
     style={{
@@ -51,6 +55,7 @@ const warning = (
 )
 
 const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
+  // Information in status box when taskgroup is first or last and contains only mandatory tasks
   const specialPlanInformation = () => (
     <p style={{ fontSize: '0.8rem' }}>
       <big>
@@ -74,6 +79,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
     </p>
   )
 
+  // Information in status box for all Tarppos
   const basicPlanInformation = () => {
     return (
       <div style={{ fontSize: '0.8rem', lineHeight: '1.6rem' }}>
@@ -128,15 +134,17 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
               }/4`}
         </p>
         <p style={{ margin: 0, marginLeft: 20 }}>
-          {statusMessage.status.nonMandatory.suhdeItseen >= 1 ? smallDone : null}
-          Suhde itseen, valittu {
-            statusMessage.status.nonMandatory.suhdeItseen
-          }{' '}
+          {statusMessage.status.nonMandatory.suhdeItseen >= 1
+            ? smallDone
+            : null}
+          Suhde itseen, valittu {statusMessage.status.nonMandatory.suhdeItseen}{' '}
           {statusMessage.status.nonMandatory.suhdeItseen >= 1
             ? ` - ${statusMessage.status.dates.suhdeItseen}`
             : null}
           <br />
-          {statusMessage.status.nonMandatory.suhdeToiseen >= 1 ? smallDone : null}
+          {statusMessage.status.nonMandatory.suhdeToiseen >= 1
+            ? smallDone
+            : null}
           Suhde toiseen, valittu{' '}
           {statusMessage.status.nonMandatory.suhdeToiseen}{' '}
           {statusMessage.status.nonMandatory.suhdeToiseen >= 1
@@ -175,6 +183,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
     )
   }
 
+  // Information in status box when taskgroup is extra tasks (paussit)
   const extraPlanInformation = () => (
     <p style={{ fontSize: '0.8rem' }}>
       <big>
@@ -205,7 +214,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   )
   return (
     <div>
-      <Paper style={style} zDepth={1}> 
+      <Paper style={style} zDepth={1}>
         <Clear
           style={{
             width: 20,
@@ -225,6 +234,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   )
 }
 
+// Icon for statusbox if statusbox is hidden
 const InfoButton = ({ handleOpen }) => (
   <ActionHelp
     style={{
