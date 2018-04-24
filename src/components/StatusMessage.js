@@ -19,7 +19,19 @@ const done = (
       width: 15,
       height: 15,
       padding: 0,
-      marginRight: 5,
+      marginRight: 7,
+      color: 'green'
+    }}
+  />
+)
+
+const smallDone = (
+  <Done
+    style={{
+      width: 10,
+      height: 10,
+      padding: 0,
+      marginRight: 7,
       color: 'green'
     }}
   />
@@ -31,7 +43,7 @@ const warning = (
       width: 15,
       height: 15,
       padding: 0,
-      marginRight: 5,
+      marginRight: 7,
       color: 'orange'
     }}
   />
@@ -63,7 +75,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
 
   const basicPlanInformation = () => {
     return (
-      <div style={{ fontSize: '0.8rem', lineHeight: 1.6 }}>
+      <div style={{ fontSize: '0.8rem', lineHeight: '1.6rem' }}>
         <p style={{ marginBottom: 0 }}>
           <big>
             <strong>
@@ -114,8 +126,8 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
                 statusMessage.status.nonMandatory.total
               }/4`}
         </p>
-        <p style={{ margin: 0, marginLeft: 12 }}>
-          {statusMessage.status.nonMandatory.suhdeItseen >= 1 ? done : null}
+        <p style={{ margin: 0, marginLeft: 20 }}>
+          {statusMessage.status.nonMandatory.suhdeItseen >= 1 ? smallDone : null}
           Suhde itseen, valittu {
             statusMessage.status.nonMandatory.suhdeItseen
           }{' '}
@@ -123,7 +135,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
             ? ` - ${statusMessage.status.dates.suhdeItseen}`
             : null}
           <br />
-          {statusMessage.status.nonMandatory.suhdeToiseen >= 1 ? done : null}
+          {statusMessage.status.nonMandatory.suhdeToiseen >= 1 ? smallDone : null}
           Suhde toiseen, valittu{' '}
           {statusMessage.status.nonMandatory.suhdeToiseen}{' '}
           {statusMessage.status.nonMandatory.suhdeToiseen >= 1
@@ -131,7 +143,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
             : null}
           <br />
           {statusMessage.status.nonMandatory.suhdeYhteiskuntaan >= 1
-            ? done
+            ? smallDone
             : null}
           Suhde yhteiskuntaan, valittu{' '}
           {statusMessage.status.nonMandatory.suhdeYhteiskuntaan}{' '}
@@ -140,7 +152,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
             : null}
           <br />
           {statusMessage.status.nonMandatory.suhdeYmparistoon >= 1
-            ? done
+            ? smallDone
             : null}
           Suhde ympäristöön, valittu{' '}
           {statusMessage.status.nonMandatory.suhdeYmparistoon}{' '}

@@ -182,6 +182,10 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
   dates.majakka = moment(dates.majakka).format('DD.MM.YYYY')
   dates.extraTask = moment(dates.extraTask).format('DD.MM.YYYY')
 
+  if(warnings.lastTaskTooSoon || warnings.firstTaskTooLate){
+    taskgroupDone = false
+  }
+
   const status = {
     taskgroupDone,
     firstTaskgroup,
