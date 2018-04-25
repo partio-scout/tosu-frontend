@@ -119,8 +119,8 @@ class App extends Component {
                     <CookieConsent
                       buttonText="Hyväksyn evästeiden käytön"
                       cookieName="myAwesomeCookieName2"
-                      style={{ background: "linear-gradient(to right, orange , yellow, green, cyan, blue, violet)", textShadow: "2px 2px black" }}
-                      buttonStyle={{background: "linear-gradient(to left, orange , yellow, green, cyan, blue, violet)", color:"white", fontWeight: "bolder", textShadow: "2px 2px black"}}
+                      style={{ background: "#2B373B" }}
+                      buttonStyle={{ color: "#4e503b", fontSize: "14px" }}
                     >
                       Tämä sivusto käyttää evästeitä.{" "}
                     </CookieConsent>
