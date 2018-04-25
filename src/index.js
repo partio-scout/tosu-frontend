@@ -4,6 +4,9 @@ import { Provider } from 'react-redux'
 import './index.css'
 import App from './App'
 import store from './store'
+import axios from 'axios'
+
+axios.defaults.withCredentials = true
 
 const render = () => {
   ReactDOM.render(
