@@ -1,10 +1,10 @@
 export const loadCachedPofData = () => {
   try {
       const cachedData = window.localStorage.getItem('pofData')
-      if (cachedData === null || cachedData === {}) {
+      if (cachedData === null) {
           return undefined
       }
-      return cachedData
+      return JSON.parse(cachedData)
   } catch (err) {
       return undefined
   }
@@ -12,7 +12,7 @@ export const loadCachedPofData = () => {
 
 export const savePofData = (pofData) => {
     try {
-      window.localStorage.setItem('pofData', pofData)
+      window.localStorage.setItem('pofData', JSON.stringify(pofData))
     } catch (err) {
         // 
     }

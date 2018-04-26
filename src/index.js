@@ -5,6 +5,15 @@ import './index.css'
 import App from './App'
 import store from './store'
 import axios from 'axios'
+import pofService from './services/pof'
+import { savePofData } from './services/localStorage'
+
+const getPofData = async () => {
+  const pofData = await pofService.getAllTree()
+  await store.subscribe(() => {
+    savePofData(pofData)
+})
+}
 
 axios.defaults.withCredentials = true
 
@@ -17,5 +26,6 @@ const render = () => {
   )
 }
 
+getPofData()
 render()
 store.subscribe(render)

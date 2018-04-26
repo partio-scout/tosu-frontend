@@ -1,4 +1,3 @@
-import pofService from '../services/pof'
 import { blue50, blue500 } from 'material-ui/styles/colors'
 import React from 'react'
 
@@ -18,9 +17,9 @@ const reducer = (state = [], action) => {
   }
 }
 
-export const pofTreeInitialization = () => {
+export const pofTreeInitialization = (pofJson) => {
   return async dispatch => {
-    const pofJson = await pofService.getAllTree()
+    // const pofJson = await pofService.getAllTree()
     dispatch({
       type: 'INIT_TREE_POF',
       pofJson
