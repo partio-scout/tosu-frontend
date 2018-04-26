@@ -24,6 +24,8 @@ import { addStatusInfo } from './reducers/statusMessageReducer'
 import { userLogin } from './reducers/userReducer'
 import { getGoogleToken } from './services/googleToken'
 import CookieConsent from "react-cookie-consent"
+import pofService from './services/pof'
+import { loadCachedPofData } from './services/localStorage'
 
 class App extends Component {
   constructor() {
@@ -44,8 +46,13 @@ class App extends Component {
     if(getGoogleToken().headers.Authorization !== null) {
       await this.props.userLogin()
     }
+    let pofData = loadCachedPofData()
+    console.log(pofData)
+    if (pofData === undefined || pofData === {}) {
+      pofData = await pofService.getAllTree()
+    }
     await Promise.all([
-      this.props.pofTreeInitialization(),
+      this.props.pofTreeInitialization(pofData),
       this.props.eventsInitialization(),
       this.props.bufferZoneInitialization(2) // id tulee userista myöhemmin
     ])
