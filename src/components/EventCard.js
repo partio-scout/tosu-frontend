@@ -308,6 +308,7 @@ class EventCard extends React.Component {
           />
           {isTouchDevice() && !this.state.expanded ? (
             <CardMedia>
+              <div>{rows}</div>
               <div>
                 <TreeSelect
                   style={{ width: '100%' }}
