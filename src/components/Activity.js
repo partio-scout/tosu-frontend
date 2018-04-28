@@ -19,8 +19,6 @@ import FlatButton from 'material-ui/FlatButton'
 const styles = {
   chip: {
     margin: 4,
-    // float: 'left',
-    // display: 'inline-block',
     backgroundColor: blue200,
     cursor: 'move'
   },
@@ -32,8 +30,6 @@ const styles = {
   },
   chipMandatory: {
     margin: 4,
-    // display: 'inline-block',
-    // float: 'left',
     width: '100%',
     backgroundColor: blue500,
     cursor: 'move'
@@ -105,7 +101,7 @@ class Activity extends Component {
       const lastParentIndex = pofActivity.parents.length - 1
       lastGuid = pofActivity.parents[lastParentIndex].guid
     }
-    
+
     if (activity && pofActivity) {
       if (!isDragging) {
         return connectDragSource(
@@ -139,6 +135,14 @@ class Activity extends Component {
                 title={
                   <div>
                     {pofActivity.title}
+
+                    <button
+                      className="dialog-close-button"
+                      onClick={this.handleClick}
+                    >
+                      x
+                    </button>
+
                     <br />
 
                     {pofActivity.parents.map(parent => (
@@ -146,13 +150,6 @@ class Activity extends Component {
                         {parent.title} {parent.guid === lastGuid ? null : ' - '}
                       </span>
                     ))}
-
-                    <FlatButton
-                      style={{ float: 'right' }}
-                      label="Sulje"
-                      primary={true}
-                      onClick={this.handleClick}
-                    />
                   </div>
                 }
                 modal={false}

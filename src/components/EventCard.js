@@ -219,7 +219,6 @@ class EventCard extends React.Component {
         const pofActivity = convertToSimpleActivity(
           findActivity(activity, this.props.pofTree)
         )
-
         return (
           <Activity
             bufferzone={false}
