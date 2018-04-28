@@ -1,26 +1,26 @@
-import React from 'react';
-import Dialog from 'material-ui/Dialog';
-import RaisedButton from 'material-ui/RaisedButton';
+import React from 'react'
+import Dialog from 'material-ui/Dialog'
+import RaisedButton from 'material-ui/RaisedButton'
 //import eventgroupService from '../services/eventgroups';
-import moment from 'moment';
-import EventForm from './EventForm';
+import moment from 'moment'
+import EventForm from './EventForm'
 import { notify } from '../reducers/notificationReducer'
-import {connect} from 'react-redux'
-import {editEvent} from '../reducers/eventReducer'
-import {bufferZoneInitialization} from '../reducers/bufferZoneReducer'
+import { connect } from 'react-redux'
+import { editEvent } from '../reducers/eventReducer'
+import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
 
 class EditEvent extends React.Component {
   constructor(props) {
-    super(props);
-    const event = this.props.data;
+    super(props)
+    const event = this.props.data
     const newStartTime = moment(
       `${event.startDate} ${event.startTime}`,
       'YYYY-MM-DD HH:mm'
-    );
+    )
     const newEndTime = moment(
       `${event.endDate} ${event.endTime}`,
       'YYYY-MM-DD HH:mm'
-    );
+    )
     this.state = {
       open: false,
       title: event.title,
@@ -33,16 +33,16 @@ class EditEvent extends React.Component {
       repeatFrequency: 0,
       type: event.type,
       information: event.information
-    };
+    }
   }
 
   handleOpen = () => {
-    this.setState({ open: true });
-  };
+    this.setState({ open: true })
+  }
 
   handleClose = () => {
     this.setState({
-      open: false,
+      open: false
       /* title: '',
       startDate: '',
       startTime: '',
@@ -53,8 +53,8 @@ class EditEvent extends React.Component {
       repeatFrequency: 0,
       type: '',
       information: '' */
-    });
-  };
+    })
+  }
 
   handleCloseAndSend = async () => {
     const moddedEvent = {
@@ -66,20 +66,19 @@ class EditEvent extends React.Component {
       endTime: moment(this.state.endTime).format('HH:mm'),
       type: this.state.type,
       information: this.state.information
-    };
+    }
     try {
       this.props.editEvent(moddedEvent)
       this.props.bufferZoneInitialization(0)
-     // await eventService.edit(data);
-      this.props.source();
-      this.setState({ open: false });
+      // await eventService.edit(data);
+      this.props.source()
+      this.setState({ open: false })
       this.props.notify('Tapahtuman muokkaus onnistui!', 'success')
     } catch (exception) {
-      console.error('Error in event PUT:', exception);
+      console.error('Error in event PUT:', exception)
       this.props.notify('Tapahtuman muokkaus epäonnistui!')
-
     }
-  };
+  }
 
   /*
   sendGroupIdPostRequest = async () => {
@@ -123,8 +122,8 @@ class EditEvent extends React.Component {
       repeatFrequency: repeatFrequency,
       type: type,
       information: information
-    });
-  };
+    })
+  }
 
   render() {
     const disabled = this.state.endTime < new Date()
@@ -137,11 +136,24 @@ class EditEvent extends React.Component {
           disabled={disabled}
         />
         <Dialog
-          title="Muokkaa tapahtumaa"
+          title={
+            <div>
+              Muokkaa tapahtumaa
+              <button
+                className="dialog-close-button"
+                onClick={this.handleClose}
+              >
+                x
+              </button>
+            </div>
+          }
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
           autoScrollBodyContent
+          bodyClassName="global--modal-body"
+          contentClassName="global--modal-content"
+          paperClassName="global--modal-paper"
         >
           <EventForm
             submitFunction={this.handleCloseAndSend.bind(this)}
@@ -151,12 +163,10 @@ class EditEvent extends React.Component {
           />
         </Dialog>
       </div>
-    );
+    )
   }
 }
 
-export default connect(
-  null,
-  { editEvent, bufferZoneInitialization, notify }
-
-)(EditEvent)
+export default connect(null, { editEvent, bufferZoneInitialization, notify })(
+  EditEvent
+)

@@ -213,12 +213,25 @@ span.label {
   box-shadow: 1px 1px 3px;
 }
 
+.event-form{
+  width: 80%;
+  margin: 0 auto;
+}
+
+.new-form-paper{
+  padding: 20px;
+}
+
 @media only screen and (max-width: 768px) {
   /* For mobile: */
   .top-bar-left,
   .top-bar-right {
     clear: both;
     width: 100% !important;
+  }
+
+  .event-form {
+    width: 90%;
   }
 
   .global--modal-content {
