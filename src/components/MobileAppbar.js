@@ -7,6 +7,7 @@ import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import StatusMessage from './StatusMessage'
+import { createStatusMessage } from '../utils/createStatusMessage'
 
 class MobileAppbar extends React.Component {
   constructor(props) {
@@ -90,9 +91,23 @@ class MobileAppbar extends React.Component {
               placeholder="Valitse tarppo..."
               onChange={this.onChangeTaskgroup}
               options={taskgroups.map(taskgroup => {
+                const status = createStatusMessage(
+                  this.props.events,
+                  this.props.pofTree,
+                  taskgroup
+                )
+                let labelText = taskgroup.label
+
+                if (status.taskgroupDone) {
+                  labelText = (
+                    <span style={{ textDecoration: 'line-through' }}>
+                      {labelText}
+                    </span>
+                  )
+                }
                 return {
                   value: taskgroup.guid,
-                  label: taskgroup.label
+                  label: labelText
                 }
               })}
             />
@@ -122,6 +137,7 @@ const mapStateToProps = state => {
     buffer: state.buffer,
     pofTree: state.pofTree,
     taskgroup: state.taskgroup,
+    status: state.statusMessage.status,
     scout: state.scout
   }
 }
