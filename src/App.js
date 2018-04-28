@@ -17,7 +17,10 @@ import MobileAppbar from './components/MobileAppbar'
 import ListEvents from './components/ListEvents'
 import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
-import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
+import {
+  bufferZoneInitialization,
+  deleteActivityFromBuffer
+} from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
@@ -59,6 +62,19 @@ class App extends Component {
       this.props.bufferZoneInitialization(2) // id tulee userista myöhemmin
     ])
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+
+    // If touch device is used, empty bufferzone so activities that have been left to bufferzone can be added to events
+    if (isTouchDevice()) {
+      const bufferActivities = this.props.buffer.activities
+      const promises = bufferActivities.map(activity =>
+        this.props.deleteActivityFromBuffer(activity.id)
+      )
+      try {
+        await Promise.all(promises)
+      } catch (exception) {
+        console.log("Error in emptying buffer", exception)
+      }
+    }
   }
 
   componentDidUpdate = () => {
@@ -219,6 +235,7 @@ export default connect(mapStateToProps, {
   pofTreeUpdate,
   eventsInitialization,
   bufferZoneInitialization,
+  deleteActivityFromBuffer,
   addStatusInfo,
   userLogin
 })(AppDnD)

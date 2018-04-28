@@ -189,6 +189,7 @@ class EventCard extends React.Component {
         const res = await eventService.addActivity(this.props.event.id, {
           guid: activityGuid
         })
+
         this.props.addActivityToEventOnlyLocally(this.props.event.id, res)
         this.props.notify('Aktiviteetti on lisätty!', 'success')
       } catch (exception) {
