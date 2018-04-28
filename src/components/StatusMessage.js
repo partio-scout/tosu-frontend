@@ -57,26 +57,28 @@ const warning = (
 const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   // Information in status box when taskgroup is first or last and contains only mandatory tasks
   const specialPlanInformation = () => (
-    <p style={{ fontSize: '0.8rem' }}>
-      <big>
-        <strong>
-          {taskgroup.title}{' '}
-          {statusMessage.status.taskgroupDone ? <span>(valmis)</span> : null}
-        </strong>
-      </big>
-      <br />
-      {statusMessage.status.taskgroupDone ? done : null}
+    <div style={{ fontSize: '0.8rem', lineHeight: '1.6rem' }}>
+      <p>
+        <big>
+          <strong>
+            {taskgroup.title}{' '}
+            {statusMessage.status.taskgroupDone ? <span>(valmis)</span> : null}
+          </strong>
+        </big>
+        <br />
+        {statusMessage.status.taskgroupDone ? done : null}
 
-      {statusMessage.status.taskgroupDone
-        ? `Pakolliset aktiviteetit valittu ${
-            statusMessage.status.dates.mandatory
-          }`
-        : `Valitse pakolliset aktiviteetit ${statusMessage.status.mandatory}/${
-            taskgroup.children.length
-          }`}
+        {statusMessage.status.taskgroupDone
+          ? `Pakolliset aktiviteetit valittu ${
+              statusMessage.status.dates.mandatory
+            }`
+          : `Valitse pakolliset aktiviteetit ${
+              statusMessage.status.mandatory
+            }/${taskgroup.children.length}`}
 
-      <br />
-    </p>
+        <br />
+      </p>
+    </div>
   )
 
   // Information in status box for all Tarppos
@@ -185,14 +187,26 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
 
   // Information in status box when taskgroup is extra tasks (paussit)
   const extraPlanInformation = () => (
-    <p style={{ fontSize: '0.8rem' }}>
-      <big>
-        <strong>{taskgroup.title}</strong>
-      </big>
-      <br />
-      Valittuja aktiviteetteja {statusMessage.status.extraTask}
-      <br />
-    </p>
+    <div style={{ fontSize: '0.8rem', lineHeight: '1.6rem' }}>
+      <p style={{ marginBottom: 0 }}>
+        <big>
+          <strong>{taskgroup.title}</strong>
+        </big>
+        <br />
+        Valittuja aktiviteetteja {statusMessage.status.extraTask.total}
+      </p>
+      <p style={{ margin: 0, marginLeft: 20 }}>
+        Suhde itseen, valittu {statusMessage.status.extraTask.suhdeItseen}
+        <br />
+        Suhde toiseen, valittu {statusMessage.status.extraTask.suhdeToiseen}
+        <br />
+        Suhde yhteiskuntaan, valittu{' '}
+        {statusMessage.status.extraTask.suhdeYhteiskuntaan}
+        <br />
+        Suhde ympäristöön, valittu{' '}
+        {statusMessage.status.extraTask.suhdeYmparistoon}{' '}
+      </p>
+    </div>
   )
 
   const statusbox = () => (
