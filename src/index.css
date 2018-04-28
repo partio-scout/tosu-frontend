@@ -160,6 +160,11 @@ span.label {
   float: right;
 }
 
+.appbar-button:hover {
+  background: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+}
+
 .appbar-button span {
   margin: 5px;
   padding: 0;
