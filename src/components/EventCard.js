@@ -188,9 +188,10 @@ class EventCard extends React.Component {
     console.log(activityGuid)
     if (this.isLeaf(activityGuid)) {
       try {
-        await eventService.addActivity(this.props.event.id, {
+        const res = await eventService.addActivity(this.props.event.id, {
           guid: activityGuid
         })
+        this.props.addActivityToEventOnlyLocally(this.props.event.id, res)
         this.props.notify('Aktiviteetti on lisätty!', 'success')
       } catch (exception) {
         this.props.notify('Aktiviteetin lisäämisessä tapahtui virhe!')
