@@ -39,7 +39,6 @@ import {
 import { green100, white } from 'material-ui/styles/colors'
 import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
-import { treeSearchBar } from '../components/TreeSearchBar'
 import eventService from '../services/events'
 
 const moveActivityFromBuffer = async (
@@ -185,7 +184,6 @@ class EventCard extends React.Component {
     return false
   }
   onChangeChildren = async activityGuid => {
-    console.log(activityGuid)
     if (this.isLeaf(activityGuid)) {
       try {
         const res = await eventService.addActivity(this.props.event.id, {
@@ -292,7 +290,7 @@ class EventCard extends React.Component {
     }
 
     return connectDropTarget(
-      <div>
+      <div className="event-card-wrapper">
         <Card
           expanded={this.state.expanded}
           onExpandChange={this.handleExpandChange}
@@ -307,31 +305,33 @@ class EventCard extends React.Component {
           />
           {isTouchDevice() && !this.state.expanded ? (
             <CardMedia>
-              <div>{rows}</div>
-              <div>
-                <TreeSelect
-                  style={{ width: '100%' }}
-                  transitionName="rc-tree-select-dropdown-slide-up"
-                  choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                  dropdownStyle={{
-                    position: 'absolute',
-                    maxHeight: 400,
-                    overflow: 'auto'
-                  }}
-                  placeholder="Valitse aktiviteetti"
-                  searchPlaceholder="Hae aktiviteettia"
-                  showSearch
-                  allowClear
-                  treeLine
-                  getPopupContainer={() =>
-                    ReactDOM.findDOMNode(this).parentNode
-                  }
-                  value={this.state.value}
-                  treeData={selectedTaskGroupPofData}
-                  treeNodeFilterProp="label"
-                  filterTreeNode={this.filterTreeNode}
-                  onChange={this.onChangeChildren}
-                />
+              <div className="mobile-event-card-media">
+                <div>{rows}</div>
+                <div>
+                  <TreeSelect
+                    style={{ width: '90%' }}
+                    transitionName="rc-tree-select-dropdown-slide-up"
+                    choiceTransitionName="rc-tree-select-selection__choice-zoom"
+                    dropdownStyle={{
+                      position: 'absolute',
+                      maxHeight: 400,
+                      overflow: 'auto'
+                    }}
+                    placeholder="Valitse aktiviteetti"
+                    searchPlaceholder="Hae aktiviteettia"
+                    showSearch
+                    allowClear
+                    treeLine
+                    getPopupContainer={() =>
+                      ReactDOM.findDOMNode(this).parentNode
+                    }
+                    value={this.state.value}
+                    treeData={selectedTaskGroupPofData}
+                    treeNodeFilterProp="label"
+                    filterTreeNode={this.filterTreeNode}
+                    onChange={this.onChangeChildren}
+                  />
+                </div>
               </div>
             </CardMedia>
           ) : null}

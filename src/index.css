@@ -214,12 +214,22 @@ span.label {
 }
 
 .event-form{
-  width: 80%;
+  max-width: 800px;
   margin: 0 auto;
+  margin-top: 20px;
 }
 
 .new-form-paper{
   padding: 20px;
+}
+
+.event-card-wrapper {
+  padding: 5px;
+  margin-bottom: 15px;
+}
+.mobile-event-card-media {
+  padding-bottom: 10px;
+  text-align: center;
 }
 
 @media only screen and (max-width: 768px) {

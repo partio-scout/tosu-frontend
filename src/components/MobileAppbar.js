@@ -1,13 +1,11 @@
 import React from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar'
 import GoogleButtons from './GoogleButtons'
 import { notify } from '../reducers/notificationReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import { createStatusMessage } from '../utils/createStatusMessage'
 import StatusMessage from './StatusMessage'
 
 class MobileAppbar extends React.Component {

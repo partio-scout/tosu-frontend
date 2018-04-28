@@ -1,9 +1,8 @@
 import { connect } from 'react-redux'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
-import TouchBackend from 'react-dnd-touch-backend'
 import isTouchDevice from 'is-touch-device'
-import MultiBackend, { TouchTransition } from 'react-dnd-multi-backend'
+import MultiBackend from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
 //import { GoogleLogin, GoogleLogout } from 'react-google-login'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -192,7 +191,6 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state)
   return {
     notification: state.notification,
     buffer: state.buffer,
@@ -208,9 +206,7 @@ const HTML5toTouch = {
       backend: HTML5Backend
     },
     {
-      backend: TouchBackend({ enableMouseEvents: true }), // Note that you can call your backends with options
-      // preview: true,
-      transition: TouchTransition
+      backend: HTML5Backend
     }
   ]
 }

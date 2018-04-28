@@ -14,7 +14,6 @@ import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
 import ActivityPreview from './ActivityPreview'
-import FlatButton from 'material-ui/FlatButton'
 
 const styles = {
   chip: {

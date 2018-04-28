@@ -3,7 +3,6 @@ import React from 'react'
 import FontAwesome from 'react-fontawesome'
 import isTouchDevice from 'is-touch-device'
 import { GoogleLogin } from 'react-google-login'
-import RaisedButton from 'material-ui/RaisedButton'
 import { userLogin, userLogout } from '../reducers/userReducer'
 import { setGoogleToken, removeGoogleToken } from '../services/googleToken'
 
