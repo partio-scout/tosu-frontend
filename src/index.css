@@ -46,34 +46,34 @@ p.eventTimes > span {
   padding: 0;
 }
 
-
-.footerError {
+.footerError,
+.footerSuccess {
+  padding: 10px;
   text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding-top: 15px;
+  font-size: 1.1rem;
   position: fixed;
   bottom: 0;
-  margin: 0 auto;
-  min-height: 40px;
+  left: 0;
   height: auto;
   width: 100%;
-  max-width: 3000px;
-  background-color: tomato;
 }
 
+.notification-icon{
+  font-size: 1.3rem;
+  margin-right: 10px;
+}
+
+.footerError {
+  color: #F44336;
+  background-color: #FFEBEE;
+  border-top: 2px solid #F44336;
+}
+
+
 .footerSuccess {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding-top: 15px;
-  position: fixed;
-  bottom: 0;
-  margin: 0 auto;
-  min-height: 40px;
-  height: auto;
-  width: 100%;
-  background-color: lightgreen;
+  color: #4CAF50;
+  background-color: #E8F5E9;
+  border-top: 2px solid #4CAF50;
 }
 .pattern {
   background: radial-gradient(#6eff3f 15%, transparent 16%) 0 0,
@@ -115,7 +115,6 @@ p.eventTimes > span {
   line-height: 26px;
   padding: 3px;
 }
-
 
 .previewChip {
   z-index: 999;
