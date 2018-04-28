@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import TouchBackend from 'react-dnd-touch-backend'
+import isTouchDevice from 'is-touch-device'
 import MultiBackend, { TouchTransition } from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
 //import { GoogleLogin, GoogleLogout } from 'react-google-login'
@@ -12,6 +13,7 @@ import StickyHeader from 'react-sticky-header'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import NewEvent from './components/NewEvent'
 import Appbar from './components/AppBar'
+import MobileAppbar from './components/MobileAppbar'
 import ListEvents from './components/ListEvents'
 import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
@@ -23,7 +25,7 @@ import { createStatusMessage } from './utils/createStatusMessage'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import { userLogin } from './reducers/userReducer'
 import { getGoogleToken } from './services/googleToken'
-import CookieConsent from "react-cookie-consent"
+import CookieConsent from 'react-cookie-consent'
 import pofService from './services/pof'
 import { loadCachedPofData } from './services/localStorage'
 
@@ -43,7 +45,7 @@ class App extends Component {
         bufferZoneHeight: 0
       })
     }
-    if(getGoogleToken().headers.Authorization !== null) {
+    if (getGoogleToken().headers.Authorization !== null) {
       await this.props.userLogin()
     }
     let pofData = loadCachedPofData()
@@ -100,6 +102,35 @@ class App extends Component {
   }
   render() {
     const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 60
+
+    const dndMenu = () => (
+      <Appbar
+        setHeaderHeight={this.setHeaderHeight}
+        toggleTopBar={this.toggleTopBar}
+        headerVisible={this.state.headerVisible}
+        selfInfo={
+          <Link to="/user-info">
+            <RaisedButton
+              label="Omat tiedot"
+              style={{
+                float: 'right',
+                marginRight: 5,
+                marginTop: 20
+              }}
+              onClick={this.hideTopBar}
+            />
+          </Link>
+        }
+      />
+    )
+
+    const mobileMenu = () => (
+      <MobileAppbar
+        setHeaderHeight={this.setHeaderHeight}
+        headerVisible={this.state.headerVisible}
+      />
+    )
+
     return (
       <div className="App">
         <Router>
@@ -109,27 +140,15 @@ class App extends Component {
                 // This is the sticky part of the header.
                 header={
                   <div>
-                    <Appbar
-                      setHeaderHeight={this.setHeaderHeight}
-                      toggleTopBar={this.toggleTopBar}
-                      headerVisible={this.state.headerVisible}
-                      selfInfo={
-                        <Link to="/user-info">
-                          <RaisedButton
-                            label='Omat tiedot'
-                            style={{ float: 'right', marginRight: 5, marginTop: 20 }}
-                            onClick={this.hideTopBar}
-                          />
-                        </Link>
-                      }
-                    />
+                    {isTouchDevice() ? mobileMenu() : dndMenu()}
+
                     <CookieConsent
                       buttonText="Hyväksyn evästeiden käytön"
                       cookieName="myAwesomeCookieName2"
-                      style={{ background: "#2B373B" }}
-                      buttonStyle={{ color: "#4e503b", fontSize: "14px" }}
+                      style={{ background: '#2B373B' }}
+                      buttonStyle={{ color: '#4e503b', fontSize: '14px' }}
                     >
-                      Tämä sivusto käyttää evästeitä.{" "}
+                      Tämä sivusto käyttää evästeitä.{' '}
                     </CookieConsent>
                   </div>
                 }
@@ -173,6 +192,7 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state)
   return {
     notification: state.notification,
     buffer: state.buffer,
@@ -196,14 +216,6 @@ const HTML5toTouch = {
 }
 
 const AppDnD = DragDropContext(MultiBackend(HTML5toTouch))(App)
-
-/* if (!isTouchDevice()) {
-  console.log('ei touch')
-AppDnD = DragDropContext(HTML5Backend)(App)
-} else {
-  console.log('touch')
-AppDnD = DragDropContext(TouchBackend({ enableMouseEvents: true }))(App)
-} */
 
 export default connect(mapStateToProps, {
   notify,
