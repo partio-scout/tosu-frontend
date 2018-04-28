@@ -143,32 +143,32 @@ span.label {
   margin-right: 10px;
 }
 
-.mobile-select{
+.mobile-select {
   margin: 5px;
-  float:left;
+  float: left;
   max-width: 200px !important;
 }
 .appbar-button {
   margin: 5px;
-  padding: 8px;
+  padding: 5px;
   width: auto !important;
-  background: #01579B;
-  color: rgb(93, 188, 210);
+  background: #fff;
   border: 0;
-  vertical-align: center;
-  font-size: 0.9rem;
-  text-transform: uppercase;
+  color: rgb(93, 188, 210);  
+  font-size: 1.2rem;
   border-radius: 5px;
   float: right;
 }
 
 .appbar-button span {
-  margin: 0;
+  margin: 5px;
+  padding: 0;
 }
 
 .appbar-button-text {
-  font-size: 0.7rem;
-  margin-left: 10px !important;
+  text-transform: uppercase;
+  line-height: 1.2rem;
+  font-size: 0.8rem;
 }
 
 .activity-header {
@@ -187,7 +187,6 @@ span.label {
 .top-bar-right {
   float: right;
 }
-
 
 @media only screen and (max-width: 768px) {
   /* For mobile: */
