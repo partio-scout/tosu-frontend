@@ -83,7 +83,7 @@ class MobileAppbar extends React.Component {
         style={{ background: '#5DBCD2', padding: 1 }}
       >
         <div className="Header_root" id="header_root">
-          <div class="mobile-select">
+          <div className="mobile-select">
             <Select
               menuContainerStyle={{ width: '100%' }}
               style={{ width: 200 }}
