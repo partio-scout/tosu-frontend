@@ -199,6 +199,12 @@ class EventCard extends React.Component {
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
 
+  filterTreeNode = (input, child) => {
+    return child.props.title.props.name
+      .toLowerCase()
+      .includes(input.toLowerCase())
+  }
+
   handleDelete = () => {
     this.handleOpen()
   }

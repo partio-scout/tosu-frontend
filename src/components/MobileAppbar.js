@@ -14,7 +14,6 @@ class MobileAppbar extends React.Component {
     super(props)
     this.state = {
       showStatusBox: true,
-      treePlaceHolder: 'Valitse ensin tarppo'
     }
   }
 
