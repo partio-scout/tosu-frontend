@@ -7,6 +7,7 @@ import MultiBackend, { TouchTransition } from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
 //import { GoogleLogin, GoogleLogout } from 'react-google-login'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import FontAwesome from 'react-fontawesome'
 import RaisedButton from 'material-ui/RaisedButton'
 import 'react-sticky-header/styles.css'
 import StickyHeader from 'react-sticky-header'
@@ -101,26 +102,24 @@ class App extends Component {
     }
   }
   render() {
-    const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 60
+    const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 70
+    const selfInfo = (
+      <Link to="/user-info">
+        <button className="appbar-button" onClick={this.hideTopBar}>
+          <FontAwesome className="icon" name="user" />
 
+          {!isTouchDevice() ? (
+            <span className="appbar-button-text">Omat tiedot</span>
+          ) : null}
+        </button>
+      </Link>
+    )
     const dndMenu = () => (
       <Appbar
         setHeaderHeight={this.setHeaderHeight}
         toggleTopBar={this.toggleTopBar}
         headerVisible={this.state.headerVisible}
-        selfInfo={
-          <Link to="/user-info">
-            <RaisedButton
-              label="Omat tiedot"
-              style={{
-                float: 'right',
-                marginRight: 5,
-                marginTop: 20
-              }}
-              onClick={this.hideTopBar}
-            />
-          </Link>
-        }
+        selfInfo={selfInfo}
       />
     )
 
@@ -128,6 +127,7 @@ class App extends Component {
       <MobileAppbar
         setHeaderHeight={this.setHeaderHeight}
         headerVisible={this.state.headerVisible}
+        selfInfo={selfInfo}
       />
     )
 

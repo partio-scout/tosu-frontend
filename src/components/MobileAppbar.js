@@ -1,6 +1,8 @@
 import React from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
+import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar'
+import GoogleButtons from './GoogleButtons'
 import { notify } from '../reducers/notificationReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
@@ -81,23 +83,25 @@ class MobileAppbar extends React.Component {
         style={{ background: '#5DBCD2', padding: 1 }}
       >
         <div className="Header_root" id="header_root">
-          Yläpalkki
+          <div class="mobile-select">
+            <Select
+              menuContainerStyle={{ width: '100%' }}
+              style={{ width: 200 }}
+              name="form-field-name"
+              value={this.props.taskgroup}
+              placeholder="Valitse tarppo..."
+              onChange={this.onChangeTaskgroup}
+              options={taskgroups.map(taskgroup => {
+                return {
+                  value: taskgroup.guid,
+                  label: taskgroup.label
+                }
+              })}
+            />
+          </div>
+          <GoogleButtons selfInfo={this.props.selfInfo} />
+          <div style={{ clear: 'both' }} />
         </div>
-
-        <Select
-          menuContainerStyle={{ width: '100%' }}
-          style={{ width: 200 }}
-          name="form-field-name"
-          value={this.props.taskgroup}
-          placeholder="Valitse tarppo..."
-          onChange={this.onChangeTaskgroup}
-          options={taskgroups.map(taskgroup => {
-            return {
-              value: taskgroup.guid,
-              label: taskgroup.label
-            }
-          })}
-        />
 
         {this.props.headerVisible ? (
           <div className="mobile-status-message-box">
@@ -119,7 +123,8 @@ const mapStateToProps = state => {
     events: state.events,
     buffer: state.buffer,
     pofTree: state.pofTree,
-    taskgroup: state.taskgroup
+    taskgroup: state.taskgroup,
+    scout: state.scout
   }
 }
 
