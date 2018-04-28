@@ -319,7 +319,7 @@ class EventCard extends React.Component {
                     maxHeight: 400,
                     overflow: 'auto'
                   }}
-                  placeholder={this.state.treePlaceHolder}
+                  placeholder="Valitse aktiviteetti"
                   searchPlaceholder="Hae aktiviteettia"
                   showSearch
                   allowClear
