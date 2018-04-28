@@ -135,7 +135,9 @@ class TreeSearchBar extends React.Component {
 
   render() {
     const taskGroupTree = this.props.pofTree.taskgroups
-
+    if (taskGroupTree === undefined) {
+      return null
+    }
     let selectedTaskGroupPofData = []
     if (this.props.taskgroup !== undefined && this.props.taskgroup !== null) {
       const groupfound = taskGroupTree.find(

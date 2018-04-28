@@ -23,6 +23,7 @@ class MobileAppbar extends React.Component {
 
   componentDidUpdate = () => {
     this.getHeight()
+    this.updateStatusMessage()
   }
 
   onChangeTaskgroup = async taskgroup => {
