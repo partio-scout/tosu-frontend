@@ -1,5 +1,9 @@
 import { connect } from 'react-redux'
+import ReactDOM from 'react-dom'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
+import isTouchDevice from 'is-touch-device'
+import TreeSelect /*, { TreeNode, SHOW_PARENT }*/ from 'rc-tree-select'
+import 'rc-tree-select/assets/index.css'
 import React from 'react'
 import { DropTarget } from 'react-dnd'
 import { notify } from '../reducers/notificationReducer'
@@ -35,6 +39,8 @@ import {
 import { green100, white } from 'material-ui/styles/colors'
 import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
+import { treeSearchBar } from '../components/TreeSearchBar'
+import eventService from '../services/events'
 
 const moveActivityFromBuffer = async (
   props,
@@ -158,6 +164,40 @@ class EventCard extends React.Component {
       )
     }
   }
+  isLeaf = value => {
+    if (!value) {
+      return false
+    }
+    let queues = [...this.props.pofTree.taskgroups]
+    while (queues.length) {
+      // BFS
+      const item = queues.shift()
+      if (item.value.toString() === value.toString()) {
+        if (!item.children) {
+          return true
+        }
+        return false
+      }
+      if (item.children) {
+        queues = queues.concat(item.children)
+      }
+    }
+    return false
+  }
+  onChangeChildren = async activityGuid => {
+    console.log(activityGuid)
+    if (this.isLeaf(activityGuid)) {
+      try {
+        await eventService.addActivity(this.props.event.id, {
+          guid: activityGuid
+        })
+        this.props.notify('Aktiviteetti on lisätty!', 'success')
+      } catch (exception) {
+        this.props.notify('Aktiviteetin lisäämisessä tapahtui virhe!')
+      }
+    }
+    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+  }
 
   handleDelete = () => {
     this.handleOpen()
@@ -239,6 +279,18 @@ class EventCard extends React.Component {
       patternClass = 'pattern'
     }
 
+    const taskGroupTree = this.props.pofTree.taskgroups
+
+    let selectedTaskGroupPofData = []
+    if (this.props.taskgroup !== undefined && this.props.taskgroup !== null) {
+      const groupfound = taskGroupTree.find(
+        group => group.guid === this.props.taskgroup.value
+      )
+      selectedTaskGroupPofData = selectedTaskGroupPofData.concat(
+        groupfound.children
+      )
+    }
+
     return connectDropTarget(
       <div>
         <Card
@@ -253,7 +305,38 @@ class EventCard extends React.Component {
             actAsExpander
             showExpandableButton
           />
-          {!this.state.expanded && this.props.event.activities.length !== 0 ? (
+          {isTouchDevice() && !this.state.expanded ? (
+            <CardMedia>
+              <div>
+                <TreeSelect
+                  style={{ width: '100%' }}
+                  transitionName="rc-tree-select-dropdown-slide-up"
+                  choiceTransitionName="rc-tree-select-selection__choice-zoom"
+                  dropdownStyle={{
+                    position: 'absolute',
+                    maxHeight: 400,
+                    overflow: 'auto'
+                  }}
+                  placeholder={this.state.treePlaceHolder}
+                  searchPlaceholder="Hae aktiviteettia"
+                  showSearch
+                  allowClear
+                  treeLine
+                  getPopupContainer={() =>
+                    ReactDOM.findDOMNode(this).parentNode
+                  }
+                  value={this.state.value}
+                  treeData={selectedTaskGroupPofData}
+                  treeNodeFilterProp="label"
+                  filterTreeNode={this.filterTreeNode}
+                  onChange={this.onChangeChildren}
+                />
+              </div>
+            </CardMedia>
+          ) : null}
+          {!isTouchDevice() &&
+          !this.state.expanded &&
+          this.props.event.activities.length !== 0 ? (
             <CardMedia>
               <div className="activity-header">{rows}</div>
             </CardMedia>
@@ -315,7 +398,8 @@ const mapStateToProps = state => {
   return {
     events: state.events,
     buffer: state.buffer,
-    pofTree: state.pofTree
+    pofTree: state.pofTree,
+    taskgroup: state.taskgroup
   }
 }
 
