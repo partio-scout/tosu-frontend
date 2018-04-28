@@ -49,7 +49,7 @@ class App extends Component {
       await this.props.userLogin()
     }
     let pofData = loadCachedPofData()
-    console.log(pofData)
+
     if (pofData === undefined || pofData === {}) {
       pofData = await pofService.getAllTree()
     }

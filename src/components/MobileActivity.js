@@ -15,6 +15,32 @@ import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
 import ActivityPreview from './ActivityPreview'
 
+const styles = {
+  chip: {
+    margin: 4,
+    backgroundColor: blue200,
+    cursor: 'move'
+  },
+  avatar: {
+    size: 28,
+    color: indigo900,
+    backgroundColor: blue200,
+    margin: 4
+  },
+  chipMandatory: {
+    margin: 4,
+    width: '100%',
+    backgroundColor: blue500,
+    cursor: 'move'
+  },
+  avatarMandatory: {
+    size: 28,
+    color: indigo900,
+    backgroundColor: blue500,
+    margin: 4
+  }
+}
+
 const activitySource = {
   beginDrag(props, monitor) {
     return {
@@ -88,17 +114,13 @@ class Activity extends Component {
           >
             <Chip
               onRequestDelete={() => this.props.deleteActivity(activity)}
-              className={
-                pofActivity.mandatory ? 'mandatory-chip' : 'non-mandatory-chip'
-              }
+              style={pofActivity.mandatory ? styles.chipMandatory : styles.chip}
               key={activity.id}
               onClick={this.handleClick}
             >
               <Avatar
-                className={
-                  pofActivity.mandatory
-                    ? 'mandatory-chip-avatar'
-                    : 'non-mandatory-chip-avatar'
+                style={
+                  pofActivity.mandatory ? styles.avatarMandatory : styles.avatar
                 }
               >
                 <img

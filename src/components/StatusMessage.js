@@ -82,7 +82,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   // Information in status box for all Tarppos
   const basicPlanInformation = () => {
     return (
-      <div style={{ fontSize: '0.8rem', lineHeight: '1.6rem' }}>
+      <div style={{ fontSize: '0.8rem', lineHeight: '1.4rem' }}>
         <p style={{ marginBottom: 0 }}>
           <big>
             <strong>
