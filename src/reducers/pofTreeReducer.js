@@ -1,5 +1,6 @@
 import { blue50, blue500 } from 'material-ui/styles/colors'
 import React from 'react'
+import isTouchDevice from 'is-touch-device'
 
 const reducer = (state = [], action) => {
   switch (action.type) {
@@ -17,7 +18,7 @@ const reducer = (state = [], action) => {
   }
 }
 
-export const pofTreeInitialization = (pofJson) => {
+export const pofTreeInitialization = pofJson => {
   return async dispatch => {
     // const pofJson = await pofService.getAllTree()
     dispatch({
@@ -28,9 +29,14 @@ export const pofTreeInitialization = (pofJson) => {
 }
 
 export const pofTreeUpdate = (buffer, events) => {
+  let usedBuffer = buffer
+
+  if (isTouchDevice) {
+    usedBuffer = { id: 0, activities: [] }
+  }
   return async dispatch => {
     const existingActivityGuids = arrayActivityGuidsFromBufferAndEvents(
-      buffer,
+      usedBuffer,
       events
     )
     dispatch({
@@ -91,6 +97,7 @@ const setChildrenTasksDisabled = pofChild => {
 //recursively disable existing tasks and enable if removed
 const disableTasksInFilterIfExists = (root, existingActivityGuids) => {
   if (root === null || root === undefined) return
+
   root.taskgroups.forEach(group =>
     disableTasksInFilterIfExists(group, existingActivityGuids)
   )
@@ -169,14 +176,14 @@ const sortTreeByOrder = root => {
 //we use that to search/filter from pofdata
 const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
   let activities = []
-    buffer.activities.forEach(activity => {
+  buffer.activities.forEach(activity => {
+    activities = activities.concat(activity.guid)
+  })
+  events.forEach(event => {
+    event.activities.forEach(activity => {
       activities = activities.concat(activity.guid)
     })
-    events.forEach(event => {
-      event.activities.forEach(activity => {
-        activities = activities.concat(activity.guid)
-      })
-    })
+  })
   return activities
 }
 //pof contains a specific order which is why we sort

@@ -11,7 +11,6 @@ import {
 } from 'react-material-ui-form-validator'
 import moment from 'moment'
 import FlatButton from 'material-ui/FlatButton'
-import Paper from 'material-ui/Paper'
 
 const errorStyle = {
   position: 'absolute',
@@ -167,7 +166,7 @@ export default class EventForm extends React.Component {
     const frequentStyle = { display: this.state.checked ? '' : 'none' }
 
     return (
-      <Paper zDepth={2} style={{ padding: 20 }}>
+      <div>
         <h2>Uusi tapahtuma</h2>
         <ValidatorForm
           ref={() => 'form'}
@@ -311,7 +310,7 @@ export default class EventForm extends React.Component {
           <br />
           {actions}
         </ValidatorForm>
-      </Paper>
+      </div>
     )
   }
 }

@@ -2,6 +2,8 @@ import React from 'react'
 import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import isTouchDevice from 'is-touch-device'
+import Paper from 'material-ui/Paper'
 import eventgroupService from '../services/eventgroups'
 import FrequentEventsHandler from '../utils/FrequentEventsHandler'
 import EventForm from './EventForm'
@@ -129,7 +131,6 @@ class NewEvent extends React.Component {
       } else {
         this.props.notify('Uusi toistuva tapahtuma luotu!', 'success')
       }
-      
     } catch (exception) {
       console.error('Error in event POST:', exception)
       this.props.notify(
@@ -165,14 +166,28 @@ class NewEvent extends React.Component {
   }
 
   render() {
+    if (isTouchDevice()) {
+      return (
+        <div className="event-form">
+          <EventForm
+            submitFunction={this.handleCloseAndSend.bind(this)}
+            close={this.handleClose.bind(this)}
+            update={this.update.bind(this)}
+            data={this.state}
+          />
+        </div>
+      )
+    }
     return (
       <div className="event-form">
-        <EventForm
-          submitFunction={this.handleCloseAndSend.bind(this)}
-          close={this.handleClose.bind(this)}
-          update={this.update.bind(this)}
-          data={this.state}
-        />
+        <Paper zDepth={2} className="new-form-paper">
+          <EventForm
+            submitFunction={this.handleCloseAndSend.bind(this)}
+            close={this.handleClose.bind(this)}
+            update={this.update.bind(this)}
+            data={this.state}
+          />
+        </Paper>
       </div>
     )
   }

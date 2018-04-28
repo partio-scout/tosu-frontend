@@ -1,21 +1,26 @@
 import { connect } from 'react-redux'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
-import TouchBackend from 'react-dnd-touch-backend'
-import MultiBackend, { TouchTransition } from 'react-dnd-multi-backend'
+import isTouchDevice from 'is-touch-device'
+import MultiBackend from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
 //import { GoogleLogin, GoogleLogout } from 'react-google-login'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import FontAwesome from 'react-fontawesome'
 import RaisedButton from 'material-ui/RaisedButton'
 import 'react-sticky-header/styles.css'
 import StickyHeader from 'react-sticky-header'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import NewEvent from './components/NewEvent'
 import Appbar from './components/AppBar'
+import MobileAppbar from './components/MobileAppbar'
 import ListEvents from './components/ListEvents'
 import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
-import { bufferZoneInitialization } from './reducers/bufferZoneReducer'
+import {
+  bufferZoneInitialization,
+  deleteActivityFromBuffer
+} from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
@@ -23,7 +28,7 @@ import { createStatusMessage } from './utils/createStatusMessage'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import { userLogin } from './reducers/userReducer'
 import { getGoogleToken } from './services/googleToken'
-import CookieConsent from "react-cookie-consent"
+import CookieConsent from 'react-cookie-consent'
 import pofService from './services/pof'
 import { loadCachedPofData } from './services/localStorage'
 
@@ -43,11 +48,11 @@ class App extends Component {
         bufferZoneHeight: 0
       })
     }
-    if(getGoogleToken().headers.Authorization !== null) {
+    if (getGoogleToken().headers.Authorization !== null) {
       await this.props.userLogin()
     }
     let pofData = loadCachedPofData()
-    console.log(pofData)
+
     if (pofData === undefined || pofData === {}) {
       pofData = await pofService.getAllTree()
     }
@@ -57,6 +62,19 @@ class App extends Component {
       this.props.bufferZoneInitialization(2) // id tulee userista myöhemmin
     ])
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+
+    // If touch device is used, empty bufferzone so activities that have been left to bufferzone can be added to events
+    if (isTouchDevice()) {
+      const bufferActivities = this.props.buffer.activities
+      const promises = bufferActivities.map(activity =>
+        this.props.deleteActivityFromBuffer(activity.id)
+      )
+      try {
+        await Promise.all(promises)
+      } catch (exception) {
+        console.log("Error in emptying buffer", exception)
+      }
+    }
   }
 
   componentDidUpdate = () => {
@@ -99,7 +117,35 @@ class App extends Component {
     }
   }
   render() {
-    const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 60
+    const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 70
+    const selfInfo = (
+      <Link to="/user-info">
+        <button className="appbar-button" onClick={this.hideTopBar}>
+          <FontAwesome className="icon" name="user" />
+
+          {!isTouchDevice() ? (
+            <span className="appbar-button-text">Omat tiedot</span>
+          ) : null}
+        </button>
+      </Link>
+    )
+    const dndMenu = () => (
+      <Appbar
+        setHeaderHeight={this.setHeaderHeight}
+        toggleTopBar={this.toggleTopBar}
+        headerVisible={this.state.headerVisible}
+        selfInfo={selfInfo}
+      />
+    )
+
+    const mobileMenu = () => (
+      <MobileAppbar
+        setHeaderHeight={this.setHeaderHeight}
+        headerVisible={this.state.headerVisible}
+        selfInfo={selfInfo}
+      />
+    )
+
     return (
       <div className="App">
         <Router>
@@ -109,27 +155,15 @@ class App extends Component {
                 // This is the sticky part of the header.
                 header={
                   <div>
-                    <Appbar
-                      setHeaderHeight={this.setHeaderHeight}
-                      toggleTopBar={this.toggleTopBar}
-                      headerVisible={this.state.headerVisible}
-                      selfInfo={
-                        <Link to="/user-info">
-                          <RaisedButton
-                            label='Omat tiedot'
-                            style={{ float: 'right', marginRight: 5, marginTop: 20 }}
-                            onClick={this.hideTopBar}
-                          />
-                        </Link>
-                      }
-                    />
+                    {isTouchDevice() ? mobileMenu() : dndMenu()}
+
                     <CookieConsent
                       buttonText="Hyväksyn evästeiden käytön"
                       cookieName="myAwesomeCookieName2"
-                      style={{ background: "#2B373B" }}
-                      buttonStyle={{ color: "#4e503b", fontSize: "14px" }}
+                      style={{ background: '#2B373B' }}
+                      buttonStyle={{ color: '#4e503b', fontSize: '14px' }}
                     >
-                      Tämä sivusto käyttää evästeitä.{" "}
+                      Tämä sivusto käyttää evästeitä.{' '}
                     </CookieConsent>
                   </div>
                 }
@@ -188,22 +222,12 @@ const HTML5toTouch = {
       backend: HTML5Backend
     },
     {
-      backend: TouchBackend({ enableMouseEvents: true }), // Note that you can call your backends with options
-      // preview: true,
-      transition: TouchTransition
+      backend: HTML5Backend
     }
   ]
 }
 
 const AppDnD = DragDropContext(MultiBackend(HTML5toTouch))(App)
-
-/* if (!isTouchDevice()) {
-  console.log('ei touch')
-AppDnD = DragDropContext(HTML5Backend)(App)
-} else {
-  console.log('touch')
-AppDnD = DragDropContext(TouchBackend({ enableMouseEvents: true }))(App)
-} */
 
 export default connect(mapStateToProps, {
   notify,
@@ -211,6 +235,7 @@ export default connect(mapStateToProps, {
   pofTreeUpdate,
   eventsInitialization,
   bufferZoneInitialization,
+  deleteActivityFromBuffer,
   addStatusInfo,
   userLogin
 })(AppDnD)
