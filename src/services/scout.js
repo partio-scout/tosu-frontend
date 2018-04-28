@@ -7,7 +7,7 @@ const deleteScout = async (scoutId,token) => {
 }
  
 const findOrCreateScout = async (token) => {
-  const response = await axios.post(`${API_ROOT}/scout`)
+  const response = await axios.post(`${API_ROOT}/scout`, {} ,token)
   return response.data
 }
 
