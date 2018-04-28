@@ -43,7 +43,13 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     total: 0,
     done: false
   }
-  let extraTask = 0
+  let extraTask = {
+    suhdeItseen: 0,
+    suhdeToiseen: 0,
+    suhdeYhteiskuntaan: 0,
+    suhdeYmparistoon: 0,
+    total: 0
+  }
 
   // Task dates
   const dates = {
@@ -142,7 +148,19 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
 
         // Check if activity is paussi
         if (activity.parents[2].guid === '5f6c4cefac801370cd255dd36e6dacbf') {
-          extraTask += 1
+
+          if (activity.parents[3].title.match(/Suhde itseen/)) {
+            extraTask.suhdeItseen += 1
+          } else if (activity.parents[3].title.match(/Suhde toiseen/)) {
+            extraTask.suhdeToiseen += 1
+          } else if (activity.parents[3].title.match(/Suhde ympäristöön/)) {
+            extraTask.suhdeYmparistoon += 1
+          } else if (activity.parents[3].title.match(/Suhde yhteiskuntaan/)) {
+            extraTask.suhdeYhteiskuntaan += 1
+          }
+
+          extraTask.total += 1
+          console.log("Date", activity.date)
           dates.extraTask = activity.date
         }
       }
@@ -156,6 +174,16 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     }
   }
 
+  // Check if needed non-mandatory activities have been picked for taskgroup
+  if (
+    nonMandatory.suhdeItseen >= 1 &&
+    nonMandatory.suhdeToiseen >= 1 &&
+    nonMandatory.suhdeYhteiskuntaan >= 1 &&
+    nonMandatory.suhdeYmparistoon >= 1
+  ) {
+    nonMandatory.done = true
+  }
+
   // Check if all needed mandatory task have been picked for normal taskgroup (tarppo)
   if (!firstTaskgroup && !lastTaskgroup && !extraTaskgroup) {
     if (
@@ -167,16 +195,6 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     ) {
       taskgroupDone = true
     }
-  }
-
-  // Check if needed nonMandatory activities have been picked
-  if (
-    nonMandatory.suhdeItseen >= 1 &&
-    nonMandatory.suhdeToiseen >= 1 &&
-    nonMandatory.suhdeYhteiskuntaan >= 1 &&
-    nonMandatory.suhdeYmparistoon >= 1
-  ) {
-    nonMandatory.done = true
   }
 
   // Check if first task (suuntaus) is the first one planned
@@ -220,7 +238,7 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
   dates.majakka = moment(dates.majakka).format('DD.MM.YYYY')
   dates.extraTask = moment(dates.extraTask).format('DD.MM.YYYY')
 
-  // Return status object which contains all the information 
+  // Return status object which contains all the information
   const status = {
     taskgroupDone,
     firstTaskgroup,

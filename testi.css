@@ -1,0 +1,200 @@
+@media only screen and (min-width: 981px) {
+
+.sub_menu{
+position: relative;
+z-index: 1;
+}
+#logo {
+min-height: 110px;
+min-width: 110px;
+margin-top: 26px;
+position: relative;
+z-index: 99999;
+}
+
+#main-header {
+max-height: 66px !important;
+}
+
+.centered-inline-logo-wrap{
+width: auto !important;
+}
+
+#et-top-navigation{
+padding-top: 0 !important;
+}
+}
+
+
+.menu-item-object-project a {
+text-transform: none !important;
+line-height: 16px;
+}
+
+slider-no-animation .et-pb-active-slide .et_pb_slide_description {
+animation-name: none !important;
+}
+
+.header-mountains:after {
+    background-image: url(http://www.outdoorpassion.fi/images/layout/mountains_1.png);
+    position: relative;
+    width: 100%;
+    height: 40px;
+    float: left;
+    top: -35px;
+    content: ' ';
+    background-repeat: repeat-x;
+}
+
+.social-icons-wrap {
+margin-left:auto;
+margin-right:auto;
+text-align:center;
+}
+.social-icons, .nav-social-icons a:after {
+font-family: 'ETmodules';
+display:inline-block;
+color:#fff;
+}
+.social-icons {
+font-size:72px;
+height:72px;
+}
+
+#et-secondary-nav {
+line-height:0px;
+}
+
+.navi-instagram a:after {content: "e09a"; margin: 10px 0 10px 5px;}
+.navi-facebook a:after {content: "e093"; margin: 10px 0 10px 5px;}
+.navi-youtube a:after {content: "e0a3"; margin: 10px 0 10px 5px;}
+.icon_instagram:before {content: "e0b1"; margin: 10px; }
+.icon_facebook:before {content: "e0aa"; margin: 10px;}
+.icon_twitter:before {content: "e0ab"; margin:10px;}
+.icon_youtube:before {content: "e0ba"; margin:10px;}
+
+@media (max-width: 768px) {
+.socialIcons {
+width: 30%;
+}
+}
+
+.ds-blog-square .post-content {
+    display: none;
+}
+.ds-blog-square .et_pb_image_container {
+    margin: -19px -19px 0;
+}
+.ds-blog-square h2 {
+    margin: 0!important;
+    padding: 0;
+}
+
+.ds-blog-square .et_pb_post {
+    position: relative;
+    padding-bottom: 0;
+    border: none;
+}
+
+.ds-blog-square h2 a {
+position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    padding: 40px;
+    margin: 0;
+    background: #4eabae87;
+    color: #fff;
+    text-align: center;
+    outline: 2px solid #fff;
+    outline-offset: 0px;
+    display: flex!important;
+    flex-direction: column;
+    justify-content: center;
+    -moz-transition: all 0.4s ease;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+
+.ds-blog-square h2 a:hover {
+    background: rgba(255, 255, 255, 0);
+    color: #fff;
+    outline: 2px solid #4eabae;
+    outline-offset: 0;
+font-weight:bold;
+}
+
+/*portfolio filters*/
+.et_pb_column .et_pb_filterable_portfolio .et_pb_portfolio_filters li a {
+border:0px;
+color:#4eabae;
+border-radius:0px!important;
+background-color:#fff;
+}
+
+@media (max-width:767px){
+.et_pb_column .et_pb_filterable_portfolio .et_pb_portfolio_filters li a {
+
+    display: block;
+    width: 45%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.et_pb_column .et_pb_filterable_portfolio .et_pb_portfolio_filters li {
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: center;
+}
+}
+
+
+.et_pb_column .et_pb_filterable_portfolio .et_pb_portfolio_filters li a.active {
+    border-bottom:solid 2px #4eabae;
+}
+
+@media only screen and ( min-width: 981px ) {
+ 
+.three-column-grid .et_pb_grid_item {
+width:32.34%!important;
+margin: 0 1.45% 1.5% 0!important;
+}
+ 
+.three-column-grid .et_pb_grid_item:nth-child(3n) {
+margin-right: 0 !important;
+}
+}
+
+@media (min-width: 600px) and (max-width: 980px) {
+.three-column-grid .et_gallery_item:nth-child(n), .et_pb_column .et_pb_filterable_portfolio .et_pb_portfolio_item.et_pb_grid_item:nth-child(n), .three-column-grid .et_pb_column .et_pb_grid_item:nth-child(n) {
+
+    clear: none;
+    width: 48%!important;
+    margin: 0 1.5% 1.5% 0!important;
+}
+.three-column-grid .et_pb_grid_item:nth-child(2n) {
+    margin-right: 0;
+}
+.et_pb_column {
+    margin-bottom: 0px;
+}
+}
+
+@media (max-width: 599px) {
+.et_gallery_item:nth-child(n), .et_pb_column .et_pb_filterable_portfolio_grid .et_pb_portfolio_item.et_pb_grid_item:nth-child(n),  .et_pb_column .et_pb_grid_item:nth-child(n){
+
+    clear: none;
+    width: 100%!important;
+    margin: 0 0 5% 0!important;
+}
+
+.portfolio_row span.et_portfolio_image:after {
+    left:0;
+}
+.three-column-grid .et_portfolio_image img {
+    width:100%!important;
+}
+.et_pb_column {
+    margin-bottom: 0px;
+}
+}
