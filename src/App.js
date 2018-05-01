@@ -122,7 +122,7 @@ class App extends Component {
     return this.props.events.sort(eventComparer) 
   }
 
-  listOfEvents = () => {
+  listOfSortedEvents = () => {
     const events = this.sortedEvents()
     return events.map(event => (
       <EventCard
@@ -164,7 +164,7 @@ class App extends Component {
 
     const events = (
       <div>
-        {this.listOfEvents()}
+        {this.listOfSortedEvents()}
       </div>
     )
 
