@@ -8,7 +8,7 @@ if (hostname === 'suunnittelu.partio-ohjelma.fi') {
   root = 'https://suunnittelu.partio-ohjelma.fi:3001';
 } else {
   //root = 'https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001';
-  root = 'http://localhost:3001';
+  root = 'https://suunnittelu.partio-ohjelma.fi:3001';
 }
 
 export const API_ROOT = root

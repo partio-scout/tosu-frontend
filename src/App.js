@@ -14,7 +14,6 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import NewEvent from './components/NewEvent'
 import Appbar from './components/AppBar'
 import MobileAppbar from './components/MobileAppbar'
-import ListEvents from './components/ListEvents'
 import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import {
@@ -31,6 +30,8 @@ import { getGoogleToken } from './services/googleToken'
 import CookieConsent from 'react-cookie-consent'
 import pofService from './services/pof'
 import { loadCachedPofData } from './services/localStorage'
+import eventComparer from './utils/EventCompare'
+import EventCard from './components/EventCard'
 
 class App extends Component {
   constructor() {
@@ -116,6 +117,21 @@ class App extends Component {
       this.toggleTopBar()
     }
   }
+
+  sortedEvents = () => {
+    return this.props.events.sort(eventComparer) 
+  }
+
+  listOfEvents = () => {
+    const events = this.sortedEvents()
+    return events.map(event => (
+      <EventCard
+        key={event.id ? event.id : 0}
+        event={event}
+      />
+    ))
+  }
+
   render() {
     const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 70
     const selfInfo = (
@@ -146,8 +162,14 @@ class App extends Component {
       />
     )
 
+    const events = (
+      <div>
+        {this.listOfEvents()}
+      </div>
+    )
+
     return (
-      <div className="App">
+      <div className="App" >
         <Router>
           <MuiThemeProvider>
             <div>
@@ -186,7 +208,7 @@ class App extends Component {
                     />
                   </Link>
                   &nbsp;
-                  <Route exact path="/" render={() => <ListEvents />} />
+                  <Route exact path="/" render={() => events} />
                   <Route
                     path="/new-event"
                     render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
