@@ -22,6 +22,7 @@ class googleButtons extends React.Component {
         this.props.eventsInitialization(),
         this.props.bufferZoneInitialization(2) // id tulee userista myöhemmin
       ])
+      this.props.pofTreeUpdate(this.props.buffer, this.props.events)
     }
   }
 
@@ -70,7 +71,9 @@ class googleButtons extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    scout: state.scout
+    scout: state.scout,
+    buffer: state.buffer,
+    events: state.events
   }
 }
 
