@@ -49,8 +49,9 @@ class App extends Component {
         bufferZoneHeight: 0
       })
     }
-    if (getGoogleToken().headers.Authorization !== null) {
-      await this.props.userLogin()
+    console.log(getGoogleToken())
+    if (getGoogleToken() !== null) {
+      await this.props.userLogin(getGoogleToken())
     }
     let pofData = loadCachedPofData()
 

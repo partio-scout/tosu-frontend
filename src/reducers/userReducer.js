@@ -1,5 +1,5 @@
 import scoutService from '../services/scout'
-import { getGoogleToken } from '../services/googleToken';
+import { getGoogleToken, setGoogleToken, removeGoogleToken } from '../services/googleToken';
 
 
 
@@ -17,9 +17,10 @@ const reducer = (state = null, action) => {
     }
 }
 
-export const userLogin = () => async dispatch => {
-    console.log(getGoogleToken())
-   const scout = await scoutService.findOrCreateScout(getGoogleToken())
+export const userLogin = (token) => async dispatch => {
+    console.log(token)
+   const scout = await scoutService.findOrCreateScout(token)
+   setGoogleToken(token)
     
     dispatch({
         type: 'USER_LOGIN',
@@ -29,6 +30,7 @@ export const userLogin = () => async dispatch => {
 
 export const userLogout = () => async dispatch => {
     await scoutService.logout()
+    removeGoogleToken()
     dispatch({
         type: 'USER_LOGOUT'
     })
