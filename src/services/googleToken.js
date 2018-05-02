@@ -1,7 +1,6 @@
 export const getGoogleToken = () => {
-    const config = {
-        headers: { 'Authorization': window.localStorage.getItem('googleLogin') }
-    }
+    const config = window.localStorage.getItem('googleLogin')
+    
     return config
  }
  

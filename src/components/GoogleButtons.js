@@ -3,22 +3,27 @@ import React from 'react'
 import FontAwesome from 'react-fontawesome'
 import isTouchDevice from 'is-touch-device'
 import { GoogleLogin } from 'react-google-login'
+import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
+import { eventsInitialization } from '../reducers/eventReducer'
 import { userLogin, userLogout } from '../reducers/userReducer'
-import { setGoogleToken, removeGoogleToken } from '../services/googleToken'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 
 class googleButtons extends React.Component {
   forceMyOwnLogout = async response => {
     console.log('forcelogout')
     await this.props.userLogout()
-    removeGoogleToken()
     /* if (window.gapi) { const auth2 = window.gapi.auth2.getAuthInstance()
              if (auth2 != null) { auth2.signOut().then( auth2.disconnect().then(this.props.onLogoutSuccess))} }*/
   }
 
   googleLoginSuccess = async response => {
     if (this.props.scout === null) {
-      setGoogleToken(response.tokenId)
-      await this.props.userLogin()
+      await this.props.userLogin(response.tokenId)
+      await Promise.all([
+        this.props.eventsInitialization(),
+        this.props.bufferZoneInitialization(2) // id tulee userista myöhemmin
+      ])
+      this.props.pofTreeUpdate(this.props.buffer, this.props.events)
     }
   }
 
@@ -67,11 +72,16 @@ class googleButtons extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    scout: state.scout
+    scout: state.scout,
+    buffer: state.buffer,
+    events: state.events
   }
 }
 
 export default connect(mapStateToProps, {
+  pofTreeUpdate,
+  eventsInitialization,
+  bufferZoneInitialization,
   userLogin,
   userLogout
 })(googleButtons)
