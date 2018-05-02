@@ -6,6 +6,7 @@ import { GoogleLogin } from 'react-google-login'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
 import { userLogin, userLogout } from '../reducers/userReducer'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 
 class googleButtons extends React.Component {
   forceMyOwnLogout = async response => {
@@ -78,6 +79,7 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, {
+  pofTreeUpdate,
   eventsInitialization,
   bufferZoneInitialization,
   userLogin,
