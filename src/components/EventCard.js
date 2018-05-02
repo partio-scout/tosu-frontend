@@ -447,7 +447,6 @@ class EventCard extends React.Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.statusMessage.status)
   return {
     events: state.events,
     buffer: state.buffer,
