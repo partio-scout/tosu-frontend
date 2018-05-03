@@ -1,15 +1,15 @@
 import scoutService from '../services/scout'
-import { getGoogleToken, setGoogleToken, removeGoogleToken } from '../services/googleToken';
+import { setGoogleToken, removeGoogleToken } from '../services/googleToken';
 
 
 
 const reducer = (state = null, action) => {
     switch (action.type) {
-        case 'USER_LOGIN':
+        case 'SCOUT_LOGIN':
             return action.scout
-        case 'USER_LOGOUT':
+        case 'SCOUT_LOGOUT':
             return null
-        case 'USER_DELETE':
+        case 'SCOUT_DELETE':
             return null
 
         default:
@@ -17,29 +17,28 @@ const reducer = (state = null, action) => {
     }
 }
 
-export const userLogin = (token) => async dispatch => {
-    console.log(token)
+export const scoutLogin = (token) => async dispatch => {
    const scout = await scoutService.findOrCreateScout(token)
    setGoogleToken(token)
     
     dispatch({
-        type: 'USER_LOGIN',
-        scout: 'replace me when backend is done, login'
+        type: 'SCOUT_LOGIN',
+        scout: scout
     })
 }
 
-export const userLogout = () => async dispatch => {
+export const scoutLogout = () => async dispatch => {
     await scoutService.logout()
     removeGoogleToken()
     dispatch({
-        type: 'USER_LOGOUT'
+        type: 'SCOUT_LOGOUT'
     })
 }
 
-export const userDelete = () => async dispatch => {
+export const scoutDelete = () => async dispatch => {
     await scoutService.deleteScout()
     dispatch({
-        type: 'USER_DELETE'
+        type: 'SCOUT_DELETE'
     })
 }
 

@@ -1,35 +1,35 @@
-const convertToBackendActivity = (wut) => {
-  if (wut === undefined || wut === null) {
-    return wut
+const convertToBackendActivity = (pofActivity) => {
+  if (pofActivity === undefined || pofActivity === null) {
+    return pofActivity
   }
 
   const pakollisuus = (mandatory) => (
     mandatory === "Pakollinen"
   )
-  const johtamistaito = (activity, wut) => {
+  const johtamistaito = (activity, pofActivity) => {
     try {
-      activity.johtamistaito = wut.tags.johtamistaito.map(jtn => (jtn.name))
+      activity.johtamistaito = pofActivity.tags.johtamistaito.map(jtn => (jtn.name))
     } catch (exception) {
       activity.johtamistaito = []
     }
   }
-  const taitoalueet = (activity, wut) => {
+  const taitoalueet = (activity, pofActivity) => {
     try {
-      activity.taitoalueet = wut.tags.taitoalueet.map(jtn => (jtn.name))
+      activity.taitoalueet = pofActivity.tags.taitoalueet.map(jtn => (jtn.name))
     } catch (exception) {
       activity.taitoalueet = []
     }
   }
-  const kasvatustavoitteet = (activity, wut) => {
+  const kasvatustavoitteet = (activity, pofActivity) => {
     try {
-      activity.kasvatustavoitteet = wut.tags.kasvatustavoitteet.map(jtn => (jtn.name))
+      activity.kasvatustavoitteet = pofActivity.tags.kasvatustavoitteet.map(jtn => (jtn.name))
     } catch (exception) {
       activity.kasvatustavoitteet = []
     }
   }
-  const suggestions = (activity, wut) => {
+  const suggestions = (activity, pofActivity) => {
     try {
-      activity.suggestions = wut.suggestions_details.items.map(jtn => {
+      activity.suggestions = pofActivity.suggestions_details.items.map(jtn => {
         const suggs = {
           title: jtn.title,
           content: jtn.content,
@@ -42,25 +42,25 @@ const convertToBackendActivity = (wut) => {
     }
   }
   let backendActivity = {
-    guid: wut.guid,
-    title: wut.title.props.name,
-    content: wut.content,
-    mandatory: pakollisuus(wut.tags.pakollisuus[0].name),
-    ingress: wut.ingress,
-    leader_tasks: wut.leader_tasks,
-    duration: wut.tags.suoritus_kesto.name,
-    task_term: wut.task_term.name,
-    place: wut.tags.paikka.map(jtn => (jtn.name)),       
-    mandatoryIconUrl: wut.tags.pakollisuus[0].icon,
-    originUrl: wut.languages[0].details,
-    parents: wut.parents
+    guid: pofActivity.guid,
+    title: pofActivity.title.props.name,
+    content: pofActivity.content,
+    mandatory: pakollisuus(pofActivity.tags.pakollisuus[0].name),
+    ingress: pofActivity.ingress,
+    leader_tasks: pofActivity.leader_tasks,
+    duration: pofActivity.tags.suoritus_kesto.name,
+    task_term: pofActivity.task_term.name,
+    place: pofActivity.tags.paikka.map(jtn => (jtn.name)),       
+    mandatoryIconUrl: pofActivity.tags.pakollisuus[0].icon,
+    originUrl: pofActivity.languages[0].details,
+    parents: pofActivity.parents
 
 
   }
-  kasvatustavoitteet(backendActivity,wut)
-  taitoalueet(backendActivity, wut)
-  johtamistaito(backendActivity, wut)
-  suggestions(backendActivity, wut)
+  kasvatustavoitteet(backendActivity,pofActivity)
+  taitoalueet(backendActivity, pofActivity)
+  johtamistaito(backendActivity, pofActivity)
+  suggestions(backendActivity, pofActivity)
   return backendActivity
 }
 

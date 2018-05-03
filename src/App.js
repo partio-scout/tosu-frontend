@@ -4,7 +4,7 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import isTouchDevice from 'is-touch-device'
 import MultiBackend from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
-//import { GoogleLogin, GoogleLogout } from 'react-google-login'
+import { GoogleLogin } from 'react-google-login'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import FontAwesome from 'react-fontawesome'
 import RaisedButton from 'material-ui/RaisedButton'
@@ -25,8 +25,8 @@ import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
 import { createStatusMessage } from './utils/createStatusMessage'
 import { addStatusInfo } from './reducers/statusMessageReducer'
-import { userLogin } from './reducers/userReducer'
-import { getGoogleToken } from './services/googleToken'
+import { scoutLogin } from './reducers/scoutReducer'
+import { getGoogleToken, removeGoogleToken, setGoogleToken } from './services/googleToken'
 import CookieConsent from 'react-cookie-consent'
 import pofService from './services/pof'
 import { loadCachedPofData } from './services/localStorage'
@@ -49,9 +49,12 @@ class App extends Component {
         bufferZoneHeight: 0
       })
     }
-    console.log(getGoogleToken())
     if (getGoogleToken() !== null) {
-      await this.props.userLogin(getGoogleToken())
+      try {
+      await this.props.scoutLogin(getGoogleToken())
+      } catch (exception) {
+        removeGoogleToken()
+      }
     }
     let pofData = loadCachedPofData()
 
@@ -133,7 +136,48 @@ class App extends Component {
     ))
   }
 
+  googleLoginSuccess = async response => {
+    if (this.props.scout === null) {
+      await this.props.scoutLogin(response.tokenId)
+      setGoogleToken(response.tokenId)
+      await Promise.all([
+        this.props.eventsInitialization(),
+        this.props.bufferZoneInitialization()////////////////////
+      ])
+      this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+    }
+  }
+
+  googleLoginFail = async response => {
+    //console.log('login failed')
+  }
+
   render() {
+    
+   if (this.props.scout === null) {
+     return (
+
+<GoogleLogin
+className="appbar-button"
+scope="profile email"
+clientId="7360124073-8f1bq4mul415hr3kdm154vq3c65lp36d.apps.googleusercontent.com"
+onSuccess={this.googleLoginSuccess}
+onFailure={this.googleLoginFail}
+>
+<FontAwesome className="icon" name="google" />
+<span className="label">
+  {' '}
+  {!isTouchDevice() ? (
+    <span className="appbar-button-text">Kirjaudu sisään</span>
+  ) : null}
+</span>
+</GoogleLogin>
+      
+      
+      
+
+     )
+   }
     const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 70
     const selfInfo = (
       <Link to="/user-info">
@@ -235,7 +279,8 @@ const mapStateToProps = state => {
     buffer: state.buffer,
     events: state.events,
     pofTree: state.pofTree,
-    taskgroup: state.taskgroup
+    taskgroup: state.taskgroup,
+    scout: state.scout
   }
 }
 
@@ -260,5 +305,5 @@ export default connect(mapStateToProps, {
   bufferZoneInitialization,
   deleteActivityFromBuffer,
   addStatusInfo,
-  userLogin
+  scoutLogin
 })(AppDnD)

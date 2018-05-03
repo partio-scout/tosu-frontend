@@ -7,13 +7,13 @@ const deleteScout = async (scoutId,token) => {
 }
  
 const findOrCreateScout = async (token) => {
-  console.log(token)
   const response = await axios.post(`${API_ROOT}/scout`, {Authorization: token})
   return response.data
 }
 
 const logout = async () => {
   const response = await axios.post(`${API_ROOT}/logout`, {})
+  return response.data
 }
 
 export default { deleteScout, findOrCreateScout, logout }
