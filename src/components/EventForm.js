@@ -29,8 +29,8 @@ export default class EventForm extends React.Component {
       endDate: event.endDate,
       endTime: event.endTime,
       checked: false,
-      repeatCount: '',
-      repeatFrequency: 0,
+      repeatCount: 2,
+      repeatFrequency: 2,
       type: event.type,
       information: event.information
     }
