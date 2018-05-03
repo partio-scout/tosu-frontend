@@ -64,7 +64,7 @@ class App extends Component {
     await Promise.all([
       this.props.pofTreeInitialization(pofData),
       this.props.eventsInitialization(),
-      this.props.bufferZoneInitialization(2) // id tulee userista myöhemmin
+      this.props.bufferZoneInitialization() // id tulee userista myöhemmin
     ])
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
 

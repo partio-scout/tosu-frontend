@@ -31,7 +31,7 @@ export const pofTreeInitialization = pofJson => {
 export const pofTreeUpdate = (buffer, events) => {
   let usedBuffer = buffer
 
-  if (isTouchDevice) {
+  if (isTouchDevice()) {
     usedBuffer = { id: 0, activities: [] }
   }
   return async dispatch => {

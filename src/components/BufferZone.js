@@ -75,6 +75,7 @@ class BufferZone extends React.Component {
 
     try {
       await Promise.all(promises)
+      this.props.pofTreeUpdate(this.props.buffer, this.props.events)
       this.props.notify('Aktiviteetit poistettu!', 'success')
     } catch (exception) {
       this.props.notify('Kaikkia aktiviteetteja ei voitu poistaa!')
