@@ -25,8 +25,7 @@ const moveActivity = async (
   try {
     const res = await activityService.moveActivityFromEventToBufferZone(
       activityId,
-      parentId,
-      targetId
+      parentId
     )
     props.deleteActivityFromEventOnlyLocally(activityId)
     props.postActivityToBufferOnlyLocally(res)

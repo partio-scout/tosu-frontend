@@ -90,8 +90,7 @@ const moveActivityFromBuffer = async (
 ) => {
   try {
     const res = await activityService.moveActivityFromBufferZoneToEvent(
-      activityId,
-      parentId,
+      activityId,      
       targetId
     )
     await props.addActivityToEventOnlyLocally(targetId, res)

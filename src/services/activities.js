@@ -11,24 +11,24 @@ const deleteActivity = async (id) => {
 }
 
 const addActivityToBufferZone = async (data) => {
-  const response = await axios.post(`${API_ROOT}/activitybuffer/1/activities/`, data)
+  const response = await axios.post(`${API_ROOT}/activitybuffer/activities/`, data)
   return response.data
 }
 
 const getBufferZoneActivities = async () => {
-  const response = await axios.get(`${API_ROOT}/activitybuffer/0`)
+  const response = await axios.get(`${API_ROOT}/activitybuffer`)
   return response.data
 }
 
-const moveActivityFromBufferZoneToEvent = async (id, parentId, targetId) => {
-  const url = `${API_ROOT}/activity/${id}/frombuffer/${parentId}/toevent/${targetId}`
+const moveActivityFromBufferZoneToEvent = async (id, targetId) => {
+  const url = `${API_ROOT}/activity/${id}/frombuffer/toevent/${targetId}`
   //console.log(url)
   const response = await axios.put(url)
   return response.data
 }
 
-const moveActivityFromEventToBufferZone = async (activityId, parentId, targetId) => {
-  const response = await axios.put(`${API_ROOT}/activity/${activityId}/fromevent/${parentId}/tobuffer/${targetId}`)
+const moveActivityFromEventToBufferZone = async (activityId, parentId) => {
+  const response = await axios.put(`${API_ROOT}/activity/${activityId}/fromevent/${parentId}/tobuffer`)
   return response.data
 }
 
