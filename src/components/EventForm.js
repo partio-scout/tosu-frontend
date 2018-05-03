@@ -258,9 +258,9 @@ export default class EventForm extends React.Component {
               hintText="Toistuvien tapahtumien määrä"
               onChange={this.handleNewEventFormChange}
               disabled={!this.state.checked}
-              validators={['maxNumber:55']}
+              validators={['minNumber:2', 'maxNumber:55']}
               errorMessages={[
-                'Voit luoda max. 55 toistuvaa tapahtumaa kerrallaan'
+                'Toistuvien tapahtumien määrän pitää olla väliltä 2 - 55!'
               ]}
               fullWidth
             />
