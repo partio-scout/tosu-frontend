@@ -1,12 +1,10 @@
 import { connect } from 'react-redux'
 import ReactDOM from 'react-dom'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import isTouchDevice from 'is-touch-device'
 import TreeSelect /*, { TreeNode, SHOW_PARENT }*/ from 'rc-tree-select'
 import 'rc-tree-select/assets/index.css'
 import React from 'react'
 import { DropTarget } from 'react-dnd'
-import { notify } from '../reducers/notificationReducer'
 import PropTypes from 'prop-types'
 import {
   Card,
@@ -16,10 +14,11 @@ import {
   CardTitle,
   CardText
 } from 'material-ui/Card'
+import Warning from 'material-ui/svg-icons/alert/warning'
 import moment from 'moment-with-locales-es6'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
-//import Badge from 'material-ui/Badge'
+// import Badge from 'material-ui/Badge'
 import Activity from './Activity'
 import EditEvent from './EditEvent'
 import ItemTypes from '../ItemTypes'
@@ -32,6 +31,8 @@ import {
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally
 } from '../reducers/eventReducer'
+import { notify } from '../reducers/notificationReducer'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   deleteActivityFromBufferOnlyLocally,
   bufferZoneInitialization
@@ -40,6 +41,46 @@ import { green100, white } from 'material-ui/styles/colors'
 import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
 import eventService from '../services/events'
+
+// Warning icon
+const warning = (status, event) => {
+  if (status.warnings) {
+    if (
+      status.warnings.firstTaskTooLate &&
+      moment(event.startDate).format('DD.MM.YYYY') === status.dates.firstTask
+    ) {
+
+      return (
+        <Warning
+          style={{
+            width: 20,
+            height: 20,
+            padding: 0,
+            marginRight: 7,
+            color: 'orange'
+          }}
+        />
+      )
+    } else if (
+      status.warnings.lastTaskTooSoon &&
+      moment(event.startDate).format('DD.MM.YYYY') === status.dates.majakka
+    ) {
+      return (
+        <Warning
+          style={{
+            width: 20,
+            height: 20,
+            padding: 0,
+            marginRight: 7,
+            color: 'orange'
+          }}
+        />
+      )
+    }
+  }
+
+  return null
+}
 
 const moveActivityFromBuffer = async (
   props,
@@ -296,6 +337,8 @@ class EventCard extends React.Component {
       )
     }
 
+    const cardWarning = warning(this.props.status, this.props.event)
+
     return connectDropTarget(
       <div className="event-card-wrapper">
         <Card
@@ -307,6 +350,7 @@ class EventCard extends React.Component {
           <CardHeader
             title={title}
             subtitle={subtitle}
+            children={cardWarning}
             actAsExpander
             showExpandableButton
           />
@@ -407,7 +451,8 @@ const mapStateToProps = state => {
     events: state.events,
     buffer: state.buffer,
     pofTree: state.pofTree,
-    taskgroup: state.taskgroup
+    taskgroup: state.taskgroup,
+    status: state.statusMessage.status
   }
 }
 

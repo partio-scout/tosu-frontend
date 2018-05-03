@@ -6,7 +6,6 @@ export const getGoogleToken = () => {
  
  export const setGoogleToken = (token) => {
     window.localStorage.setItem('googleLogin', token)
-    console.log(token)
  }
  
  export const removeGoogleToken = () => {
