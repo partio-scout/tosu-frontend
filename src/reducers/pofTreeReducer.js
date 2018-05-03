@@ -98,9 +98,13 @@ const setChildrenTasksDisabled = pofChild => {
 const disableTasksInFilterIfExists = (root, existingActivityGuids) => {
   if (root === null || root === undefined) return
 
-  root.taskgroups.forEach(group =>
-    disableTasksInFilterIfExists(group, existingActivityGuids)
-  )
+  try {
+    root.taskgroups.forEach(group =>
+      disableTasksInFilterIfExists(group, existingActivityGuids)
+    )
+  } catch (exception) {
+    console.log('problem occurred iterating throguh taskgroups', exception)
+  }
 
   if (root !== undefined && root.tasks !== undefined) {
     root.children.forEach(task => {
