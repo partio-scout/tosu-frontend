@@ -49,7 +49,6 @@ const warning = (status, event) => {
       status.warnings.firstTaskTooLate &&
       moment(event.startDate).format('DD.MM.YYYY') === status.dates.firstTask
     ) {
-
       return (
         <Warning
           style={{
@@ -90,7 +89,7 @@ const moveActivityFromBuffer = async (
 ) => {
   try {
     const res = await activityService.moveActivityFromBufferZoneToEvent(
-      activityId,      
+      activityId,
       targetId
     )
     await props.addActivityToEventOnlyLocally(targetId, res)
@@ -357,31 +356,33 @@ class EventCard extends React.Component {
             <CardMedia>
               <div className="mobile-event-card-media">
                 <div>{rows}</div>
-                <div>
-                  <TreeSelect
-                    style={{ width: '90%' }}
-                    transitionName="rc-tree-select-dropdown-slide-up"
-                    choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                    dropdownStyle={{
-                      position: 'absolute',
-                      maxHeight: 400,
-                      overflow: 'auto'
-                    }}
-                    placeholder="Valitse aktiviteetti"
-                    searchPlaceholder="Hae aktiviteettia"
-                    showSearch
-                    allowClear
-                    treeLine
-                    getPopupContainer={() =>
-                      ReactDOM.findDOMNode(this).parentNode
-                    }
-                    value={this.state.value}
-                    treeData={selectedTaskGroupPofData}
-                    treeNodeFilterProp="label"
-                    filterTreeNode={this.filterTreeNode}
-                    onChange={this.onChangeChildren}
-                  />
-                </div>
+                {this.props.taskgroup ? (
+                  <div>
+                    <TreeSelect
+                      style={{ width: '90%' }}
+                      transitionName="rc-tree-select-dropdown-slide-up"
+                      choiceTransitionName="rc-tree-select-selection__choice-zoom"
+                      dropdownStyle={{
+                        position: 'absolute',
+                        maxHeight: 400,
+                        overflow: 'auto'
+                      }}
+                      placeholder="Valitse aktiviteetti"
+                      searchPlaceholder="Hae aktiviteettia"
+                      showSearch
+                      allowClear
+                      treeLine
+                      getPopupContainer={() =>
+                        ReactDOM.findDOMNode(this).parentNode
+                      }
+                      value={this.state.value}
+                      treeData={selectedTaskGroupPofData}
+                      treeNodeFilterProp="label"
+                      filterTreeNode={this.filterTreeNode}
+                      onChange={this.onChangeChildren}
+                    />
+                  </div>
+                ) : null}
               </div>
             </CardMedia>
           ) : null}
