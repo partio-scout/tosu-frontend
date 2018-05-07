@@ -49,17 +49,21 @@ const warning = (status, event) => {
       status.warnings.firstTaskTooLate &&
       moment(event.startDate).format('DD.MM.YYYY') === status.dates.firstTask
     ) {
-
       return (
+        <div class="tooltip">
         <Warning
           style={{
-            width: 20,
-            height: 20,
+            width: 15,
+            height: 15,
             padding: 0,
             marginRight: 7,
             color: 'orange'
           }}
         />
+        <span class="tooltiptext">
+        Aktiviteetin ajankohta on virheellinen!
+        </span>
+      </div>
       )
     } else if (
       status.warnings.lastTaskTooSoon &&
@@ -90,7 +94,7 @@ const moveActivityFromBuffer = async (
 ) => {
   try {
     const res = await activityService.moveActivityFromBufferZoneToEvent(
-      activityId,      
+      activityId,
       targetId
     )
     await props.addActivityToEventOnlyLocally(targetId, res)
@@ -178,10 +182,27 @@ class EventCard extends React.Component {
     }
   }
 
+  emptyBuffer = async () => {
+    if (isTouchDevice()) {
+      const bufferActivities = this.props.buffer.activities
+      const promises = bufferActivities.map(activity =>
+        this.props.deleteActivityFromBuffer(activity.id)
+      )
+      try {
+        await Promise.all(promises)
+      } catch (exception) {
+        console.log('Error in emptying buffer', exception)
+      }
+    }
+
+  this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+  }
+
   deleteEvent = async () => {
     try {
       await this.props.deleteEvent(this.props.event.id)
       await this.props.bufferZoneInitialization()
+      await this.emptyBuffer()
       this.props.notify('Tapahtuma poistettu!', 'success')
       this.handleClose()
     } catch (exception) {
@@ -195,6 +216,7 @@ class EventCard extends React.Component {
       await this.props.deleteEventGroup(this.props.event.groupId)
       this.props.notify('Toistuva tapahtuma poistettu!', 'success')
       await this.props.bufferZoneInitialization()
+      await this.emptyBuffer()
       this.handleClose()
     } catch (exception) {
       console.error('Error in deleting event:', exception)
@@ -328,6 +350,7 @@ class EventCard extends React.Component {
 
     let selectedTaskGroupPofData = []
     if (this.props.taskgroup !== undefined && this.props.taskgroup !== null) {
+      console.log('Counting selectedTaskGroupPofData')
       const groupfound = taskGroupTree.find(
         group => group.guid === this.props.taskgroup.value
       )
@@ -357,31 +380,35 @@ class EventCard extends React.Component {
             <CardMedia>
               <div className="mobile-event-card-media">
                 <div>{rows}</div>
-                <div>
-                  <TreeSelect
-                    style={{ width: '90%' }}
-                    transitionName="rc-tree-select-dropdown-slide-up"
-                    choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                    dropdownStyle={{
-                      position: 'absolute',
-                      maxHeight: 400,
-                      overflow: 'auto'
-                    }}
-                    placeholder="Valitse aktiviteetti"
-                    searchPlaceholder="Hae aktiviteettia"
-                    showSearch
-                    allowClear
-                    treeLine
-                    getPopupContainer={() =>
-                      ReactDOM.findDOMNode(this).parentNode
-                    }
-                    value={this.state.value}
-                    treeData={selectedTaskGroupPofData}
-                    treeNodeFilterProp="label"
-                    filterTreeNode={this.filterTreeNode}
-                    onChange={this.onChangeChildren}
-                  />
-                </div>
+                {this.props.taskgroup ? (
+                  <div>
+                    <TreeSelect
+                      style={{ width: '90%' }}
+                      transitionName="rc-tree-select-dropdown-slide-up"
+                      choiceTransitionName="rc-tree-select-selection__choice-zoom"
+                      dropdownStyle={{
+                        position: 'absolute',
+                        maxHeight: 400,
+                        overflow: 'auto'
+                      }}
+                      placeholder="Valitse aktiviteetti"
+                      searchPlaceholder="Hae aktiviteettia"
+                      showSearch
+                      allowClear
+                      treeLine
+                      getPopupContainer={() =>
+                        ReactDOM.findDOMNode(this).parentNode
+                      }
+                      value={this.state.value}
+                      treeData={selectedTaskGroupPofData}
+                      treeNodeFilterProp="label"
+                      filterTreeNode={this.filterTreeNode}
+                      onChange={this.onChangeChildren}
+                    />
+                  </div>
+                ) : (
+                  <div style={{ clear: 'both' }}>&nbsp;</div>
+                )}
               </div>
             </CardMedia>
           ) : null}

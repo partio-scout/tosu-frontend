@@ -43,15 +43,20 @@ const smallDone = (
 
 // Warning icon
 const warning = (
-  <Warning
-    style={{
-      width: 15,
-      height: 15,
-      padding: 0,
-      marginRight: 7,
-      color: 'orange'
-    }}
-  />
+  <div class="tooltip">
+    <Warning
+      style={{
+        width: 15,
+        height: 15,
+        padding: 0,
+        marginRight: 7,
+        color: 'orange'
+      }}
+    />
+    <span class="tooltiptext">
+    Aktiviteetin ajankohta on virheellinen!
+    </span>
+  </div>
 )
 
 const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
