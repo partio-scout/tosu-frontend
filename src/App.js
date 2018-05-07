@@ -32,6 +32,8 @@ import pofService from './services/pof'
 import { loadCachedPofData } from './services/localStorage'
 import eventComparer from './utils/EventCompare'
 import EventCard from './components/EventCard'
+import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import "./index.css";
 
 class App extends Component {
   constructor() {
@@ -51,7 +53,7 @@ class App extends Component {
     }
     if (getGoogleToken() !== null) {
       try {
-      await this.props.scoutLogin(getGoogleToken())
+        await this.props.scoutLogin(getGoogleToken())
       } catch (exception) {
         removeGoogleToken()
       }
@@ -123,7 +125,7 @@ class App extends Component {
   }
 
   sortedEvents = () => {
-    return this.props.events.sort(eventComparer) 
+    return this.props.events.sort(eventComparer)
   }
 
   listOfSortedEvents = () => {
@@ -153,31 +155,29 @@ class App extends Component {
   }
 
   render() {
-    
-   if (this.props.scout === null) {
-     return (
 
-<GoogleLogin
-className="appbar-button"
-scope="profile email"
-clientId="7360124073-8f1bq4mul415hr3kdm154vq3c65lp36d.apps.googleusercontent.com"
-onSuccess={this.googleLoginSuccess}
-onFailure={this.googleLoginFail}
->
-<FontAwesome className="icon" name="google" />
-<span className="label">
-  {' '}
-  {!isTouchDevice() ? (
-    <span className="appbar-button-text">Kirjaudu sisään</span>
-  ) : null}
-</span>
-</GoogleLogin>
-      
-      
-      
-
-     )
-   }
+    if (this.props.scout === null) {
+      return (
+        <div className="Login">
+          <p className="login-text">Toiminnan suunnittelusovellus</p>
+          <GoogleLogin
+            className="login-button"
+            scope="profile email"
+            clientId="7360124073-8f1bq4mul415hr3kdm154vq3c65lp36d.apps.googleusercontent.com"
+            onSuccess={this.googleLoginSuccess}
+            onFailure={this.googleLoginFail}
+          >
+            <FontAwesome className="icon" name="google" />
+            <span className="label">
+              {' '}
+              {!isTouchDevice() ? (
+                <span className="appbar-button-text">Kirjaudu sisään</span>
+              ) : null}
+            </span>
+          </GoogleLogin>
+        </div>
+      )
+    }
     const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 70
     const selfInfo = (
       <Link to="/user-info">
