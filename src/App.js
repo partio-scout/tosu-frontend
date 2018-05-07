@@ -159,7 +159,11 @@ class App extends Component {
     if (this.props.scout === null) {
       return (
         <div className="Login">
-          <p className="login-text">Toiminnan suunnittelusovellus</p>
+          {!isTouchDevice() ?
+            (<p className="login-text">Toiminnan suunnittelusovellus</p>) :
+            (<p className="login-mobile-text">Toiminnan suunnittelusovellus</p>)
+          }
+
           <GoogleLogin
             className="login-button"
             scope="profile email"
@@ -170,9 +174,7 @@ class App extends Component {
             <FontAwesome className="icon" name="google" />
             <span className="label">
               {' '}
-              {!isTouchDevice() ? (
-                <span className="appbar-button-text">Kirjaudu sisään</span>
-              ) : null}
+              <span className="appbar-button-text">Kirjaudu sisään</span>
             </span>
           </GoogleLogin>
         </div>
