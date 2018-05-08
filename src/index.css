@@ -162,8 +162,7 @@ span.label {
 }
 
 .icon {
-  float: left;
-  margin-right: 10px;
+  margin: 5px;
 }
 
 .mobile-select {
@@ -173,7 +172,7 @@ span.label {
 }
 .appbar-button {
   margin: 5px;
-  padding: 5px;
+  padding: 7px;
   width: auto !important;
   background: #fff;
   border: 0;
@@ -344,7 +343,6 @@ span.label {
   width: auto !important;
   background: #fff;
   border: 0;
-  color: rgb(93, 188, 210);
-  font-size: 1.2rem;
+  color: rgb(93, 188, 210);  
   border-radius: 5px;
 }
