@@ -182,7 +182,8 @@ class App extends Component {
     }
     const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 70
     const selfInfo = (
-      <Link to="/user-info">
+      <p className="appbar-user"><span>{this.props.scout.name}</span></p>      
+      /* <Link to="/user-info">
         <button className="appbar-button" onClick={this.hideTopBar}>
           <FontAwesome className="icon" name="user" />
 
@@ -190,7 +191,7 @@ class App extends Component {
             <span className="appbar-button-text">Omat tiedot</span>
           ) : null}
         </button>
-      </Link>
+      </Link> */
     )
     const dndMenu = () => (
       <Appbar
