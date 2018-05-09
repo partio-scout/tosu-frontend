@@ -30,10 +30,7 @@ export const pofTreeInitialization = pofJson => {
 
 export const pofTreeUpdate = (buffer, events) => {
   let usedBuffer = buffer
- console.log("Before", arrayActivityGuidsFromBufferAndEvents(
-  usedBuffer,
-  events
-))
+
   if (isTouchDevice()) {
     usedBuffer = { id: 0, activities: [] }
   }
@@ -43,7 +40,6 @@ export const pofTreeUpdate = (buffer, events) => {
       events
     )
 
-    console.log("After", existingActivityGuids)
     dispatch({
       type: 'SET_TREE_POF',
       existingActivityGuids: existingActivityGuids

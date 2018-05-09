@@ -346,3 +346,15 @@ span.label {
   color: rgb(93, 188, 210);  
   border-radius: 5px;
 }
+
+.appbar-user {
+  text-transform: uppercase;
+  line-height: 1.2rem;
+  font-size: 0.8rem;
+  margin: 5px;
+  padding: 15px;
+  width: auto !important;
+  color: #fff;
+  border-radius: 5px;
+  float: right;
+}
