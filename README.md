@@ -3,10 +3,15 @@
 
 [Project backlog etc](https://docs.google.com/spreadsheets/d/1cA-ldx-M_ppxSicxjL06BmAjhoNi5I55M5BugoUBD98/edit?usp=drivesdk)
 
-## Instructions for development
+## Starting project in localhost
 
-Pull project and then: 
+Backend: 
+$ git clone git@github.com:partio-scout/tosu-backend.git
+$ gradle run
 
-$ npm install  
+Frontend:
+$ git clone git@github.com:partio-scout/tosu-frontend.git
+$ npm install
 $ npm start
+
 
