@@ -6,12 +6,18 @@
 ## Starting project in localhost
 
 Backend: 
+
 $ git clone git@github.com:partio-scout/tosu-backend.git
+
 $ gradle run
 
+
 Frontend:
+
 $ git clone git@github.com:partio-scout/tosu-frontend.git
+
 $ npm install
+
 $ npm start
 
 
