@@ -3,16 +3,17 @@
 
 [Project backlog etc](https://docs.google.com/spreadsheets/d/1cA-ldx-M_ppxSicxjL06BmAjhoNi5I55M5BugoUBD98/edit?usp=drivesdk)
 
+
 ## Starting project in localhost
 
-Backend: 
+1. Backend: 
 
 $ git clone git@github.com:partio-scout/tosu-backend.git
 
 $ gradle run
 
 
-Frontend:
+2. Frontend:
 
 $ git clone git@github.com:partio-scout/tosu-frontend.git
 
