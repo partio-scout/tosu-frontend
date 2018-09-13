@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Paper from 'material-ui/Paper'
+import Paper from '@material-ui/core/Paper'
 import {
   TextValidator,
   ValidatorForm
@@ -7,7 +7,6 @@ import {
   // TimeValidator,
   // SelectValidator
 } from 'react-material-ui-form-validator'
-// import Toggle from 'material-ui/Toggle'
 
 export default class UserInfo extends Component {
   constructor(props) {

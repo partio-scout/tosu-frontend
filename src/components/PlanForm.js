@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tabs, Tab } from 'material-ui/Tabs'
+import { Tabs, Tab } from '@material-ui/core/Tabs'
 import PlanCard from './PlanCard'
 
 export default class PlanForm extends React.Component {

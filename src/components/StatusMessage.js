@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Paper from 'material-ui/Paper'
-import ActionHelp from 'material-ui/svg-icons/action/help'
-import Done from 'material-ui/svg-icons/action/done'
-import Warning from 'material-ui/svg-icons/alert/warning'
-import Clear from 'material-ui/svg-icons/content/clear'
+import Paper from '@material-ui/core/Paper'
+import ActionHelp from '@material-ui/icons/Help'
+import Done from '@material-ui/icons/Done'
+import Warning from '@material-ui/icons/Warning'
+import Clear from '@material-ui/icons/Clear'
 
 // Done icon
 const done = (

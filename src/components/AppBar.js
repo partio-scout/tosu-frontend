@@ -1,6 +1,6 @@
 import React from 'react'
-import Toggle from 'material-ui/Toggle'
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar'
+import ToggleButton from '@material-ui/lab/ToggleButton'
+import { Toolbar, ToolbarGroup } from '@material-ui/core/Toolbar'
 import TreeSearchBar from './TreeSearchBar'
 import StatusMessage from './StatusMessage'
 import GoogleButtons from './GoogleButtons'
@@ -45,7 +45,7 @@ export default class AppBar extends React.Component {
         <div className="Header_root" id="header_root">
           <Toolbar className="toggle-elements">
             <ToolbarGroup firstChild={true}>
-              <Toggle
+              <ToggleButton
                 label={
                   this.props.headerVisible ? 'Piilota' : 'Suunnittelunäkymä'
                 }

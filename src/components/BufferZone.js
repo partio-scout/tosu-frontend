@@ -1,7 +1,6 @@
 import { connect } from 'react-redux'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import React from 'react'
-import { white, green100 } from 'material-ui/styles/colors'
 import { DropTarget } from 'react-dnd'
 import PropTypes from 'prop-types'
 import Activity from './Activity'
@@ -10,7 +9,7 @@ import { notify } from '../reducers/notificationReducer'
 import { postActivityToBufferOnlyLocally } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEventOnlyLocally } from '../reducers/eventReducer'
 import activityService from '../services/activities'
-import FlatButton from 'material-ui/FlatButton'
+import Button from '@material-ui/core/Button'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
@@ -122,9 +121,9 @@ class BufferZone extends React.Component {
       )
     })
     let patternClass
-    let background = { backgroundColor: white }
+    let background = { backgroundColor: '#FFF' }
     if (canDrop) {
-      background = { backgroundColor: green100 }
+      background = { backgroundColor: '#C8E6C9' }
     }
     if (isOver) {
       patternClass = 'pattern'
@@ -136,7 +135,7 @@ class BufferZone extends React.Component {
           {rows}
         </div>
         <div>
-          <FlatButton label="Tyhjennä" onClick={this.handleClick} />
+          <Button label="Tyhjennä" onClick={this.handleClick} />
         </div>
       </div>
     )

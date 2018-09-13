@@ -1,8 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Card, CardHeader, CardText } from 'material-ui/Card'
-import FlatButton from 'material-ui/FlatButton'
-import { green100 } from 'material-ui/styles/colors'
+import { Card, CardHeader, CardText } from '@material-ui/core/Card'
+import Button from '@material-ui/core/Button'
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
 import { notify } from '../reducers/notificationReducer'
@@ -66,7 +65,7 @@ class PlanCard extends React.Component {
 
     if (selectedPlan.length !== 0) {
       button = () => (
-        <FlatButton
+        <Button
           label="Poista valituista"
           onClick={() =>
             this.deleteSuggestion(selectedPlan[0].id, savedActivity.id)
@@ -74,10 +73,10 @@ class PlanCard extends React.Component {
         />
       )
 
-      style = { background: green100 }
+      style = { background: '#C8E6C9' }
     } else {
       button = () => (
-        <FlatButton
+        <Button
           label="Valitse"
           onClick={() => this.saveSuggestion(suggestion, savedActivity.id)}
         />

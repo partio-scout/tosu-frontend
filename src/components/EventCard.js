@@ -13,12 +13,11 @@ import {
   CardMedia,
   CardTitle,
   CardText
-} from 'material-ui/Card'
-import Warning from 'material-ui/svg-icons/alert/warning'
+} from '@material-ui/core/Card'
 import moment from 'moment-with-locales-es6'
-import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
-// import Badge from 'material-ui/Badge'
+import Dialog from '@material-ui/core/Dialog'
+import Button from '@material-ui/core/Button'
+// import Badge from '@material-ui/core/Badge'
 import Activity from './Activity'
 import EditEvent from './EditEvent'
 import ItemTypes from '../ItemTypes'
@@ -37,7 +36,6 @@ import {
   deleteActivityFromBufferOnlyLocally,
   bufferZoneInitialization
 } from '../reducers/bufferZoneReducer'
-import { green100, white } from 'material-ui/styles/colors'
 import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
 import eventService from '../services/events'
@@ -51,7 +49,7 @@ const warning = (status, event) => {
     ) {
       return (
         <div class="tooltip">
-          <Warning
+          <Dialog
             className="warning"
           />
           <span class="tooltiptext">
@@ -64,7 +62,7 @@ const warning = (status, event) => {
       moment(event.startDate).format('DD.MM.YYYY') === status.dates.majakka
     ) {
       return (
-        <Warning
+        <Dialog
           style={{
             width: 20,
             height: 20,
@@ -307,14 +305,14 @@ class EventCard extends React.Component {
     let actions = []
     if (event.groupId) {
       actions = [
-        <FlatButton label="Peruuta" primary onClick={this.handleClose} />,
+        <Button label="Peruuta" primary onClick={this.handleClose} />,
 
-        <FlatButton
+        <Button
           label="Poista tämä tapahtuma"
           primary
           onClick={this.deleteEvent}
         />,
-        <FlatButton
+        <Button
           label="Poista toistuvat tapahtumat"
           primary
           onClick={this.deleteEventGroup}
@@ -322,8 +320,8 @@ class EventCard extends React.Component {
       ]
     } else {
       actions = [
-        <FlatButton label="Peruuta" primary onClick={this.handleClose} />,
-        <FlatButton
+        <Button label="Peruuta" primary onClick={this.handleClose} />,
+        <Button
           label="Poista tapahtuma"
           primary
           onClick={this.deleteEvent}
@@ -332,9 +330,9 @@ class EventCard extends React.Component {
     }
     let patternClass
     const { connectDropTarget, canDrop, isOver } = this.props
-    let background = { backgroundColor: white }
+    let background = { backgroundColor: '#FFFFFF' }
     if (canDrop) {
-      background = { backgroundColor: green100 }
+      background = { backgroundColor: '#C8E6C9' }
     }
     if (isOver) {
       patternClass = 'pattern'
@@ -422,7 +420,7 @@ class EventCard extends React.Component {
               source={this.handleClose}
               setNotification={this.props.setNotification}
             />
-            <FlatButton
+            <Button
               label="Poista"
               secondary
               className="buttonRight"
@@ -452,7 +450,7 @@ class EventCard extends React.Component {
             {rows}
             <br style={{ clear: 'both' }} />
             <CardActions>
-              <FlatButton
+              <Button
                 label="Sulje"
                 primary
                 onClick={this.handleReduce}

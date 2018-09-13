@@ -1,7 +1,7 @@
 import React from 'react'
-import TextField from 'material-ui/TextField'
-import MenuItem from 'material-ui/MenuItem'
-import Checkbox from 'material-ui/Checkbox'
+import TextField from '@material-ui/core/TextField'
+import MenuItem from '@material-ui/core/MenuItem'
+import Checkbox from '@material-ui/core/Checkbox'
 import {
   TextValidator,
   ValidatorForm,
@@ -10,7 +10,7 @@ import {
   SelectValidator
 } from 'react-material-ui-form-validator'
 import moment from 'moment'
-import FlatButton from 'material-ui/FlatButton'
+import Button from '@material-ui/core/Button'
 
 const errorStyle = {
   position: 'absolute',
@@ -154,13 +154,13 @@ export default class EventForm extends React.Component {
       .utcOffset(120)
       .toDate()
     const actions = [
-      <FlatButton
+      <Button
         key="cancelButton"
         label="Peruuta"
         primary
         onClick={this.props.close}
       />,
-      <FlatButton key="submitButton" type="submit" label="Tallenna" primary />
+      <Button key="submitButton" type="submit" label="Tallenna" primary />
     ]
 
     const frequentStyle = { display: this.state.checked ? '' : 'none' }

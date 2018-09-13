@@ -1,4 +1,3 @@
-import { blue50, blue500 } from 'material-ui/styles/colors'
 import React from 'react'
 import isTouchDevice from 'is-touch-device'
 
@@ -142,7 +141,7 @@ const fillWithNeededVariable = pof => {
           <span
             name={task.title}
             className="tree-search-title"
-            style={{ backgroundColor: blue500 }}
+            style={{ backgroundColor: '#2196f3' }}
           >
             {task.title}
           </span>
@@ -153,7 +152,7 @@ const fillWithNeededVariable = pof => {
           <span
             name={task.title}
             className="tree-search-title"
-            style={{ backgroundColor: blue50 }}
+            style={{ backgroundColor: '#E3F2FD' }}
           >
             {task.title}
           </span>

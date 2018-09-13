@@ -5,9 +5,9 @@ import isTouchDevice from 'is-touch-device'
 import MultiBackend from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
 import { GoogleLogin } from 'react-google-login'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import FontAwesome from 'react-fontawesome'
-import RaisedButton from 'material-ui/RaisedButton'
+import Button from '@material-ui/core/Button'
 import 'react-sticky-header/styles.css'
 import StickyHeader from 'react-sticky-header'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
@@ -242,14 +242,14 @@ class App extends Component {
               <div id="container" style={{ paddingTop: padding }}>
                 <div className="content">
                   <Link to="/">
-                    <RaisedButton
+                    <Button
                       label="Lista tapahtumista"
                       onClick={this.openTopBar}
                     />
                   </Link>
                   &nbsp;
                   <Link to="/new-event">
-                    <RaisedButton
+                    <Button
                       label="Uusi tapahtuma"
                       onClick={this.hideTopBar}
                     />

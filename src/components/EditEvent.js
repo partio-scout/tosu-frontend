@@ -1,6 +1,6 @@
 import React from 'react'
-import Dialog from 'material-ui/Dialog'
-import RaisedButton from 'material-ui/RaisedButton'
+import Dialog from '@material-ui/core/Dialog'
+import Button from '@material-ui/core/Button'
 //import eventgroupService from '../services/eventgroups';
 import moment from 'moment'
 import EventForm from './EventForm'
@@ -129,7 +129,7 @@ class EditEvent extends React.Component {
     const disabled = this.state.endTime < new Date()
     return (
       <div>
-        <RaisedButton
+        <Button
           label="Muokkaa"
           onClick={this.handleOpen}
           className={this.props.buttonClass}
