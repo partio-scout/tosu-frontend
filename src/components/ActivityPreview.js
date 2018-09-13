@@ -1,10 +1,8 @@
 
 import React from 'react';
-// import PropTypes from 'prop-types';
 import DragLayer from 'react-dnd/lib/DragLayer';
 import Chip from '@material-ui/core/Chip/Chip';
 import Avatar from '@material-ui/core/Avatar';
-// import isTouchDevice from 'is-touch-device'
 
 const styles = {
   chip: {

@@ -12,7 +12,7 @@ import 'react-sticky-header/styles.css'
 import StickyHeader from 'react-sticky-header'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import NewEvent from './components/NewEvent'
-import Appbar from './components/AppBar'
+import AppBar from './components/AppBar'
 import MobileAppbar from './components/MobileAppbar'
 import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
@@ -154,7 +154,6 @@ class App extends Component {
   }
 
   render() {
-
     if (this.props.scout === null) {
       return (
         <div className="Login">
@@ -193,7 +192,7 @@ class App extends Component {
       </Link> */
     )
     const dndMenu = () => (
-      <Appbar
+      <AppBar
         setHeaderHeight={this.setHeaderHeight}
         toggleTopBar={this.toggleTopBar}
         headerVisible={this.state.headerVisible}
