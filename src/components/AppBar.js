@@ -6,16 +6,6 @@ import StatusMessage from './StatusMessage'
 import GoogleButtons from './GoogleButtons'
 import BufferZone from './BufferZone'
 
-const styles = {
-  toggle: {
-    backgroundColor: '#5DBCD2'
-  },
-  labelStyle: {
-    color: '#FFF',
-    fontSize: '0.8rem'
-  }
-}
-
 export default class AppBar extends React.Component {
   constructor(props) {
     super(props)
@@ -51,19 +41,17 @@ export default class AppBar extends React.Component {
       <div
         className="top-search"
         id="top-bar-header"
-        style={{ background: '#5DBCD2', padding: 1 }}
       >
         <div className="Header_root" id="header_root">
-          <Toolbar style={styles.toggle}>
+          <Toolbar className="toggle-elements">
             <ToolbarGroup firstChild={true}>
               <Toggle
                 label={
                   this.props.headerVisible ? 'Piilota' : 'Suunnittelunäkymä'
                 }
                 labelPosition="right"
-                style={styles.toggle}
+                className="toggle-elements"
                 onClick={() => this.props.toggleTopBar()}
-                labelStyle={styles.labelStyle}
               />
             </ToolbarGroup>
             <ToolbarGroup>

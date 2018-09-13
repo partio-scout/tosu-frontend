@@ -106,11 +106,9 @@ class Activity extends Component {
         return connectDragSource(
           <div
             style={{
-              float: 'left',
-              margin: 4,
-              // display: 'inline-block',
               visibility: { visibility }
             }}
+            className='connect-drag-source'
           >
             <Chip
               onRequestDelete={() => this.props.deleteActivity(activity)}

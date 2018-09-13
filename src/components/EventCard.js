@@ -51,19 +51,13 @@ const warning = (status, event) => {
     ) {
       return (
         <div class="tooltip">
-        <Warning
-          style={{
-            width: 15,
-            height: 15,
-            padding: 0,
-            marginRight: 7,
-            color: 'orange'
-          }}
-        />
-        <span class="tooltiptext">
-        Aktiviteetin ajankohta on virheellinen!
-        </span>
-      </div>
+          <Warning
+            className="warning"
+          />
+          <span class="tooltiptext">
+          Aktiviteetin ajankohta on virheellinen!
+          </span>
+        </div>
       )
     } else if (
       status.warnings.lastTaskTooSoon &&

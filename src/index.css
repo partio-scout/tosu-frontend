@@ -42,8 +42,8 @@ p.eventTimes > span {
 }
 
 .top-search {
-  background: '#5DBCD2';
   padding: 0;
+  background-color: #5DBCD2;
 }
 
 .footerError,
@@ -357,4 +357,91 @@ span.label {
   color: #fff;
   border-radius: 5px;
   float: right;
+}
+
+/* ohtu-vartio mods start here */
+
+.connect-drag-source {
+  float: left;
+  margin: 4px;
+}
+
+.toggle-elements {
+  background-color: #5DBCD2 !important;
+  color: #FFF;
+  font-size: 0.8rem;
+}
+
+.warning {
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  margin-right: 7px;
+  color: orange;
+}
+
+.event-card-error {
+  position: absolute;
+  margin-bottom: -22px;
+  color: red;
+}
+
+.mandatory-chip-avatar > img,
+.non-mandatory-chip-avatar > img {
+  width: 100%;
+}
+
+.headline {
+  font-size: 24px;
+  padding-top: 16px;
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+
+.status-box {
+  width: 95%;
+  margin: 10px;
+  padding: 10px;
+  padding-left: 25px;
+  font-size: 0.9rem;
+}
+
+.status-box .done {
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  margin-right: 7px;
+  color: green;
+}
+
+.status-box .small-done {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  margin-right: 7px;
+  color: green;
+}
+
+.status-box .clear {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin-right: 10px;
+  color: #ccc;
+}
+
+.action-help {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: white;
+  margin: 10px;
+  margin-left: 20px;
+}
+
+/*material reference*/
+color-class {
+  color: #1a237e; /*indigo900*/
+  color: #90caf9; /*blue200*/
+  color: #2196f3; /*blue500*/
 }

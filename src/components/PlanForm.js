@@ -2,15 +2,6 @@ import React from 'react'
 import { Tabs, Tab } from 'material-ui/Tabs'
 import PlanCard from './PlanCard'
 
-const styles = {
-  headline: {
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400
-  }
-}
-
 export default class PlanForm extends React.Component {
   constructor(props) {
     super(props)
@@ -77,7 +68,7 @@ export default class PlanForm extends React.Component {
           </Tab>
           <Tab label="Vinkit">
             <div>
-              <h2 style={styles.headline}>Toteutusvinkit</h2>
+              <h2 className='headline'>Toteutusvinkit</h2>
               {suggestionDeatails.length !== 0
                 ? suggestionDeatails
                 : 'Ei toteutusvinkkejä'}

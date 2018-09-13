@@ -78,10 +78,8 @@ class Activity extends Component {
       if (!isDragging) {
         return connectDragSource(
           <div
+            className='connect-drag-source'
             style={{
-              float: 'left',
-              margin: 4,
-              // display: 'inline-block',
               visibility: { visibility }
             }}
           >
@@ -101,7 +99,6 @@ class Activity extends Component {
                 }
               >
                 <img
-                  style={{ width: '100%' }}
                   src={pofActivity.mandatoryIconUrl}
                   alt="Mandatory Icon"
                 />

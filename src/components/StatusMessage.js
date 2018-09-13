@@ -6,38 +6,17 @@ import Done from 'material-ui/svg-icons/action/done'
 import Warning from 'material-ui/svg-icons/alert/warning'
 import Clear from 'material-ui/svg-icons/content/clear'
 
-// Style for whole statusbox
-const style = {
-  width: '95%',
-  margin: 10,
-  padding: 10,
-  paddingLeft: 25,
-  fontSize: '0.9rem'
-}
-
 // Done icon
 const done = (
   <Done
-    style={{
-      width: 15,
-      height: 15,
-      padding: 0,
-      marginRight: 7,
-      color: 'green'
-    }}
+    className='done'
   />
 )
 
 // Small done icon for sub-taskgroups (suhteet)
 const smallDone = (
   <Done
-    style={{
-      width: 10,
-      height: 10,
-      padding: 0,
-      marginRight: 7,
-      color: 'green'
-    }}
+    className='small-done'
   />
 )
 
@@ -45,13 +24,7 @@ const smallDone = (
 const warning = (
   <div class="tooltip">
     <Warning
-      style={{
-        width: 15,
-        height: 15,
-        padding: 0,
-        marginRight: 7,
-        color: 'orange'
-      }}
+      className='warning'
     />
     <span class="tooltiptext">
     Aktiviteetin ajankohta on virheellinen!
@@ -233,15 +206,9 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   )
   return (
     <div>
-      <Paper style={style} zDepth={1}>
+      <Paper className='status-box' zDepth={1}>
         <Clear
-          style={{
-            width: 20,
-            height: 20,
-            padding: 0,
-            marginRight: 10,
-            color: '#ccc'
-          }}
+          className='clear'
           onClick={() => handleClose()}
         />
         {statusMessage.text}
@@ -256,14 +223,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
 // Icon for statusbox if statusbox is hidden
 const InfoButton = ({ handleOpen }) => (
   <ActionHelp
-    style={{
-      width: 30,
-      height: 30,
-      padding: 0,
-      color: 'white',
-      margin: 10,
-      marginLeft: 20
-    }}
+    className='action-help'
     onClick={() => handleOpen()}
   />
 )
