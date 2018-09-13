@@ -32,7 +32,6 @@ import pofService from './services/pof'
 import { loadCachedPofData } from './services/localStorage'
 import eventComparer from './utils/EventCompare'
 import EventCard from './components/EventCard'
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import "./index.css";
 
 class App extends Component {
