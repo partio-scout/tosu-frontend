@@ -1,6 +1,7 @@
 import React from 'react'
-import ToggleButton from '@material-ui/lab/ToggleButton'
-import Toolbar from '@material-ui/core/Toolbar'
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch'
 import TreeSearchBar from './TreeSearchBar'
 import StatusMessage from './StatusMessage'
 import GoogleButtons from './GoogleButtons'
@@ -40,17 +41,19 @@ export default class AppBar extends React.Component {
     return (
       <div className="top-search" id="top-bar-header">
         <div className="Header_root" id="header_root">
-          <Toolbar className="toggle-elements">
-            <ToggleButton
-              label={
-                this.props.headerVisible ? 'Piilota' : 'Suunnittelunäkymä'
+          <FormControlLabel
+            control={
+              <Switch
+                labelPosition="right"
+                className="toggle-elements"
+                onClick={() => this.props.toggleTopBar()}
+              />
+            }
+            label={
+              this.props.headerVisible ? 'Piilota' : 'Suunnittelunäkymä'
               }
-              labelPosition="right"
-              className="toggle-elements"
-              onClick={() => this.props.toggleTopBar()}
-            />
-            <GoogleButtons selfInfo={this.props.selfInfo} />
-          </Toolbar>
+          />
+          <GoogleButtons selfInfo={this.props.selfInfo} />
         </div>
 
         {this.props.headerVisible ? (
