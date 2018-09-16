@@ -240,19 +240,13 @@ class App extends Component {
 
               <div id="container" style={{ paddingTop: padding }}>
                 <div className="content">
-                  <Link to="/">
-                    <Button
-                      label="Lista tapahtumista"
-                      onClick={this.openTopBar}
-                    />
-                  </Link>
+                  <Button component={Link} to="/" onClick={this.openTopBar} variant="contained">
+                    Lista tapahtumista
+                  </Button>
                   &nbsp;
-                  <Link to="/new-event">
-                    <Button
-                      label="Uusi tapahtuma"
-                      onClick={this.hideTopBar}
-                    />
-                  </Link>
+                  <Button component={Link} to="/new-event" onClick={this.hideTopBar} variant="contained">
+                    Uusi tapahtuma
+                  </Button>
                   &nbsp;
                   <Route exact path="/" render={() => events} />
                   <Route
