@@ -83,59 +83,58 @@ class Activity extends Component {
               visibility: { visibility }
             }}
           >
+
             <Chip
-              onRequestDelete={() => this.props.deleteActivity(activity)}
+              OnRequestDelete={() => this.props.deleteActivity(activity)}
               className={
                 pofActivity.mandatory ? 'mandatory-chip' : 'non-mandatory-chip'
               }
               key={activity.id}
               onClick={this.handleClick}
-            >
-              <Avatar
-                className={
-                  pofActivity.mandatory
-                    ? 'mandatory-chip-avatar'
-                    : 'non-mandatory-chip-avatar'
-                }
-              >
-                <img
+              avatar={
+                <Avatar
+                  alt='Mandatory Icon'
                   src={pofActivity.mandatoryIconUrl}
-                  alt="Mandatory Icon"
+                  className={
+                    pofActivity.mandatory
+                      ? 'mandatory-chip-avatar'
+                      : 'non-mandatory-chip-avatar'
+                  }
                 />
-              </Avatar>
-              <span className="activityTitle">{pofActivity.title}</span>
-              <Dialog
-                title={
-                  <div>
-                    {pofActivity.title}
+              }
+              label={pofActivity.title}
+            />
+            <Dialog
+              title={
+                <div>
+                  {pofActivity.title}
 
-                    <button
-                      className="dialog-close-button"
-                      onClick={this.handleClick}
-                    >
-                      x
-                    </button>
+                  <button
+                    className="dialog-close-button"
+                    onClick={this.handleClick}
+                  >
+                    x
+                  </button>
 
-                    <br />
+                  <br />
 
-                    {pofActivity.parents.map(parent => (
-                      <span style={{ fontSize: '0.9rem' }} key={parent.guid}>
-                        {parent.title} {parent.guid === lastGuid ? null : ' - '}
-                      </span>
-                    ))}
-                  </div>
-                }
-                modal={false}
-                open={this.state.open}
-                onRequestClose={this.handleClick}
-                autoScrollBodyContent
-                bodyClassName="global--modal-body"
-                contentClassName="global--modal-content"
-                paperClassName="global--modal-paper"
-              >
-                <PlanForm activity={pofActivity} savedActivity={activity} />
-              </Dialog>
-            </Chip>
+                  {pofActivity.parents.map(parent => (
+                    <span style={{ fontSize: '0.9rem' }} key={parent.guid}>
+                      {parent.title} {parent.guid === lastGuid ? null : ' - '}
+                    </span>
+                  ))}
+                </div>
+              }
+              modal={false}
+              open={this.state.open}
+              onClose={this.handleClick}
+              autoScrollBodyContent
+              bodyClassName="global--modal-body"
+              contentClassName="global--modal-content"
+              paperClassName="global--modal-paper"
+            >
+              <PlanForm activity={pofActivity} savedActivity={activity} />
+            </Dialog>
           </div>
         )
       }
