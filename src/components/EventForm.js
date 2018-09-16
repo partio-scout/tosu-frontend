@@ -150,9 +150,6 @@ export default class EventForm extends React.Component {
   }
 
   render() {
-    const minDate = moment()
-      .utcOffset(120)
-      .toDate()
     const actions = [
       <FlatButton
         key="cancelButton"
@@ -188,7 +185,6 @@ export default class EventForm extends React.Component {
             floatingLabelText="Tapahtuman alkamispäivä"
             name="startDate"
             autoOk
-            minDate={minDate}
             cancelLabel="Peruuta"
             value={
               this.state.startDate === '' ? undefined : this.state.startDate
@@ -218,7 +214,6 @@ export default class EventForm extends React.Component {
             floatingLabelText="Tapahtuman loppumispäivä"
             name="endDate"
             autoOk
-            minDate={minDate}
             cancelLabel="Peruuta"
             value={this.state.endDate === '' ? undefined : this.state.endDate}
             onChange={this.handleEndDate}
