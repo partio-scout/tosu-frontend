@@ -1,16 +1,23 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
+import InputLabel from '@material-ui/core/InputLabel'
 import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
+
 import {
   TextValidator,
   ValidatorForm,
   SelectValidator
 } from 'react-material-ui-form-validator'
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
-import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
-import TimePicker from 'material-ui-pickers/TimePicker';
-import DatePicker from 'material-ui-pickers/DatePicker';
+
+import MomentUtils from 'material-ui-pickers/utils/moment-utils'
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
+import TimePicker from 'material-ui-pickers/TimePicker'
+import DatePicker from 'material-ui-pickers/DatePicker'
+
 import moment from 'moment'
 import Button from '@material-ui/core/Button'
 
@@ -64,7 +71,7 @@ export default class EventForm extends React.Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  handleStartDate = (date) => {
+  handleStartDate = date => {
     console.log(date)
     this.setState({
       startDate: date,
@@ -72,20 +79,20 @@ export default class EventForm extends React.Component {
     })
   }
 
-  handleStartTime = (date) => {
+  handleStartTime = date => {
     this.setState({
       startTime: date,
       endTime: new Date(moment(date).add(1, 'h'))
     })
   }
 
-  handleEndDate = (date) => {
+  handleEndDate = date => {
     this.setState({
       endDate: new Date(date)
     })
   }
 
-  handleEndTime = (date) => {
+  handleEndTime = date => {
     this.setState({
       endTime: date
     })
@@ -111,9 +118,9 @@ export default class EventForm extends React.Component {
     })
   }
 
-  handleFrequency = (event, index, repeatFrequency) => {
+  handleFrequency = event => {
     this.setState({
-      repeatFrequency
+      repeatFrequency: event.target.value
     })
   }
 
@@ -123,9 +130,9 @@ export default class EventForm extends React.Component {
     })
   }
 
-  handleType = (event, index, type) => {
+  handleType = event => {
     this.setState({
-      type
+      type: event.target.value
     })
   }
 
@@ -157,13 +164,12 @@ export default class EventForm extends React.Component {
       .utcOffset(120)
       .toDate()
     const actions = [
-      <Button
-        key="cancelButton"
-        label="Peruuta"
-        primary
-        onClick={this.props.close}
-      />,
-      <Button key="submitButton" type="submit" label="Tallenna" primary />
+      <Button variant="outlined" onClick={this.props.close}>
+        Peruuta
+      </Button>,
+      <Button type="submit" variant="outlined" color="primary">
+        Tallenna
+      </Button>
     ]
 
     const frequentStyle = { display: this.state.checked ? '' : 'none' }
@@ -177,7 +183,7 @@ export default class EventForm extends React.Component {
           onError={errors => console.log(errors)}
         >
           <TextValidator
-            floatingLabelText="Tapahtuman nimi"
+            label="Tapahtuman nimi"
             name="title"
             value={this.state.title}
             hintText="Tapahtuman nimi"
@@ -192,7 +198,6 @@ export default class EventForm extends React.Component {
             <DatePicker
               label="Tapahtuman alkamispäivä"
               name="startDate"
-              clearable
               autoOk
               cancelLabel="Peruuta"
               value={this.state.startDate === '' ? null : this.state.startDate}
@@ -206,7 +211,6 @@ export default class EventForm extends React.Component {
               ampm={false}
               name="startTime"
               cancelLabel="Peruuta"
-              clearable
               autoOk
               value={
                 this.state.startTime === '' ? null : this.state.startTime
@@ -220,7 +224,6 @@ export default class EventForm extends React.Component {
             <DatePicker
               label="Tapahtuman loppumispäivä"
               name="endDate"
-              clearable
               autoOk
               minDate={minDate}
               cancelLabel="Peruuta"
@@ -237,7 +240,6 @@ export default class EventForm extends React.Component {
               ampm={false}
               name="endTime"
               cancelLabel="Peruuta"
-              clearable
               autoOk
               value={this.state.endTime === '' ? null : this.state.endTime}
               onChange={this.handleEndTime}
@@ -250,11 +252,16 @@ export default class EventForm extends React.Component {
             />
           </MuiPickersUtilsProvider>
           <br />
-          
-          <Checkbox
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={this.state.checked}
+                onChange={this.updateCheck.bind(this)}
+                color="primary"
+              />
+            }
             label="Luo toistuva tapahtuma"
-            checked={this.state.checked}
-            onCheck={this.updateCheck.bind(this)}
           />
 
           <div className="frequent" style={frequentStyle}>
@@ -272,41 +279,52 @@ export default class EventForm extends React.Component {
               fullWidth
             />
             <br />
-            <SelectValidator
-              name="repeatFrequency"
-              floatingLabelText="Toistumisväli"
-              value={this.state.repeatFrequency}
-              onChange={this.handleFrequency}
-              disabled={!this.state.checked}
-              fullWidth
-            >
-              <MenuItem value={1} primaryText="Päivittäin" />
-              <MenuItem value={2} primaryText="Viikottain" />
-              <MenuItem value={3} primaryText="Joka toinen viikko" />
-              <MenuItem value={4} primaryText="Kuukausittain (esim. 12. pvä)" />
-            </SelectValidator>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="repeatFrequency">Toistumisväli</InputLabel>
+              <Select
+                value={this.state.repeatFrequency}
+                onChange={this.handleFrequency}
+                disabled={!this.state.checked}
+                inputProps={{
+                  name: 'repeatFrequency',
+                  id: 'repeatFrequency-simple',
+                }}
+                validators={['required']}
+                errorMessages={['Tapahtuman tyyppi vaaditaan']}
+              >
+                <MenuItem value={1}>Päivittäin</MenuItem>
+                <MenuItem value={2}>Viikottain</MenuItem>
+                <MenuItem value={3}>Joka toinen viikko</MenuItem>
+                <MenuItem value={4}>Kuukausittain (esim. 12. pvä)</MenuItem>
+              </Select>
+            </FormControl>
           </div>
           <br />
-          <SelectValidator
-            name="type"
-            floatingLabelText="Tapahtuman tyyppi"
-            value={this.state.type}
-            onChange={this.handleType}
-            validators={['required']}
-            errorMessages={['Tapahtuman tyyppi vaaditaan']}
-            fullWidth
-          >
-            <MenuItem value="kokous" primaryText="Kokous" />
-            <MenuItem value="leiri" primaryText="Leiri" />
-            <MenuItem value="retki" primaryText="Retki" />
-            <MenuItem value="vaellus" primaryText="Vaellus" />
-            <MenuItem value="muu tapahtuma" primaryText="Muu tapahtuma" />
-          </SelectValidator>
+
+          <FormControl fullWidth>
+            <InputLabel htmlFor="type">Tapahtuman tyyppi</InputLabel>
+            <Select
+              value={this.state.type}
+              onChange={this.handleType}
+              inputProps={{
+                name: 'type',
+                id: 'type-simple',
+              }}
+              validators={['required']}
+              errorMessages={['Tapahtuman tyyppi vaaditaan']}
+            >
+              <MenuItem value="kokous">Kokous</MenuItem>
+              <MenuItem value="leiri">Leiri</MenuItem>
+              <MenuItem value="retki">Retki</MenuItem>
+              <MenuItem value="vaellus">Vaellus</MenuItem>
+              <MenuItem value="muu tapahtuma">Muu tapahtuma</MenuItem>
+            </Select>
+          </FormControl>
           <br />
 
           <TextField
             hintText="Lisätietoja"
-            floatingLabelText="Lisätietoja"
+            label="Lisätietoja"
             name="information"
             value={this.state.information}
             onChange={this.handleNewEventFormChange}
