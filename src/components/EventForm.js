@@ -1,4 +1,6 @@
 import React from 'react'
+import moment from 'moment'
+
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -6,20 +8,13 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
-
-import {
-  TextValidator,
-  ValidatorForm,
-  SelectValidator
-} from 'react-material-ui-form-validator'
+import Button from '@material-ui/core/Button'
 
 import MomentUtils from 'material-ui-pickers/utils/moment-utils'
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
 import TimePicker from 'material-ui-pickers/TimePicker'
 import DatePicker from 'material-ui-pickers/DatePicker'
 
-import moment from 'moment'
-import Button from '@material-ui/core/Button'
 
 const errorStyle = {
   position: 'absolute',
@@ -46,25 +41,26 @@ export default class EventForm extends React.Component {
   }
 
   componentDidMount() {
-    ValidatorForm.addValidationRule('dateIsLater', value => {
-      if (
-        value.setHours(0, 0, 0, 0) < this.state.startDate.setHours(0, 0, 0, 0)
-      ) {
-        return false
-      }
-      return true
-    })
-    ValidatorForm.addValidationRule('timeIsLater', value => {
-      if (
-        this.state.startDate.setHours(0, 0, 0, 0) ===
-          this.state.endDate.setHours(0, 0, 0, 0) &&
-        moment(value).format('HH:mm') <
-          moment(this.state.startTime).format('HH:mm')
-      ) {
-        return false
-      }
-      return true
-    })
+    // TODO: Validation
+    // ValidatorForm.addValidationRule('dateIsLater', value => {
+    //   if (
+    //     value.setHours(0, 0, 0, 0) < this.state.startDate.setHours(0, 0, 0, 0)
+    //   ) {
+    //     return false
+    //   }
+    //   return true
+    // })
+    // ValidatorForm.addValidationRule('timeIsLater', value => {
+    //   if (
+    //     this.state.startDate.setHours(0, 0, 0, 0) ===
+    //       this.state.endDate.setHours(0, 0, 0, 0) &&
+    //     moment(value).format('HH:mm') <
+    //       moment(this.state.startTime).format('HH:mm')
+    //   ) {
+    //     return false
+    //   }
+    //   return true
+    // })
   }
 
   handleNewEventFormChange = event => {
@@ -167,7 +163,7 @@ export default class EventForm extends React.Component {
       <Button variant="outlined" onClick={this.props.close}>
         Peruuta
       </Button>,
-      <Button type="submit" variant="outlined" color="primary">
+      <Button type="submit" variant="outlined" color="primary" onClick={this.send}>
         Tallenna
       </Button>
     ]
@@ -177,21 +173,17 @@ export default class EventForm extends React.Component {
     return (
       <div>
         <h2>Uusi tapahtuma</h2>
-        <ValidatorForm
-          ref={() => 'form'}
-          onSubmit={this.send}
-          onError={errors => console.log(errors)}
-        >
-          <TextValidator
+        <div>
+          <TextField
             label="Tapahtuman nimi"
             name="title"
             value={this.state.title}
-            hintText="Tapahtuman nimi"
             onChange={this.handleNewEventFormChange}
-            validators={['required']}
-            errorMessages={['Tapahtuman nimi vaaditaan']}
-            errorStyle={errorStyle}
+            // validators={['required']}
+            // errorMessages={['Tapahtuman nimi vaaditaan']}
+            // errorStyle={errorStyle}
             fullWidth
+            margin="normal"
           />
 
           <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -205,6 +197,7 @@ export default class EventForm extends React.Component {
               // validators={['required']}
               // errorMessages={['Päivämäärä vaaditaan']}
               fullWidth
+              margin="normal"
             />
             <TimePicker
               label="Tapahtuman alkamisaika"
@@ -220,6 +213,7 @@ export default class EventForm extends React.Component {
               // errorMessages={['Aloitusaika vaaditaan']}
               fullWidth
               disabled={this.state.startDate === ''}
+              margin="normal"
             />
             <DatePicker
               label="Tapahtuman loppumispäivä"
@@ -234,6 +228,7 @@ export default class EventForm extends React.Component {
               //   'Päättymishetki ei voi olla aiemmin kuin alkamishetki!'
               // ]}
               fullWidth
+              margin="normal"
             />
             <TimePicker
               label="Tapahtuman loppumisaika"
@@ -249,6 +244,7 @@ export default class EventForm extends React.Component {
               // ]}
               fullWidth
               disabled={this.state.endDate === ''}
+              margin="normal"
             />
           </MuiPickersUtilsProvider>
           <br />
@@ -262,24 +258,25 @@ export default class EventForm extends React.Component {
               />
             }
             label="Luo toistuva tapahtuma"
+            margin="normal"
           />
 
           <div className="frequent" style={frequentStyle}>
-            <TextValidator
-              floatingLabelText="Toistuvien tapahtumien määrä"
+            <TextField
+              label="Toistuvien tapahtumien määrä"
               name="repeatCount"
               value={this.state.repeatCount}
-              hintText="Toistuvien tapahtumien määrä"
               onChange={this.handleNewEventFormChange}
               disabled={!this.state.checked}
-              validators={['minNumber:2', 'maxNumber:55']}
-              errorMessages={[
-                'Toistuvien tapahtumien määrän pitää olla väliltä 2 - 55!'
-              ]}
+              // validators={['minNumber:2', 'maxNumber:55']}
+              // errorMessages={[
+              //   'Toistuvien tapahtumien määrän pitää olla väliltä 2 - 55!'
+              // ]}
               fullWidth
+              margin="normal"
             />
             <br />
-            <FormControl fullWidth>
+            <FormControl fullWidth margin="normal">
               <InputLabel htmlFor="repeatFrequency">Toistumisväli</InputLabel>
               <Select
                 value={this.state.repeatFrequency}
@@ -301,7 +298,7 @@ export default class EventForm extends React.Component {
           </div>
           <br />
 
-          <FormControl fullWidth>
+          <FormControl fullWidth margin="normal">
             <InputLabel htmlFor="type">Tapahtuman tyyppi</InputLabel>
             <Select
               value={this.state.type}
@@ -310,8 +307,8 @@ export default class EventForm extends React.Component {
                 name: 'type',
                 id: 'type-simple',
               }}
-              validators={['required']}
-              errorMessages={['Tapahtuman tyyppi vaaditaan']}
+              // validators={['required']}
+              // errorMessages={['Tapahtuman tyyppi vaaditaan']}
             >
               <MenuItem value="kokous">Kokous</MenuItem>
               <MenuItem value="leiri">Leiri</MenuItem>
@@ -323,18 +320,18 @@ export default class EventForm extends React.Component {
           <br />
 
           <TextField
-            hintText="Lisätietoja"
             label="Lisätietoja"
             name="information"
             value={this.state.information}
             onChange={this.handleNewEventFormChange}
             multiLine
-            rows={2}
+            rowsMax="2"
             fullWidth
+            margin="normal"
           />
           <br />
           {actions}
-        </ValidatorForm>
+        </div>
       </div>
     )
   }

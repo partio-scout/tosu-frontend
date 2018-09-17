@@ -53,10 +53,13 @@ class NewEvent extends React.Component {
         type: this.state.type,
         information: this.state.information
       }
-
-      await this.sendEventPostRequest(data)
-      if (!this.state.checked) {
-        this.handleClose()
+      try {
+        await this.sendEventPostRequest(data)
+        if (!this.state.checked) {
+          this.handleClose()
+        }
+      } catch (exception) {
+        console.error('Error in event POST:', exception)
       }
     } else {
       // Send POST first to create new GroupId and then use id from response to create group of events. ß
