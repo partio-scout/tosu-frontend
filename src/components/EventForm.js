@@ -5,10 +5,12 @@ import Checkbox from '@material-ui/core/Checkbox'
 import {
   TextValidator,
   ValidatorForm,
-  DateValidator,
-  TimeValidator,
   SelectValidator
 } from 'react-material-ui-form-validator'
+import MomentUtils from 'material-ui-pickers/utils/moment-utils';
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
+import TimePicker from 'material-ui-pickers/TimePicker';
+import DatePicker from 'material-ui-pickers/DatePicker';
 import moment from 'moment'
 import Button from '@material-ui/core/Button'
 
@@ -62,27 +64,28 @@ export default class EventForm extends React.Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  handleStartDate = (event, date) => {
+  handleStartDate = (date) => {
+    console.log(date)
     this.setState({
       startDate: date,
       endDate: date
     })
   }
 
-  handleStartTime = (event, date) => {
+  handleStartTime = (date) => {
     this.setState({
       startTime: date,
       endTime: new Date(moment(date).add(1, 'h'))
     })
   }
 
-  handleEndDate = (event, date) => {
+  handleEndDate = (date) => {
     this.setState({
       endDate: new Date(date)
     })
   }
 
-  handleEndTime = (event, date) => {
+  handleEndTime = (date) => {
     this.setState({
       endTime: date
     })
@@ -184,66 +187,70 @@ export default class EventForm extends React.Component {
             errorStyle={errorStyle}
             fullWidth
           />
-          <DateValidator
-            floatingLabelText="Tapahtuman alkamispäivä"
-            name="startDate"
-            autoOk
-            minDate={minDate}
-            cancelLabel="Peruuta"
-            value={
-              this.state.startDate === '' ? undefined : this.state.startDate
-            }
-            onChange={this.handleStartDate}
-            validators={['required']}
-            errorMessages={['Päivämäärä vaaditaan']}
-            fullWidth
-          />
-          <TimeValidator
-            floatingLabelText="Tapahtuman alkamisaika"
-            format="24hr"
-            name="startTime"
-            cancelLabel="Peruuta"
-            autoOk
-            value={
-              this.state.startTime === '' ? undefined : this.state.startTime
-            }
-            onChange={this.handleStartTime}
-            validators={['required']}
-            errorMessages={['Aloitusaika vaaditaan']}
-            fullWidth
-            disabled={this.state.startDate === ''}
-          />
 
-          <DateValidator
-            floatingLabelText="Tapahtuman loppumispäivä"
-            name="endDate"
-            autoOk
-            minDate={minDate}
-            cancelLabel="Peruuta"
-            value={this.state.endDate === '' ? undefined : this.state.endDate}
-            onChange={this.handleEndDate}
-            validators={['dateIsLater']}
-            errorMessages={[
-              'Päättymishetki ei voi olla aiemmin kuin alkamishetki!'
-            ]}
-            fullWidth
-          />
-          <TimeValidator
-            floatingLabelText="Tapahtuman loppumisaika"
-            format="24hr"
-            name="endTime"
-            cancelLabel="Peruuta"
-            autoOk
-            value={this.state.endTime === '' ? undefined : this.state.endTime}
-            onChange={this.handleEndTime}
-            validators={['timeIsLater']}
-            errorMessages={[
-              'Päättymishetki ei voi olla aiemmin kuin alkamishetki!'
-            ]}
-            fullWidth
-            disabled={this.state.endDate === ''}
-          />
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <DatePicker
+              label="Tapahtuman alkamispäivä"
+              name="startDate"
+              clearable
+              autoOk
+              cancelLabel="Peruuta"
+              value={this.state.startDate === '' ? null : this.state.startDate}
+              onChange={this.handleStartDate}
+              // validators={['required']}
+              // errorMessages={['Päivämäärä vaaditaan']}
+              fullWidth
+            />
+            <TimePicker
+              label="Tapahtuman alkamisaika"
+              ampm={false}
+              name="startTime"
+              cancelLabel="Peruuta"
+              clearable
+              autoOk
+              value={
+                this.state.startTime === '' ? null : this.state.startTime
+              }
+              onChange={this.handleStartTime}
+              // validators={['required']}
+              // errorMessages={['Aloitusaika vaaditaan']}
+              fullWidth
+              disabled={this.state.startDate === ''}
+            />
+            <DatePicker
+              label="Tapahtuman loppumispäivä"
+              name="endDate"
+              clearable
+              autoOk
+              minDate={minDate}
+              cancelLabel="Peruuta"
+              value={this.state.endDate === '' ? null : this.state.endDate}
+              onChange={this.handleEndDate}
+              // validators={['dateIsLater']}
+              // errorMessages={[
+              //   'Päättymishetki ei voi olla aiemmin kuin alkamishetki!'
+              // ]}
+              fullWidth
+            />
+            <TimePicker
+              label="Tapahtuman loppumisaika"
+              ampm={false}
+              name="endTime"
+              cancelLabel="Peruuta"
+              clearable
+              autoOk
+              value={this.state.endTime === '' ? null : this.state.endTime}
+              onChange={this.handleEndTime}
+              // validators={['timeIsLater']}
+              // errorMessages={[
+              //   'Päättymishetki ei voi olla aiemmin kuin alkamishetki!'
+              // ]}
+              fullWidth
+              disabled={this.state.endDate === ''}
+            />
+          </MuiPickersUtilsProvider>
           <br />
+          
           <Checkbox
             label="Luo toistuva tapahtuma"
             checked={this.state.checked}
