@@ -6,14 +6,16 @@ import 'rc-tree-select/assets/index.css'
 import React from 'react'
 import { DropTarget } from 'react-dnd'
 import PropTypes from 'prop-types'
-import {
-  Card,
-  CardActions,
-  CardHeader,
-  CardMedia,
-  CardTitle,
-  CardText
-} from '@material-ui/core/Card'
+// import {
+//   CardTitle,
+//   CardText
+// } from '@material-ui/core/Card'
+import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardMedia from '@material-ui/core/CardMedia'
+
+
 import moment from 'moment-with-locales-es6'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
