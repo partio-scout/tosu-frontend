@@ -122,9 +122,7 @@ class App extends Component {
     }
   }
 
-  sortedEvents = () => {
-    return this.props.events.sort(eventComparer)
-  }
+  sortedEvents = () => this.props.events.sort(eventComparer)
 
   listOfSortedEvents = () => {
     const events = this.sortedEvents()
@@ -142,14 +140,14 @@ class App extends Component {
       setGoogleToken(response.tokenId)
       await Promise.all([
         this.props.eventsInitialization(),
-        this.props.bufferZoneInitialization()////////////////////
+        this.props.bufferZoneInitialization()// //////////////////
       ])
       this.props.pofTreeUpdate(this.props.buffer, this.props.events)
     }
   }
 
   googleLoginFail = async response => {
-    //console.log('login failed')
+    // console.log('login failed')
   }
 
   render() {
@@ -179,7 +177,7 @@ class App extends Component {
     }
     const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 70
     const selfInfo = (
-      <p className="appbar-user"><span>{this.props.scout.name}</span></p>      
+      <p className="appbar-user"><span>{this.props.scout.name}</span></p>
       /* <Link to="/user-info">
         <button className="appbar-button" onClick={this.hideTopBar}>
           <FontAwesome className="icon" name="user" />
@@ -216,65 +214,63 @@ class App extends Component {
     return (
       <div className="App" >
         <Router>
-            <div>
-              <StickyHeader
-                // This is the sticky part of the header.
-                header={
-                  <div>
-                    {isTouchDevice() ? mobileMenu() : dndMenu()}
+          <div>
+            <StickyHeader
+              // This is the sticky part of the header.
+              header={
+                <div>
+                  {isTouchDevice() ? mobileMenu() : dndMenu()}
 
-                    <CookieConsent
-                      buttonText="Hyväksyn evästeiden käytön"
-                      cookieName="myAwesomeCookieName2"
-                      style={{ background: '#2B373B' }}
-                      buttonStyle={{ color: '#4e503b', fontSize: '14px' }}
-                    >
-                      Tämä sivusto käyttää evästeitä.{' '}
-                    </CookieConsent>
-                  </div>
-                }
-              />
-              <section />
-
-              <div id="container" style={{ paddingTop: padding }}>
-                <div className="content">
-                  <Button component={Link} to="/" onClick={this.openTopBar} variant="contained">
-                    Lista tapahtumista
-                  </Button>
-                  &nbsp;
-                  <Button component={Link} to="/new-event" onClick={this.hideTopBar} variant="contained">
-                    Uusi tapahtuma
-                  </Button>
-                  &nbsp;
-                  <Route exact path="/" render={() => events} />
-                  <Route
-                    path="/new-event"
-                    render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
-                  />
-                  <Route
-                    path="/user-info"
-                    render={() => <UserInfo toggleTopBar={this.toggleTopBar} />}
-                  />
-                  <NotificationFooter />
+                  <CookieConsent
+                    buttonText="Hyväksyn evästeiden käytön"
+                    cookieName="myAwesomeCookieName2"
+                    style={{ background: '#2B373B' }}
+                    buttonStyle={{ color: '#4e503b', fontSize: '14px' }}
+                  >
+                    Tämä sivusto käyttää evästeitä.{' '}
+                  </CookieConsent>
                 </div>
+              }
+            />
+            <section />
+
+            <div id="container" style={{ paddingTop: padding }}>
+              <div className="content">
+                <Button component={Link} to="/" onClick={this.openTopBar} variant="contained">
+                  Lista tapahtumista
+                </Button>
+                &nbsp;
+                <Button component={Link} to="/new-event" onClick={this.hideTopBar} variant="contained">
+                  Uusi tapahtuma
+                </Button>
+                &nbsp;
+                <Route exact path="/" render={() => events} />
+                <Route
+                  path="/new-event"
+                  render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
+                />
+                <Route
+                  path="/user-info"
+                  render={() => <UserInfo toggleTopBar={this.toggleTopBar} />}
+                />
+                <NotificationFooter />
               </div>
             </div>
+          </div>
         </Router>
       </div>
     )
   }
 }
 
-const mapStateToProps = state => {
-  return {
+const mapStateToProps = state => ({
     notification: state.notification,
     buffer: state.buffer,
     events: state.events,
     pofTree: state.pofTree,
     taskgroup: state.taskgroup,
     scout: state.scout
-  }
-}
+  })
 
 const HTML5toTouch = {
   backends: [
