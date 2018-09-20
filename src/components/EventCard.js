@@ -368,7 +368,7 @@ class EventCard extends React.Component {
         >
           <CardHeader
             title={title}
-            subtitle={subtitle}
+            subheader={subtitle}
           />
           {isTouchDevice() && !this.state.expanded ? (
             <CardMedia>
