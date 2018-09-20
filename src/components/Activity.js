@@ -127,10 +127,6 @@ class Activity extends Component {
               }
               open={this.state.open}
               onClose={this.handleClick}
-              autoScrollBodyContent
-              bodyClassName="global--modal-body"
-              contentClassName="global--modal-content"
-              paperClassName="global--modal-paper"
             >
               <PlanForm activity={pofActivity} savedActivity={activity} />
             </Dialog>
