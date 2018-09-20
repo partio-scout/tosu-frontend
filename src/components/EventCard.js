@@ -309,6 +309,7 @@ class EventCard extends React.Component {
     let actions = []
     if (event.groupId) {
       actions = [
+        <p>Poistetaanko tapahtuma {event.title}?</p>,
         <Button primary onClick={this.handleClose}>peruuta</Button>,
         <Button
           primary
@@ -323,7 +324,8 @@ class EventCard extends React.Component {
         </Button>
       ]
     } else {
-      actions = [<p>Poistetaanko tapahtuma {event.title}?</p>,
+      actions = [
+        <p>Poistetaanko tapahtuma {event.title}?</p>,
         <Button primary onClick={this.handleClose} >peruuta</Button>,
         <Button
           primary
@@ -461,14 +463,6 @@ class EventCard extends React.Component {
             >
               <div>
                 {actions}
-                {/* <p>Poistetaanko tapahtuma {event.title}?</p>
-                <Button primary onClick={this.handleClose} >peruuta</Button>
-                <Button
-                  primary
-                  onClick={this.deleteEvent}
-                >
-                  Poista tapahtuma
-                </Button> */}
               </div>
             </Dialog>
           </CardActions>
