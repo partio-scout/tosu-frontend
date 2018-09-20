@@ -439,6 +439,11 @@ span.label {
   margin-left: 20px;
 }
 
+/* This is so sticky header doens't interfere with buttons*/
+.priority-z {
+  z-index: 100;
+}
+
 /*material reference*/
 color-class {
   color: #1a237e; /*indigo900*/
