@@ -240,13 +240,11 @@ class App extends Component {
 
               <div id="container" style={{ paddingTop: padding }}>
                 <div className="content">
-                  <Button component={Link} to="/" onClick={this.openTopBar} variant="contained" className='priority-z'>
+                  <Button component={Link} to="/" onClick={this.openTopBar} variant="contained">
                     Lista tapahtumista
                   </Button>
                   &nbsp;
-                  <Button component={Link} to="/new-event" onClick={this.hideTopBar} variant="contained"
-                    className='priority-z'
-                  >
+                  <Button component={Link} to="/new-event" onClick={this.hideTopBar} variant="contained">
                     Uusi tapahtuma
                   </Button>
                   &nbsp;
