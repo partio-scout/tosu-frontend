@@ -14,6 +14,10 @@ import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardMedia from '@material-ui/core/CardMedia'
+import Collapse from '@material-ui/core/Collapse'
+import IconButton from '@material-ui/core/IconButton';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 
 
 import moment from 'moment-with-locales-es6'
@@ -157,11 +161,7 @@ class EventCard extends React.Component {
   }
 
   handleExpandChange = expanded => {
-    this.setState({ expanded })
-  }
-
-  handleReduce = () => {
-    this.setState({ expanded: false })
+    this.setState({ expanded: !this.state.expanded })
   }
 
   deleteActivity = async activity => {
@@ -359,9 +359,6 @@ class EventCard extends React.Component {
           <CardHeader
             title={title}
             subtitle={subtitle}
-            children={cardWarning}
-            actAsExpander
-            showExpandableButton
           />
           {isTouchDevice() && !this.state.expanded ? (
             <CardMedia>
@@ -407,23 +404,30 @@ class EventCard extends React.Component {
               </CardMedia>
             ) : null}
 
-          <h2>{event.title}</h2>
-          <CardContent>
-            <p className="eventTimes">
-              <span>{event.type} alkaa:</span>{' '}
-              {moment(event.startDate).format('D.M.YYYY')} kello{' '}
-              {event.startTime}
-            </p>
-            <p className="eventTimes">
-              <span>{event.type} päättyy:</span>{' '}
-              {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
-            </p>
-            <p>{event.information}</p>
-            <p>Aktiviteetit:</p>
-            {rows}
-            <br style={{ clear: 'both' }} />
-          </CardContent>
+          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <h2>{event.title}</h2>
+              <p className="eventTimes">
+                <span>{event.type} alkaa:</span>{' '}
+                {moment(event.startDate).format('D.M.YYYY')} kello{' '}
+                {event.startTime}
+              </p>
+              <p className="eventTimes">
+                <span>{event.type} päättyy:</span>{' '}
+                {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
+              </p>
+              <p>{event.information}</p>
+              <p>Aktiviteetit:</p>
+              {rows}
+              <br style={{ clear: 'both' }} />
+            </CardContent>
+          </Collapse>
           <CardActions>
+            <IconButton
+              onClick={this.handleExpandChange}
+            >
+              <ExpandMoreIcon />
+            </IconButton>
             <EditEvent
               buttonClass="buttonRight"
               data={event}
