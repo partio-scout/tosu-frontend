@@ -149,13 +149,8 @@ class EditEvent extends React.Component {
               </button>
             </div>
           }
-          modal={false}
           open={this.state.open}
-          onRequestClose={this.handleClose}
-          autoScrollBodyContent
-          bodyClassName="global--modal-body"
-          contentClassName="global--modal-content"
-          paperClassName="global--modal-paper"
+          onClose={this.handleClose}
         >
           <EventForm
             submitFunction={this.handleCloseAndSend.bind(this)}

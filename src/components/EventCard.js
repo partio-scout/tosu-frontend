@@ -308,31 +308,33 @@ class EventCard extends React.Component {
 
     let actions = []
     if (event.groupId) {
-      actions = [
-        <p>Poistetaanko tapahtuma {event.title}?</p>,
-        <Button primary onClick={this.handleClose}>peruuta</Button>,
-        <Button
-          primary
-          onClick={this.deleteEvent}
-        >Poista tämä tapahtuma
-        </Button>,
-        <Button
-          primary
-          onClick={this.deleteEventGroup}
-        >
-          Poista toistuvat tapahtumat
-        </Button>
-      ]
+      actions = (
+        <div>
+          <p>Poistetaanko tapahtuma {event.title}?</p>
+          <Button  onClick={this.handleClose}>peruuta</Button>
+          <Button
+            onClick={this.deleteEvent}
+          >Poista tämä tapahtuma
+          </Button>
+          <Button
+            onClick={this.deleteEventGroup}
+          >
+            Poista toistuvat tapahtumat
+          </Button>
+        </div>
+      )
     } else {
-      actions = [
-        <p>Poistetaanko tapahtuma {event.title}?</p>,
-        <Button primary onClick={this.handleClose} >peruuta</Button>,
-        <Button
-          primary
-          onClick={this.deleteEvent}
-        >
-          Poista tapahtuma
-        </Button>]
+      actions = (
+        <div>
+          <p>Poistetaanko tapahtuma {event.title}?</p>
+          <Button onClick={this.handleClose} >peruuta</Button>
+          <Button
+            onClick={this.deleteEvent}
+          >
+            Poista tapahtuma
+          </Button>
+        </div>
+      )
     }
     let patternClass
     const { connectDropTarget, canDrop, isOver } = this.props
@@ -362,7 +364,6 @@ class EventCard extends React.Component {
     return connectDropTarget(
       <div className="event-card-wrapper">
         <Card
-          onExpandChange={this.handleExpandChange}
           style={background}
           className={patternClass}
         >
@@ -453,13 +454,8 @@ class EventCard extends React.Component {
             </Button>
 
             <Dialog
-              modal={false}
               open={this.state.open}
               onClose={this.handleClose}
-              autoScrollBodyContent
-              bodyClassName="global--modal-body"
-              contentClassName="global--modal-content"
-              paperClassName="global--modal-paper"
             >
               <div>
                 {actions}

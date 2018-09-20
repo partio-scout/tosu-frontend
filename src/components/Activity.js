@@ -125,7 +125,6 @@ class Activity extends Component {
                   ))}
                 </div>
               }
-              modal={false}
               open={this.state.open}
               onClose={this.handleClick}
               autoScrollBodyContent

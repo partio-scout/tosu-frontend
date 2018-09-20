@@ -156,14 +156,16 @@ export default class EventForm extends React.Component {
   }
 
   render() {
-    const actions = [
-      <Button variant="outlined" onClick={this.props.close}>
-        Peruuta
-      </Button>,
-      <Button type="submit" variant="outlined" color="primary" onClick={this.send}>
-        Tallenna
-      </Button>
-    ]
+    const actions = (
+      <div>
+        <Button variant="outlined" onClick={this.props.close}>
+          Peruuta
+        </Button>
+        <Button type="submit" variant="outlined" color="primary" onClick={this.send}>
+          Tallenna
+        </Button>
+      </div>
+    )
 
     const frequentStyle = { display: this.state.checked ? '' : 'none' }
 
@@ -283,7 +285,6 @@ export default class EventForm extends React.Component {
                   id: 'repeatFrequency-simple',
                 }}
                 validators={['required']}
-                errorMessages={['Tapahtuman tyyppi vaaditaan']}
               >
                 <MenuItem value={1}>Päivittäin</MenuItem>
                 <MenuItem value={2}>Viikottain</MenuItem>
@@ -320,7 +321,6 @@ export default class EventForm extends React.Component {
             name="information"
             value={this.state.information}
             onChange={this.handleNewEventFormChange}
-            multiLine
             rowsMax="2"
             fullWidth
             margin="normal"

@@ -74,7 +74,6 @@ class ActivityPreview extends React.Component {
         <Chip
           style={getItemStyles(currentOffset, startPoint, pofActivity.mandatory)}
           className='previewChip'
-          onRequestDelete={() => console.log('')}
         >
           <Avatar style={pofActivity.mandatory ? styles.avatarMandatory : styles.avatar}>
             <img

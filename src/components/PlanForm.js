@@ -88,7 +88,7 @@ export default class PlanForm extends React.Component {
         {value === 1 &&
           <TabContainer>
             <div>
-              <h2 classNames="headline">Toteutusvinkit</h2>
+              <h2 className="headline">Toteutusvinkit</h2>
               {suggestionDeatails.length !== 0
                   ? suggestionDeatails
                   : 'Ei toteutusvinkkejä'}
