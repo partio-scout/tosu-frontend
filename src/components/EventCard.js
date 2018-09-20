@@ -160,6 +160,22 @@ class EventCard extends React.Component {
     }
   }
 
+  onChangeChildren = async activityGuid => {
+    if (this.isLeaf(activityGuid)) {
+      try {
+        const res = await eventService.addActivity(this.props.event.id, {
+          guid: activityGuid
+        })
+
+        this.props.addActivityToEventOnlyLocally(this.props.event.id, res)
+        this.props.notify('Aktiviteetti on lisätty!', 'success')
+      } catch (exception) {
+        this.props.notify('Aktiviteetin lisäämisessä tapahtui virhe!')
+      }
+    }
+    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+  }
+
   handleExpandChange = expanded => {
     this.setState({ expanded: !this.state.expanded })
   }
@@ -240,21 +256,6 @@ class EventCard extends React.Component {
     }
     return false
   }
-  onChangeChildren = async activityGuid => {
-    if (this.isLeaf(activityGuid)) {
-      try {
-        const res = await eventService.addActivity(this.props.event.id, {
-          guid: activityGuid
-        })
-
-        this.props.addActivityToEventOnlyLocally(this.props.event.id, res)
-        this.props.notify('Aktiviteetti on lisätty!', 'success')
-      } catch (exception) {
-        this.props.notify('Aktiviteetin lisäämisessä tapahtui virhe!')
-      }
-    }
-    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-  }
 
   filterTreeNode = (input, child) => {
     return child.props.title.props.name
@@ -322,6 +323,14 @@ class EventCard extends React.Component {
         </Button>
       ]
     } else {
+      actions = [<p>Poistetaanko tapahtuma {event.title}?</p>,
+        <Button primary onClick={this.handleClose} >peruuta</Button>,
+        <Button
+          primary
+          onClick={this.deleteEvent}
+        >
+          Poista tapahtuma
+        </Button>]
     }
     let patternClass
     const { connectDropTarget, canDrop, isOver } = this.props
@@ -351,7 +360,6 @@ class EventCard extends React.Component {
     return connectDropTarget(
       <div className="event-card-wrapper">
         <Card
-          expanded={this.state.expanded}
           onExpandChange={this.handleExpandChange}
           style={background}
           className={patternClass}
@@ -435,7 +443,6 @@ class EventCard extends React.Component {
               setNotification={this.props.setNotification}
             />
             <Button
-              secondary
               className="buttonRight"
               onClick={this.handleDelete}
               variant='contained'
@@ -453,14 +460,15 @@ class EventCard extends React.Component {
               paperClassName="global--modal-paper"
             >
               <div>
-                <p>Poistetaanko tapahtuma {event.title}?</p>
+                {actions}
+                {/* <p>Poistetaanko tapahtuma {event.title}?</p>
                 <Button primary onClick={this.handleClose} >peruuta</Button>
                 <Button
                   primary
                   onClick={this.deleteEvent}
                 >
                   Poista tapahtuma
-                </Button>
+                </Button> */}
               </div>
             </Dialog>
           </CardActions>

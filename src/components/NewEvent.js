@@ -183,7 +183,7 @@ class NewEvent extends React.Component {
     }
     return (
       <div className="event-form">
-        <Paper zDepth={2} className="new-form-paper">
+        <Paper className="new-form-paper">
           <EventForm
             submitFunction={this.handleCloseAndSend.bind(this)}
             close={this.handleClose.bind(this)}

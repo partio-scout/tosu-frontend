@@ -5,7 +5,6 @@ import isTouchDevice from 'is-touch-device'
 import MultiBackend from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
 import { GoogleLogin } from 'react-google-login'
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import FontAwesome from 'react-fontawesome'
 import Button from '@material-ui/core/Button'
 import 'react-sticky-header/styles.css'
@@ -217,7 +216,6 @@ class App extends Component {
     return (
       <div className="App" >
         <Router>
-          <MuiThemeProvider>
             <div>
               <StickyHeader
                 // This is the sticky part of the header.
@@ -261,7 +259,6 @@ class App extends Component {
                 </div>
               </div>
             </div>
-          </MuiThemeProvider>
         </Router>
       </div>
     )

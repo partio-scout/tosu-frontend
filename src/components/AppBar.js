@@ -44,7 +44,6 @@ export default class AppBar extends React.Component {
           <FormControlLabel
             control={
               <Switch
-                labelPosition="right"
                 className="toggle-elements"
                 onClick={() => this.props.toggleTopBar()}
               />

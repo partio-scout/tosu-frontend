@@ -28,7 +28,7 @@ export default class UserInfo extends Component {
   render() {
     return (
       <div>
-        <Paper zDepth={2} style={{ padding: 20 }}>
+        <Paper style={{ padding: 20 }}>
           <h3>Käyttäjän tiedot</h3>
           <ValidatorForm ref={() => 'form'} onSubmit={this.send} disabled>
             <TextValidator

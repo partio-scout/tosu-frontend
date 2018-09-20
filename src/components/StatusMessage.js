@@ -206,7 +206,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   )
   return (
     <div>
-      <Paper className='status-box' zDepth={1}>
+      <Paper className='status-box'>
         <Clear
           className='clear'
           onClick={() => handleClose()}

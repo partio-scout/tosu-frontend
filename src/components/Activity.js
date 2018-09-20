@@ -85,7 +85,7 @@ class Activity extends Component {
           >
 
             <Chip
-              OnRequestDelete={() => this.props.deleteActivity(activity)}
+              onDelete={() => this.props.deleteActivity(activity)}
               className={
                 pofActivity.mandatory ? 'mandatory-chip' : 'non-mandatory-chip'
               }
