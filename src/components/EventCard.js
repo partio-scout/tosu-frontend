@@ -41,6 +41,7 @@ import {
 import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
 import eventService from '../services/events'
+import { CardContent } from '@material-ui/core';
 
 // Warning icon
 const warning = (status, event) => {
@@ -55,7 +56,7 @@ const warning = (status, event) => {
             className="warning"
           />
           <span class="tooltiptext">
-          Aktiviteetin ajankohta on virheellinen!
+            Aktiviteetin ajankohta on virheellinen!
           </span>
         </div>
       )
@@ -189,7 +190,7 @@ class EventCard extends React.Component {
       }
     }
 
-  this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
 
   deleteEvent = async () => {
@@ -301,34 +302,26 @@ class EventCard extends React.Component {
     const subtitle = this.state.expanded
       ? ''
       : `${moment(event.startDate, 'YYYY-MM-DD')
-          .locale('fi')
-          .format('ddd D. MMMM YYYY')} ${event.startTime}`
+        .locale('fi')
+        .format('ddd D. MMMM YYYY')} ${event.startTime}`
 
     let actions = []
     if (event.groupId) {
       actions = [
-        <Button label="Peruuta" primary onClick={this.handleClose} />,
-
+        <Button primary onClick={this.handleClose}>peruuta</Button>,
         <Button
-          label="Poista tämä tapahtuma"
           primary
           onClick={this.deleteEvent}
-        />,
+        >Poista tämä tapahtuma
+        </Button>,
         <Button
-          label="Poista toistuvat tapahtumat"
           primary
           onClick={this.deleteEventGroup}
-        />
+        >
+          Poista toistuvat tapahtumat
+        </Button>
       ]
     } else {
-      actions = [
-        <Button label="Peruuta" primary onClick={this.handleClose} />,
-        <Button
-          label="Poista tapahtuma"
-          primary
-          onClick={this.deleteEvent}
-        />
-      ]
     }
     let patternClass
     const { connectDropTarget, canDrop, isOver } = this.props
@@ -401,43 +394,21 @@ class EventCard extends React.Component {
                     />
                   </div>
                 ) : (
-                  <div style={{ clear: 'both' }}>&nbsp;</div>
-                )}
+                    <div style={{ clear: 'both' }}>&nbsp;</div>
+                  )}
               </div>
             </CardMedia>
           ) : null}
           {!isTouchDevice() &&
-          !this.state.expanded &&
-          this.props.event.activities.length !== 0 ? (
-            <CardMedia>
-              <div className="activity-header">{rows}</div>
-            </CardMedia>
-          ) : null}
+            !this.state.expanded &&
+            this.props.event.activities.length !== 0 ? (
+              <CardMedia>
+                <div className="activity-header">{rows}</div>
+              </CardMedia>
+            ) : null}
 
-          <CardTitle title={event.title} subtitle="Lokaatio?" expandable />
-          <CardText expandable>
-            <EditEvent
-              buttonClass="buttonRight"
-              data={event}
-              source={this.handleClose}
-              setNotification={this.props.setNotification}
-            />
-            <Button
-              label="Poista"
-              secondary
-              className="buttonRight"
-              onClick={this.handleDelete}
-            />
-
-            <Dialog
-              actions={actions}
-              modal={false}
-              open={this.state.open}
-              onRequestClose={this.handleClose}
-            >
-              Poistetaanko tapahtuma {event.title}?
-            </Dialog>
-
+          <h2>{event.title}</h2>
+          <CardContent>
             <p className="eventTimes">
               <span>{event.type} alkaa:</span>{' '}
               {moment(event.startDate).format('D.M.YYYY')} kello{' '}
@@ -451,15 +422,44 @@ class EventCard extends React.Component {
             <p>Aktiviteetit:</p>
             {rows}
             <br style={{ clear: 'both' }} />
-            <CardActions>
-              <Button
-                label="Sulje"
-                primary
-                onClick={this.handleReduce}
-                fullWidth
-              />
-            </CardActions>
-          </CardText>
+          </CardContent>
+          <CardActions>
+            <EditEvent
+              buttonClass="buttonRight"
+              data={event}
+              source={this.handleClose}
+              setNotification={this.props.setNotification}
+            />
+            <Button
+              secondary
+              className="buttonRight"
+              onClick={this.handleDelete}
+              variant='contained'
+            >
+              poista
+            </Button>
+
+            <Dialog
+              modal={false}
+              open={this.state.open}
+              onClose={this.handleClose}
+              autoScrollBodyContent
+              bodyClassName="global--modal-body"
+              contentClassName="global--modal-content"
+              paperClassName="global--modal-paper"
+            >
+              <div>
+                <p>Poistetaanko tapahtuma {event.title}?</p>
+                <Button primary onClick={this.handleClose} >peruuta</Button>
+                <Button
+                  primary
+                  onClick={this.deleteEvent}
+                >
+                  Poista tapahtuma
+                </Button>
+              </div>
+            </Dialog>
+          </CardActions>
         </Card>
       </div>
     )

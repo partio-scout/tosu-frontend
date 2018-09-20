@@ -130,11 +130,13 @@ class EditEvent extends React.Component {
     return (
       <div>
         <Button
-          label="Muokkaa"
           onClick={this.handleOpen}
           className={this.props.buttonClass}
           disabled={disabled}
-        />
+          variant='contained'
+        >
+        Muokkaa
+        </Button>
         <Dialog
           title={
             <div>
