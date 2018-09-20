@@ -156,9 +156,6 @@ export default class EventForm extends React.Component {
   }
 
   render() {
-    const minDate = moment()
-      .utcOffset(120)
-      .toDate()
     const actions = [
       <Button variant="outlined" onClick={this.props.close}>
         Peruuta
@@ -219,7 +216,6 @@ export default class EventForm extends React.Component {
               label="Tapahtuman loppumispäivä"
               name="endDate"
               autoOk
-              minDate={minDate}
               cancelLabel="Peruuta"
               value={this.state.endDate === '' ? null : this.state.endDate}
               onChange={this.handleEndDate}

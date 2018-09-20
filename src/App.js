@@ -26,7 +26,6 @@ import { createStatusMessage } from './utils/createStatusMessage'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutLogin } from './reducers/scoutReducer'
 import { getGoogleToken, removeGoogleToken, setGoogleToken } from './services/googleToken'
-import CookieConsent from 'react-cookie-consent'
 import pofService from './services/pof'
 import { loadCachedPofData } from './services/localStorage'
 import eventComparer from './utils/EventCompare'
@@ -221,14 +220,6 @@ class App extends Component {
                 <div>
                   {isTouchDevice() ? mobileMenu() : dndMenu()}
 
-                  <CookieConsent
-                    buttonText="Hyväksyn evästeiden käytön"
-                    cookieName="myAwesomeCookieName2"
-                    style={{ background: '#2B373B' }}
-                    buttonStyle={{ color: '#4e503b', fontSize: '14px' }}
-                  >
-                    Tämä sivusto käyttää evästeitä.{' '}
-                  </CookieConsent>
                 </div>
               }
             />

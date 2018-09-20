@@ -137,7 +137,7 @@ class NewEvent extends React.Component {
     } catch (exception) {
       console.error('Error in event POST:', exception)
       this.props.notify(
-        'Yritit luoda tapahtumaa, jonka alkamisaika on jo mennyt!'
+        'Tapahtumaa ei voitu luoda!'
       )
     }
   }
