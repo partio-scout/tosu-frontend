@@ -135,7 +135,7 @@ class BufferZone extends React.Component {
           {rows}
         </div>
         <div>
-          <Button onClick={this.handleClick} variant='contained'> Tyhjennä </Button>
+          <Button onClick={this.handleClick}> Tyhjennä </Button>
         </div>
       </div>
     )
