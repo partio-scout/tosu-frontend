@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import ReactDOM from 'react-dom'
 import isTouchDevice from 'is-touch-device'
-import TreeSelect /*, { TreeNode, SHOW_PARENT }*/ from 'rc-tree-select'
+import TreeSelect /* ,{ TreeNode, SHOW_PARENT } */ from 'rc-tree-select'
 import 'rc-tree-select/assets/index.css'
 import React from 'react'
 import { DropTarget } from 'react-dnd'
@@ -15,11 +15,9 @@ import CardActions from '@material-ui/core/CardActions'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardMedia from '@material-ui/core/CardMedia'
 import Collapse from '@material-ui/core/Collapse'
-import IconButton from '@material-ui/core/IconButton';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
-
-
+import IconButton from '@material-ui/core/IconButton'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { CardContent } from '@material-ui/core'
 import moment from 'moment-with-locales-es6'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
@@ -45,7 +43,7 @@ import {
 import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
 import eventService from '../services/events'
-import { CardContent } from '@material-ui/core';
+
 
 // Warning icon
 const warning = (status, event) => {

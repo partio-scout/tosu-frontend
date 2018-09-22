@@ -1,11 +1,11 @@
 import React from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
-//import eventgroupService from '../services/eventgroups';
+// import eventgroupService from '../services/eventgroups';
 import moment from 'moment'
+import { connect } from 'react-redux'
 import EventForm from './EventForm'
 import { notify } from '../reducers/notificationReducer'
-import { connect } from 'react-redux'
 import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
 
