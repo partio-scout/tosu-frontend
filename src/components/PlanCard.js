@@ -1,19 +1,36 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Card  from '@material-ui/core/Card'
+import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
+import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
+import IconButton from '@material-ui/core/IconButton'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Button from '@material-ui/core/Button'
+import Collapse from '@material-ui/core/Collapse/Collapse';
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
 import { notify } from '../reducers/notificationReducer'
 
+
 class PlanCard extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      expanded: false
+    }
+  }
+
   componentDidMount = () => {
     this.updateSuggestions()
   }
   componentDidUpdate = () => {
     this.updateSuggestions()
+  }
+
+
+  handleExpandChange = expanded => {
+    this.setState({ expanded: !this.state.expanded })
   }
 
   // Check if suggestions are already saved in store and if not save them
@@ -75,6 +92,7 @@ class PlanCard extends React.Component {
         />
       )
 
+
       style = { background: '#C8E6C9' }
     } else {
       button = () => (
@@ -88,20 +106,24 @@ class PlanCard extends React.Component {
 
     return (
       <Card>
+        <CardHeader
+          title={suggestion.title}
+          style={style}
+        />
         <CardContent>
-          <CardHeader
-            title={suggestion.title}
-            actAsExpander={true}
-            showExpandableButton={true}
-            style={style}
-          />
-
-          <p expandable={true}>
+          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
             {suggestion.content}
-          </p>
+          </Collapse>
           <br />
           {button()}
         </CardContent>
+        <CardActions>
+          <IconButton
+            onClick={this.handleExpandChange}
+          >
+            <ExpandMoreIcon />
+          </IconButton>
+        </CardActions>
       </Card>
     )
   }
