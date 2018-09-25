@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Card, CardHeader, CardText } from '@material-ui/core/Card'
+import Card  from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
@@ -86,19 +88,20 @@ class PlanCard extends React.Component {
 
     return (
       <Card>
-        <CardHeader
-          title={suggestion.title}
-          actAsExpander={true}
-          showExpandableButton={true}
-          style={style}
-        />
+        <CardContent>
+          <CardHeader
+            title={suggestion.title}
+            actAsExpander={true}
+            showExpandableButton={true}
+            style={style}
+          />
 
-        <CardText expandable={true}>
-          {suggestion.content}
-
+          <p expandable={true}>
+            {suggestion.content}
+          </p>
           <br />
           {button()}
-        </CardText>
+        </CardContent>
       </Card>
     )
   }
