@@ -34,7 +34,7 @@ const activitySource = {
 function collect(connector, monitor) {
   return {
     connectDragSource: connector.dragSource(),
-    connectDragPreview: connector.dragPreview(),
+    //connectDragPreview: connector.dragPreview(),
     isDragging: monitor.isDragging()
   }
 }
