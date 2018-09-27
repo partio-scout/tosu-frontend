@@ -439,6 +439,11 @@ span.label {
   margin-left: 20px;
 }
 
+/*Override transition speed*/
+.MuiCollapse-container-131 {
+  transition-duration: 0ms !important;
+}
+
 /*material reference*/
 color-class {
   color: #1a237e; /*indigo900*/
