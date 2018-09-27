@@ -304,7 +304,7 @@ class EventCard extends React.Component {
       actions = (
         <div>
           <p>Poistetaanko tapahtuma {event.title}?</p>
-          <Button  onClick={this.handleClose}>peruuta</Button>
+          <Button onClick={this.handleClose}>peruuta</Button>
           <Button
             onClick={this.deleteEvent}
           >Poista tämä tapahtuma
@@ -363,6 +363,11 @@ class EventCard extends React.Component {
           <CardHeader
             title={title}
             subheader={subtitle}
+            action={
+              <IconButton onClick={this.handleExpandChange}>
+                <ExpandMoreIcon />
+              </IconButton>
+            }
           />
           {isTouchDevice() && !this.state.expanded ? (
             <CardMedia>
@@ -427,11 +432,6 @@ class EventCard extends React.Component {
             </CardContent>
           </Collapse>
           <CardActions>
-            <IconButton
-              onClick={this.handleExpandChange}
-            >
-              <ExpandMoreIcon />
-            </IconButton>
             <EditEvent
               buttonClass="buttonRight"
               data={event}
