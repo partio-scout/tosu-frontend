@@ -16,11 +16,13 @@ import TimePicker from 'material-ui-pickers/TimePicker'
 import DatePicker from 'material-ui-pickers/DatePicker'
 
 
+/*
 const errorStyle = {
   position: 'absolute',
   marginBottom: '-22px',
   color: 'red'
 }
+*/
 
 export default class EventForm extends React.Component {
   constructor(props) {
