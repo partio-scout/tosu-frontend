@@ -83,11 +83,11 @@ import eventService from '../services/events'
 // Actual Warning icon
 // Warning icon
 const warning = (
-  <div class="tooltip">
+  <div className="tooltip">
     <Warning
       className='warning'
     />
-    <span class="tooltiptext">
+    <span className="tooltiptext">
       Tapahtumasta puuttuu aktiviteetti!
     </span>
   </div>
@@ -396,7 +396,7 @@ class EventCard extends React.Component {
             }
           />
           {isTouchDevice() && !this.state.expanded ? (
-            <CardMedia>
+            <CardContent>
               <div className="mobile-event-card-media">
                 <div>{rows}</div>
                 {this.props.taskgroup ? (
@@ -429,14 +429,14 @@ class EventCard extends React.Component {
                     <div style={{ clear: 'both' }}>&nbsp;</div>
                   )}
               </div>
-            </CardMedia>
+            </CardContent>
           ) : null}
           {!isTouchDevice() &&
             !this.state.expanded &&
             this.props.event.activities.length !== 0 ? (
-              <CardMedia>
+              <CardContent>
                 <div className="activity-header">{rows}</div>
-              </CardMedia>
+              </CardContent>
             ) : null}
 
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>

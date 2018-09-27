@@ -22,11 +22,11 @@ const smallDone = (
 
 // Warning icon
 const warning = (
-  <div class="tooltip">
+  <div className="tooltip">
     <Warning
       className='warning'
     />
-    <span class="tooltiptext">
+    <span className="tooltiptext">
     Aktiviteetin ajankohta on virheellinen!
     </span>
   </div>
@@ -63,7 +63,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   const basicPlanInformation = () => {
     return (
       <div style={{ fontSize: '0.8rem', lineHeight: '1.4rem' }}>
-        <p style={{ marginBottom: 0 }}>
+        <div style={{ marginBottom: 0 }}>
           <big>
             <strong>
               {taskgroup.title}{' '}
@@ -112,7 +112,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
             : `Valitse vapaaehtoiset aktiviteetit ${
                 statusMessage.status.nonMandatory.total
               }/4`}
-        </p>
+        </div>
         <p style={{ margin: 0, marginLeft: 20 }}>
           {statusMessage.status.nonMandatory.suhdeItseen >= 1
             ? smallDone
@@ -149,7 +149,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
             ? ` - ${statusMessage.status.dates.suhdeYmparistoon}`
             : null}
         </p>
-        <p style={{ marginTop: 0, marginBottom: 0 }}>
+        <div style={{ marginTop: 0, marginBottom: 0 }}>
           {statusMessage.status.nonMandatory.majakka === 1 &&
           !statusMessage.status.warnings.lastTaskTooSoon
             ? done
@@ -158,7 +158,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
           {statusMessage.status.nonMandatory.majakka === 1
             ? `Majakkavaihtoehto valittu ${statusMessage.status.dates.majakka}`
             : 'Valitse majakkavaihtoehto'}
-        </p>
+        </div>
       </div>
     )
   }

@@ -42,7 +42,7 @@ function collect(connector, monitor) {
 class Activity extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
-    connectDragPreview: PropTypes.func.isRequired
+    //connectDragPreview: PropTypes.func.isRequired
   }
 
   constructor(props) {
