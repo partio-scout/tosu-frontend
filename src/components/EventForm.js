@@ -16,7 +16,7 @@ import {
    SelectValidator
  } from 'react-material-ui-form-validator'
 import ValidatedDatePicker from "../utils/ValidatedDatePicker"
-import ValidatedTimePicker from "../utils/ValidatedTimePicker.js"
+import ValidatedTimePicker from "../utils/ValidatedTimePicker"
 
 import MomentUtils from 'material-ui-pickers/utils/moment-utils'
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
