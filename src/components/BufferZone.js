@@ -7,31 +7,38 @@ import Activity from './Activity'
 import ItemTypes from '../ItemTypes'
 import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import { postActivityToBufferOnlyLocally, deleteActivityFromBuffer  } from '../reducers/bufferZoneReducer'
-import { deleteActivityFromEventOnlyLocally } from '../reducers/eventReducer'
+import { postActivityToBufferOnlyLocally, deleteActivityFromBufferOnlyLocally, deleteActivityFromBuffer  } from '../reducers/bufferZoneReducer'
+import { deleteActivityFromEventOnlyLocally, addActivityToEventOnlyLocally} from '../reducers/eventReducer'
 import activityService from '../services/activities'
 import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
 
 const moveActivity = async (
   props,
-  activityId,
+  activity,
   parentId,
   targetId,
   bufferzone
 ) => {
+  const activityId=activity.id
   try {
+    //Move activity locally
+    props.postActivityToBufferOnlyLocally(activity)
+    props.deleteActivityFromEventOnlyLocally(activityId)
     const res = await activityService.moveActivityFromEventToBufferZone(
       activityId,
       parentId
     )
-    props.deleteActivityFromEventOnlyLocally(activityId)
+    //Replace the moved activity (res )
+    await props.deleteActivityFromBufferOnlyLocally(activityId)
     props.postActivityToBufferOnlyLocally(res)
+
     props.notify('Aktiviteetti siirretty!', 'success')
     return res
   } catch (exception) {
-    if (bufferzone && parentId === targetId) {
-    } else {
+    props.deleteActivityFromBufferOnlyLocally(activityId)
+    props.addActivityToEventOnlyLocally(parentId, {...activity,canDrag:true})
+    if (!bufferzone || parentId !== targetId) {
       props.notify('Aktiviteettialue on täynnä!')
     }
   }
@@ -43,8 +50,10 @@ const bufferZoneTarget = {
     const item = monitor.getItem()
     const targetId = 1
     const { parentId, bufferzone } = item
-    const activityId = item.id
-    moveActivity(props, activityId, parentId, targetId, bufferzone)
+    const activity = {...item.activity}
+    if (!bufferzone){
+      moveActivity(props, activity, parentId, targetId, bufferzone)
+    }
   }
 }
 
@@ -158,6 +167,8 @@ const DroppableBufferZone = DropTarget(
 export default connect(mapStateToProps, {
   notify,
   deleteActivityFromEventOnlyLocally,
+  addActivityToEventOnlyLocally,
+  deleteActivityFromBufferOnlyLocally,
   postActivityToBufferOnlyLocally,
   pofTreeUpdate,
   deleteActivityFromBuffer
