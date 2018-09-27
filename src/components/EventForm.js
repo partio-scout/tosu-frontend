@@ -3,11 +3,8 @@ import moment from 'moment'
 
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
-import InputLabel from '@material-ui/core/InputLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormControl from '@material-ui/core/FormControl'
-import Select from '@material-ui/core/Select'
 import Button from '@material-ui/core/Button'
 
 import {
@@ -20,8 +17,6 @@ import ValidatedTimePicker from "../utils/ValidatedTimePicker"
 
 import MomentUtils from 'material-ui-pickers/utils/moment-utils'
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
-import TimePicker from 'material-ui-pickers/TimePicker'
-import DatePicker from 'material-ui-pickers/DatePicker'
 
 export default class EventForm extends React.Component {
   constructor(props) {
