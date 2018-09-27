@@ -14,6 +14,7 @@ import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { CardContent } from '@material-ui/core'
+import Warning from '@material-ui/icons/Warning'
 import moment from 'moment-with-locales-es6'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
@@ -41,7 +42,9 @@ import eventService from '../services/events'
 
 
 // Warning icon
-const warning = (status, event) => {
+// No idea if this actually does anything since the warning is actually created in statusmessage.js
+//  -Michael
+/* const warning = (status, event) => {
   if (status.warnings) {
     if (
       status.warnings.firstTaskTooLate &&
@@ -74,9 +77,21 @@ const warning = (status, event) => {
       )
     }
   }
-
   return null
-}
+} */
+
+// Actual Warning icon
+// Warning icon
+const warning = (
+  <div class="tooltip">
+    <Warning
+      className='warning'
+    />
+    <span class="tooltiptext">
+      Tapahtumasta puuttuu aktiviteetti!
+    </span>
+  </div>
+)
 
 const moveActivityFromBuffer = async (
   props,
@@ -333,7 +348,7 @@ class EventCard extends React.Component {
     }
     let patternClass
     const { connectDropTarget, canDrop, isOver } = this.props
-    let background = { backgroundColor: '#FFFFFF' }
+    let background
     if (canDrop) {
       background = { backgroundColor: '#C8E6C9' }
     }
@@ -354,16 +369,22 @@ class EventCard extends React.Component {
       )
     }
 
-    const cardWarning = warning(this.props.status, this.props.event)
+    //const cardWarning = warning(this.props.status, this.props.event)
 
     return connectDropTarget(
-      <div className="event-card-wrapper">
+      <div className={rows.length === 0 ? "empty-event-card" : "event-card-wrapper"}>
         <Card
           style={background}
           className={patternClass}
         >
           <CardHeader
-            title={title}
+            title={
+              <div>
+                {title}
+                &nbsp;
+                {this.props.event.activities.length === 0 ? warning : ''}
+              </div>
+            }
             subheader={subtitle}
             action={
               <IconButton
