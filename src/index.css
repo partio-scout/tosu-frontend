@@ -444,6 +444,10 @@ span.label {
   transition-duration: 0ms !important;
 }
 
+.arrow-up {
+  transform: rotate(180deg);
+}
+
 /*material reference*/
 color-class {
   color: #1a237e; /*indigo900*/

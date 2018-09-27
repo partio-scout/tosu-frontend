@@ -169,10 +169,6 @@ class EventCard extends React.Component {
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
 
-  handleExpandChange = expanded => {
-    this.setState({ expanded: !this.state.expanded })
-  }
-
   deleteActivity = async activity => {
     try {
       await this.props.deleteActivityFromEvent(activity.id)
@@ -266,6 +262,10 @@ class EventCard extends React.Component {
 
   handleClose = () => {
     this.setState({ open: false })
+  }
+
+  handleExpandChange = expanded => {
+    this.setState({ expanded: !this.state.expanded })
   }
 
   render() {
@@ -364,7 +364,10 @@ class EventCard extends React.Component {
             title={title}
             subheader={subtitle}
             action={
-              <IconButton onClick={this.handleExpandChange}>
+              <IconButton
+                onClick={this.handleExpandChange}
+                className={this.state.expanded ? "arrow-up" : ""}
+              >
                 <ExpandMoreIcon />
               </IconButton>
             }
