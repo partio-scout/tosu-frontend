@@ -299,7 +299,9 @@ class EventCard extends React.Component {
         .locale('fi')
         .format('ddd D. MMMM YYYY')} ${event.startTime}`
 
+    // This is the popup that appears if you click "poista" on an event
     let actions = []
+    // If groupId exists, it's a recurring event, so we need to enable deleting those
     if (event.groupId) {
       actions = (
         <div>

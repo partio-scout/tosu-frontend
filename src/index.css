@@ -201,7 +201,6 @@ span.label {
 .activity-header {
   margin: 10px 0 5px;
   min-height: 60px;
-  background-color: aliceblue;
   border-radius: 8px;
   display: flex;
   flex-flow: row wrap;
@@ -446,6 +445,10 @@ span.label {
 
 .arrow-up {
   transform: rotate(180deg);
+}
+
+.dnd-active-target {
+  background-color: '#C8E6C9';
 }
 
 /*material reference*/
