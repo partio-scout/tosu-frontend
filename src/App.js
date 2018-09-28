@@ -7,6 +7,7 @@ import React, { Component } from 'react'
 import { GoogleLogin } from 'react-google-login'
 import FontAwesome from 'react-fontawesome'
 import Button from '@material-ui/core/Button'
+import moment from 'moment'
 import 'react-sticky-header/styles.css'
 import StickyHeader from 'react-sticky-header'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
@@ -30,6 +31,7 @@ import pofService from './services/pof'
 import { loadCachedPofData } from './services/localStorage'
 import eventComparer from './utils/EventCompare'
 import EventCard from './components/EventCard'
+import { filterChange } from './reducers/filterReducer'
 import "./index.css";
 
 class App extends Component {
@@ -121,18 +123,6 @@ class App extends Component {
     }
   }
 
-  sortedEvents = () => this.props.events.sort(eventComparer)
-
-  listOfSortedEvents = () => {
-    const events = this.sortedEvents()
-    return events.map(event => (
-      <EventCard
-        key={event.id ? event.id : 0}
-        event={event}
-      />
-    ))
-  }
-
   googleLoginSuccess = async response => {
     if (this.props.scout === null) {
       await this.props.scoutLogin(response.tokenId)
@@ -149,7 +139,21 @@ class App extends Component {
     // console.log('login failed')
   }
 
+  filterSelected = (value) => () => {
+    this.openTopBar()
+    this.props.store.dispatch(filterChange(value))
+  }
+
   render() {
+    const eventsToShow = () => {
+      const currentDate = moment().format('YYYY-MM-DD')
+      const { events, filter } = this.props.store.getState()
+      // If filter is set to FUTURE, show all events with end date equal or greater than today
+      // otherwise show events with end date less than today
+      return filter === 'FUTURE'
+        ? events.filter(event => event.endDate >= currentDate).sort(eventComparer)
+        : events.filter(event => event.endDate < currentDate).sort(eventComparer)
+    }
     if (this.props.scout === null) {
       return (
         <div className="Login">
@@ -206,7 +210,12 @@ class App extends Component {
 
     const events = (
       <div>
-        {this.listOfSortedEvents()}
+        {eventsToShow().map(event => (
+          <EventCard
+            key={event.id ? event.id : 0}
+            event={event}
+          />
+        ))}
       </div>
     )
 
@@ -227,8 +236,12 @@ class App extends Component {
 
             <div id="container" style={{ paddingTop: padding }}>
               <div className="content">
-                <Button component={Link} to="/" onClick={this.openTopBar} variant="contained">
-                  Lista tapahtumista
+                <Button component={Link} to="/" onClick={this.filterSelected('FUTURE')} variant="contained">
+                  Tulevat tapahtumat
+                </Button>
+                &nbsp;
+                <Button component={Link} to="/" onClick={this.filterSelected('PAST')} variant="contained">
+                  Menneet tapahtumat
                 </Button>
                 &nbsp;
                 <Button component={Link} to="/new-event" onClick={this.hideTopBar} variant="contained">
@@ -255,13 +268,14 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-    notification: state.notification,
-    buffer: state.buffer,
-    events: state.events,
-    pofTree: state.pofTree,
-    taskgroup: state.taskgroup,
-    scout: state.scout
-  })
+  notification: state.notification,
+  buffer: state.buffer,
+  events: state.events,
+  pofTree: state.pofTree,
+  taskgroup: state.taskgroup,
+  scout: state.scout,
+  filter: state.filter
+})
 
 const HTML5toTouch = {
   backends: [
@@ -284,5 +298,6 @@ export default connect(mapStateToProps, {
   bufferZoneInitialization,
   deleteActivityFromBuffer,
   addStatusInfo,
-  scoutLogin
+  scoutLogin,
+  filterChange
 })(AppDnD)
