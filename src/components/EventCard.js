@@ -33,6 +33,7 @@ import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   deleteActivityFromBufferOnlyLocally,
+  postActivityToBufferOnlyLocally,
   bufferZoneInitialization
 } from '../reducers/bufferZoneReducer'
 import convertToSimpleActivity from '../functions/activityConverter'
@@ -92,39 +93,44 @@ const warning = (
   </div>
 )
 
-const moveActivityFromBuffer = async (
-  props,
-  activityId,
-  parentId,
-  targetId
-) => {
+const moveActivityFromBuffer = async (props, activity, parentId,targetId) => {
+  const activityId=activity.id
   try {
+    props.addActivityToEventOnlyLocally(targetId, activity)
+    props.deleteActivityFromBufferOnlyLocally(activityId)
     const res = await activityService.moveActivityFromBufferZoneToEvent(
       activityId,
       targetId
     )
-    await props.addActivityToEventOnlyLocally(targetId, res)
-    await props.deleteActivityFromBufferOnlyLocally(activityId)
+    await props.deleteActivityFromEventOnlyLocally(activityId)
+    props.addActivityToEventOnlyLocally(targetId, res)
     props.notify('Aktiviteetti siirretty!', 'success')
     return res
   } catch (exception) {
+    props.deleteActivityFromEventOnlyLocally(activityId)
+    props.postActivityToBufferOnlyLocally({...activity,canDrag:true})
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
   props.pofTreeUpdate(props.buffer, props.events)
 }
 
-const moveActivityFromEvent = async (props, activityId, parentId, targetId) => {
+const moveActivityFromEvent = async (props, activity, parentId, targetId) => {
+  const activityId=activity.id
   try {
+    await props.deleteActivityFromEventOnlyLocally(activityId)
+    props.addActivityToEventOnlyLocally(targetId, activity)
     const res = await activityService.moveActivityFromEventToEvent(
       activityId,
       parentId,
       targetId
     )
+    await props.deleteActivityFromEventOnlyLocally(activityId)
     props.addActivityToEventOnlyLocally(targetId, res)
-    props.deleteActivityFromEventOnlyLocally(activityId)
     props.notify('Aktiviteetti siirretty!', 'success')
     return res
   } catch (exception) {
+    await props.deleteActivityFromEventOnlyLocally(activityId)
+    props.addActivityToEventOnlyLocally(parentId, {...activity,canDrag:true})
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
   props.pofTreeUpdate(props.buffer, props.events)
@@ -135,11 +141,11 @@ const EventCardTarget = {
     const item = monitor.getItem()
     const targetId = props.event.id
     const { parentId } = item
-    const activityId = item.id
+    const activity = {...item.activity}
     if (item.bufferzone === 'true') {
-      moveActivityFromBuffer(props, activityId, parentId, targetId)
+      moveActivityFromBuffer(props, activity, parentId, targetId)
     } else if (targetId !== parentId) {
-      moveActivityFromEvent(props, activityId, parentId, targetId)
+      moveActivityFromEvent(props, activity, parentId, targetId)
     }
   }
 }
@@ -511,6 +517,7 @@ export default connect(mapStateToProps, {
   deleteEventGroup,
   addActivityToEventOnlyLocally,
   deleteActivityFromEventOnlyLocally,
+  postActivityToBufferOnlyLocally,
   deleteActivityFromBufferOnlyLocally,
   pofTreeUpdate
 })(DroppableEventCard)
