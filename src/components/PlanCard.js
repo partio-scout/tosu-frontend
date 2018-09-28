@@ -113,9 +113,9 @@ class PlanCard extends React.Component {
         <CardContent>
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
             {suggestion.content}
+            <br />
+            {button()}
           </Collapse>
-          <br />
-          {button()}
         </CardContent>
         <CardActions>
           <IconButton
