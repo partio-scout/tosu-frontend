@@ -9,11 +9,11 @@ import PropTypes from 'prop-types'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardHeader from '@material-ui/core/CardHeader'
-import CardMedia from '@material-ui/core/CardMedia'
 import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { CardContent } from '@material-ui/core'
+import Warning from '@material-ui/icons/Warning'
 import moment from 'moment-with-locales-es6'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
@@ -33,6 +33,7 @@ import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   deleteActivityFromBufferOnlyLocally,
+  postActivityToBufferOnlyLocally,
   bufferZoneInitialization
 } from '../reducers/bufferZoneReducer'
 import convertToSimpleActivity from '../functions/activityConverter'
@@ -41,7 +42,9 @@ import eventService from '../services/events'
 
 
 // Warning icon
-const warning = (status, event) => {
+// No idea if this actually does anything since the warning is actually created in statusmessage.js
+//  -Michael
+/* const warning = (status, event) => {
   if (status.warnings) {
     if (
       status.warnings.firstTaskTooLate &&
@@ -74,43 +77,60 @@ const warning = (status, event) => {
       )
     }
   }
-
   return null
-}
+} */
 
-const moveActivityFromBuffer = async (
-  props,
-  activityId,
-  parentId,
-  targetId
-) => {
+// Actual Warning icon
+// Warning icon
+const warning = (
+  <div className="tooltip">
+    <Warning
+      className='warning'
+    />
+    <span className="tooltiptext">
+      Tapahtumasta puuttuu aktiviteetti!
+    </span>
+  </div>
+)
+
+const moveActivityFromBuffer = async (props, activity, parentId,targetId) => {
+  const activityId=activity.id
   try {
+    props.addActivityToEventOnlyLocally(targetId, activity)
+    props.deleteActivityFromBufferOnlyLocally(activityId)
     const res = await activityService.moveActivityFromBufferZoneToEvent(
       activityId,
       targetId
     )
-    await props.addActivityToEventOnlyLocally(targetId, res)
-    await props.deleteActivityFromBufferOnlyLocally(activityId)
+    await props.deleteActivityFromEventOnlyLocally(activityId)
+    props.addActivityToEventOnlyLocally(targetId, res)
     props.notify('Aktiviteetti siirretty!', 'success')
     return res
   } catch (exception) {
+    props.deleteActivityFromEventOnlyLocally(activityId)
+    props.postActivityToBufferOnlyLocally({...activity,canDrag:true})
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
   props.pofTreeUpdate(props.buffer, props.events)
 }
 
-const moveActivityFromEvent = async (props, activityId, parentId, targetId) => {
+const moveActivityFromEvent = async (props, activity, parentId, targetId) => {
+  const activityId=activity.id
   try {
+    await props.deleteActivityFromEventOnlyLocally(activityId)
+    props.addActivityToEventOnlyLocally(targetId, activity)
     const res = await activityService.moveActivityFromEventToEvent(
       activityId,
       parentId,
       targetId
     )
+    await props.deleteActivityFromEventOnlyLocally(activityId)
     props.addActivityToEventOnlyLocally(targetId, res)
-    props.deleteActivityFromEventOnlyLocally(activityId)
     props.notify('Aktiviteetti siirretty!', 'success')
     return res
   } catch (exception) {
+    await props.deleteActivityFromEventOnlyLocally(activityId)
+    props.addActivityToEventOnlyLocally(parentId, {...activity,canDrag:true})
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
   props.pofTreeUpdate(props.buffer, props.events)
@@ -121,11 +141,11 @@ const EventCardTarget = {
     const item = monitor.getItem()
     const targetId = props.event.id
     const { parentId } = item
-    const activityId = item.id
+    const activity = {...item.activity}
     if (item.bufferzone === 'true') {
-      moveActivityFromBuffer(props, activityId, parentId, targetId)
+      moveActivityFromBuffer(props, activity, parentId, targetId)
     } else if (targetId !== parentId) {
-      moveActivityFromEvent(props, activityId, parentId, targetId)
+      moveActivityFromEvent(props, activity, parentId, targetId)
     }
   }
 }
@@ -167,10 +187,6 @@ class EventCard extends React.Component {
       }
     }
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-  }
-
-  handleExpandChange = expanded => {
-    this.setState({ expanded: !this.state.expanded })
   }
 
   deleteActivity = async activity => {
@@ -268,6 +284,10 @@ class EventCard extends React.Component {
     this.setState({ open: false })
   }
 
+  handleExpandChange = expanded => {
+    this.setState({ expanded: !this.state.expanded })
+  }
+
   render() {
     let rows
     if (this.props.event.activities) {
@@ -299,12 +319,14 @@ class EventCard extends React.Component {
         .locale('fi')
         .format('ddd D. MMMM YYYY')} ${event.startTime}`
 
+    // This is the popup that appears if you click "poista" on an event
     let actions = []
+    // If groupId exists, it's a recurring event, so we need to enable deleting those
     if (event.groupId) {
       actions = (
         <div>
           <p>Poistetaanko tapahtuma {event.title}?</p>
-          <Button  onClick={this.handleClose}>peruuta</Button>
+          <Button onClick={this.handleClose}>peruuta</Button>
           <Button
             onClick={this.deleteEvent}
           >Poista tämä tapahtuma
@@ -331,7 +353,7 @@ class EventCard extends React.Component {
     }
     let patternClass
     const { connectDropTarget, canDrop, isOver } = this.props
-    let background = { backgroundColor: '#FFFFFF' }
+    let background
     if (canDrop) {
       background = { backgroundColor: '#C8E6C9' }
     }
@@ -352,20 +374,34 @@ class EventCard extends React.Component {
       )
     }
 
-    const cardWarning = warning(this.props.status, this.props.event)
+    //const cardWarning = warning(this.props.status, this.props.event)
 
     return connectDropTarget(
-      <div className="event-card-wrapper">
+      <div className={rows.length === 0 ? "empty-event-card" : "event-card-wrapper"}>
         <Card
           style={background}
           className={patternClass}
         >
           <CardHeader
-            title={title}
+            title={
+              <div>
+                {title}
+                &nbsp;
+                {this.props.event.activities.length === 0 ? warning : ''}
+              </div>
+            }
             subheader={subtitle}
+            action={
+              <IconButton
+                onClick={this.handleExpandChange}
+                className={this.state.expanded ? "arrow-up" : ""}
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            }
           />
           {isTouchDevice() && !this.state.expanded ? (
-            <CardMedia>
+            <CardContent>
               <div className="mobile-event-card-media">
                 <div>{rows}</div>
                 {this.props.taskgroup ? (
@@ -398,14 +434,14 @@ class EventCard extends React.Component {
                     <div style={{ clear: 'both' }}>&nbsp;</div>
                   )}
               </div>
-            </CardMedia>
+            </CardContent>
           ) : null}
           {!isTouchDevice() &&
             !this.state.expanded &&
             this.props.event.activities.length !== 0 ? (
-              <CardMedia>
+              <CardContent>
                 <div className="activity-header">{rows}</div>
-              </CardMedia>
+              </CardContent>
             ) : null}
 
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
@@ -427,11 +463,6 @@ class EventCard extends React.Component {
             </CardContent>
           </Collapse>
           <CardActions>
-            <IconButton
-              onClick={this.handleExpandChange}
-            >
-              <ExpandMoreIcon />
-            </IconButton>
             <EditEvent
               buttonClass="buttonRight"
               data={event}
@@ -486,6 +517,7 @@ export default connect(mapStateToProps, {
   deleteEventGroup,
   addActivityToEventOnlyLocally,
   deleteActivityFromEventOnlyLocally,
+  postActivityToBufferOnlyLocally,
   deleteActivityFromBufferOnlyLocally,
   pofTreeUpdate
 })(DroppableEventCard)

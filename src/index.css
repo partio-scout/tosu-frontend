@@ -201,7 +201,6 @@ span.label {
 .activity-header {
   margin: 10px 0 5px;
   min-height: 60px;
-  background-color: aliceblue;
   border-radius: 8px;
   display: flex;
   flex-flow: row wrap;
@@ -289,7 +288,6 @@ span.label {
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black;
 }
 
 .tooltip .tooltiptext {
@@ -437,6 +435,25 @@ span.label {
   color: white;
   margin: 10px;
   margin-left: 20px;
+}
+
+/*Override transition speed*/
+.MuiCollapse-container-131 {
+  transition-duration: 0ms !important;
+}
+
+.arrow-up {
+  transform: rotate(180deg);
+}
+
+.dnd-active-target {
+  background-color: '#C8E6C9';
+}
+
+.empty-event-card {
+  padding: 5px;
+  margin-bottom: 15px;
+  background-color: orange;
 }
 
 /*material reference*/
