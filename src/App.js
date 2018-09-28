@@ -154,6 +154,7 @@ class App extends Component {
         ? events.filter(event => event.endDate >= currentDate).sort(eventComparer)
         : events.filter(event => event.endDate < currentDate).sort(eventComparer)
     }
+
     if (this.props.scout === null) {
       return (
         <div className="Login">
@@ -236,11 +237,23 @@ class App extends Component {
 
             <div id="container" style={{ paddingTop: padding }}>
               <div className="content">
-                <Button component={Link} to="/" onClick={this.filterSelected('FUTURE')} variant="contained">
+                <Button 
+                  className={this.props.store.getState().filter==='FUTURE' ? 'active' : ''}
+                  component={Link}
+                  to="/"
+                  onClick={this.filterSelected('FUTURE')}
+                  variant="contained"
+                >
                   Tulevat tapahtumat
                 </Button>
                 &nbsp;
-                <Button component={Link} to="/" onClick={this.filterSelected('PAST')} variant="contained">
+                <Button 
+                  className={this.props.store.getState().filter==='PAST' ? 'active' : ''}
+                  component={Link}
+                  to="/"
+                  onClick={this.filterSelected('PAST')}
+                  variant="contained"
+                >
                   Menneet tapahtumat
                 </Button>
                 &nbsp;
