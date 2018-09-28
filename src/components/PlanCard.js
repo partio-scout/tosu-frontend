@@ -110,16 +110,17 @@ class PlanCard extends React.Component {
           title={suggestion.title}
           style={style}
         />
-        <CardContent>
-          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+          <CardContent>
             {suggestion.content}
             <br />
             {button()}
-          </Collapse>
-        </CardContent>
+          </CardContent>
+        </Collapse>
         <CardActions>
           <IconButton
             onClick={this.handleExpandChange}
+            className={this.state.expanded ? "arrow-up" : ""}
           >
             <ExpandMoreIcon />
           </IconButton>
