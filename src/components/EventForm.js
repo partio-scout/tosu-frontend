@@ -7,16 +7,18 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Button from '@material-ui/core/Button'
 
+import MomentUtils from 'material-ui-pickers/utils/moment-utils'
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
+
 import {
-   TextValidator,
-   ValidatorForm,
-   SelectValidator
- } from 'react-material-ui-form-validator'
+  TextValidator,
+  ValidatorForm,
+  SelectValidator
+} from 'react-material-ui-form-validator'
 import ValidatedDatePicker from "../utils/ValidatedDatePicker"
 import ValidatedTimePicker from "../utils/ValidatedTimePicker"
 
-import MomentUtils from 'material-ui-pickers/utils/moment-utils'
-import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
+
 
 export default class EventForm extends React.Component {
   constructor(props) {
@@ -55,9 +57,9 @@ export default class EventForm extends React.Component {
       }
       if (
         this.state.startDate.setHours(0, 0, 0, 0) ===
-          this.state.endDate.setHours(0, 0, 0, 0) &&
+        this.state.endDate.setHours(0, 0, 0, 0) &&
         moment(value).format('HH:mm') <
-          moment(this.state.startTime).format('HH:mm')
+        moment(this.state.startTime).format('HH:mm')
       ) {
         return false
       }
@@ -175,11 +177,11 @@ export default class EventForm extends React.Component {
         <h2>Uusi tapahtuma</h2>
 
         <ValidatorForm
-           ref="form"
-           onSubmit={this.send}
-           onError={errors => console.log(errors)}
-         >
-           <TextValidator
+          ref="form"
+          onSubmit={this.send}
+          onError={errors => console.log(errors)}
+        >
+          <TextValidator
             label="Tapahtuman nimi"
             name="title"
             value={this.state.title}
@@ -281,13 +283,13 @@ export default class EventForm extends React.Component {
             <br />
 
             <SelectValidator
-               name="repeatFrequency"
-               label="Toistumisväli"
-               value={this.state.repeatFrequency}
-               onChange={this.handleFrequency}
-               disabled={!this.state.checked}
-               fullWidth
-             >
+              name="repeatFrequency"
+              label="Toistumisväli"
+              value={this.state.repeatFrequency}
+              onChange={this.handleFrequency}
+              disabled={!this.state.checked}
+              fullWidth
+            >
               <MenuItem value={1}>Päivittäin</MenuItem>
               <MenuItem value={2}>Viikottain</MenuItem>
               <MenuItem value={3}>Joka toinen viikko</MenuItem>
@@ -297,14 +299,14 @@ export default class EventForm extends React.Component {
           <br />
 
           <SelectValidator
-             name="type"
-             label="Tapahtuman tyyppi"
-             value={this.state.type}
-             onChange={this.handleType}
-             validators={['required']}
-             errorMessages={['Tapahtuman tyyppi vaaditaan']}
-             fullWidth
-           >
+            name="type"
+            label="Tapahtuman tyyppi"
+            value={this.state.type}
+            onChange={this.handleType}
+            validators={['required']}
+            errorMessages={['Tapahtuman tyyppi vaaditaan']}
+            fullWidth
+          >
             <MenuItem value="kokous">Kokous</MenuItem>
             <MenuItem value="leiri">Leiri</MenuItem>
             <MenuItem value="retki">Retki</MenuItem>

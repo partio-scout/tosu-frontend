@@ -135,7 +135,7 @@ class EditEvent extends React.Component {
           disabled={disabled}
           variant='contained'
         >
-        Muokkaa
+          Muokkaa
         </Button>
         <Dialog
           title={

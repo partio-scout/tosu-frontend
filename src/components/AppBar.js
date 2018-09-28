@@ -49,7 +49,7 @@ export default class AppBar extends React.Component {
             }
             label={
               this.props.headerVisible ? 'Piilota' : 'Suunnittelunäkymä'
-              }
+            }
           />
           <GoogleButtons selfInfo={this.props.selfInfo} />
         </div>
@@ -74,7 +74,7 @@ export default class AppBar extends React.Component {
                   getHeight={this.getHeight}
                 />
               </div>
-            )}
+              )}
 
             {this.state.showStatusBox ? (
               <div className="top-bar-right" style={{ width: '65%' }}>
@@ -90,7 +90,7 @@ export default class AppBar extends React.Component {
                 <div style={{ clear: 'both' }} />
                 <BufferZone />
               </div>
-            )}
+              )}
             <div style={{ clear: 'both' }} />
           </div>
         ) : null}

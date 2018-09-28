@@ -6,7 +6,7 @@ import { DragSource } from 'react-dnd'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import { notify } from '../reducers/notificationReducer' 
+import { notify } from '../reducers/notificationReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
@@ -16,7 +16,7 @@ import PlanForm from './PlanForm'
 const activitySource = {
   beginDrag(props, monitor) {
     return {
-      activity: {...props.activity, canDrag: false},
+      activity: { ...props.activity, canDrag: false },
       parentId: props.parentId,
       bufferzone: props.bufferzone,
       startPoint: monitor.getDifferenceFromInitialOffset(),
@@ -28,9 +28,9 @@ const activitySource = {
       // return
     }
   },
-  canDrag(props, monitor){
-    if (props.activity.canDrag !== undefined){
-      if (!props.activity.canDrag){
+  canDrag(props, monitor) {
+    if (props.activity.canDrag !== undefined) {
+      if (!props.activity.canDrag) {
         return false;
       }
     }

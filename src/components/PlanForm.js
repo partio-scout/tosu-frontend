@@ -16,7 +16,7 @@ export default class PlanForm extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {value: 0}
+    this.state = { value: 0 }
   }
 
   handleChange = (event, value) => {
@@ -49,7 +49,7 @@ export default class PlanForm extends React.Component {
           <Tab label="Tiedot" />
           <Tab label="Vinkit" />
         </Tabs>
-        {value===0 &&
+        {value === 0 &&
           <TabContainer>
             <div>
               <p>
@@ -90,8 +90,8 @@ export default class PlanForm extends React.Component {
             <div>
               <h2 className="headline">Toteutusvinkit</h2>
               {suggestionDeatails.length !== 0
-                  ? suggestionDeatails
-                  : 'Ei toteutusvinkkejä'}
+                ? suggestionDeatails
+                : 'Ei toteutusvinkkejä'}
             </div>
           </TabContainer>}
       </div>

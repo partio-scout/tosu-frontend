@@ -13,14 +13,14 @@ const reducer = (state = null, action) => {
             return null
 
         default:
-            return state        
+            return state
     }
 }
 
 export const scoutLogin = (token) => async dispatch => {
-   const scout = await scoutService.findOrCreateScout(token)
-   setGoogleToken(token)
-    
+    const scout = await scoutService.findOrCreateScout(token)
+    setGoogleToken(token)
+
     dispatch({
         type: 'SCOUT_LOGIN',
         scout: scout

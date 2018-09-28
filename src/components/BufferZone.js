@@ -7,8 +7,8 @@ import Activity from './Activity'
 import ItemTypes from '../ItemTypes'
 import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import { postActivityToBufferOnlyLocally, deleteActivityFromBufferOnlyLocally, deleteActivityFromBuffer  } from '../reducers/bufferZoneReducer'
-import { deleteActivityFromEventOnlyLocally, addActivityToEventOnlyLocally} from '../reducers/eventReducer'
+import { postActivityToBufferOnlyLocally, deleteActivityFromBufferOnlyLocally, deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
+import { deleteActivityFromEventOnlyLocally, addActivityToEventOnlyLocally } from '../reducers/eventReducer'
 import activityService from '../services/activities'
 import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
@@ -20,16 +20,16 @@ const moveActivity = async (
   targetId,
   bufferzone
 ) => {
-  const activityId=activity.id
+  const activityId = activity.id
   try {
-    //Move activity locally
+    // Move activity locally
     props.postActivityToBufferOnlyLocally(activity)
     props.deleteActivityFromEventOnlyLocally(activityId)
     const res = await activityService.moveActivityFromEventToBufferZone(
       activityId,
       parentId
     )
-    //Replace the moved activity (res )
+    // Replace the moved activity (res )
     await props.deleteActivityFromBufferOnlyLocally(activityId)
     props.postActivityToBufferOnlyLocally(res)
 
@@ -37,7 +37,7 @@ const moveActivity = async (
     return res
   } catch (exception) {
     props.deleteActivityFromBufferOnlyLocally(activityId)
-    props.addActivityToEventOnlyLocally(parentId, {...activity,canDrag:true})
+    props.addActivityToEventOnlyLocally(parentId, { ...activity, canDrag: true })
     if (!bufferzone || parentId !== targetId) {
       props.notify('Aktiviteettialue on täynnä!')
     }
@@ -50,8 +50,8 @@ const bufferZoneTarget = {
     const item = monitor.getItem()
     const targetId = 1
     const { parentId, bufferzone } = item
-    const activity = {...item.activity}
-    if (!bufferzone){
+    const activity = { ...item.activity }
+    if (!bufferzone) {
       moveActivity(props, activity, parentId, targetId, bufferzone)
     }
   }

@@ -64,11 +64,11 @@ class ActivityPreview extends React.Component {
       return '';
     }
     const img = pofActivity.mandatoryIconUrl
-    /*if (pofActivity.mandatory) {
+    /* if (pofActivity.mandatory) {
       img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png"
     } else {
       img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3562.png"
-    }*/
+    } */
     return (
       <Chip
         style={getItemStyles(currentOffset, startPoint, pofActivity.mandatory)}
@@ -76,12 +76,13 @@ class ActivityPreview extends React.Component {
         label={<span className="activityTitle">{pofActivity.title}</span>}
         avatar={
           <Avatar
-            style={pofActivity.mandatory ? styles.avatarMandatory : styles.avatar}>
+            style={pofActivity.mandatory ? styles.avatarMandatory : styles.avatar}
+          >
             src={img}
           </Avatar>
         }
       />
-    );
+    )
   }
 }
 

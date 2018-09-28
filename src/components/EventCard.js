@@ -93,8 +93,8 @@ const warning = (
   </div>
 )
 
-const moveActivityFromBuffer = async (props, activity, parentId,targetId) => {
-  const activityId=activity.id
+const moveActivityFromBuffer = async (props, activity, parentId, targetId) => {
+  const activityId = activity.id
   try {
     props.addActivityToEventOnlyLocally(targetId, activity)
     props.deleteActivityFromBufferOnlyLocally(activityId)
@@ -108,14 +108,14 @@ const moveActivityFromBuffer = async (props, activity, parentId,targetId) => {
     return res
   } catch (exception) {
     props.deleteActivityFromEventOnlyLocally(activityId)
-    props.postActivityToBufferOnlyLocally({...activity,canDrag:true})
+    props.postActivityToBufferOnlyLocally({ ...activity, canDrag: true })
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
   props.pofTreeUpdate(props.buffer, props.events)
 }
 
 const moveActivityFromEvent = async (props, activity, parentId, targetId) => {
-  const activityId=activity.id
+  const activityId = activity.id
   try {
     await props.deleteActivityFromEventOnlyLocally(activityId)
     props.addActivityToEventOnlyLocally(targetId, activity)
@@ -130,7 +130,7 @@ const moveActivityFromEvent = async (props, activity, parentId, targetId) => {
     return res
   } catch (exception) {
     await props.deleteActivityFromEventOnlyLocally(activityId)
-    props.addActivityToEventOnlyLocally(parentId, {...activity,canDrag:true})
+    props.addActivityToEventOnlyLocally(parentId, { ...activity, canDrag: true })
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
   props.pofTreeUpdate(props.buffer, props.events)
@@ -141,7 +141,7 @@ const EventCardTarget = {
     const item = monitor.getItem()
     const targetId = props.event.id
     const { parentId } = item
-    const activity = {...item.activity}
+    const activity = { ...item.activity }
     if (item.bufferzone === 'true') {
       moveActivityFromBuffer(props, activity, parentId, targetId)
     } else if (targetId !== parentId) {
@@ -374,7 +374,7 @@ class EventCard extends React.Component {
       )
     }
 
-    //const cardWarning = warning(this.props.status, this.props.event)
+    // const cardWarning = warning(this.props.status, this.props.event)
 
     return connectDropTarget(
       <div className={rows.length === 0 ? "empty-event-card" : "event-card-wrapper"}>
@@ -431,8 +431,8 @@ class EventCard extends React.Component {
                     />
                   </div>
                 ) : (
-                    <div style={{ clear: 'both' }}>&nbsp;</div>
-                  )}
+                  <div style={{ clear: 'both' }}>&nbsp;</div>
+                )}
               </div>
             </CardContent>
           ) : null}
