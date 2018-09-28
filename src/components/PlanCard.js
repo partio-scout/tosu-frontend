@@ -85,11 +85,12 @@ class PlanCard extends React.Component {
     if (selectedPlan.length !== 0) {
       button = () => (
         <Button
-          label="Poista valituista"
+          size="small"
           onClick={() =>
-            this.deleteSuggestion(selectedPlan[0].id, savedActivity.id)
-          }
-        />
+            this.deleteSuggestion(selectedPlan[0].id, savedActivity.id)}
+        >
+          Poista valituista
+        </Button>
       )
 
 
@@ -97,9 +98,11 @@ class PlanCard extends React.Component {
     } else {
       button = () => (
         <Button
-          label="Valitse"
+          size="small"
           onClick={() => this.saveSuggestion(suggestion, savedActivity.id)}
-        />
+        >
+          Valitse
+        </Button>
       )
       style = { background: 'none' }
     }
@@ -114,7 +117,7 @@ class PlanCard extends React.Component {
           <CardContent>
             {suggestion.content}
             <br />
-            {button()}
+
           </CardContent>
         </Collapse>
         <CardActions>
@@ -124,6 +127,7 @@ class PlanCard extends React.Component {
           >
             <ExpandMoreIcon />
           </IconButton>
+          {button()}
         </CardActions>
       </Card>
     )
