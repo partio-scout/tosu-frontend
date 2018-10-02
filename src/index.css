@@ -200,7 +200,7 @@ span.label {
 
 .activity-header {
   margin: 10px 0 5px;
-  min-height: 60px;
+  min-height: 12px;
   border-radius: 8px;
   display: flex;
   flex-flow: row wrap;
