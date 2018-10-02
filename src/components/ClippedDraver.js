@@ -7,9 +7,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
+import StatusMessage from './StatusMessage'
 
 
-const drawerWidth = 240;
+const drawerWidth = 500;
 
 const styles = theme => ({
   root: {
@@ -55,6 +56,7 @@ function ClippedDrawer(props) {
         }}
       >
         <div className={classes.toolbar} />
+
         <TreeSearchBar getHeight="300" />
         <BufferZone />
       </Drawer>
