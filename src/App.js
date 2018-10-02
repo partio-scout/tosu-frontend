@@ -14,6 +14,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
 import MobileAppbar from './components/MobileAppbar'
+import ClippedDraver from './components/ClippedDraver'
 import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import {
@@ -110,6 +111,7 @@ class App extends Component {
       })
     }
   }
+
 
   hideTopBar = () => {
     if (this.state.headerVisible) {
@@ -229,7 +231,7 @@ class App extends Component {
               header={
                 <div>
                   {isTouchDevice() ? mobileMenu() : dndMenu()}
-
+                  <ClippedDraver/>
                 </div>
               }
             />

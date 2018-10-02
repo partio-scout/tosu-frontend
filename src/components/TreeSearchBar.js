@@ -21,7 +21,6 @@ class TreeSearchBar extends React.Component {
   }
 
   componentDidUpdate = () => {
-    this.props.getHeight()
     this.updateStatusMessage()
   }
 
