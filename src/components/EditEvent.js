@@ -127,7 +127,7 @@ class EditEvent extends React.Component {
   }
 
   render() {
-    const disabled = this.state.endTime < new Date()
+    const disabled = false
     return (
       <div>
         <Button
