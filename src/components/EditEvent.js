@@ -1,6 +1,7 @@
 import React from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
+import Paper from '@material-ui/core/Paper'
 // import eventgroupService from '../services/eventgroups';
 import moment from 'moment'
 import { connect } from 'react-redux'
@@ -152,12 +153,16 @@ class EditEvent extends React.Component {
           open={this.state.open}
           onClose={this.handleClose}
         >
-          <EventForm
-            submitFunction={this.handleCloseAndSend.bind(this)}
-            close={this.handleClose.bind(this)}
-            update={this.update.bind(this)}
-            data={this.state}
-          />
+          <div className="event-form">
+            <Paper className="new-form-paper">
+              <EventForm
+                submitFunction={this.handleCloseAndSend.bind(this)}
+                close={this.handleClose.bind(this)}
+                update={this.update.bind(this)}
+                data={this.state}
+              />
+            </Paper>
+          </div>
         </Dialog>
       </div>
     )

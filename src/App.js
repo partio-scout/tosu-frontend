@@ -33,13 +33,15 @@ import eventComparer from './utils/EventCompare'
 import EventCard from './components/EventCard'
 import { filterChange } from './reducers/filterReducer'
 import "./index.css";
+import { Dialog } from '@material-ui/core';
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
       bufferZoneHeight: 0,
-      headerVisible: true
+      headerVisible: true,
+      newEventVisible: false
     }
   }
 
@@ -144,6 +146,13 @@ class App extends Component {
     this.props.store.dispatch(filterChange(value))
   }
 
+  newEvent = () => {
+    this.setState({newEventVisible: true})
+  }
+  handleClose = () => {
+    this.setState({newEventVisible: false})
+  }
+
   render() {
     const eventsToShow = () => {
       const currentDate = moment().format('YYYY-MM-DD')
@@ -237,8 +246,8 @@ class App extends Component {
 
             <div id="container" style={{ paddingTop: padding }}>
               <div className="content">
-                <Button 
-                  className={this.props.store.getState().filter==='FUTURE' ? 'active' : ''}
+                <Button
+                  className={this.props.store.getState().filter === 'FUTURE' ? 'active' : ''}
                   component={Link}
                   to="/"
                   onClick={this.filterSelected('FUTURE')}
@@ -247,8 +256,8 @@ class App extends Component {
                   Tulevat tapahtumat
                 </Button>
                 &nbsp;
-                <Button 
-                  className={this.props.store.getState().filter==='PAST' ? 'active' : ''}
+                <Button
+                  className={this.props.store.getState().filter === 'PAST' ? 'active' : ''}
                   component={Link}
                   to="/"
                   onClick={this.filterSelected('PAST')}
@@ -257,15 +266,17 @@ class App extends Component {
                   Menneet tapahtumat
                 </Button>
                 &nbsp;
-                <Button component={Link} to="/new-event" onClick={this.hideTopBar} variant="contained">
+                { /* <Button component={Link} to="/new-event" onClick={this.hideTopBar} variant="contained">
+                  Uusi tapahtuma
+            </Button> */ }
+                <Button onClick={this.newEvent} variant="contained">
                   Uusi tapahtuma
                 </Button>
                 &nbsp;
                 <Route exact path="/" render={() => events} />
-                <Route
-                  path="/new-event"
-                  render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
-                />
+                <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
+                  <NewEvent closeMe={this.handleClose} />
+                </Dialog>
                 <Route
                   path="/user-info"
                   render={() => <UserInfo toggleTopBar={this.toggleTopBar} />}
