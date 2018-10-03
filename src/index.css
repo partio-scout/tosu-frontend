@@ -459,6 +459,26 @@ span.label {
   background-color: #90caf9 !important;
 }
 
+/* Make events with activities more compact */
+.event-card-wrapper > div > div:first-child {
+  padding-bottom: 0;
+}
+.event-card-wrapper > div > div:nth-child(2) {
+  padding-bottom: 0;
+  padding-top: 0;
+}
+.event-card-wrapper > div > div:last-child {
+  padding-top: 0;
+}
+.event-card-wrapper .activity-header {
+  margin: 0 4px 0 4px;
+  align-content: center;
+}
+.event-card-wrapper .activity-header .connect-drag-source {
+  margin: 0 4px 0 4px;
+  align-content: center;
+}
+
 /*material reference*/
 color-class {
   color: #1a237e; /*indigo900*/
