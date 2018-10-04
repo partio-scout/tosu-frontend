@@ -7,6 +7,7 @@ import React, { Component } from 'react'
 import { GoogleLogin } from 'react-google-login'
 import FontAwesome from 'react-fontawesome'
 import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog';
 import moment from 'moment'
 import 'react-sticky-header/styles.css'
 import StickyHeader from 'react-sticky-header'
@@ -33,7 +34,7 @@ import eventComparer from './utils/EventCompare'
 import EventCard from './components/EventCard'
 import { filterChange } from './reducers/filterReducer'
 import "./index.css";
-import { Dialog } from '@material-ui/core';
+import { DialogTitle } from '@material-ui/core';
 
 class App extends Component {
   constructor() {
@@ -275,6 +276,7 @@ class App extends Component {
                 &nbsp;
                 <Route exact path="/" render={() => events} />
                 <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
+                  <DialogTitle>{'Luo uusi tapahtuma'}</DialogTitle>
                   <NewEvent closeMe={this.handleClose} />
                 </Dialog>
                 <Route

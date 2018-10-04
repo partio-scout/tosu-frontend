@@ -9,6 +9,7 @@ import EventForm from './EventForm'
 import { notify } from '../reducers/notificationReducer'
 import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
+import { DialogTitle } from '@material-ui/core';
 
 class EditEvent extends React.Component {
   constructor(props) {
@@ -139,20 +140,10 @@ class EditEvent extends React.Component {
           Muokkaa
         </Button>
         <Dialog
-          title={
-            <div>
-              Muokkaa tapahtumaa
-              <button
-                className="dialog-close-button"
-                onClick={this.handleClose}
-              >
-                x
-              </button>
-            </div>
-          }
           open={this.state.open}
           onClose={this.handleClose}
         >
+          <DialogTitle>{'Muokataan tapahtumaa'} {this.state.title}</DialogTitle>
           <div className="event-form">
             <Paper className="new-form-paper">
               <EventForm

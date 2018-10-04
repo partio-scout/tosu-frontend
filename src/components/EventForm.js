@@ -174,7 +174,6 @@ export default class EventForm extends React.Component {
 
     return (
       <div>
-        <h2>{this.state.title === '' ? 'Uusi tapahtuma' : this.state.title}</h2>
 
         <ValidatorForm
           ref="form"
