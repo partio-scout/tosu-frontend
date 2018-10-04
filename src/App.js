@@ -39,7 +39,8 @@ class App extends Component {
     super()
     this.state = {
       bufferZoneHeight: 0,
-      headerVisible: true
+      headerVisible: false,
+      drawerVisible: true
     }
   }
 
@@ -47,7 +48,7 @@ class App extends Component {
     if (window.location.pathname === '/new-event') {
       this.setState({
         headerVisible: false,
-        bufferZoneHeight: 0
+        bufferZoneHeight: 0,
       })
     }
     if (getGoogleToken() !== null) {
@@ -98,30 +99,8 @@ class App extends Component {
     }
   }
 
-  toggleTopBar = () => {
-    if (this.state.headerVisible) {
-      this.setState({
-        headerVisible: false,
-        bufferZoneHeight: 10
-      })
-    } else {
-      this.setState({
-        headerVisible: true
-      })
-    }
-  }
-
-
-  hideTopBar = () => {
-    if (this.state.headerVisible) {
-      this.toggleTopBar()
-    }
-  }
-
-  openTopBar = () => {
-    if (!this.state.headerVisible) {
-      this.toggleTopBar()
-    }
+  toggleDrawer = () => {
+    this.setState({ drawerVisible: !this.state.drawerVisible })
   }
 
   googleLoginSuccess = async response => {
@@ -180,7 +159,6 @@ class App extends Component {
         </div>
       )
     }
-    const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 70
     const selfInfo = (
       <p className="appbar-user"><span>{this.props.scout.name}</span></p>
       /* <Link to="/user-info">
@@ -196,7 +174,7 @@ class App extends Component {
     const dndMenu = () => (
       <AppBar
         setHeaderHeight={this.setHeaderHeight}
-        toggleTopBar={this.toggleTopBar}
+        toggleSideBar={this.toggleDrawer}
         headerVisible={this.state.headerVisible}
         selfInfo={selfInfo}
       />
@@ -229,8 +207,9 @@ class App extends Component {
               {isTouchDevice() ? mobileMenu() : dndMenu()}
             </div>
             <div style={{ display: 'flex', width: '100%' }}>
-              <ClippedDraver />
-
+              <div className={this.state.drawerVisible ? 'visible-drawer' : 'hidden-drawer'}>
+                <ClippedDraver />
+              </div>
               <div id="container" style={{ paddingTop: 0 }}>
                 <div className="content">
                   <Button
@@ -253,7 +232,7 @@ class App extends Component {
                     Menneet tapahtumat
                 </Button>
                   &nbsp;
-                <Button component={Link} to="/new-event" onClick={this.hideTopBar} variant="contained">
+                <Button component={Link} to="/new-event" variant="contained">
                     Uusi tapahtuma
                 </Button>
                   &nbsp;

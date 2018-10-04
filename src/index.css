@@ -460,6 +460,13 @@ span.label {
   background-color: #90caf9 !important;
 }
 
+.visible-drawer {
+  display: inline-flex;
+}
+.hidden-drawer {
+  display: none;
+}
+
 /*material reference*/
 color-class {
   color: #1a237e; /*indigo900*/
