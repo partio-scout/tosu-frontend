@@ -7,6 +7,7 @@ import React, { Component } from 'react'
 import { GoogleLogin } from 'react-google-login'
 import FontAwesome from 'react-fontawesome'
 import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog';
 import moment from 'moment'
 import 'react-sticky-header/styles.css'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
@@ -33,6 +34,7 @@ import eventComparer from './utils/EventCompare'
 import EventCard from './components/EventCard'
 import { filterChange } from './reducers/filterReducer'
 import "./index.css";
+import { DialogTitle } from '@material-ui/core';
 
 class App extends Component {
   constructor() {
@@ -120,8 +122,14 @@ class App extends Component {
   }
 
   filterSelected = (value) => () => {
-    this.openTopBar()
     this.props.store.dispatch(filterChange(value))
+  }
+
+  newEvent = () => {
+    this.setState({ newEventVisible: true })
+  }
+  handleClose = () => {
+    this.setState({ newEventVisible: false })
   }
 
   render() {
@@ -232,18 +240,18 @@ class App extends Component {
                     Menneet tapahtumat
                 </Button>
                   &nbsp;
-                <Button component={Link} to="/new-event" variant="contained">
+                  <Button onClick={this.newEvent} variant="contained">
                     Uusi tapahtuma
                 </Button>
                   &nbsp;
                 <Route exact path="/" render={() => events} />
-                  <Route
-                    path="/new-event"
-                    render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
-                  />
+                  <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
+                    <DialogTitle>{'Luo uusi tapahtuma'}</DialogTitle>
+                    <NewEvent closeMe={this.handleClose} />
+                  </Dialog>
                   <Route
                     path="/user-info"
-                    render={() => <UserInfo toggleTopBar={this.toggleTopBar} />}
+                    render={() => <UserInfo />}
                   />
                   <NotificationFooter />
                 </div>

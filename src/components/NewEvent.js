@@ -3,6 +3,7 @@ import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import isTouchDevice from 'is-touch-device'
+import Dialog from '@material-ui/core/Dialog'
 import Paper from '@material-ui/core/Paper'
 import eventgroupService from '../services/eventgroups'
 import FrequentEventsHandler from '../utils/FrequentEventsHandler'
@@ -21,7 +22,7 @@ class NewEvent extends React.Component {
     repeatCount: '',
     repeatFrequency: '',
     type: '',
-    information: ''
+    information: '',
   }
 
   handleClose = () => {
@@ -35,9 +36,9 @@ class NewEvent extends React.Component {
       repeatCount: '',
       repeatFrequency: '',
       type: '',
-      information: ''
+      information: '',
     })
-    this.props.toggleTopBar()
+    this.props.closeMe()
     this.props.history.push('/')
   }
 

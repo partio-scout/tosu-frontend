@@ -174,7 +174,6 @@ export default class EventForm extends React.Component {
 
     return (
       <div>
-        <h2>Uusi tapahtuma</h2>
 
         <ValidatorForm
           ref="form"

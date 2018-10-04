@@ -237,7 +237,6 @@ span.label {
 .event-form {
   max-width: 800px;
   margin: 0 auto;
-  margin-top: 20px;
 }
 
 .new-form-paper {
@@ -465,6 +464,25 @@ span.label {
 }
 .hidden-drawer {
   display: none;
+}
+/* Make events with activities more compact */
+.event-card-wrapper > div > div:first-child {
+  padding-bottom: 0;
+}
+.event-card-wrapper > div > div:nth-child(2) {
+  padding-bottom: 0;
+  padding-top: 0;
+}
+.event-card-wrapper > div > div:last-child {
+  padding-top: 0;
+}
+.event-card-wrapper .activity-header {
+  margin: 0 4px 0 4px;
+  align-content: center;
+}
+.event-card-wrapper .activity-header .connect-drag-source {
+  margin: 0 4px 0 4px;
+  align-content: center;
 }
 
 /*material reference*/
