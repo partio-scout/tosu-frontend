@@ -2,12 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
 import StatusMessage from './StatusMessage'
+import AppBar from '@material-ui/core/AppBar';
+import { Toolbar } from '@material-ui/core';
 
 
 const drawerWidth = 500;
@@ -42,21 +41,13 @@ function ClippedDrawer(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="absolute" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="title" color="inherit" noWrap>
-            Clipped drawer
-          </Typography>
-        </Toolbar>
-      </AppBar>
       <Drawer
         variant="permanent"
         classes={{
           paper: classes.drawerPaper,
         }}
       >
-        <div className={classes.toolbar} />
-
+        <Toolbar>TEST</Toolbar>
         <TreeSearchBar getHeight="300" />
         <BufferZone />
       </Drawer>

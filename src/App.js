@@ -9,7 +9,6 @@ import FontAwesome from 'react-fontawesome'
 import Button from '@material-ui/core/Button'
 import moment from 'moment'
 import 'react-sticky-header/styles.css'
-import StickyHeader from 'react-sticky-header'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
@@ -226,53 +225,49 @@ class App extends Component {
       <div className="App" >
         <Router>
           <div>
-            <StickyHeader
-              // This is the sticky part of the header.
-              header={
-                <div>
-                  {isTouchDevice() ? mobileMenu() : dndMenu()}
-                  <ClippedDraver/>
-                </div>
-              }
-            />
-            <section />
+            <div>
+              {isTouchDevice() ? mobileMenu() : dndMenu()}
+            </div>
+            <div style={{ display: 'flex', width: '100%' }}>
+              <ClippedDraver />
 
-            <div id="container" style={{ paddingTop: padding }}>
-              <div className="content">
-                <Button 
-                  className={this.props.store.getState().filter==='FUTURE' ? 'active' : ''}
-                  component={Link}
-                  to="/"
-                  onClick={this.filterSelected('FUTURE')}
-                  variant="contained"
-                >
-                  Tulevat tapahtumat
+              <div id="container" style={{ paddingTop: 0 }}>
+                <div className="content">
+                  <Button
+                    className={this.props.store.getState().filter === 'FUTURE' ? 'active' : ''}
+                    component={Link}
+                    to="/"
+                    onClick={this.filterSelected('FUTURE')}
+                    variant="contained"
+                  >
+                    Tulevat tapahtumat
                 </Button>
-                &nbsp;
-                <Button 
-                  className={this.props.store.getState().filter==='PAST' ? 'active' : ''}
-                  component={Link}
-                  to="/"
-                  onClick={this.filterSelected('PAST')}
-                  variant="contained"
-                >
-                  Menneet tapahtumat
+                  &nbsp;
+                <Button
+                    className={this.props.store.getState().filter === 'PAST' ? 'active' : ''}
+                    component={Link}
+                    to="/"
+                    onClick={this.filterSelected('PAST')}
+                    variant="contained"
+                  >
+                    Menneet tapahtumat
                 </Button>
-                &nbsp;
+                  &nbsp;
                 <Button component={Link} to="/new-event" onClick={this.hideTopBar} variant="contained">
-                  Uusi tapahtuma
+                    Uusi tapahtuma
                 </Button>
-                &nbsp;
+                  &nbsp;
                 <Route exact path="/" render={() => events} />
-                <Route
-                  path="/new-event"
-                  render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
-                />
-                <Route
-                  path="/user-info"
-                  render={() => <UserInfo toggleTopBar={this.toggleTopBar} />}
-                />
-                <NotificationFooter />
+                  <Route
+                    path="/new-event"
+                    render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
+                  />
+                  <Route
+                    path="/user-info"
+                    render={() => <UserInfo toggleTopBar={this.toggleTopBar} />}
+                  />
+                  <NotificationFooter />
+                </div>
               </div>
             </div>
           </div>
