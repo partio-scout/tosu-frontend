@@ -1,6 +1,7 @@
 import React from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
+import Paper from '@material-ui/core/Paper'
 // import eventgroupService from '../services/eventgroups';
 import moment from 'moment'
 import { connect } from 'react-redux'
@@ -8,6 +9,7 @@ import EventForm from './EventForm'
 import { notify } from '../reducers/notificationReducer'
 import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
+import { DialogTitle } from '@material-ui/core';
 
 class EditEvent extends React.Component {
   constructor(props) {
@@ -126,7 +128,7 @@ class EditEvent extends React.Component {
   }
 
   render() {
-    const disabled = this.state.endTime < new Date()
+    const disabled = false
     return (
       <div>
         <Button
@@ -135,29 +137,23 @@ class EditEvent extends React.Component {
           disabled={disabled}
           variant='contained'
         >
-        Muokkaa
+          Muokkaa
         </Button>
         <Dialog
-          title={
-            <div>
-              Muokkaa tapahtumaa
-              <button
-                className="dialog-close-button"
-                onClick={this.handleClose}
-              >
-                x
-              </button>
-            </div>
-          }
           open={this.state.open}
           onClose={this.handleClose}
         >
-          <EventForm
-            submitFunction={this.handleCloseAndSend.bind(this)}
-            close={this.handleClose.bind(this)}
-            update={this.update.bind(this)}
-            data={this.state}
-          />
+          <DialogTitle>{'Muokataan tapahtumaa'} {this.state.title}</DialogTitle>
+          <div className="event-form">
+            <Paper className="new-form-paper">
+              <EventForm
+                submitFunction={this.handleCloseAndSend.bind(this)}
+                close={this.handleClose.bind(this)}
+                update={this.update.bind(this)}
+                data={this.state}
+              />
+            </Paper>
+          </div>
         </Dialog>
       </div>
     )

@@ -1,17 +1,36 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Card, CardHeader, CardText } from '@material-ui/core/Card'
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import IconButton from '@material-ui/core/IconButton'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Button from '@material-ui/core/Button'
+import Collapse from '@material-ui/core/Collapse/Collapse';
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
 import { notify } from '../reducers/notificationReducer'
 
+
 class PlanCard extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      expanded: false
+    }
+  }
+
   componentDidMount = () => {
     this.updateSuggestions()
   }
   componentDidUpdate = () => {
     this.updateSuggestions()
+  }
+
+
+  handleExpandChange = expanded => {
+    this.setState({ expanded: !this.state.expanded })
   }
 
   // Check if suggestions are already saved in store and if not save them
@@ -66,20 +85,24 @@ class PlanCard extends React.Component {
     if (selectedPlan.length !== 0) {
       button = () => (
         <Button
-          label="Poista valituista"
+          size="small"
           onClick={() =>
-            this.deleteSuggestion(selectedPlan[0].id, savedActivity.id)
-          }
-        />
+            this.deleteSuggestion(selectedPlan[0].id, savedActivity.id)}
+        >
+          Poista valituista
+        </Button>
       )
+
 
       style = { background: '#C8E6C9' }
     } else {
       button = () => (
         <Button
-          label="Valitse"
+          size="small"
           onClick={() => this.saveSuggestion(suggestion, savedActivity.id)}
-        />
+        >
+          Valitse
+        </Button>
       )
       style = { background: 'none' }
     }
@@ -88,17 +111,24 @@ class PlanCard extends React.Component {
       <Card>
         <CardHeader
           title={suggestion.title}
-          actAsExpander={true}
-          showExpandableButton={true}
           style={style}
         />
+        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            {suggestion.content}
+            <br />
 
-        <CardText expandable={true}>
-          {suggestion.content}
-
-          <br />
+          </CardContent>
+        </Collapse>
+        <CardActions>
+          <IconButton
+            onClick={this.handleExpandChange}
+            className={this.state.expanded ? "arrow-up" : ""}
+          >
+            <ExpandMoreIcon />
+          </IconButton>
           {button()}
-        </CardText>
+        </CardActions>
       </Card>
     )
   }

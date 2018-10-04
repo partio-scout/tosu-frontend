@@ -22,7 +22,6 @@ const getBufferZoneActivities = async () => {
 
 const moveActivityFromBufferZoneToEvent = async (id, targetId) => {
   const url = `${API_ROOT}/activity/${id}/frombuffer/toevent/${targetId}`
-  //console.log(url)
   const response = await axios.put(url)
   return response.data
 }

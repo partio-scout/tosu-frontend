@@ -3,9 +3,6 @@ import Paper from '@material-ui/core/Paper'
 import {
   TextValidator,
   ValidatorForm
-  // DateValidator,
-  // TimeValidator,
-  // SelectValidator
 } from 'react-material-ui-form-validator'
 
 export default class UserInfo extends Component {

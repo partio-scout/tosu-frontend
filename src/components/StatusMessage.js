@@ -22,12 +22,12 @@ const smallDone = (
 
 // Warning icon
 const warning = (
-  <div class="tooltip">
+  <div className="tooltip">
     <Warning
       className='warning'
     />
-    <span class="tooltiptext">
-    Aktiviteetin ajankohta on virheellinen!
+    <span className="tooltiptext">
+      Aktiviteetin ajankohta on virheellinen!
     </span>
   </div>
 )
@@ -48,11 +48,11 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
 
         {statusMessage.status.taskgroupDone
           ? `Pakolliset aktiviteetit valittu ${
-              statusMessage.status.dates.mandatory
-            }`
+          statusMessage.status.dates.mandatory
+          }`
           : `Valitse pakolliset aktiviteetit ${
-              statusMessage.status.mandatory
-            }/${taskgroup.children.length}`}
+          statusMessage.status.mandatory
+          }/${taskgroup.children.length}`}
 
         <br />
       </p>
@@ -63,7 +63,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   const basicPlanInformation = () => {
     return (
       <div style={{ fontSize: '0.8rem', lineHeight: '1.4rem' }}>
-        <p style={{ marginBottom: 0 }}>
+        <div style={{ marginBottom: 0 }}>
           <big>
             <strong>
               {taskgroup.title}{' '}
@@ -74,7 +74,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
           </big>
           <br />
           {statusMessage.status.firstTask === 1 &&
-          !statusMessage.status.warnings.firstTaskTooLate
+            !statusMessage.status.warnings.firstTaskTooLate
             ? done
             : null}
           {statusMessage.status.warnings.firstTaskTooLate ? warning : null}
@@ -88,18 +88,18 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
 
           {statusMessage.status.mandatory === 5
             ? `Pakolliset aktiviteetit valittu - ${
-                statusMessage.status.dates.mandatory
-              }`
+            statusMessage.status.dates.mandatory
+            }`
             : `Valitse pakolliset aktiviteetit ${
-                statusMessage.status.mandatory
-              }/5`}
+            statusMessage.status.mandatory
+            }/5`}
 
           <br />
           {statusMessage.status.leaderTask === 1 ? done : null}
           {statusMessage.status.leaderTask === 1
             ? `Johtamis- tai vastuutehtävä valittu - ${
-                statusMessage.status.dates.leaderTask
-              }`
+            statusMessage.status.dates.leaderTask
+            }`
             : 'Valitse johtamis- tai vastuutehtävä'}
 
           <br />
@@ -107,12 +107,12 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
 
           {statusMessage.status.nonMandatory.total === 4
             ? `Vapaaehtoiset aktiviteetit valittu - ${
-                statusMessage.status.dates.nonMandatory
-              }`
+            statusMessage.status.dates.nonMandatory
+            }`
             : `Valitse vapaaehtoiset aktiviteetit ${
-                statusMessage.status.nonMandatory.total
-              }/4`}
-        </p>
+            statusMessage.status.nonMandatory.total
+            }/4`}
+        </div>
         <p style={{ margin: 0, marginLeft: 20 }}>
           {statusMessage.status.nonMandatory.suhdeItseen >= 1
             ? smallDone
@@ -149,16 +149,16 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
             ? ` - ${statusMessage.status.dates.suhdeYmparistoon}`
             : null}
         </p>
-        <p style={{ marginTop: 0, marginBottom: 0 }}>
+        <div style={{ marginTop: 0, marginBottom: 0 }}>
           {statusMessage.status.nonMandatory.majakka === 1 &&
-          !statusMessage.status.warnings.lastTaskTooSoon
+            !statusMessage.status.warnings.lastTaskTooSoon
             ? done
             : null}
           {statusMessage.status.warnings.lastTaskTooSoon ? warning : null}
           {statusMessage.status.nonMandatory.majakka === 1
             ? `Majakkavaihtoehto valittu ${statusMessage.status.dates.majakka}`
             : 'Valitse majakkavaihtoehto'}
-        </p>
+        </div>
       </div>
     )
   }
@@ -190,13 +190,13 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   const statusbox = () => (
     <div>
       {(taskgroup && statusMessage.status.firstTaskgroup) ||
-      (taskgroup && statusMessage.status.lastTaskgroup)
+        (taskgroup && statusMessage.status.lastTaskgroup)
         ? specialPlanInformation()
         : null}
       {taskgroup &&
-      !statusMessage.status.firstTaskgroup &&
-      !statusMessage.status.lastTaskgroup &&
-      !statusMessage.status.extraTaskgroup
+        !statusMessage.status.firstTaskgroup &&
+        !statusMessage.status.lastTaskgroup &&
+        !statusMessage.status.extraTaskgroup
         ? basicPlanInformation()
         : null}
       {taskgroup && statusMessage.status.extraTaskgroup

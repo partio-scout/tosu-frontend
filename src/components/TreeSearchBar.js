@@ -62,7 +62,7 @@ class TreeSearchBar extends React.Component {
 
     const mandatoryActivities = selectedGroup.mandatory_tasks.split(',')
     if (mandatoryActivities[0] !== '') {
-      //empty split return and array with only value as ""
+      // empty split return and array with only value as ""
 
       let activities = []
       this.props.buffer.activities.forEach(activity => {
@@ -186,8 +186,8 @@ class TreeSearchBar extends React.Component {
               const status = createStatusMessage(this.props.events, this.props.pofTree, rootgroup)
               let labelText = rootgroup.title.props.name
 
-              if(status.taskgroupDone){
-                labelText = <span style={{textDecoration: 'line-through'}}>{labelText}</span>
+              if (status.taskgroupDone) {
+                labelText = <span style={{ textDecoration: 'line-through' }}>{labelText}</span>
               }
 
               return {
