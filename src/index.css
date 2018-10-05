@@ -485,6 +485,17 @@ span.label {
   align-content: center;
 }
 
+.App > div > div:first-child {
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+}
+
+.App > div > div:nth-child(2) {
+  position: relative;
+  top: 60px;
+}
+
 /*material reference*/
 color-class {
   color: #1a237e; /*indigo900*/
