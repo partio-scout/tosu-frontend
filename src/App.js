@@ -8,6 +8,7 @@ import { GoogleLogin } from 'react-google-login'
 import FontAwesome from 'react-fontawesome'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog';
+import { DialogTitle } from '@material-ui/core';
 import moment from 'moment'
 import 'react-sticky-header/styles.css'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
@@ -34,13 +35,12 @@ import eventComparer from './utils/EventCompare'
 import EventCard from './components/EventCard'
 import { filterChange } from './reducers/filterReducer'
 import "./index.css";
-import { DialogTitle } from '@material-ui/core';
+
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
-      bufferZoneHeight: 0,
       headerVisible: false,
       drawerVisible: true
     }
@@ -50,7 +50,6 @@ class App extends Component {
     if (window.location.pathname === '/new-event') {
       this.setState({
         headerVisible: false,
-        bufferZoneHeight: 0,
       })
     }
     if (getGoogleToken() !== null) {
@@ -111,7 +110,7 @@ class App extends Component {
       setGoogleToken(response.tokenId)
       await Promise.all([
         this.props.eventsInitialization(),
-        this.props.bufferZoneInitialization()// //////////////////
+        this.props.bufferZoneInitialization()
       ])
       this.props.pofTreeUpdate(this.props.buffer, this.props.events)
     }
@@ -181,16 +180,13 @@ class App extends Component {
     )
     const dndMenu = () => (
       <AppBar
-        // setHeaderHeight={this.setHeaderHeight}
         toggleSideBar={this.toggleDrawer}
-        headerVisible={this.state.headerVisible}
         selfInfo={selfInfo}
       />
     )
 
     const mobileMenu = () => (
       <MobileAppbar
-        // setHeaderHeight={this.setHeaderHeight}
         headerVisible={this.state.headerVisible}
         selfInfo={selfInfo}
       />
@@ -246,7 +242,7 @@ class App extends Component {
                     &nbsp;
                   <Route exact path="/" render={() => events} />
                   <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
-                    <DialogTitle>{'Luo uusi tapahtuma'}</DialogTitle>
+                    <DialogTitle>Luo uusi tapahtuma</DialogTitle>
                     <NewEvent closeMe={this.handleClose} />
                   </Dialog>
                   <Route
