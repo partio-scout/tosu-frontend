@@ -461,6 +461,7 @@ span.label {
 
 .visible-drawer {
   display: inline-flex;
+  width: 30%;
 }
 .hidden-drawer {
   display: none;
@@ -493,6 +494,12 @@ span.label {
 
 .App > div > div:nth-child(2) {
   position: relative;
+  top: 60px;
+}
+
+.visible-drawer > div > div > div {
+  position: fixed;
+  max-width: 30%;
   top: 60px;
 }
 
