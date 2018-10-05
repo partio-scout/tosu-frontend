@@ -45,7 +45,7 @@ function ClippedDrawer(props) {
           paper: classes.drawerPaper,
         }}
       >
-        <TreeSearchBar getHeight="20000" />
+        <TreeSearchBar />
         <BufferZone />
       </Drawer>
     </div>
