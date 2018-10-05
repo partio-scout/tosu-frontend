@@ -234,10 +234,6 @@ class StatusMessage extends React.Component {
     this.state = {}
   }
 
-  // componentDidUpdate = () => {
-  //    this.props.getHeight()
-  // }
-
   render() {
     const element = this.props.showStatusBox ? (
       <Instruction

@@ -94,12 +94,6 @@ class App extends Component {
     this.props.addStatusInfo(status)
   }
 
-/*   setHeaderHeight = height => {
-    if (height !== this.state.bufferZoneHeight) {
-      this.setState({ bufferZoneHeight: height })
-    }
-  } */
-
   toggleDrawer = () => {
     this.setState({ drawerVisible: !this.state.drawerVisible })
   }
