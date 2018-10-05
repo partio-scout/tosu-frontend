@@ -95,11 +95,11 @@ class App extends Component {
     this.props.addStatusInfo(status)
   }
 
-  setHeaderHeight = height => {
+/*   setHeaderHeight = height => {
     if (height !== this.state.bufferZoneHeight) {
       this.setState({ bufferZoneHeight: height })
     }
-  }
+  } */
 
   toggleDrawer = () => {
     this.setState({ drawerVisible: !this.state.drawerVisible })
@@ -181,7 +181,7 @@ class App extends Component {
     )
     const dndMenu = () => (
       <AppBar
-        setHeaderHeight={this.setHeaderHeight}
+        // setHeaderHeight={this.setHeaderHeight}
         toggleSideBar={this.toggleDrawer}
         headerVisible={this.state.headerVisible}
         selfInfo={selfInfo}
@@ -190,7 +190,7 @@ class App extends Component {
 
     const mobileMenu = () => (
       <MobileAppbar
-        setHeaderHeight={this.setHeaderHeight}
+        // setHeaderHeight={this.setHeaderHeight}
         headerVisible={this.state.headerVisible}
         selfInfo={selfInfo}
       />
@@ -228,9 +228,9 @@ class App extends Component {
                     variant="contained"
                   >
                     Tulevat tapahtumat
-                </Button>
+                  </Button>
                   &nbsp;
-                <Button
+                  <Button
                     className={this.props.store.getState().filter === 'PAST' ? 'active' : ''}
                     component={Link}
                     to="/"
@@ -238,13 +238,13 @@ class App extends Component {
                     variant="contained"
                   >
                     Menneet tapahtumat
-                </Button>
+                  </Button>
                   &nbsp;
                   <Button onClick={this.newEvent} variant="contained">
                     Uusi tapahtuma
-                </Button>
-                  &nbsp;
-                <Route exact path="/" render={() => events} />
+                  </Button>
+                    &nbsp;
+                  <Route exact path="/" render={() => events} />
                   <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
                     <DialogTitle>{'Luo uusi tapahtuma'}</DialogTitle>
                     <NewEvent closeMe={this.handleClose} />

@@ -396,10 +396,10 @@ span.label {
 }
 
 .status-box {
-  width: 95%;
-  margin: 10px;
+  width: 90%;
+  margin: 5px;
   padding: 10px;
-  padding-left: 25px;
+  padding-left: 20px;
   font-size: 0.9rem;
 }
 

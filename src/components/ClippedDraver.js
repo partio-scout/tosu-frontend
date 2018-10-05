@@ -5,7 +5,6 @@ import Drawer from '@material-ui/core/Drawer';
 import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
 import StatusMessage from './StatusMessage'
-import { Toolbar } from '@material-ui/core';
 
 
 const drawerWidth = 500;
@@ -36,6 +35,15 @@ const styles = theme => ({
 
 function ClippedDrawer(props) {
   const { classes } = props;
+  let showStatusBox = true;
+
+  const handleOpen = () => {
+    showStatusBox = true
+  }
+
+  const handleClose = () => {
+    showStatusBox = false
+  }
 
   return (
     <div className={classes.root}>
@@ -45,6 +53,11 @@ function ClippedDrawer(props) {
           paper: classes.drawerPaper,
         }}
       >
+        <StatusMessage
+          showStatusBox={showStatusBox}
+          handleClose={handleClose}
+          handleOpen={handleOpen}
+        />
         <TreeSearchBar />
         <BufferZone />
       </Drawer>

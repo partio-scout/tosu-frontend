@@ -14,19 +14,19 @@ export default class AppBar extends React.Component {
     }
   }
 
-  componentDidMount = () => {
-    this.getHeight()
-  }
+  // componentDidMount = () => {
+  //    this.getHeight()
+  // }
 
-  componentDidUpdate = () => {
-    this.getHeight()
-  }
+  // componentDidUpdate = () => {
+  //    this.getHeight()
+  // }
 
-  getHeight = () => {
-    const bufferZoneHeight = document.getElementById('top-bar-header')
-      .clientHeight
-    this.props.setHeaderHeight(bufferZoneHeight)
-  }
+  // getHeight = () => {
+  //   const bufferZoneHeight = document.getElementById('top-bar-header')
+  //     .clientHeight
+  //   this.props.setHeaderHeight(bufferZoneHeight)
+  // }
 
   handleOpen = () => {
     this.setState({ showStatusBox: true })
@@ -62,7 +62,6 @@ export default class AppBar extends React.Component {
                   showStatusBox={this.state.showStatusBox}
                   handleClose={this.handleClose}
                   handleOpen={this.handleOpen}
-                  getHeight={this.getHeight}
                 />
               </div>
             ) : (
@@ -71,7 +70,6 @@ export default class AppBar extends React.Component {
                     showStatusBox={this.state.showStatusBox}
                     handleClose={this.handleClose}
                     handleOpen={this.handleOpen}
-                    getHeight={this.getHeight}
                   />
                 </div>
               )}
@@ -79,14 +77,14 @@ export default class AppBar extends React.Component {
             {this.state.showStatusBox ? (
               <div className="top-bar-right" style={{ width: '65%' }}>
                 {' '}
-                <TreeSearchBar getHeight={this.getHeight} />
+                <TreeSearchBar />
                 <div style={{ clear: 'both' }} />
                 <BufferZone />
               </div>
             ) : (
                 <div className="top-bar-right" style={{ width: '95%' }}>
                   {' '}
-                  <TreeSearchBar getHeight={this.getHeight} />
+                  <TreeSearchBar />
                   <div style={{ clear: 'both' }} />
                   <BufferZone />
                 </div>
