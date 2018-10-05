@@ -121,7 +121,6 @@ class MobileAppbar extends React.Component {
               showStatusBox={this.state.showStatusBox}
               handleClose={this.handleClose}
               handleOpen={this.handleOpen}
-              getHeight={this.getHeight}
             />
           </div>
         ) : null}
