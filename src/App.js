@@ -42,7 +42,8 @@ class App extends Component {
     super()
     this.state = {
       headerVisible: false,
-      drawerVisible: true
+      drawerVisible: true,
+      bufferZoneHeight: 0,
     }
   }
 
@@ -50,6 +51,7 @@ class App extends Component {
     if (window.location.pathname === '/new-event') {
       this.setState({
         headerVisible: false,
+        bufferZoneHeight: 0
       })
     }
     if (getGoogleToken() !== null) {
@@ -93,6 +95,12 @@ class App extends Component {
     )
     this.props.addStatusInfo(status)
   }
+
+  setHeaderHeight = height => {
+    if (height !== this.state.bufferZoneHeight) {
+      this.setState({ bufferZoneHeight: height })
+    }
+  } 
 
   toggleDrawer = () => {
     this.setState({ drawerVisible: !this.state.drawerVisible })
@@ -181,6 +189,7 @@ class App extends Component {
 
     const mobileMenu = () => (
       <MobileAppbar
+        setHeaderHeight={this.setHeaderHeight}
         headerVisible={this.state.headerVisible}
         selfInfo={selfInfo}
       />
