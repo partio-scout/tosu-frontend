@@ -214,9 +214,11 @@ class App extends Component {
               {isTouchDevice() ? mobileMenu() : dndMenu()}
             </div>
             <div style={{ display: 'flex', width: '100%' }}>
+              {isTouchDevice()? null : 
               <div className={this.state.drawerVisible ? 'visible-drawer' : 'hidden-drawer'}>
                 <ClippedDraver />
               </div>
+              }
               <div id="container" style={{ paddingTop: 0 }}>
                 <div className="content">
                   <Button
