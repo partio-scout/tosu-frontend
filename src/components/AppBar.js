@@ -1,39 +1,19 @@
 import React from 'react'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch'
-import TreeSearchBar from './TreeSearchBar'
-import StatusMessage from './StatusMessage'
 import GoogleButtons from './GoogleButtons'
-import BufferZone from './BufferZone'
 
 export default class AppBar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      showStatusBox: true
+      sidebarVisible: true
     }
   }
 
-  // componentDidMount = () => {
-  //    this.getHeight()
-  // }
-
-  // componentDidUpdate = () => {
-  //    this.getHeight()
-  // }
-
-  // getHeight = () => {
-  //   const bufferZoneHeight = document.getElementById('top-bar-header')
-  //     .clientHeight
-  //   this.props.setHeaderHeight(bufferZoneHeight)
-  // }
-
-  handleOpen = () => {
-    this.setState({ showStatusBox: true })
-  }
-
-  handleClose = () => {
-    this.setState({ showStatusBox: false })
+  toggleSideBar = () => {
+    this.setState({sidebarVisible: !this.state.sidebarVisible})
+    this.props.toggleSideBar()
   }
 
   render() {
@@ -45,53 +25,14 @@ export default class AppBar extends React.Component {
             control={
               <Switch
                 className="toggle-elements"
-                onClick={() => this.props.toggleSideBar()}
+                onClick={this.toggleSideBar}
               />
             }
             label={
-              this.props.headerVisible ? 'Piilota' : 'Suunnittelunäkymä'
+              this.state.sidebarVisible ? 'Piilota' : 'Suunnittelunäkymä'
             }
           />
         </div>
-
-        {this.props.headerVisible ? (
-          <div>
-            {this.state.showStatusBox ? (
-              <div className="top-bar-left" style={{ width: '35%' }}>
-                <StatusMessage
-                  showStatusBox={this.state.showStatusBox}
-                  handleClose={this.handleClose}
-                  handleOpen={this.handleOpen}
-                />
-              </div>
-            ) : (
-                <div className="top-bar-left" style={{ width: '5%' }}>
-                  <StatusMessage
-                    showStatusBox={this.state.showStatusBox}
-                    handleClose={this.handleClose}
-                    handleOpen={this.handleOpen}
-                  />
-                </div>
-              )}
-
-            {this.state.showStatusBox ? (
-              <div className="top-bar-right" style={{ width: '65%' }}>
-                {' '}
-                <TreeSearchBar />
-                <div style={{ clear: 'both' }} />
-                <BufferZone />
-              </div>
-            ) : (
-                <div className="top-bar-right" style={{ width: '95%' }}>
-                  {' '}
-                  <TreeSearchBar />
-                  <div style={{ clear: 'both' }} />
-                  <BufferZone />
-                </div>
-              )}
-            <div style={{ clear: 'both' }} />
-          </div>
-        ) : null}
       </div>
     )
   }
