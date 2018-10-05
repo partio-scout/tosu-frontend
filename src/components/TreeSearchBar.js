@@ -196,7 +196,7 @@ class TreeSearchBar extends React.Component {
             })}
           />
         </div>
-        <div style={{ float: 'right', width: '60%' }}>
+        <div style={{ width: '80%' }}>
           {this.props.taskgroup ? treeSearchBar() : null}
         </div>
       </div>
