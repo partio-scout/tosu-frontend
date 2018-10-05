@@ -461,6 +461,7 @@ span.label {
 
 .visible-drawer {
   display: inline-flex;
+  width: 30%;
 }
 .hidden-drawer {
   display: none;
@@ -483,6 +484,23 @@ span.label {
 .event-card-wrapper .activity-header .connect-drag-source {
   margin: 0 4px 0 4px;
   align-content: center;
+}
+
+.App > div > div:first-child {
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+}
+
+.App > div > div:nth-child(2) {
+  position: relative;
+  top: 60px;
+}
+
+.visible-drawer > div > div > div {
+  position: fixed;
+  max-width: 30%;
+  top: 60px;
 }
 
 /*material reference*/
