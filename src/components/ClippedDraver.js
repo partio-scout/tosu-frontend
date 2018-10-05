@@ -31,8 +31,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
     minWidth: 0, // So the Typography noWrap works
-  },
-  toolbar: theme.mixins.toolbar,
+  }
 });
 
 function ClippedDrawer(props) {
@@ -46,7 +45,6 @@ function ClippedDrawer(props) {
           paper: classes.drawerPaper,
         }}
       >
-        <Toolbar>TEST</Toolbar>
         <TreeSearchBar getHeight="20000" />
         <BufferZone />
       </Drawer>
