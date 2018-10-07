@@ -430,7 +430,7 @@ span.label {
   width: 30px;
   height: 30px;
   padding: 0;
-  color: white;
+  color: #2196f3;
   margin: 10px;
   margin-left: 20px;
 }
@@ -502,6 +502,25 @@ span.label {
   top: 60px;
 }
 
+.drawer-root {
+  flex-grow: 1;
+  width: 500px;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+}
+
+.drawer-paper {
+  position: relative;
+  max-width: 100%;
+}
+
+.drawer-content {
+  flex-grow: 1;
+  min-width: 0;
+}
 /*material reference*/
 color-class {
   color: #1a237e; /*indigo900*/
