@@ -2,7 +2,7 @@ let root = 'https://suunnittelu.partio-ohjelma.fi:3001';
 
 const hostname = window && window.location && window.location.hostname;
 
-export const POF_ROOT = 'https://suunnittelu.partio-ohjelma.fi:3002'
+export const POF_ROOT = 'https://suunnittelu.beta.partio-ohjelma.fi'
 
 if (hostname === 'suunnittelu.partio-ohjelma.fi') {
   root = 'https://suunnittelu.partio-ohjelma.fi:3001';
