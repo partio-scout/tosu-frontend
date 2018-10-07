@@ -35,7 +35,6 @@ p.eventTimes > span {
   margin: 10px 10px 5px;
   min-height: 60px;
   min-width: 200px;
-  background-color: aliceblue;
   border-radius: 8px;
   display: flex;
   flex-flow: row wrap;
