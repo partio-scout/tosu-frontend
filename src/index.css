@@ -299,7 +299,6 @@ span.label {
   padding: 5px;
 
   /* Position the tooltip */
-  position: absolute;
   z-index: 1;
 }
 
