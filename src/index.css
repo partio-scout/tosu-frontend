@@ -397,7 +397,7 @@ span.label {
 .status-box {
   width: 90%;
   margin: 5px;
-  padding: 10px;
+  margin-right: 0;
   padding-left: 20px;
   font-size: 0.9rem;
 }
