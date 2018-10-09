@@ -501,6 +501,7 @@ span.label {
   max-width: 30%;
   top: 60px;
   height: auto;
+  min-height: 50%;
 }
 
 .drawer-root {
