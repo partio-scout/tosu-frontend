@@ -15,7 +15,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
 import MobileAppbar from './components/MobileAppbar'
-import ClippedDraver from './components/ClippedDraver'
+import ClippedDraver from './components/ClippedDrawer'
 import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import {
