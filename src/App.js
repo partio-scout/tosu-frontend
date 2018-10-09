@@ -141,7 +141,7 @@ class App extends Component {
       // otherwise show events with end date less than today
       return filter === 'FUTURE'
         ? events.filter(event => event.endDate >= currentDate).sort(eventComparer)
-        : events.sort(eventComparer)
+        : events.filter(event => event.endDate < currentDate).sort(eventComparer)
     }
 
     if (this.props.scout === null) {
@@ -168,22 +168,11 @@ class App extends Component {
         </div>
       )
     }
-    const selfInfo = (
-      <p className="appbar-user"><span>{this.props.scout.name}</span></p>
-      /* <Link to="/user-info">
-        <button className="appbar-button" onClick={this.hideTopBar}>
-          <FontAwesome className="icon" name="user" />
+  
 
-          {!isTouchDevice() ? (
-            <span className="appbar-button-text">Omat tiedot</span>
-          ) : null}
-        </button>
-      </Link> */
-    )
     const dndMenu = () => (
       <AppBar
         toggleSideBar={this.toggleDrawer}
-        selfInfo={selfInfo}
       />
     )
 
@@ -191,7 +180,6 @@ class App extends Component {
       <MobileAppbar
         setHeaderHeight={this.setHeaderHeight}
         headerVisible={this.state.headerVisible}
-        selfInfo={selfInfo}
       />
     )
 
@@ -228,7 +216,7 @@ class App extends Component {
                     onClick={this.filterSelected('FUTURE')}
                     variant="contained"
                   >
-                    Tulevat
+                    Tulevat tapahtumat
                   </Button>
                   &nbsp;
                   <Button
@@ -238,7 +226,7 @@ class App extends Component {
                     onClick={this.filterSelected('PAST')}
                     variant="contained"
                   >
-                    Kaikki
+                    Menneet tapahtumat
                   </Button>
                   &nbsp;
                   <Button onClick={this.newEvent} variant="contained">

@@ -521,6 +521,12 @@ span.label {
   flex-grow: 1;
   min-width: 0;
 }
+
+.account-button {
+  float: right;
+  color: white;
+}
+
 /*material reference*/
 color-class {
   color: #1a237e; /*indigo900*/

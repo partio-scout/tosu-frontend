@@ -1,7 +1,7 @@
 import React from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
-import GoogleButtons from './GoogleButtons'
+import AccountIcon from './AccountIcon'
 import { notify } from '../reducers/notificationReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
@@ -111,7 +111,8 @@ class MobileAppbar extends React.Component {
               })}
             />
           </div>
-          <GoogleButtons selfInfo={this.props.selfInfo} />
+          <AccountIcon />
+
           <div style={{ clear: 'both' }} />
         </div>
 

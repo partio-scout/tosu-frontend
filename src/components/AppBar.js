@@ -1,7 +1,7 @@
 import React from 'react'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch'
-import GoogleButtons from './GoogleButtons'
+import AccountIcon from './AccountIcon'
 
 export default class AppBar extends React.Component {
   constructor(props) {
@@ -19,7 +19,7 @@ export default class AppBar extends React.Component {
   render() {
     return (
       <div className="top-search" id="top-bar-header">
-        <GoogleButtons selfInfo={this.props.selfInfo} />
+        <AccountIcon />
         <div className="Header_root" id="header_root">
           <FormControlLabel
             control={
