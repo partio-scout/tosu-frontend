@@ -141,7 +141,7 @@ class App extends Component {
       // otherwise show events with end date less than today
       return filter === 'FUTURE'
         ? events.filter(event => event.endDate >= currentDate).sort(eventComparer)
-        : events.filter(event => event.endDate < currentDate).sort(eventComparer)
+        : events.sort(eventComparer)
     }
 
     if (this.props.scout === null) {
@@ -216,7 +216,7 @@ class App extends Component {
                     onClick={this.filterSelected('FUTURE')}
                     variant="contained"
                   >
-                    Tulevat tapahtumat
+                    Tulevat
                   </Button>
                   &nbsp;
                   <Button
@@ -226,7 +226,7 @@ class App extends Component {
                     onClick={this.filterSelected('PAST')}
                     variant="contained"
                   >
-                    Menneet tapahtumat
+                    Kaikki
                   </Button>
                   &nbsp;
                   <Button onClick={this.newEvent} variant="contained">
