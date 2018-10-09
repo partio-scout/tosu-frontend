@@ -68,7 +68,7 @@ class Activity extends Component {
   }
 
   render() {
-    const { activity, pofActivity, connectDragSource, isDragging } = this.props
+    const { activity, pofActivity, connectDragSource } = this.props
 
     let lastGuid = 0
     if (pofActivity) {
