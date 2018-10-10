@@ -6,12 +6,9 @@ body {
   font-family: Source Sans Pro Black, sans-serif;
 }
 
-App {
-  padding-top: 20px;
-}
-
 .content {
-  padding: 10px 10px 20px;
+  padding: 10px 10px 0px;
+  max-height: 100%;
 }
 
 ul.events {
@@ -459,7 +456,8 @@ span.label {
 
 .visible-drawer {
   display: inline-flex;
-  width: 30%;
+  min-width: 30%;
+  top: 60px;
 }
 .hidden-drawer {
   display: none;
@@ -484,24 +482,13 @@ span.label {
   align-content: center;
 }
 
-.App > div > div:first-child {
-  position: fixed;
-  z-index: 100;
-  width: 100%;
-}
-
-.App > div > div:nth-child(2) {
-  position: relative;
-  top: 60px;
-}
-
-.visible-drawer > div > div > div {
-  position: fixed;
-  max-width: 30%;
-  top: 60px;
-  height: auto;
-  min-height: 50%;
-  border: none;
+.event-list {
+  max-height: 90vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  list-style: none;
+  border-bottom: 1px solid lightgrey;
+  padding-left: 0;
 }
 
 .drawer-root {
@@ -514,14 +501,9 @@ span.label {
   display: flex;
 }
 
-.drawer-paper {
+/* Override fixed position */
+.drawer-paper > div {
   position: relative;
-  max-width: 100%;
-}
-
-.drawer-content {
-  flex-grow: 1;
-  min-width: 0;
 }
 
 .account-button {
