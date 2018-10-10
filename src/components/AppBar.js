@@ -24,7 +24,7 @@ export default class AppBar extends React.Component {
           <FormControlLabel
             control={
               <Switch
-                className="toggle-elements"
+                className="toggle-sidebar"
                 onClick={this.toggleSideBar}
               />
             }

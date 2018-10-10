@@ -100,7 +100,7 @@ class App extends Component {
     if (height !== this.state.bufferZoneHeight) {
       this.setState({ bufferZoneHeight: height })
     }
-  } 
+  }
 
   toggleDrawer = () => {
     this.setState({ drawerVisible: !this.state.drawerVisible })
@@ -168,7 +168,7 @@ class App extends Component {
         </div>
       )
     }
-  
+
 
     const dndMenu = () => (
       <AppBar
@@ -185,12 +185,16 @@ class App extends Component {
 
     const events = (
       <div>
-        {eventsToShow().map(event => (
-          <EventCard
-            key={event.id ? event.id : 0}
-            event={event}
-          />
-        ))}
+        <ul className='event-list'>
+          {eventsToShow().map(event => (
+            <li className='event-list-item'>
+              <EventCard
+                key={event.id ? event.id : 0}
+                event={event}
+              />
+            </li>
+          ))}
+        </ul>
       </div>
     )
 
@@ -202,10 +206,10 @@ class App extends Component {
               {isTouchDevice() ? mobileMenu() : dndMenu()}
             </div>
             <div style={{ display: 'flex', width: '100%' }}>
-              {isTouchDevice()? null : 
-              <div className={this.state.drawerVisible ? 'visible-drawer' : 'hidden-drawer'}>
-                <ClippedDraver />
-              </div>
+              {isTouchDevice() ? null :
+                <div className={this.state.drawerVisible ? 'visible-drawer' : 'hidden-drawer'}>
+                  <ClippedDraver />
+                </div>
               }
               <div id="container" style={{ paddingTop: 0 }}>
                 <div className="content">
@@ -232,7 +236,7 @@ class App extends Component {
                   <Button onClick={this.newEvent} variant="contained">
                     Uusi tapahtuma
                   </Button>
-                    &nbsp;
+                  &nbsp;
                   <Route exact path="/" render={() => events} />
                   <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
                     <DialogTitle>Luo uusi tapahtuma</DialogTitle>
