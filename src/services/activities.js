@@ -21,19 +21,19 @@ const getBufferZoneActivities = async () => {
 }
 
 const moveActivityFromBufferZoneToEvent = async (id, targetId) => {
-  const url = `${API_ROOT}/activity/${id}/frombuffer/toevent/${targetId}`
+  const url = `${API_ROOT}/activities/${id}/frombuffer/toevent/${targetId}`
   //console.log(url)
   const response = await axios.put(url)
   return response.data
 }
 
 const moveActivityFromEventToBufferZone = async (activityId, parentId) => {
-  const response = await axios.put(`${API_ROOT}/activity/${activityId}/fromevent/${parentId}/tobuffer`)
+  const response = await axios.put(`${API_ROOT}/activities/${activityId}/fromevent/${parentId}/tobuffer`)
   return response.data
 }
 
 const moveActivityFromEventToEvent = async (activityId, parentId, targetId) => {
-  const response = await axios.put(`${API_ROOT}/activity/${activityId}/fromevent/${parentId}/toevent/${targetId}`)
+  const response = await axios.put(`${API_ROOT}/activities/${activityId}/fromevent/${parentId}/toevent/${targetId}`)
   return response.data
 }
 
