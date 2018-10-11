@@ -356,6 +356,12 @@ span.label {
    # CONTENT CSS STARTS HERE #
    ###########################
 */
+/* #### CONTENT #### */
+.flexbox {
+  display: flex;
+  width: 100%;
+}
+
 /* #### SIDEBAR #### */
 .drawer-root {
   flex-grow: 1;
@@ -384,7 +390,7 @@ span.label {
 
 /* #### EVENT LIST #### */
 .event-list {
-  max-height: 85vh;
+  height: calc(100vh - 110px);
   overflow-y: scroll;
   overflow-x: hidden;
   list-style: none;

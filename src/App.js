@@ -186,7 +186,7 @@ class App extends Component {
     )
 
     const events = (
-      <div>
+      <div className='event-list-container'>
         <ul className='event-list'>
           {eventsToShow().map(event => (
             <li className='event-list-item' key={event.id ? event.id : 0}>
@@ -204,7 +204,7 @@ class App extends Component {
             <div>
               {isTouchDevice() ? mobileMenu() : dndMenu()}
             </div>
-            <div style={{ display: 'flex', width: '100%' }}>
+            <div className='flexbox'>
               {isTouchDevice() ? null :
                 <div className={this.state.drawerVisible ? 'visible-drawer' : 'hidden-drawer'}>
                   <ClippedDraver />
