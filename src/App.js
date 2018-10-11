@@ -44,6 +44,7 @@ class App extends Component {
       headerVisible: false,
       drawerVisible: true,
       bufferZoneHeight: 0,
+      newEventVisible: false
     }
   }
 
@@ -51,7 +52,8 @@ class App extends Component {
     if (window.location.pathname === '/new-event') {
       this.setState({
         headerVisible: false,
-        bufferZoneHeight: 0
+        bufferZoneHeight: 0,
+        newEventVisible: false
       })
     }
     if (getGoogleToken() !== null) {
@@ -187,11 +189,8 @@ class App extends Component {
       <div>
         <ul className='event-list'>
           {eventsToShow().map(event => (
-            <li className='event-list-item'>
-              <EventCard
-                key={event.id ? event.id : 0}
-                event={event}
-              />
+            <li className='event-list-item' key={event.id ? event.id : 0}>
+              <EventCard event={event} />
             </li>
           ))}
         </ul>
