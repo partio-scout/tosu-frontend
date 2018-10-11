@@ -394,6 +394,7 @@ span.label {
   padding: 5px;
   margin-bottom: 15px;
   background-color: orange;
+  border-radius: 4px;
 }
 .event-card-wrapper {
   padding: 5px;
