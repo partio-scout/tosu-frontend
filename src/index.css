@@ -384,7 +384,7 @@ span.label {
 
 /* #### EVENT LIST #### */
 .event-list {
-  max-height: 100vh;
+  max-height: 85vh;
   overflow-y: scroll;
   overflow-x: hidden;
   list-style: none;
