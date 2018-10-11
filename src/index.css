@@ -4,6 +4,7 @@ body {
   padding: 0;
   height: 100%;
   font-family: Source Sans Pro Black, sans-serif;
+  overflow: hidden;
 }
 
 .content {
@@ -383,11 +384,10 @@ span.label {
 
 /* #### EVENT LIST #### */
 .event-list {
-  max-height: 85vh;
+  max-height: 100vh;
   overflow-y: scroll;
   overflow-x: hidden;
   list-style: none;
-  border-bottom: 1px solid lightgrey;
   padding-left: 0;
 }
 .empty-event-card {
