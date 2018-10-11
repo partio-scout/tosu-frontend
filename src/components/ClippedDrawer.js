@@ -27,13 +27,13 @@ class ClippedDrawer extends React.Component {
           variant="permanent"
           className='drawer-paper'
         >
+          <TreeSearchBar />
+          <BufferZone />
           <StatusMessage
             showStatusBox={this.state.showStatusBox}
             handleClose={this.handleClose}
             handleOpen={this.handleOpen}
           />
-          <TreeSearchBar />
-          <BufferZone />
         </Drawer>
       </div>
     )
