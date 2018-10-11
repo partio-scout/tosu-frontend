@@ -50,14 +50,14 @@ const convertToBackendActivity = (pofActivity) => {
     leader_tasks: pofActivity.leader_tasks,
     duration: pofActivity.tags.suoritus_kesto.name,
     task_term: pofActivity.task_term.name,
-    place: pofActivity.tags.paikka.map(jtn => (jtn.name)),       
+    place: pofActivity.tags.paikka.map(jtn => (jtn.name)),
     mandatoryIconUrl: pofActivity.tags.pakollisuus[0].icon,
     originUrl: pofActivity.languages[0].details,
     parents: pofActivity.parents
 
 
   }
-  kasvatustavoitteet(backendActivity,pofActivity)
+  kasvatustavoitteet(backendActivity, pofActivity)
   taitoalueet(backendActivity, pofActivity)
   johtamistaito(backendActivity, pofActivity)
   suggestions(backendActivity, pofActivity)

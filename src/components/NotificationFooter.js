@@ -3,11 +3,11 @@ import Notification from './Notification'
 
 
 const NotificationFooter = () => (
-    <footer>
-        <div>
-            <Notification />
-        </div>
-    </footer>
-  );
-  
-  export default NotificationFooter;
+  <footer>
+    <div>
+      <Notification />
+    </div>
+  </footer>
+)
+
+export default NotificationFooter

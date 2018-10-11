@@ -42,8 +42,8 @@ p.eventTimes > span {
 }
 
 .top-search {
-  background: '#5DBCD2';
   padding: 0;
+  background-color: #5DBCD2;
 }
 
 .footerError,
@@ -201,7 +201,6 @@ span.label {
 .activity-header {
   margin: 10px 0 5px;
   min-height: 60px;
-  background-color: aliceblue;
   border-radius: 8px;
   display: flex;
   flex-flow: row wrap;
@@ -238,7 +237,6 @@ span.label {
 .event-form {
   max-width: 800px;
   margin: 0 auto;
-  margin-top: 20px;
 }
 
 .new-form-paper {
@@ -289,7 +287,6 @@ span.label {
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black;
 }
 
 .tooltip .tooltiptext {
@@ -357,4 +354,136 @@ span.label {
   color: #fff;
   border-radius: 5px;
   float: right;
+}
+
+/* ohtu-vartio mods start here */
+
+.connect-drag-source {
+  float: left;
+  margin: 4px;
+}
+
+.toggle-elements {
+  background-color: #5DBCD2 !important;
+  color: #FFF;
+  font-size: 0.8rem;
+}
+
+.warning {
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  margin-right: 7px;
+  color: orange;
+}
+
+.event-card-error {
+  position: absolute;
+  margin-bottom: -22px;
+  color: red;
+}
+
+.mandatory-chip-avatar > img,
+.non-mandatory-chip-avatar > img {
+  width: 100%;
+}
+
+.headline {
+  font-size: 24px;
+  padding-top: 16px;
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+
+.status-box {
+  width: 95%;
+  margin: 10px;
+  padding: 10px;
+  padding-left: 25px;
+  font-size: 0.9rem;
+}
+
+.status-box .done {
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  margin-right: 7px;
+  color: green;
+}
+
+.status-box .small-done {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  margin-right: 7px;
+  color: green;
+}
+
+.status-box .clear {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin-right: 10px;
+  color: #ccc;
+}
+
+.action-help {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: white;
+  margin: 10px;
+  margin-left: 20px;
+}
+
+/*Override transition speed*/
+.MuiCollapse-container-131 {
+  transition-duration: 0ms !important;
+}
+
+.arrow-up {
+  transform: rotate(180deg);
+}
+
+.dnd-active-target {
+  background-color: '#C8E6C9';
+}
+
+.empty-event-card {
+  padding: 5px;
+  margin-bottom: 15px;
+  background-color: orange;
+}
+
+.active {
+  background-color: #90caf9 !important;
+}
+
+/* Make events with activities more compact */
+.event-card-wrapper > div > div:first-child {
+  padding-bottom: 0;
+}
+.event-card-wrapper > div > div:nth-child(2) {
+  padding-bottom: 0;
+  padding-top: 0;
+}
+.event-card-wrapper > div > div:last-child {
+  padding-top: 0;
+}
+.event-card-wrapper .activity-header {
+  margin: 0 4px 0 4px;
+  align-content: center;
+}
+.event-card-wrapper .activity-header .connect-drag-source {
+  margin: 0 4px 0 4px;
+  align-content: center;
+}
+
+/*material reference*/
+color-class {
+  color: #1a237e; /*indigo900*/
+  color: #90caf9; /*blue200*/
+  color: #2196f3; /*blue500*/
+  color: #C8E6C9; /*green100*/
+  color: #E3F2FD; /*blue50*/
 }

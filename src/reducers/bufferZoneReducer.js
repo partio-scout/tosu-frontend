@@ -31,7 +31,6 @@ const reducer = (state = [], action) => {
 
 export const bufferZoneInitialization = () => async dispatch => {
   const buffer = await activityService.getBufferZoneActivities()
-  //console.log("Buffer", buffer)
   dispatch({
     type: 'INIT_BUFFER',
     buffer

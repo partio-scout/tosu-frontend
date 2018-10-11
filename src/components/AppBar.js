@@ -1,20 +1,10 @@
 import React from 'react'
-import Toggle from 'material-ui/Toggle'
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar'
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch'
 import TreeSearchBar from './TreeSearchBar'
 import StatusMessage from './StatusMessage'
 import GoogleButtons from './GoogleButtons'
 import BufferZone from './BufferZone'
-
-const styles = {
-  toggle: {
-    backgroundColor: '#5DBCD2'
-  },
-  labelStyle: {
-    color: '#FFF',
-    fontSize: '0.8rem'
-  }
-}
 
 export default class AppBar extends React.Component {
   constructor(props) {
@@ -48,28 +38,20 @@ export default class AppBar extends React.Component {
 
   render() {
     return (
-      <div
-        className="top-search"
-        id="top-bar-header"
-        style={{ background: '#5DBCD2', padding: 1 }}
-      >
+      <div className="top-search" id="top-bar-header">
         <div className="Header_root" id="header_root">
-          <Toolbar style={styles.toggle}>
-            <ToolbarGroup firstChild={true}>
-              <Toggle
-                label={
-                  this.props.headerVisible ? 'Piilota' : 'Suunnittelunäkymä'
-                }
-                labelPosition="right"
-                style={styles.toggle}
+          <FormControlLabel
+            control={
+              <Switch
+                className="toggle-elements"
                 onClick={() => this.props.toggleTopBar()}
-                labelStyle={styles.labelStyle}
               />
-            </ToolbarGroup>
-            <ToolbarGroup>
-              <GoogleButtons selfInfo={this.props.selfInfo} />
-            </ToolbarGroup>
-          </Toolbar>
+            }
+            label={
+              this.props.headerVisible ? 'Piilota' : 'Suunnittelunäkymä'
+            }
+          />
+          <GoogleButtons selfInfo={this.props.selfInfo} />
         </div>
 
         {this.props.headerVisible ? (
@@ -92,7 +74,7 @@ export default class AppBar extends React.Component {
                   getHeight={this.getHeight}
                 />
               </div>
-            )}
+              )}
 
             {this.state.showStatusBox ? (
               <div className="top-bar-right" style={{ width: '65%' }}>
@@ -108,7 +90,7 @@ export default class AppBar extends React.Component {
                 <div style={{ clear: 'both' }} />
                 <BufferZone />
               </div>
-            )}
+              )}
             <div style={{ clear: 'both' }} />
           </div>
         ) : null}

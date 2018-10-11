@@ -1,24 +1,22 @@
 import { connect } from 'react-redux'
 import ReactDOM from 'react-dom'
 import isTouchDevice from 'is-touch-device'
-import TreeSelect /*, { TreeNode, SHOW_PARENT }*/ from 'rc-tree-select'
+import TreeSelect /* ,{ TreeNode, SHOW_PARENT } */ from 'rc-tree-select'
 import 'rc-tree-select/assets/index.css'
 import React from 'react'
 import { DropTarget } from 'react-dnd'
 import PropTypes from 'prop-types'
-import {
-  Card,
-  CardActions,
-  CardHeader,
-  CardMedia,
-  CardTitle,
-  CardText
-} from 'material-ui/Card'
-import Warning from 'material-ui/svg-icons/alert/warning'
+import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardHeader from '@material-ui/core/CardHeader'
+import Collapse from '@material-ui/core/Collapse'
+import IconButton from '@material-ui/core/IconButton'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { CardContent } from '@material-ui/core'
+import Warning from '@material-ui/icons/Warning'
 import moment from 'moment-with-locales-es6'
-import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
-// import Badge from 'material-ui/Badge'
+import Dialog from '@material-ui/core/Dialog'
+import Button from '@material-ui/core/Button'
 import Activity from './Activity'
 import EditEvent from './EditEvent'
 import ItemTypes from '../ItemTypes'
@@ -35,15 +33,18 @@ import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   deleteActivityFromBufferOnlyLocally,
+  postActivityToBufferOnlyLocally,
   bufferZoneInitialization
 } from '../reducers/bufferZoneReducer'
-import { green100, white } from 'material-ui/styles/colors'
 import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
 import eventService from '../services/events'
 
+
 // Warning icon
-const warning = (status, event) => {
+// No idea if this actually does anything since the warning is actually created in statusmessage.js
+//  -Michael
+/* const warning = (status, event) => {
   if (status.warnings) {
     if (
       status.warnings.firstTaskTooLate &&
@@ -51,26 +52,20 @@ const warning = (status, event) => {
     ) {
       return (
         <div class="tooltip">
-        <Warning
-          style={{
-            width: 15,
-            height: 15,
-            padding: 0,
-            marginRight: 7,
-            color: 'orange'
-          }}
-        />
-        <span class="tooltiptext">
-        Aktiviteetin ajankohta on virheellinen!
-        </span>
-      </div>
+          <Dialog
+            className="warning"
+          />
+          <span class="tooltiptext">
+            Aktiviteetin ajankohta on virheellinen!
+          </span>
+        </div>
       )
     } else if (
       status.warnings.lastTaskTooSoon &&
       moment(event.startDate).format('DD.MM.YYYY') === status.dates.majakka
     ) {
       return (
-        <Warning
+        <Dialog
           style={{
             width: 20,
             height: 20,
@@ -82,43 +77,60 @@ const warning = (status, event) => {
       )
     }
   }
-
   return null
-}
+} */
 
-const moveActivityFromBuffer = async (
-  props,
-  activityId,
-  parentId,
-  targetId
-) => {
+// Actual Warning icon
+// Warning icon
+const warning = (
+  <div className="tooltip">
+    <Warning
+      className='warning'
+    />
+    <span className="tooltiptext">
+      Tapahtumasta puuttuu aktiviteetti!
+    </span>
+  </div>
+)
+
+const moveActivityFromBuffer = async (props, activity, parentId, targetId) => {
+  const activityId = activity.id
   try {
+    props.addActivityToEventOnlyLocally(targetId, activity)
+    props.deleteActivityFromBufferOnlyLocally(activityId)
     const res = await activityService.moveActivityFromBufferZoneToEvent(
       activityId,
       targetId
     )
-    await props.addActivityToEventOnlyLocally(targetId, res)
-    await props.deleteActivityFromBufferOnlyLocally(activityId)
+    await props.deleteActivityFromEventOnlyLocally(activityId)
+    props.addActivityToEventOnlyLocally(targetId, res)
     props.notify('Aktiviteetti siirretty!', 'success')
     return res
   } catch (exception) {
+    props.deleteActivityFromEventOnlyLocally(activityId)
+    props.postActivityToBufferOnlyLocally({ ...activity, canDrag: true })
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
   props.pofTreeUpdate(props.buffer, props.events)
 }
 
-const moveActivityFromEvent = async (props, activityId, parentId, targetId) => {
+const moveActivityFromEvent = async (props, activity, parentId, targetId) => {
+  const activityId = activity.id
   try {
+    await props.deleteActivityFromEventOnlyLocally(activityId)
+    props.addActivityToEventOnlyLocally(targetId, activity)
     const res = await activityService.moveActivityFromEventToEvent(
       activityId,
       parentId,
       targetId
     )
+    await props.deleteActivityFromEventOnlyLocally(activityId)
     props.addActivityToEventOnlyLocally(targetId, res)
-    props.deleteActivityFromEventOnlyLocally(activityId)
     props.notify('Aktiviteetti siirretty!', 'success')
     return res
   } catch (exception) {
+    await props.deleteActivityFromEventOnlyLocally(activityId)
+    props.addActivityToEventOnlyLocally(parentId, { ...activity, canDrag: true })
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
   props.pofTreeUpdate(props.buffer, props.events)
@@ -129,11 +141,11 @@ const EventCardTarget = {
     const item = monitor.getItem()
     const targetId = props.event.id
     const { parentId } = item
-    const activityId = item.id
+    const activity = { ...item.activity }
     if (item.bufferzone === 'true') {
-      moveActivityFromBuffer(props, activityId, parentId, targetId)
+      moveActivityFromBuffer(props, activity, parentId, targetId)
     } else if (targetId !== parentId) {
-      moveActivityFromEvent(props, activityId, parentId, targetId)
+      moveActivityFromEvent(props, activity, parentId, targetId)
     }
   }
 }
@@ -161,12 +173,20 @@ class EventCard extends React.Component {
     }
   }
 
-  handleExpandChange = expanded => {
-    this.setState({ expanded })
-  }
+  onChangeChildren = async activityGuid => {
+    if (this.isLeaf(activityGuid)) {
+      try {
+        const res = await eventService.addActivity(this.props.event.id, {
+          guid: activityGuid
+        })
 
-  handleReduce = () => {
-    this.setState({ expanded: false })
+        this.props.addActivityToEventOnlyLocally(this.props.event.id, res)
+        this.props.notify('Aktiviteetti on lisätty!', 'success')
+      } catch (exception) {
+        this.props.notify('Aktiviteetin lisäämisessä tapahtui virhe!')
+      }
+    }
+    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
 
   deleteActivity = async activity => {
@@ -195,7 +215,7 @@ class EventCard extends React.Component {
       }
     }
 
-  this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
 
   deleteEvent = async () => {
@@ -245,21 +265,6 @@ class EventCard extends React.Component {
     }
     return false
   }
-  onChangeChildren = async activityGuid => {
-    if (this.isLeaf(activityGuid)) {
-      try {
-        const res = await eventService.addActivity(this.props.event.id, {
-          guid: activityGuid
-        })
-
-        this.props.addActivityToEventOnlyLocally(this.props.event.id, res)
-        this.props.notify('Aktiviteetti on lisätty!', 'success')
-      } catch (exception) {
-        this.props.notify('Aktiviteetin lisäämisessä tapahtui virhe!')
-      }
-    }
-    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-  }
 
   filterTreeNode = (input, child) => {
     return child.props.title.props.name
@@ -277,6 +282,10 @@ class EventCard extends React.Component {
 
   handleClose = () => {
     this.setState({ open: false })
+  }
+
+  handleExpandChange = expanded => {
+    this.setState({ expanded: !this.state.expanded })
   }
 
   render() {
@@ -307,40 +316,46 @@ class EventCard extends React.Component {
     const subtitle = this.state.expanded
       ? ''
       : `${moment(event.startDate, 'YYYY-MM-DD')
-          .locale('fi')
-          .format('ddd D. MMMM YYYY')} ${event.startTime}`
+        .locale('fi')
+        .format('ddd D. MMMM YYYY')} ${event.startTime}`
 
+    // This is the popup that appears if you click "poista" on an event
     let actions = []
+    // If groupId exists, it's a recurring event, so we need to enable deleting those
     if (event.groupId) {
-      actions = [
-        <FlatButton label="Peruuta" primary onClick={this.handleClose} />,
-
-        <FlatButton
-          label="Poista tämä tapahtuma"
-          primary
-          onClick={this.deleteEvent}
-        />,
-        <FlatButton
-          label="Poista toistuvat tapahtumat"
-          primary
-          onClick={this.deleteEventGroup}
-        />
-      ]
+      actions = (
+        <div>
+          <p>Poistetaanko tapahtuma {event.title}?</p>
+          <Button onClick={this.handleClose}>peruuta</Button>
+          <Button
+            onClick={this.deleteEvent}
+          >Poista tämä tapahtuma
+          </Button>
+          <Button
+            onClick={this.deleteEventGroup}
+          >
+            Poista toistuvat tapahtumat
+          </Button>
+        </div>
+      )
     } else {
-      actions = [
-        <FlatButton label="Peruuta" primary onClick={this.handleClose} />,
-        <FlatButton
-          label="Poista tapahtuma"
-          primary
-          onClick={this.deleteEvent}
-        />
-      ]
+      actions = (
+        <div>
+          <p>Poistetaanko tapahtuma {event.title}?</p>
+          <Button onClick={this.handleClose} >peruuta</Button>
+          <Button
+            onClick={this.deleteEvent}
+          >
+            Poista tapahtuma
+          </Button>
+        </div>
+      )
     }
     let patternClass
     const { connectDropTarget, canDrop, isOver } = this.props
-    let background = { backgroundColor: white }
+    let background
     if (canDrop) {
-      background = { backgroundColor: green100 }
+      background = { backgroundColor: '#C8E6C9' }
     }
     if (isOver) {
       patternClass = 'pattern'
@@ -359,25 +374,34 @@ class EventCard extends React.Component {
       )
     }
 
-    const cardWarning = warning(this.props.status, this.props.event)
+    // const cardWarning = warning(this.props.status, this.props.event)
 
     return connectDropTarget(
-      <div className="event-card-wrapper">
+      <div className={rows.length === 0 ? "empty-event-card" : "event-card-wrapper"}>
         <Card
-          expanded={this.state.expanded}
-          onExpandChange={this.handleExpandChange}
           style={background}
           className={patternClass}
         >
           <CardHeader
-            title={title}
-            subtitle={subtitle}
-            children={cardWarning}
-            actAsExpander
-            showExpandableButton
+            title={
+              <div>
+                {title}
+                &nbsp;
+                {this.props.event.activities.length === 0 ? warning : ''}
+              </div>
+            }
+            subheader={subtitle}
+            action={
+              <IconButton
+                onClick={this.handleExpandChange}
+                className={this.state.expanded ? "arrow-up" : ""}
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            }
           />
           {isTouchDevice() && !this.state.expanded ? (
-            <CardMedia>
+            <CardContent>
               <div className="mobile-event-card-media">
                 <div>{rows}</div>
                 {this.props.taskgroup ? (
@@ -410,62 +434,58 @@ class EventCard extends React.Component {
                   <div style={{ clear: 'both' }}>&nbsp;</div>
                 )}
               </div>
-            </CardMedia>
+            </CardContent>
           ) : null}
           {!isTouchDevice() &&
-          !this.state.expanded &&
-          this.props.event.activities.length !== 0 ? (
-            <CardMedia>
-              <div className="activity-header">{rows}</div>
-            </CardMedia>
-          ) : null}
+            !this.state.expanded &&
+            this.props.event.activities.length !== 0 ? (
+              <CardContent>
+                <div className="activity-header">{rows}</div>
+              </CardContent>
+            ) : null}
 
-          <CardTitle title={event.title} subtitle="Lokaatio?" expandable />
-          <CardText expandable>
+          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <h2>{event.title}</h2>
+              <p className="eventTimes">
+                <span>{event.type} alkaa:</span>{' '}
+                {moment(event.startDate).format('D.M.YYYY')} kello{' '}
+                {event.startTime}
+              </p>
+              <p className="eventTimes">
+                <span>{event.type} päättyy:</span>{' '}
+                {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
+              </p>
+              <p>{event.information}</p>
+              <p>Aktiviteetit:</p>
+              {rows}
+              <br style={{ clear: 'both' }} />
+            </CardContent>
+          </Collapse>
+          <CardActions>
             <EditEvent
               buttonClass="buttonRight"
               data={event}
               source={this.handleClose}
               setNotification={this.props.setNotification}
             />
-            <FlatButton
-              label="Poista"
-              secondary
+            <Button
               className="buttonRight"
               onClick={this.handleDelete}
-            />
+              variant='contained'
+            >
+              poista
+            </Button>
 
             <Dialog
-              actions={actions}
-              modal={false}
               open={this.state.open}
-              onRequestClose={this.handleClose}
+              onClose={this.handleClose}
             >
-              Poistetaanko tapahtuma {event.title}?
+              <div>
+                {actions}
+              </div>
             </Dialog>
-
-            <p className="eventTimes">
-              <span>{event.type} alkaa:</span>{' '}
-              {moment(event.startDate).format('D.M.YYYY')} kello{' '}
-              {event.startTime}
-            </p>
-            <p className="eventTimes">
-              <span>{event.type} päättyy:</span>{' '}
-              {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
-            </p>
-            <p>{event.information}</p>
-            <p>Aktiviteetit:</p>
-            {rows}
-            <br style={{ clear: 'both' }} />
-            <CardActions>
-              <FlatButton
-                label="Sulje"
-                primary
-                onClick={this.handleReduce}
-                fullWidth
-              />
-            </CardActions>
-          </CardText>
+          </CardActions>
         </Card>
       </div>
     )
@@ -497,6 +517,7 @@ export default connect(mapStateToProps, {
   deleteEventGroup,
   addActivityToEventOnlyLocally,
   deleteActivityFromEventOnlyLocally,
+  postActivityToBufferOnlyLocally,
   deleteActivityFromBufferOnlyLocally,
   pofTreeUpdate
 })(DroppableEventCard)

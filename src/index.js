@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import axios from 'axios'
 import './index.css'
 import App from './App'
 import store from './store'
-import axios from 'axios'
 import pofService from './services/pof'
 import { savePofData } from './services/localStorage'
 
