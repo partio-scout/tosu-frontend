@@ -157,7 +157,7 @@ class App extends Component {
           <GoogleLogin
             className="login-button"
             scope="profile email"
-            clientId="7360124073-8f1bq4mul415hr3kdm154vq3c65lp36d.apps.googleusercontent.com"
+            clientId="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com"
             onSuccess={this.googleLoginSuccess}
             onFailure={this.googleLoginFail}
           >
