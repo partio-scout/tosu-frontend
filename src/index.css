@@ -4,18 +4,12 @@ body {
   padding: 0;
   height: 100%;
   font-family: Source Sans Pro Black, sans-serif;
-}
-
-App {
-  padding-top: 20px;
+  overflow: hidden;
 }
 
 .content {
-  padding: 10px 10px 20px;
-}
-
-ul.events {
-  list-style-type: none;
+  padding: 10px 10px 0px;
+  max-height: 100%;
 }
 
 p.eventTimes::first-letter {
@@ -29,16 +23,6 @@ p.eventTimes > span {
 
 .buttonRight {
   float: right;
-}
-
-#bufferzone {
-  margin: 10px 10px 5px;
-  min-height: 60px;
-  min-width: 200px;
-  background-color: aliceblue;
-  border-radius: 8px;
-  display: flex;
-  flex-flow: row wrap;
 }
 
 .top-search {
@@ -68,7 +52,6 @@ p.eventTimes > span {
   background-color: #FFEBEE;
   border-top: 2px solid #F44336;
 }
-
 
 .footerSuccess {
   color: #4CAF50;
@@ -170,48 +153,13 @@ span.label {
   float: left;
   max-width: 200px !important;
 }
-.appbar-button {
-  margin: 5px;
-  padding: 7px;
-  width: auto !important;
-  background: #fff;
-  border: 0;
-  color: rgb(93, 188, 210);
-  font-size: 1.2rem;
-  border-radius: 5px;
-  float: right;
-}
-
-.appbar-button:hover {
-  background: rgba(255, 255, 255, 0.8);
-  cursor: pointer;
-}
-
-.appbar-button span {
-  margin: 5px;
-  padding: 0;
-}
-
-.appbar-button-text {
-  text-transform: uppercase;
-  line-height: 1.2rem;
-  font-size: 0.8rem;
-}
 
 .activity-header {
   margin: 10px 0 5px;
-  min-height: 60px;
+  min-height: 12px;
   border-radius: 8px;
   display: flex;
   flex-flow: row wrap;
-}
-
-.top-bar-left {
-  float: left;
-}
-
-.top-bar-right {
-  float: right;
 }
 
 .global--modal-content {
@@ -241,15 +189,6 @@ span.label {
 
 .new-form-paper {
   padding: 20px;
-}
-
-.event-card-wrapper {
-  padding: 5px;
-  margin-bottom: 15px;
-}
-.mobile-event-card-media {
-  padding-bottom: 10px;
-  text-align: center;
 }
 
 @media only screen and (max-width: 768px) {
@@ -283,98 +222,10 @@ span.label {
   }
 }
 
-
-.tooltip {
-  position: relative;
-  display: inline-block;
-}
-
-.tooltip .tooltiptext {
-  visibility: hidden;
-  min-width: 200px;
-  font-size: 14px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px;
-
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-}
-
-  .Login {
-    padding: 60px 0;
-    text-align: center;
-    background: rgb(93, 188, 210);
-  }
-
-  .Login form {
-    margin: 0 auto;
-    max-width: 320px;
-    
-  }
-
-.login-text {
-  text-transform: uppercase;
-  line-height: 2.2rem;
-  color: #fff;
-  font-size: 2.2rem;
-}
-
-.login-mobile-text {
-  text-transform: uppercase;
-  line-height: 1.6rem;
-  color: #fff;
-  font-size: 1.6rem;
-}
-
-.login-button {
-  margin: 5px;
-  padding: 5px;
-  width: auto !important;
-  background: #fff;
-  border: 0;
-  color: rgb(93, 188, 210);  
-  border-radius: 5px;
-}
-
-.appbar-user {
-  text-transform: uppercase;
-  line-height: 1.2rem;
-  font-size: 0.8rem;
-  margin: 5px;
-  padding: 15px;
-  width: auto !important;
-  color: #fff;
-  border-radius: 5px;
-  float: right;
-}
-
-/* ohtu-vartio mods start here */
-
+/* Activities */
 .connect-drag-source {
   float: left;
   margin: 4px;
-}
-
-.toggle-elements {
-  background-color: #5DBCD2 !important;
-  color: #FFF;
-  font-size: 0.8rem;
-}
-
-.warning {
-  width: 15px;
-  height: 15px;
-  padding: 0;
-  margin-right: 7px;
-  color: orange;
 }
 
 .event-card-error {
@@ -383,57 +234,18 @@ span.label {
   color: red;
 }
 
+/* Exclamation point icon */
 .mandatory-chip-avatar > img,
 .non-mandatory-chip-avatar > img {
   width: 100%;
 }
 
+/* Title in Forms */
 .headline {
   font-size: 24px;
   padding-top: 16px;
   margin-bottom: 12px;
   font-weight: 400;
-}
-
-.status-box {
-  width: 95%;
-  margin: 10px;
-  padding: 10px;
-  padding-left: 25px;
-  font-size: 0.9rem;
-}
-
-.status-box .done {
-  width: 15px;
-  height: 15px;
-  padding: 0;
-  margin-right: 7px;
-  color: green;
-}
-
-.status-box .small-done {
-  width: 10px;
-  height: 10px;
-  padding: 0;
-  margin-right: 7px;
-  color: green;
-}
-
-.status-box .clear {
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  margin-right: 10px;
-  color: #ccc;
-}
-
-.action-help {
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  color: white;
-  margin: 10px;
-  margin-left: 20px;
 }
 
 /*Override transition speed*/
@@ -449,14 +261,181 @@ span.label {
   background-color: '#C8E6C9';
 }
 
+.active {
+  background-color: #90caf9 !important;
+}
+
+/* ################################
+   # LOGIN SCREEN CSS STARTS HERE #
+   ################################
+*/
+.appbar-button {
+  margin: 5px;
+  padding: 7px;
+  width: auto !important;
+  background: #fff;
+  border: 0;
+  color: rgb(93, 188, 210);
+  font-size: 1.2rem;
+  border-radius: 5px;
+  float: right;
+}
+.appbar-button:hover {
+  background: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+}
+.appbar-button span {
+  margin: 5px;
+  padding: 0;
+}
+.appbar-button-text {
+  text-transform: uppercase;
+  line-height: 1.2rem;
+  font-size: 0.8rem;
+}
+.Login {
+  padding: 60px 0;
+  text-align: center;
+  background: rgb(93, 188, 210);
+}
+.Login form {
+  margin: 0 auto;
+  max-width: 320px;
+}
+.login-text {
+  text-transform: uppercase;
+  line-height: 2.2rem;
+  color: #fff;
+  font-size: 2.2rem;
+}
+.login-mobile-text {
+  text-transform: uppercase;
+  line-height: 1.6rem;
+  color: #fff;
+  font-size: 1.6rem;
+}
+.login-button {
+  margin: 5px;
+  padding: 5px;
+  width: auto !important;
+  background: #fff;
+  border: 0;
+  color: rgb(93, 188, 210);  
+  border-radius: 5px;
+}
+/* END OF LOGIN ##################*/
+
+
+/* ##########################
+   # HEADER CSS STARTS HERE #
+   ##########################
+*/
+/* #### HEADER #### */
+.top-bar-left {
+  float: left;
+}
+.top-bar-right {
+  float: right;
+}
+
+/* #### SWITCH #### */
+.toggle-sidebar {
+  background-color: #5DBCD2 !important;
+  color: #FFF;
+  font-size: 0.8rem;
+}
+
+.account-button {
+  float: right;
+  color: white;
+}
+/* END OF HEADER #################*/
+
+
+/* ########################### 
+   # CONTENT CSS STARTS HERE #
+   ###########################
+*/
+/* #### CONTENT #### */
+.flexbox {
+  display: flex;
+  width: 100%;
+}
+
+/* #### SIDEBAR #### */
+.drawer-root {
+  flex-grow: 1;
+  width: 500px;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.drawer-paper {
+  height: 100%;
+}
+/* Override fixed position */
+.drawer-paper > div {
+  position: relative;
+  z-index: 0;
+}
+/* Override fixed position */
+.visible-drawer {
+  display: inline-flex;
+  min-width: 30%;
+  top: 60px;
+}
+.hidden-drawer {
+  display: none;
+}
+
+/* #### EVENT LIST #### */
+.event-list {
+  height: calc(100vh - 110px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+  list-style: none;
+  padding-left: 0;
+}
 .empty-event-card {
   padding: 5px;
   margin-bottom: 15px;
   background-color: orange;
+  border-radius: 4px;
+}
+.event-card-wrapper {
+  padding: 5px;
+  margin-bottom: 15px;
+}
+.mobile-event-card-media {
+  padding-bottom: 10px;
+  text-align: center;
 }
 
-.active {
-  background-color: #90caf9 !important;
+/* Warning icon */
+.warning {
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  margin-right: 7px;
+  color: orange;
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+.tooltip .tooltiptext {
+  visibility: hidden;
+  min-width: 200px;
+  font-size: 14px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  z-index: 1;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }
 
 /* Make events with activities more compact */
@@ -464,8 +443,8 @@ span.label {
   padding-bottom: 0;
 }
 .event-card-wrapper > div > div:nth-child(2) {
-  padding-bottom: 0;
-  padding-top: 0;
+  padding-top: 2px;
+  padding-bottom: 4px;
 }
 .event-card-wrapper > div > div:last-child {
   padding-top: 0;
@@ -478,6 +457,56 @@ span.label {
   margin: 0 4px 0 4px;
   align-content: center;
 }
+
+
+/* #### STATUS BOX #### */
+.status-box {
+  width: 90%;
+  margin: 5px;
+  margin-right: 0;
+  padding-left: 20px;
+  font-size: 0.9rem;
+}
+.status-box .done {
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  margin-right: 7px;
+  color: green;
+}
+.status-box .small-done {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  margin-right: 7px;
+  color: green;
+}
+.status-box .clear {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin-right: 10px;
+  color: #ccc;
+}
+.action-help {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: #2196f3;
+  margin: 10px;
+  margin-left: 20px;
+}
+
+/* #### BUFFER ZONE #### */
+#bufferzone {
+  margin: 10px 10px 5px;
+  min-height: 60px;
+  min-width: 200px;
+  border-radius: 8px;
+  display: flex;
+  flex-flow: row wrap;
+}
+/* END OF CONTENT ################*/
 
 /*material reference*/
 color-class {

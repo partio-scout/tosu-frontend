@@ -21,7 +21,6 @@ class TreeSearchBar extends React.Component {
   }
 
   componentDidUpdate = () => {
-    this.props.getHeight()
     this.updateStatusMessage()
   }
 
@@ -173,8 +172,8 @@ class TreeSearchBar extends React.Component {
     )
 
     return (
-      <div style={{ margin: 20 }}>
-        <div style={{ float: 'left', marginRight: 20, marginBottom: 10 }}>
+      <div style={{ margin: 10 }}>
+        <div style={{ float: 'left', marginRight: 10, marginBottom: 5 }}>
           <Select
             menuContainerStyle={{ width: '100%' }}
             style={{ width: 200 }}
@@ -197,7 +196,7 @@ class TreeSearchBar extends React.Component {
             })}
           />
         </div>
-        <div style={{ float: 'right', width: '60%' }}>
+        <div style={{ width: '80%' }}>
           {this.props.taskgroup ? treeSearchBar() : null}
         </div>
       </div>

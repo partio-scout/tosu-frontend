@@ -8,13 +8,14 @@ import { GoogleLogin } from 'react-google-login'
 import FontAwesome from 'react-fontawesome'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog';
+import { DialogTitle } from '@material-ui/core';
 import moment from 'moment'
 import 'react-sticky-header/styles.css'
-import StickyHeader from 'react-sticky-header'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
 import MobileAppbar from './components/MobileAppbar'
+import ClippedDraver from './components/ClippedDrawer'
 import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import {
@@ -34,14 +35,15 @@ import eventComparer from './utils/EventCompare'
 import EventCard from './components/EventCard'
 import { filterChange } from './reducers/filterReducer'
 import "./index.css";
-import { DialogTitle } from '@material-ui/core';
+
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
+      headerVisible: false,
+      drawerVisible: true,
       bufferZoneHeight: 0,
-      headerVisible: true,
       newEventVisible: false
     }
   }
@@ -50,7 +52,8 @@ class App extends Component {
     if (window.location.pathname === '/new-event') {
       this.setState({
         headerVisible: false,
-        bufferZoneHeight: 0
+        bufferZoneHeight: 0,
+        newEventVisible: false
       })
     }
     if (getGoogleToken() !== null) {
@@ -101,29 +104,8 @@ class App extends Component {
     }
   }
 
-  toggleTopBar = () => {
-    if (this.state.headerVisible) {
-      this.setState({
-        headerVisible: false,
-        bufferZoneHeight: 10
-      })
-    } else {
-      this.setState({
-        headerVisible: true
-      })
-    }
-  }
-
-  hideTopBar = () => {
-    if (this.state.headerVisible) {
-      this.toggleTopBar()
-    }
-  }
-
-  openTopBar = () => {
-    if (!this.state.headerVisible) {
-      this.toggleTopBar()
-    }
+  toggleDrawer = () => {
+    this.setState({ drawerVisible: !this.state.drawerVisible })
   }
 
   googleLoginSuccess = async response => {
@@ -132,7 +114,7 @@ class App extends Component {
       setGoogleToken(response.tokenId)
       await Promise.all([
         this.props.eventsInitialization(),
-        this.props.bufferZoneInitialization()// //////////////////
+        this.props.bufferZoneInitialization()
       ])
       this.props.pofTreeUpdate(this.props.buffer, this.props.events)
     }
@@ -143,15 +125,14 @@ class App extends Component {
   }
 
   filterSelected = (value) => () => {
-    this.openTopBar()
     this.props.store.dispatch(filterChange(value))
   }
 
   newEvent = () => {
-    this.setState({newEventVisible: true})
+    this.setState({ newEventVisible: true })
   }
   handleClose = () => {
-    this.setState({newEventVisible: false})
+    this.setState({ newEventVisible: false })
   }
 
   render() {
@@ -162,7 +143,7 @@ class App extends Component {
       // otherwise show events with end date less than today
       return filter === 'FUTURE'
         ? events.filter(event => event.endDate >= currentDate).sort(eventComparer)
-        : events.filter(event => event.endDate < currentDate).sort(eventComparer)
+        : events.sort(eventComparer)
     }
 
     if (this.props.scout === null) {
@@ -189,25 +170,11 @@ class App extends Component {
         </div>
       )
     }
-    const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 70
-    const selfInfo = (
-      <p className="appbar-user"><span>{this.props.scout.name}</span></p>
-      /* <Link to="/user-info">
-        <button className="appbar-button" onClick={this.hideTopBar}>
-          <FontAwesome className="icon" name="user" />
 
-          {!isTouchDevice() ? (
-            <span className="appbar-button-text">Omat tiedot</span>
-          ) : null}
-        </button>
-      </Link> */
-    )
+
     const dndMenu = () => (
       <AppBar
-        setHeaderHeight={this.setHeaderHeight}
-        toggleTopBar={this.toggleTopBar}
-        headerVisible={this.state.headerVisible}
-        selfInfo={selfInfo}
+        toggleSideBar={this.toggleDrawer}
       />
     )
 
@@ -215,18 +182,18 @@ class App extends Component {
       <MobileAppbar
         setHeaderHeight={this.setHeaderHeight}
         headerVisible={this.state.headerVisible}
-        selfInfo={selfInfo}
       />
     )
 
     const events = (
-      <div>
-        {eventsToShow().map(event => (
-          <EventCard
-            key={event.id ? event.id : 0}
-            event={event}
-          />
-        ))}
+      <div className='event-list-container'>
+        <ul className='event-list'>
+          {eventsToShow().map(event => (
+            <li className='event-list-item' key={event.id ? event.id : 0}>
+              <EventCard event={event} />
+            </li>
+          ))}
+        </ul>
       </div>
     )
 
@@ -234,56 +201,52 @@ class App extends Component {
       <div className="App" >
         <Router>
           <div>
-            <StickyHeader
-              // This is the sticky part of the header.
-              header={
-                <div>
-                  {isTouchDevice() ? mobileMenu() : dndMenu()}
-
+            <div>
+              {isTouchDevice() ? mobileMenu() : dndMenu()}
+            </div>
+            <div className='flexbox'>
+              {isTouchDevice() ? null :
+                <div className={this.state.drawerVisible ? 'visible-drawer' : 'hidden-drawer'}>
+                  <ClippedDraver />
                 </div>
               }
-            />
-            <section />
-
-            <div id="container" style={{ paddingTop: padding }}>
-              <div className="content">
-                <Button
-                  className={this.props.store.getState().filter === 'FUTURE' ? 'active' : ''}
-                  component={Link}
-                  to="/"
-                  onClick={this.filterSelected('FUTURE')}
-                  variant="contained"
-                >
-                  Tulevat tapahtumat
-                </Button>
-                &nbsp;
-                <Button
-                  className={this.props.store.getState().filter === 'PAST' ? 'active' : ''}
-                  component={Link}
-                  to="/"
-                  onClick={this.filterSelected('PAST')}
-                  variant="contained"
-                >
-                  Menneet tapahtumat
-                </Button>
-                &nbsp;
-                { /* <Button component={Link} to="/new-event" onClick={this.hideTopBar} variant="contained">
-                  Uusi tapahtuma
-            </Button> */ }
-                <Button onClick={this.newEvent} variant="contained">
-                  Uusi tapahtuma
-                </Button>
-                &nbsp;
-                <Route exact path="/" render={() => events} />
-                <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
-                  <DialogTitle>{'Luo uusi tapahtuma'}</DialogTitle>
-                  <NewEvent closeMe={this.handleClose} />
-                </Dialog>
-                <Route
-                  path="/user-info"
-                  render={() => <UserInfo toggleTopBar={this.toggleTopBar} />}
-                />
-                <NotificationFooter />
+              <div id="container" style={{ paddingTop: 0 }}>
+                <div className="content">
+                  <Button
+                    className={this.props.store.getState().filter === 'FUTURE' ? 'active' : ''}
+                    component={Link}
+                    to="/"
+                    onClick={this.filterSelected('FUTURE')}
+                    variant="contained"
+                  >
+                    Tulevat
+                  </Button>
+                  &nbsp;
+                  <Button
+                    className={this.props.store.getState().filter === 'PAST' ? 'active' : ''}
+                    component={Link}
+                    to="/"
+                    onClick={this.filterSelected('PAST')}
+                    variant="contained"
+                  >
+                    Kaikki
+                  </Button>
+                  &nbsp;
+                  <Button onClick={this.newEvent} variant="contained">
+                    Uusi tapahtuma
+                  </Button>
+                  &nbsp;
+                  <Route exact path="/" render={() => events} />
+                  <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
+                    <DialogTitle>Luo uusi tapahtuma</DialogTitle>
+                    <NewEvent closeMe={this.handleClose} />
+                  </Dialog>
+                  <Route
+                    path="/user-info"
+                    render={() => <UserInfo />}
+                  />
+                  <NotificationFooter />
+                </div>
               </div>
             </div>
           </div>
