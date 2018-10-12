@@ -1,15 +1,15 @@
-let root = 'https://suunnittelu.beta.partio-ohjelma.fi';
+let root = 'https://suunnittelu.beta.partio-ohjelma.fi:3002';
 
 const hostname = window && window.location && window.location.hostname;
 
-export const POF_ROOT = 'https://suunnittelu.beta.partio-ohjelma.fi'
+export const POF_ROOT = 'https://suunnittelu.beta.partio-ohjelma.fi:3002'
 
-if (hostname === 'suunnittelu.partio-ohjelma.fi') {
-  root = 'https://suunnittelu.partio-ohjelma.fi:3001';
+if (hostname === 'suunnittelu.beta.partio-ohjelma.fi') {
+  root = 'https://suunnittelu.beta.partio-ohjelma.fi:3002';
 } else {
    //root = 'http://localhost:3001';
   //root = 'https://cors-anywhere.herokuapp.com/https://suunnittelu.partio-ohjelma.fi:3001';
-  root = 'https://suunnittelu.beta.partio-ohjelma.fi';
+  root = 'https://suunnittelu.beta.partio-ohjelma.fi:3002';
 }
 
 export const API_ROOT = root
