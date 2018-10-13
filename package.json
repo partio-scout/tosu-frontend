@@ -65,7 +65,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "npm install && react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom",
     "test-local": "react-scripts test --env=jsdom --coverage",
     "eject": "react-scripts eject",
     "travis": "npm run test"
