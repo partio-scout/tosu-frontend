@@ -10,6 +10,7 @@ body {
 .content {
   padding: 10px 10px 0px;
   max-height: 100%;
+  height: 200px; /* TEST */
 }
 
 p.eventTimes::first-letter {
@@ -320,7 +321,7 @@ span.label {
   width: auto !important;
   background: #fff;
   border: 0;
-  color: rgb(93, 188, 210);  
+  color: rgb(93, 188, 210);
   border-radius: 5px;
 }
 /* END OF LOGIN ##################*/
@@ -352,7 +353,7 @@ span.label {
 /* END OF HEADER #################*/
 
 
-/* ########################### 
+/* ###########################
    # CONTENT CSS STARTS HERE #
    ###########################
 */
