@@ -139,11 +139,19 @@ class App extends Component {
     const eventsToShow = () => {
       const currentDate = moment().format('YYYY-MM-DD')
       const { events, filter } = this.props.store.getState()
+      // If the filter is set to CALENDAR, don't show events
       // If filter is set to FUTURE, show all events with end date equal or greater than today
       // otherwise show events with end date less than today
-      return filter === 'FUTURE'
-        ? events.filter(event => event.endDate >= currentDate).sort(eventComparer)
-        : events.sort(eventComparer)
+      switch (filter) {
+        case 'FUTURE':
+          return events.filter(event => event.endDate >= currentDate).sort(eventComparer)
+        case 'ALL':
+          return events.sort(eventComparer)
+        case 'CALENDAR':
+          return []
+        default:
+          return events
+      }
     }
 
     if (this.props.scout === null) {
@@ -223,13 +231,23 @@ class App extends Component {
                   </Button>
                   &nbsp;
                   <Button
-                    className={this.props.store.getState().filter === 'PAST' ? 'active' : ''}
+                    className={this.props.store.getState().filter === 'ALL' ? 'active' : ''}
                     component={Link}
                     to="/"
-                    onClick={this.filterSelected('PAST')}
+                    onClick={this.filterSelected('ALL')}
                     variant="contained"
                   >
                     Kaikki
+                  </Button>
+                  &nbsp;
+                  <Button
+                    className={this.props.store.getState().filter === 'CALENDAR' ? 'active' : ''}
+                    component={Link}
+                    to="/"
+                    onClick={this.filterSelected('CALENDAR')}
+                    variant="contained"
+                  >
+                    Kalenteri
                   </Button>
                   &nbsp;
                   <Button onClick={this.newEvent} variant="contained">
