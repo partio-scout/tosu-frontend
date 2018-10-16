@@ -144,19 +144,11 @@ class App extends Component {
     const eventsToShow = () => {
       const currentDate = moment().format('YYYY-MM-DD')
       const { events, filter } = this.props.store.getState()
-      // If the filter is set to CALENDAR, don't show events
       // If filter is set to FUTURE, show all events with end date equal or greater than today
       // otherwise show events with end date less than today
-      switch (filter) {
-        case 'FUTURE':
-          return events.filter(event => event.endDate >= currentDate).sort(eventComparer)
-        case 'ALL':
-          return events.sort(eventComparer)
-        case 'CALENDAR':
-          return []
-        default:
-          return events
-      }
+      return filter === 'FUTURE'
+        ? events.filter(event => event.endDate >= currentDate).sort(eventComparer)
+        : events.sort(eventComparer)
     }
 
     if (this.props.scout === null) {
