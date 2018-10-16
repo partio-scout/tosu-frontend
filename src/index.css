@@ -468,11 +468,12 @@ span.label {
 
 /* #### STATUS BOX #### */
 .status-box {
-  width: 90%;
+  width: 100%;
   margin: 5px;
   margin-right: 0;
   padding-left: 20px;
   font-size: 0.9rem;
+  position: absolute;
 }
 .status-box .done {
   width: 15px;
@@ -503,6 +504,17 @@ span.label {
   margin: 10px;
   margin-left: 20px;
 }
+.status-message-container {
+  position: relative;
+  height: 100%;
+}
+.inner-status-message-container {
+  position: relative;
+  overflow-y: auto;
+  height: 100%;
+  width: 90%;
+}
+
 
 /* #### BUFFER ZONE #### */
 #bufferzone {

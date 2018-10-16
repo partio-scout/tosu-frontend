@@ -205,18 +205,20 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
     </div>
   )
   return (
-    <div>
-      <Paper className='status-box'>
-        <Clear
-          className='clear'
-          onClick={() => handleClose()}
-        />
-        {statusMessage.text}
-        {statusMessage.status && statusMessage.status.nonMandatory
-          ? statusbox()
-          : null}
-      </Paper>
-    </div>
+    <div className='status-message-container'>
+      <div className='inner-status-message-container'>
+        <Paper className='status-box'>
+          <Clear
+            className='clear'
+            onClick={() => handleClose()}
+          />
+          {statusMessage.text}
+          {statusMessage.status && statusMessage.status.nonMandatory
+            ? statusbox()
+            : null}
+        </Paper>
+      </div>
+    </div >
   )
 }
 
@@ -243,8 +245,8 @@ class StatusMessage extends React.Component {
         style={{ marginTop: 30 }}
       />
     ) : (
-      <InfoButton handleOpen={this.props.handleOpen} />
-    )
+        <InfoButton handleOpen={this.props.handleOpen} />
+      )
     return element
   }
 }
