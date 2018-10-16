@@ -201,7 +201,7 @@ class App extends Component {
       </div>
     )
 
-    const calendar = (
+    const eventCalendar = (
       <EventCalendar events={this.props.store.getState().events} />
     )
 
@@ -256,7 +256,7 @@ class App extends Component {
                   &nbsp;
 
                   <Route exact path="/" render={() => eventsToList} />
-                  <Route exact path="/calendar" render={() => calendar} />
+                  <Route exact path="/calendar" render={() => eventCalendar} />
 
                   <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
                     <DialogTitle>Luo uusi tapahtuma</DialogTitle>
@@ -266,12 +266,10 @@ class App extends Component {
                     path="/user-info"
                     render={() => <UserInfo />}
                   />
-
                   <NotificationFooter />
                 </div>
               </div>
             </div>
-
           </div>
         </Router>
       </div>
