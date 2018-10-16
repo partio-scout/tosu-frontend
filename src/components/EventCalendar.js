@@ -8,7 +8,6 @@ const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
 
 function prepareEvents(events) {
   return events.map(event => {
-    console.log("event",event)
     return {
       title: event.title,
       start: new Date(event.startDate),
