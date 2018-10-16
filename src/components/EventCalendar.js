@@ -10,12 +10,36 @@ function prepareEvents(events) {
   return events.map(event => {
     return {
       title: event.title,
-      start: new Date(event.startDate),
-      end: new Date(event.startDate),
+      start: new Date(event.startDate + ' ' + event.startTime),
+      end: new Date(event.endDate + ' ' + event.endTime),
+      activities: event.activities,
       allDay: false,
       resource: null,
     }
   })
+}
+
+function Event({ event }) {
+  return (
+    <div>
+      <span>
+        {event.title}
+      </span><br/>
+      <span>
+        {createActivityMarkers(event.activities.length)}
+      </span>
+    </div>
+  )
+}
+
+function createActivityMarkers(count) {
+  let markers = [' ']
+
+  for (var i = 0; i < count; i++) {
+    markers.push(<span className="activity-marker"></span>)
+  }
+
+  return markers
 }
 
 export default class EventCalendar extends Component {
@@ -30,6 +54,10 @@ export default class EventCalendar extends Component {
           events={prepareEvents(events)}
           startAccessor="start"
           endAccessor="end"
+          showMultiDayTimes
+          components={{
+            event: Event,
+          }}
         />
       </div>
     )
