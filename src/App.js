@@ -12,6 +12,10 @@ import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import { DialogTitle } from '@material-ui/core'
 import moment from 'moment'
+// CSS
+import 'react-sticky-header/styles.css'
+import 'react-big-calendar/lib/css/react-big-calendar.css'
+import "./index.css"
 // Components
 import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
@@ -36,10 +40,6 @@ import { eventsInitialization } from './reducers/eventReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutLogin } from './reducers/scoutReducer'
 import { filterChange } from './reducers/filterReducer'
-// CSS
-import 'react-sticky-header/styles.css'
-import 'react-big-calendar/lib/css/react-big-calendar.css'
-import "./index.css"
 
 
 class App extends Component {
@@ -209,6 +209,10 @@ class App extends Component {
       </div>
     )
 
+    const calendar = (
+      <EventCalendar events={this.props.store.getState().events} />
+    )
+
     return (
       <div className="App" >
         <Router>
@@ -247,7 +251,7 @@ class App extends Component {
                   <Button
                     className={this.props.store.getState().filter === 'CALENDAR' ? 'active' : ''}
                     component={Link}
-                    to="/"
+                    to="/calendar"
                     onClick={this.filterSelected('CALENDAR')}
                     variant="contained"
                   >
@@ -258,7 +262,10 @@ class App extends Component {
                     Uusi tapahtuma
                   </Button>
                   &nbsp;
+
                   <Route exact path="/" render={() => eventsToList} />
+                  <Route exact path="/calendar" render={() => calendar} />
+
                   <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
                     <DialogTitle>Luo uusi tapahtuma</DialogTitle>
                     <NewEvent closeMe={this.handleClose} />
@@ -272,7 +279,6 @@ class App extends Component {
                 </div>
               </div>
             </div>
-            <EventCalendar events={this.props.store.getState()} />
 
           </div>
         </Router>

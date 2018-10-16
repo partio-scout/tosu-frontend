@@ -7,11 +7,10 @@ import moment from 'moment'
 const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
 
 function prepareEvents(events) {
-  console.log("received:",events)
   return events.map(event => {
     console.log("event",event)
     return {
-      title: event.type,
+      title: event.title,
       start: new Date(event.startDate),
       end: new Date(event.startDate),
       allDay: false,
@@ -24,13 +23,12 @@ export default class EventCalendar extends Component {
 
   render() {
     const { events } = this.props
-    console.log("props events",events.events)
 
     return (
-      <div>
+      <div className="event-calendar">
         <BigCalendar
           localizer={localizer}
-          events={prepareEvents(events.events)}
+          events={prepareEvents(events)}
           startAccessor="start"
           endAccessor="end"
         />

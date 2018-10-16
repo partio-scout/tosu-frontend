@@ -10,7 +10,6 @@ body {
 .content {
   padding: 10px 10px 0px;
   max-height: 100%;
-  height: 200px; /* TEST */
 }
 
 p.eventTimes::first-letter {
@@ -387,6 +386,13 @@ span.label {
 }
 .hidden-drawer {
   display: none;
+}
+
+/* #### CALENDAR #### */
+.event-calendar {
+  height: 450px;
+  width: auto;
+  padding-top: 20px;
 }
 
 /* #### EVENT LIST #### */
