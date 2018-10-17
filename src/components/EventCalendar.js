@@ -25,18 +25,16 @@ function Event({ event }) {
       <span>
         {event.title}
       </span><br/>
-      <span>
-        {createActivityMarkers(event.activities.length)}
-      </span>
+      {createActivityMarkers(event.activities)}
     </div>
   )
 }
 
-function createActivityMarkers(count) {
+function createActivityMarkers(activities) {
   let markers = [' ']
 
-  for (var i = 0; i < count; i++) {
-    markers.push(<span className="activity-marker"></span>)
+  for (var i = 0; i < activities.length; i++) {
+    markers.push(<span className="activity-marker" key={activities[i].id}></span>)
   }
 
   return markers
