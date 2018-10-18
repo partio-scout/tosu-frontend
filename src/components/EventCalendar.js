@@ -14,7 +14,6 @@ function prepareEvents(events) {
       end: new Date(event.endDate + ' ' + event.endTime),
       activities: event.activities,
       allDay: false,
-      resource: null,
     }
   })
 }
