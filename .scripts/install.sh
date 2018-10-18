@@ -1,7 +1,6 @@
-
 #!/bin/bash
 set -x
-openssl aes-256-cbc -K $encrypted_1f34a7791e59_key -iv $encrypted_1f34a7791e59_iv -in deploy.pem.enc -out deploy.pem -d
-rm deploy.pem.enc
-sudo chmod 600 deploy.pem
-sudo mv deploy.pem ~/.travis/id_rsa
+openssl enc -nosalt -aes-256-cbc -d -in tosu_node.pem.enc -out tosu_node.pem -base64 -K $encrypted_key -iv $encrypted_iv
+rm tosu_node.pem.enc
+chmod 600 tosu_node.pem
+mv tosu_node.pem ~/.travis/id_rsa
