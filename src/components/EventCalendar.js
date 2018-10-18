@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
+
 import Modal from '@material-ui/core/Modal'
+import Popover from '@material-ui/core/Popover'
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -15,7 +20,6 @@ function prepareEvents(events) {
       end: new Date(event.endDate + ' ' + event.endTime),
       activities: event.activities,
       allDay: false,
-      resource: null,
     }
   })
 }
@@ -42,38 +46,91 @@ function createActivityMarkers(activities) {
 }
 
 class CustomEvent extends Component {
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     isModalOpen: false
+  //   }
+  // }
+  //
+  // handleOpen = () => {
+  //   this.setState({ isModalOpen: true })
+  // }
+  //
+  // handleClose = () => {
+  //   this.setState({ isModalOpen: false })
+  // }
+  // render() {
+  //   const { classes } = this.props;
+  //
+  //   return (
+  //     <div>
+  //       <div onClick={this.handleOpen}>
+  //         <b>whatever for events</b>
+  //       </div>
+  //       <Modal
+  //         aria-labelledby="simple-modal-title"
+  //         aria-describedby="simple-modal-description"
+  //         open={this.state.isModalOpen}
+  //         onClose={this.handleClose}
+  //       >
+  //         <div>
+  //           <span>in popup</span>
+  //         </div>
+  //       </Modal>
+  //     </div>
+  //   );
+  // }
+
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      isModalOpen: false
-    };
+      anchorEl: null
+    }
   }
 
-  handleOpen = () => {
-    this.setState({ isModalOpen: true });
+  handleClick = event => {
+    this.setState({
+      anchorEl: event.currentTarget,
+    });
   };
 
   handleClose = () => {
-    this.setState({ isModalOpen: false });
+    this.setState({
+      anchorEl: null,
+    });
   };
+
   render() {
-    const { classes } = this.props;
+    const { anchorEl } = this.state
+    const open = Boolean(anchorEl)
 
     return (
       <div>
-        <div onClick={this.handleOpen}>
-          <b>whatever for events</b>
-        </div>
-        <Modal
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          open={this.state.isModalOpen}
-          onClose={this.handleClose}
+        <div
+          aria-owns={open ? 'simple-popper' : null}
+          aria-haspopup="true"
+          variant="contained"
+          onClick={this.handleClick}
         >
-          <div>
-            <span>in popup</span>
-          </div>
-        </Modal>
+          Open Popover
+        </div>
+        <Popover
+          id="simple-popper"
+          open={open}
+          anchorEl={anchorEl}
+          onClose={this.handleClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+        >
+          <strong>Content of the popover</strong>
+        </Popover>
       </div>
     );
   }
@@ -92,13 +149,22 @@ export default class EventCalendar extends Component {
           events={prepareEvents(events)}
           startAccessor="start"
           endAccessor="end"
+          defaultView="month"
           showMultiDayTimes
+          onSelectEvent={this.handleSelectEvent}
           components={{
             event: CustomEvent,
           }}
         />
       </div>
     )
+  }
+
+  handleSelectEvent(event,target) {
+  	let obj = target.currentTarget;
+    console.log(obj.getElementsByTagName('strong'))
+    console.log(event)
+    // obj.getElementsByTagName('strong')[0].click() // crashes but works for 1 second??
   }
 
   // constructor(props) {

@@ -401,7 +401,7 @@ span.label {
   border-radius: 50%;
   display: inline-block;
 }
-.rbc-month-row, .rbc-event-content {
+/*.rbc-month-row, .rbc-event-content {
   overflow: visible;
 }
 .rbc-row-segment {
@@ -409,7 +409,7 @@ span.label {
 }
 .rbc-event {
   z-index: 999 !important;
-}
+}*/
 
 /* #### EVENT LIST #### */
 .event-list {
