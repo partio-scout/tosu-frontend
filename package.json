@@ -16,7 +16,10 @@
     ]
   },
   "jest": {
-    "coverageReporters": ["text", "html"]
+    "coverageReporters": [
+      "text",
+      "html"
+    ]
   },
   "private": true,
   "dependencies": {
