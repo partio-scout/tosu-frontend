@@ -5,15 +5,17 @@ import isTouchDevice from 'is-touch-device'
 import MultiBackend from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
 import { GoogleLogin } from 'react-google-login'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import FontAwesome from 'react-fontawesome'
-import RaisedButton from 'material-ui/RaisedButton'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog';
+import { DialogTitle } from '@material-ui/core';
+import moment from 'moment'
 import 'react-sticky-header/styles.css'
-import StickyHeader from 'react-sticky-header'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import NewEvent from './components/NewEvent'
-import Appbar from './components/AppBar'
+import AppBar from './components/AppBar'
 import MobileAppbar from './components/MobileAppbar'
+import ClippedDraver from './components/ClippedDrawer'
 import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import {
@@ -31,15 +33,18 @@ import pofService from './services/pof'
 import { loadCachedPofData } from './services/localStorage'
 import eventComparer from './utils/EventCompare'
 import EventCard from './components/EventCard'
-import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
+import { filterChange } from './reducers/filterReducer'
 import "./index.css";
+
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
+      headerVisible: false,
+      drawerVisible: true,
       bufferZoneHeight: 0,
-      headerVisible: true
+      newEventVisible: false
     }
   }
 
@@ -47,7 +52,8 @@ class App extends Component {
     if (window.location.pathname === '/new-event') {
       this.setState({
         headerVisible: false,
-        bufferZoneHeight: 0
+        bufferZoneHeight: 0,
+        newEventVisible: false
       })
     }
     if (getGoogleToken() !== null) {
@@ -98,43 +104,8 @@ class App extends Component {
     }
   }
 
-  toggleTopBar = () => {
-    if (this.state.headerVisible) {
-      this.setState({
-        headerVisible: false,
-        bufferZoneHeight: 10
-      })
-    } else {
-      this.setState({
-        headerVisible: true
-      })
-    }
-  }
-
-  hideTopBar = () => {
-    if (this.state.headerVisible) {
-      this.toggleTopBar()
-    }
-  }
-
-  openTopBar = () => {
-    if (!this.state.headerVisible) {
-      this.toggleTopBar()
-    }
-  }
-
-  sortedEvents = () => {
-    return this.props.events.sort(eventComparer)
-  }
-
-  listOfSortedEvents = () => {
-    const events = this.sortedEvents()
-    return events.map(event => (
-      <EventCard
-        key={event.id ? event.id : 0}
-        event={event}
-      />
-    ))
+  toggleDrawer = () => {
+    this.setState({ drawerVisible: !this.state.drawerVisible })
   }
 
   googleLoginSuccess = async response => {
@@ -143,17 +114,37 @@ class App extends Component {
       setGoogleToken(response.tokenId)
       await Promise.all([
         this.props.eventsInitialization(),
-        this.props.bufferZoneInitialization()////////////////////
+        this.props.bufferZoneInitialization()
       ])
       this.props.pofTreeUpdate(this.props.buffer, this.props.events)
     }
   }
 
   googleLoginFail = async response => {
-    //console.log('login failed')
+    // console.log('login failed')
+  }
+
+  filterSelected = (value) => () => {
+    this.props.store.dispatch(filterChange(value))
+  }
+
+  newEvent = () => {
+    this.setState({ newEventVisible: true })
+  }
+  handleClose = () => {
+    this.setState({ newEventVisible: false })
   }
 
   render() {
+    const eventsToShow = () => {
+      const currentDate = moment().format('YYYY-MM-DD')
+      const { events, filter } = this.props.store.getState()
+      // If filter is set to FUTURE, show all events with end date equal or greater than today
+      // otherwise show events with end date less than today
+      return filter === 'FUTURE'
+        ? events.filter(event => event.endDate >= currentDate).sort(eventComparer)
+        : events.sort(eventComparer)
+    }
 
     if (this.props.scout === null) {
       return (
@@ -166,7 +157,7 @@ class App extends Component {
           <GoogleLogin
             className="login-button"
             scope="profile email"
-            clientId="7360124073-8f1bq4mul415hr3kdm154vq3c65lp36d.apps.googleusercontent.com"
+            clientId="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com"
             onSuccess={this.googleLoginSuccess}
             onFailure={this.googleLoginFail}
           >
@@ -179,25 +170,11 @@ class App extends Component {
         </div>
       )
     }
-    const padding = this.state.headerVisible ? this.state.bufferZoneHeight : 70
-    const selfInfo = (
-      <p className="appbar-user"><span>{this.props.scout.name}</span></p>      
-      /* <Link to="/user-info">
-        <button className="appbar-button" onClick={this.hideTopBar}>
-          <FontAwesome className="icon" name="user" />
 
-          {!isTouchDevice() ? (
-            <span className="appbar-button-text">Omat tiedot</span>
-          ) : null}
-        </button>
-      </Link> */
-    )
+
     const dndMenu = () => (
-      <Appbar
-        setHeaderHeight={this.setHeaderHeight}
-        toggleTopBar={this.toggleTopBar}
-        headerVisible={this.state.headerVisible}
-        selfInfo={selfInfo}
+      <AppBar
+        toggleSideBar={this.toggleDrawer}
       />
     )
 
@@ -205,78 +182,89 @@ class App extends Component {
       <MobileAppbar
         setHeaderHeight={this.setHeaderHeight}
         headerVisible={this.state.headerVisible}
-        selfInfo={selfInfo}
       />
     )
 
     const events = (
-      <div>
-        {this.listOfSortedEvents()}
+      <div className='event-list-container'>
+        <ul className='event-list'>
+          {eventsToShow().map(event => (
+            <li className='event-list-item' key={event.id ? event.id : 0}>
+              <EventCard event={event} />
+            </li>
+          ))}
+        </ul>
       </div>
     )
 
     return (
       <div className="App" >
         <Router>
-          <MuiThemeProvider>
+          <div>
             <div>
-              <StickyHeader
-                // This is the sticky part of the header.
-                header={
-                  <div>
-                    {isTouchDevice() ? mobileMenu() : dndMenu()}
-
-                  </div>
-                }
-              />
-              <section />
-
-              <div id="container" style={{ paddingTop: padding }}>
+              {isTouchDevice() ? mobileMenu() : dndMenu()}
+            </div>
+            <div className='flexbox'>
+              {isTouchDevice() ? null :
+                <div className={this.state.drawerVisible ? 'visible-drawer' : 'hidden-drawer'}>
+                  <ClippedDraver />
+                </div>
+              }
+              <div id="container" style={{ paddingTop: 0 }}>
                 <div className="content">
-                  <Link to="/">
-                    <RaisedButton
-                      label="Lista tapahtumista"
-                      onClick={this.openTopBar}
-                    />
-                  </Link>
+                  <Button
+                    className={this.props.store.getState().filter === 'FUTURE' ? 'active' : ''}
+                    component={Link}
+                    to="/"
+                    onClick={this.filterSelected('FUTURE')}
+                    variant="contained"
+                  >
+                    Tulevat
+                  </Button>
                   &nbsp;
-                  <Link to="/new-event">
-                    <RaisedButton
-                      label="Uusi tapahtuma"
-                      onClick={this.hideTopBar}
-                    />
-                  </Link>
+                  <Button
+                    className={this.props.store.getState().filter === 'PAST' ? 'active' : ''}
+                    component={Link}
+                    to="/"
+                    onClick={this.filterSelected('PAST')}
+                    variant="contained"
+                  >
+                    Kaikki
+                  </Button>
+                  &nbsp;
+                  <Button onClick={this.newEvent} variant="contained">
+                    Uusi tapahtuma
+                  </Button>
                   &nbsp;
                   <Route exact path="/" render={() => events} />
-                  <Route
-                    path="/new-event"
-                    render={() => <NewEvent toggleTopBar={this.toggleTopBar} />}
-                  />
+                  <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
+                    <DialogTitle>Luo uusi tapahtuma</DialogTitle>
+                    <NewEvent closeMe={this.handleClose} />
+                  </Dialog>
                   <Route
                     path="/user-info"
-                    render={() => <UserInfo toggleTopBar={this.toggleTopBar} />}
+                    render={() => <UserInfo />}
                   />
                   <NotificationFooter />
                 </div>
               </div>
             </div>
-          </MuiThemeProvider>
+          </div>
         </Router>
       </div>
     )
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    notification: state.notification,
-    buffer: state.buffer,
-    events: state.events,
-    pofTree: state.pofTree,
-    taskgroup: state.taskgroup,
-    scout: state.scout
-  }
-}
+const mapStateToProps = state => ({
+  notification: state.notification,
+  buffer: state.buffer,
+  events: state.events,
+  pofTree: state.pofTree,
+  taskgroup: state.taskgroup,
+  scout: state.scout,
+  filter: state.filter
+})
 
 const HTML5toTouch = {
   backends: [
@@ -299,5 +287,6 @@ export default connect(mapStateToProps, {
   bufferZoneInitialization,
   deleteActivityFromBuffer,
   addStatusInfo,
-  scoutLogin
+  scoutLogin,
+  filterChange
 })(AppDnD)

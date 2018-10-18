@@ -1,23 +1,22 @@
-import { getEmptyImage } from 'react-dnd-html5-backend'
 import { connect } from 'react-redux'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import Dialog from 'material-ui/Dialog'
+import Avatar from '@material-ui/core/Avatar'
+import Dialog from '@material-ui/core/Dialog'
+import Chip from '@material-ui/core/Chip'
 import { DragSource } from 'react-dnd'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Avatar from 'material-ui/Avatar'
-import Chip from 'material-ui/Chip'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { notify } from '../reducers/notificationReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
-import ActivityPreview from './ActivityPreview'
+// import ActivityPreview from './ActivityPreview'
 
 const activitySource = {
   beginDrag(props, monitor) {
     return {
-      id: props.activity.id,
+      activity: { ...props.activity, canDrag: false },
       parentId: props.parentId,
       bufferzone: props.bufferzone,
       startPoint: monitor.getDifferenceFromInitialOffset(),
@@ -28,13 +27,21 @@ const activitySource = {
     if (!monitor.didDrop()) {
       // return
     }
+  },
+  canDrag(props, monitor) {
+    if (props.activity.canDrag !== undefined) {
+      if (!props.activity.canDrag) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 
 function collect(connector, monitor) {
   return {
     connectDragSource: connector.dragSource(),
-    connectDragPreview: connector.dragPreview(),
+    // connectDragPreview: connector.dragPreview(),
     isDragging: monitor.isDragging()
   }
 }
@@ -42,7 +49,7 @@ function collect(connector, monitor) {
 class Activity extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
-    connectDragPreview: PropTypes.func.isRequired
+    // connectDragPreview: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -53,11 +60,7 @@ class Activity extends Component {
     }
   }
   componentDidMount() {
-    if (this.props.connectDragPreview) {
-      this.props.connectDragPreview(getEmptyImage(), {
-        captureDraggingState: true
-      })
-    }
+
   }
 
   handleClick = () => {
@@ -65,8 +68,7 @@ class Activity extends Component {
   }
 
   render() {
-    const { activity, pofActivity, connectDragSource, isDragging } = this.props
-    const visibility = isDragging ? 'hidden' : 'visible'
+    const { activity, pofActivity, connectDragSource } = this.props
 
     let lastGuid = 0
     if (pofActivity) {
@@ -75,84 +77,61 @@ class Activity extends Component {
     }
 
     if (activity && pofActivity) {
-      if (!isDragging) {
-        return connectDragSource(
-          <div
-            style={{
-              float: 'left',
-              margin: 4,
-              // display: 'inline-block',
-              visibility: { visibility }
-            }}
-          >
-            <Chip
-              onRequestDelete={() => this.props.deleteActivity(activity)}
-              className={
-                pofActivity.mandatory ? 'mandatory-chip' : 'non-mandatory-chip'
-              }
-              key={activity.id}
-              onClick={this.handleClick}
-            >
+      return connectDragSource(
+        <div
+          className='connect-drag-source'
+          style={{
+            visibility: 'visible'
+          }}
+        >
+          <Chip
+            onDelete={() => this.props.deleteActivity(activity)}
+            className={
+              pofActivity.mandatory ? 'mandatory-chip' : 'non-mandatory-chip'
+            }
+            key={activity.id}
+            onClick={this.handleClick}
+            avatar={
               <Avatar
+                alt='Mandatory Icon'
+                src={pofActivity.mandatoryIconUrl}
                 className={
                   pofActivity.mandatory
                     ? 'mandatory-chip-avatar'
                     : 'non-mandatory-chip-avatar'
                 }
-              >
-                <img
-                  style={{ width: '100%' }}
-                  src={pofActivity.mandatoryIconUrl}
-                  alt="Mandatory Icon"
-                />
-              </Avatar>
-              <span className="activityTitle">{pofActivity.title}</span>
-              <Dialog
-                title={
-                  <div>
-                    {pofActivity.title}
+              />
+            }
+            label={pofActivity.title}
+          />
+          <Dialog
+            title={
+              <div>
+                {pofActivity.title}
 
-                    <button
-                      className="dialog-close-button"
-                      onClick={this.handleClick}
-                    >
-                      x
-                    </button>
+                <button
+                  className="dialog-close-button"
+                  onClick={this.handleClick}
+                >
+                  x
+                </button>
 
-                    <br />
+                <br />
 
-                    {pofActivity.parents.map(parent => (
-                      <span style={{ fontSize: '0.9rem' }} key={parent.guid}>
-                        {parent.title} {parent.guid === lastGuid ? null : ' - '}
-                      </span>
-                    ))}
-                  </div>
-                }
-                modal={false}
-                open={this.state.open}
-                onRequestClose={this.handleClick}
-                autoScrollBodyContent
-                bodyClassName="global--modal-body"
-                contentClassName="global--modal-content"
-                paperClassName="global--modal-paper"
-              >
-                <PlanForm activity={pofActivity} savedActivity={activity} />
-              </Dialog>
-            </Chip>
-          </div>
-        )
-      }
-
-      if (isDragging) {
-        return connectDragSource(
-          <div>
-            <ActivityPreview
-              pofActivity={pofActivity}
-              mandatory={pofActivity.mandatory}
-            />
-          </div>
-        )
-      }
+                {pofActivity.parents.map(parent => (
+                  <span style={{ fontSize: '0.9rem' }} key={parent.guid}>
+                    {parent.title} {parent.guid === lastGuid ? null : ' - '}
+                  </span>
+                ))}
+              </div>
+            }
+            open={this.state.open}
+            onClose={this.handleClick}
+          >
+            <PlanForm activity={pofActivity} savedActivity={activity} />
+          </Dialog>
+        </div>
+      )
     }
     return ''
   }

@@ -3,7 +3,7 @@ import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import isTouchDevice from 'is-touch-device'
-import Paper from 'material-ui/Paper'
+import Paper from '@material-ui/core/Paper'
 import eventgroupService from '../services/eventgroups'
 import FrequentEventsHandler from '../utils/FrequentEventsHandler'
 import EventForm from './EventForm'
@@ -21,7 +21,7 @@ class NewEvent extends React.Component {
     repeatCount: '',
     repeatFrequency: '',
     type: '',
-    information: ''
+    information: '',
   }
 
   handleClose = () => {
@@ -35,9 +35,9 @@ class NewEvent extends React.Component {
       repeatCount: '',
       repeatFrequency: '',
       type: '',
-      information: ''
+      information: '',
     })
-    this.props.toggleTopBar()
+    this.props.closeMe()
     this.props.history.push('/')
   }
 
@@ -53,10 +53,13 @@ class NewEvent extends React.Component {
         type: this.state.type,
         information: this.state.information
       }
-
-      await this.sendEventPostRequest(data)
-      if (!this.state.checked) {
-        this.handleClose()
+      try {
+        await this.sendEventPostRequest(data)
+        if (!this.state.checked) {
+          this.handleClose()
+        }
+      } catch (exception) {
+        console.error('Error in event POST:', exception)
       }
     } else {
       // Send POST first to create new GroupId and then use id from response to create group of events. ß
@@ -180,7 +183,7 @@ class NewEvent extends React.Component {
     }
     return (
       <div className="event-form">
-        <Paper zDepth={2} className="new-form-paper">
+        <Paper className="new-form-paper">
           <EventForm
             submitFunction={this.handleCloseAndSend.bind(this)}
             close={this.handleClose.bind(this)}

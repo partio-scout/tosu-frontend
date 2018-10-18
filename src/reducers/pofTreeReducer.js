@@ -1,16 +1,15 @@
-import { blue50, blue500 } from 'material-ui/styles/colors'
 import React from 'react'
 import isTouchDevice from 'is-touch-device'
 
 const reducer = (state = [], action) => {
   switch (action.type) {
     case 'INIT_TREE_POF':
-      //add variables and sort that TreeSearchBar uses
+      // add variables and sort that TreeSearchBar uses
       const sortedTree = sortTreeByOrder(action.pofJson)
       const filledTree = fillWithNeededVariable(sortedTree)
       return filledTree
     case 'SET_TREE_POF':
-      //update data by diasbling existing activities &
+      // update data by diasbling existing activities &
       // locking non-mandatory tasks if a tarppo has mandatort tasks left to pick
       return updateState(state, action.existingActivityGuids)
     default:
@@ -142,7 +141,7 @@ const fillWithNeededVariable = pof => {
           <span
             name={task.title}
             className="tree-search-title"
-            style={{ backgroundColor: blue500 }}
+            style={{ backgroundColor: '#2196f3' }}
           >
             {task.title}
           </span>
@@ -153,7 +152,7 @@ const fillWithNeededVariable = pof => {
           <span
             name={task.title}
             className="tree-search-title"
-            style={{ backgroundColor: blue50 }}
+            style={{ backgroundColor: '#E3F2FD' }}
           >
             {task.title}
           </span>
