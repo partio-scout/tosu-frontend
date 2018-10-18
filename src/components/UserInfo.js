@@ -1,13 +1,9 @@
 import React, { Component } from 'react'
-import Paper from 'material-ui/Paper'
+import Paper from '@material-ui/core/Paper'
 import {
   TextValidator,
   ValidatorForm
-  // DateValidator,
-  // TimeValidator,
-  // SelectValidator
 } from 'react-material-ui-form-validator'
-// import Toggle from 'material-ui/Toggle'
 
 export default class UserInfo extends Component {
   constructor(props) {
@@ -29,7 +25,7 @@ export default class UserInfo extends Component {
   render() {
     return (
       <div>
-        <Paper zDepth={2} style={{ padding: 20 }}>
+        <Paper style={{ padding: 20 }}>
           <h3>Käyttäjän tiedot</h3>
           <ValidatorForm ref={() => 'form'} onSubmit={this.send} disabled>
             <TextValidator

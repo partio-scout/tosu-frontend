@@ -1,21 +1,26 @@
 import React from 'react'
-import { Tabs, Tab } from 'material-ui/Tabs'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+import Typography from '@material-ui/core/Typography';
 import PlanCard from './PlanCard'
 
-const styles = {
-  headline: {
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400
-  }
+function TabContainer(props) {
+  return (
+    <Typography component="div" style={{ padding: 8 * 3 }}>
+      {props.children}
+    </Typography>
+  )
 }
 
 export default class PlanForm extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {}
+    this.state = { value: 0 }
+  }
+
+  handleChange = (event, value) => {
+    this.setState({ value })
   }
 
   stripHtml = html => {
@@ -28,6 +33,7 @@ export default class PlanForm extends React.Component {
   }
 
   render() {
+    const { value } = this.state;
     const { activity, savedActivity } = this.props
 
     const suggestionDeatails = activity.suggestions.map(suggestion => (
@@ -39,8 +45,12 @@ export default class PlanForm extends React.Component {
     ))
     return (
       <div>
-        <Tabs>
-          <Tab label="Tiedot">
+        <Tabs value={value} onChange={this.handleChange}>
+          <Tab label="Tiedot" />
+          <Tab label="Vinkit" />
+        </Tabs>
+        {value === 0 &&
+          <TabContainer>
             <div>
               <p>
                 <strong>Paikka:</strong> {activity.place.join(', ')}
@@ -74,16 +84,16 @@ export default class PlanForm extends React.Component {
                 {this.stripHtml(activity.leader_tasks)}
               </p>
             </div>
-          </Tab>
-          <Tab label="Vinkit">
+          </TabContainer>}
+        {value === 1 &&
+          <TabContainer>
             <div>
-              <h2 style={styles.headline}>Toteutusvinkit</h2>
+              <h2 className="headline">Toteutusvinkit</h2>
               {suggestionDeatails.length !== 0
                 ? suggestionDeatails
                 : 'Ei toteutusvinkkejä'}
             </div>
-          </Tab>
-        </Tabs>
+          </TabContainer>}
       </div>
     )
   }

@@ -9,6 +9,7 @@ import PlanReducer from './reducers/planReducer'
 import StatusMessageReducer from './reducers/statusMessageReducer'
 import TaskgroupReducer from './reducers/taskgroupReducer'
 import ScoutReducer from './reducers/scoutReducer'
+import filterReducer from './reducers/filterReducer'
 
 const reducer = combineReducers({
   notification: notificationReducer,
@@ -18,7 +19,8 @@ const reducer = combineReducers({
   plans: PlanReducer,
   statusMessage: StatusMessageReducer,
   taskgroup: TaskgroupReducer,
-  scout: ScoutReducer
+  scout: ScoutReducer,
+  filter: filterReducer
 })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { API_ROOT } from '../api-config';
 
-const baseUrl = `${API_ROOT}/eventgroup`
+const baseUrl = `${API_ROOT}/eventgroups`
 
 const create = async () => {
   const response = await axios.post(baseUrl)

@@ -1,31 +1,28 @@
 
 import React from 'react';
-// import PropTypes from 'prop-types';
 import DragLayer from 'react-dnd/lib/DragLayer';
-import Chip from 'material-ui/Chip/Chip';
-import { blue200, indigo900, blue500 } from 'material-ui/styles/colors';
-import Avatar from 'material-ui/Avatar';
-// import isTouchDevice from 'is-touch-device'
+import Chip from '@material-ui/core/Chip/Chip';
+import Avatar from '@material-ui/core/Avatar';
 
 const styles = {
   chip: {
     margin: 4,
-    backgroundColor: blue200
+    backgroundColor: '#90CAF9'
   },
   avatar: {
     size: 28,
-    color: indigo900,
-    backgroundColor: blue200,
+    color: '#1A237E',
+    backgroundColor: '#90CAF9',
     margin: 4
   },
   chipMandatory: {
     margin: 4,
-    backgroundColor: blue500,
+    backgroundColor: '#2196F3',
   },
   avatarMandatory: {
     size: 28,
-    color: indigo900,
-    backgroundColor: blue500,
+    color: '#1A237E',
+    backgroundColor: '#2196F3',
     margin: 4
   }
 };
@@ -48,7 +45,7 @@ function getItemStyles(currentOffset, startPoint, mandatory) {
   x -= startPoint.x
   y -= startPoint.y
   const transform = `translate(${x}px, ${y}px)`;
-  const color = mandatory ? blue500 : blue200
+  const color = mandatory ? '#90CAF9' : '#2196F3'
   return {
     pointerEvents: 'none',
     transform,
@@ -67,29 +64,25 @@ class ActivityPreview extends React.Component {
       return '';
     }
     const img = pofActivity.mandatoryIconUrl
-    /*if (pofActivity.mandatory) {
+    /* if (pofActivity.mandatory) {
       img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png"
     } else {
       img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3562.png"
-    }*/
+    } */
     return (
-      <div>
-        <Chip
-          style={getItemStyles(currentOffset, startPoint, pofActivity.mandatory)}
-          className='previewChip'
-          onRequestDelete={() => console.log('')}
-        >
-          <Avatar style={pofActivity.mandatory ? styles.avatarMandatory : styles.avatar}>
-            <img
-              style={{ width: '100%' }}
-              src={img}
-              alt="Mandatory activity"
-            />
+      <Chip
+        style={getItemStyles(currentOffset, startPoint, pofActivity.mandatory)}
+        className='previewChip'
+        label={<span className="activityTitle">{pofActivity.title}</span>}
+        avatar={
+          <Avatar
+            style={pofActivity.mandatory ? styles.avatarMandatory : styles.avatar}
+          >
+            src={img}
           </Avatar>
-          <span className="activityTitle">{pofActivity.title}</span>
-        </Chip>
-      </div>
-    );
+        }
+      />
+    )
   }
 }
 

@@ -1,13 +1,12 @@
 import { getEmptyImage } from 'react-dnd-html5-backend'
 import { connect } from 'react-redux'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import Dialog from 'material-ui/Dialog'
+import Dialog from '@material-ui/core/Dialog'
 import { DragSource } from 'react-dnd'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Avatar from 'material-ui/Avatar'
-import Chip from 'material-ui/Chip'
-import { blue200, blue500, indigo900 } from 'material-ui/styles/colors'
+import Avatar from '@material-ui/core/Avatar'
+import Chip from '@material-ui/core/Chip'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { notify } from '../reducers/notificationReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
@@ -106,11 +105,9 @@ class Activity extends Component {
         return connectDragSource(
           <div
             style={{
-              float: 'left',
-              margin: 4,
-              // display: 'inline-block',
               visibility: { visibility }
             }}
+            className='connect-drag-source'
           >
             <Chip
               onRequestDelete={() => this.props.deleteActivity(activity)}
