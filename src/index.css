@@ -320,7 +320,7 @@ span.label {
   width: auto !important;
   background: #fff;
   border: 0;
-  color: rgb(93, 188, 210);  
+  color: rgb(93, 188, 210);
   border-radius: 5px;
 }
 /* END OF LOGIN ##################*/
@@ -352,7 +352,7 @@ span.label {
 /* END OF HEADER #################*/
 
 
-/* ########################### 
+/* ###########################
    # CONTENT CSS STARTS HERE #
    ###########################
 */
@@ -386,6 +386,20 @@ span.label {
 }
 .hidden-drawer {
   display: none;
+}
+
+/* #### CALENDAR #### */
+.event-calendar {
+  height: 450px;
+  width: auto;
+  padding-top: 20px;
+}
+.activity-marker {
+  height: 8px;
+  width: 8px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
 }
 
 /* #### EVENT LIST #### */
@@ -461,11 +475,12 @@ span.label {
 
 /* #### STATUS BOX #### */
 .status-box {
-  width: 90%;
+  width: 100%;
   margin: 5px;
   margin-right: 0;
   padding-left: 20px;
   font-size: 0.9rem;
+  position: absolute;
 }
 .status-box .done {
   width: 15px;
@@ -496,6 +511,17 @@ span.label {
   margin: 10px;
   margin-left: 20px;
 }
+.status-message-container {
+  position: relative;
+  height: 100%;
+}
+.inner-status-message-container {
+  position: relative;
+  overflow-y: auto;
+  height: 100%;
+  width: 90%;
+}
+
 
 /* #### BUFFER ZONE #### */
 #bufferzone {
