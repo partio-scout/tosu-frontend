@@ -15,6 +15,12 @@
       "transform-decorators"
     ]
   },
+  "jest": {
+    "coverageReporters": [
+      "text",
+      "html"
+    ]
+  },
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.1.1",
@@ -66,7 +72,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "test-local": "react-scripts test --env=jsdom",
+    "test-local": "react-scripts test --env=jsdom --coverage --coverageDirectory=./coverage/jest",
     "eject": "react-scripts eject",
     "travis": "npm test"
   },
@@ -74,6 +80,7 @@
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.6",
     "babel-plugin-transform-decorators": "^6.24.1",
+    "chai": "^4.2.0",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "eslint": "^4.19.1",
