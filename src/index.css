@@ -320,7 +320,7 @@ span.label {
   width: auto !important;
   background: #fff;
   border: 0;
-  color: rgb(93, 188, 210);  
+  color: rgb(93, 188, 210);
   border-radius: 5px;
 }
 /* END OF LOGIN ##################*/
@@ -352,7 +352,7 @@ span.label {
 /* END OF HEADER #################*/
 
 
-/* ########################### 
+/* ###########################
    # CONTENT CSS STARTS HERE #
    ###########################
 */
@@ -386,6 +386,20 @@ span.label {
 }
 .hidden-drawer {
   display: none;
+}
+
+/* #### CALENDAR #### */
+.event-calendar {
+  height: 450px;
+  width: auto;
+  padding-top: 20px;
+}
+.activity-marker {
+  height: 8px;
+  width: 8px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
 }
 
 /* #### EVENT LIST #### */
