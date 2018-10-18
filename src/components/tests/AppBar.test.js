@@ -19,4 +19,17 @@ describe('<Appbar />', () => {
         const form = wrapper.find(FormControlLabel)
         expect(form.dive().dive().find('.toggle-sidebar')).to.have.lengthOf(1)
     })
+
+    it('initially shows the sidebar', () => {
+        const wrapper = shallow(<AppBar store={store} />)
+        expect(wrapper.state('sidebarVisible')).to.be.true
+    })
+
+    it('hides the sidebar after switch click', () => {
+        const mockHandler = jest.fn()
+        const wrapper = shallow(<AppBar store={store} toggleSideBar={mockHandler} />)
+        const swich = wrapper.find(FormControlLabel).dive().dive().find('.toggle-sidebar')
+        swich.simulate('click', {currentTarget: wrapper})
+        expect(wrapper.state('sidebarVisible')).to.be.false
+    })
 })
