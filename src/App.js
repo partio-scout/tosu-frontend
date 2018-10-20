@@ -1,3 +1,4 @@
+// Vendor
 import { connect } from 'react-redux'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -6,35 +7,39 @@ import MultiBackend from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
 import { GoogleLogin } from 'react-google-login'
 import FontAwesome from 'react-fontawesome'
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog';
-import { DialogTitle } from '@material-ui/core';
-import moment from 'moment'
-import 'react-sticky-header/styles.css'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import { DialogTitle } from '@material-ui/core'
+import moment from 'moment'
+// CSS
+import 'react-sticky-header/styles.css'
+import 'react-big-calendar/lib/css/react-big-calendar.css'
+import "./index.css"
+// Components
 import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
 import MobileAppbar from './components/MobileAppbar'
 import ClippedDraver from './components/ClippedDrawer'
-import { notify } from './reducers/notificationReducer'
-import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
-import {
-  bufferZoneInitialization,
-  deleteActivityFromBuffer
-} from './reducers/bufferZoneReducer'
-import { eventsInitialization } from './reducers/eventReducer'
 import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
+import EventCard from './components/EventCard'
+import EventCalendar from './components/EventCalendar'
+// Utils
 import { createStatusMessage } from './utils/createStatusMessage'
-import { addStatusInfo } from './reducers/statusMessageReducer'
-import { scoutLogin } from './reducers/scoutReducer'
+import eventComparer from './utils/EventCompare'
+// Services
 import { getGoogleToken, removeGoogleToken, setGoogleToken } from './services/googleToken'
 import pofService from './services/pof'
 import { loadCachedPofData } from './services/localStorage'
-import eventComparer from './utils/EventCompare'
-import EventCard from './components/EventCard'
+// Reducers
+import { notify } from './reducers/notificationReducer'
+import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
+import { bufferZoneInitialization, deleteActivityFromBuffer } from './reducers/bufferZoneReducer'
+import { eventsInitialization } from './reducers/eventReducer'
+import { addStatusInfo } from './reducers/statusMessageReducer'
+import { scoutLogin } from './reducers/scoutReducer'
 import { filterChange } from './reducers/filterReducer'
-import "./index.css";
 
 
 class App extends Component {
@@ -171,7 +176,6 @@ class App extends Component {
       )
     }
 
-
     const dndMenu = () => (
       <AppBar
         toggleSideBar={this.toggleDrawer}
@@ -185,7 +189,7 @@ class App extends Component {
       />
     )
 
-    const events = (
+    const eventsToList = (
       <div className='event-list-container'>
         <ul className='event-list'>
           {eventsToShow().map(event => (
@@ -195,6 +199,10 @@ class App extends Component {
           ))}
         </ul>
       </div>
+    )
+
+    const eventCalendar = (
+      <EventCalendar events={this.props.store.getState().events} />
     )
 
     return (
@@ -223,20 +231,33 @@ class App extends Component {
                   </Button>
                   &nbsp;
                   <Button
-                    className={this.props.store.getState().filter === 'PAST' ? 'active' : ''}
+                    className={this.props.store.getState().filter === 'ALL' ? 'active' : ''}
                     component={Link}
                     to="/"
-                    onClick={this.filterSelected('PAST')}
+                    onClick={this.filterSelected('ALL')}
                     variant="contained"
                   >
                     Kaikki
+                  </Button>
+                  &nbsp;
+                  <Button
+                    className={this.props.store.getState().filter === 'CALENDAR' ? 'active' : ''}
+                    component={Link}
+                    to="/calendar"
+                    onClick={this.filterSelected('CALENDAR')}
+                    variant="contained"
+                  >
+                    Kalenteri
                   </Button>
                   &nbsp;
                   <Button onClick={this.newEvent} variant="contained">
                     Uusi tapahtuma
                   </Button>
                   &nbsp;
-                  <Route exact path="/" render={() => events} />
+
+                  <Route exact path="/" render={() => eventsToList} />
+                  <Route exact path="/calendar" render={() => eventCalendar} />
+
                   <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
                     <DialogTitle>Luo uusi tapahtuma</DialogTitle>
                     <NewEvent closeMe={this.handleClose} />

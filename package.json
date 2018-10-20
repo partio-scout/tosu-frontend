@@ -41,6 +41,7 @@
     "rc-tree-select": "^1.12.13",
     "react": "^16.5.2",
     "react-append-to-body": "^2.0.20",
+    "react-big-calendar": "^0.20.1",
     "react-cookie-consent": "^1.7.0",
     "react-dnd": "^5.0.0",
     "react-dnd-html5-backend": "^2.6.0",
@@ -66,14 +67,15 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "test-local": "react-scripts test --env=jsdom",
+    "test-local": "react-scripts test --env=jsdom --coverage",
     "eject": "react-scripts eject",
-    "travis": "npm test"
+    "travis": "npm run test"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.6",
     "babel-plugin-transform-decorators": "^6.24.1",
+    "chai": "^4.2.0",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "eslint": "^4.19.1",
