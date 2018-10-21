@@ -1,7 +1,7 @@
 import React from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
-import AccountIcon from './AccountIcon'
+import MobileAccountIcon from './MobileAccountIcon'
 import { notify } from '../reducers/notificationReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
@@ -111,7 +111,7 @@ class MobileAppbar extends React.Component {
               })}
             />
           </div>
-          <AccountIcon />
+          <MobileAccountIcon />
 
           <div style={{ clear: 'both' }} />
         </div>

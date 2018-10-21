@@ -7,7 +7,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import { scoutLogin, scoutLogout } from '../reducers/scoutReducer'
 
 
-class AccountIcon extends React.Component {
+class MobileAccountIcon extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -32,7 +32,7 @@ class AccountIcon extends React.Component {
     
     return (
       <div className="account-button">
-        {this.props.scout.name}
+        {this.props.scout.name.split(" ")[0]}
         <IconButton
           aria-owns={open ? 'menu-appbar' : null}
           aria-haspopup="true"
@@ -72,4 +72,4 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   scoutLogin,
   scoutLogout
-})(AccountIcon)
+})(MobileAccountIcon)

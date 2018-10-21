@@ -7,6 +7,9 @@ import { eventsInitialization } from '../reducers/eventReducer'
 import { scoutLogin, scoutLogout } from '../reducers/scoutReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 
+// I think this component is not used anywhere
+// TODO: remove this
+
 class googleButtons extends React.Component {
   forceMyOwnLogout = async response => {
     console.log('forcelogout')
