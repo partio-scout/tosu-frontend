@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import BigCalendar from 'react-big-calendar-like-google'
 import moment from 'moment'
 
@@ -7,6 +8,11 @@ import Popover from '@material-ui/core/Popover'
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
+import Activity from './Activity'
+import convertToSimpleActivity from '../functions/activityConverter'
+import findActivity from '../functions/findActivity'
+
+var pofTree
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -19,6 +25,7 @@ function prepareEvents(events) {
       start: new Date(event.startDate + ' ' + event.startTime),
       end: new Date(event.endDate + ' ' + event.endTime),
       activities: event.activities,
+      eventId: event.id,
       allDay: false,
     }
   })
@@ -49,6 +56,7 @@ class CustomEvent extends Component {
 
   constructor(props) {
     super(props)
+
     this.state = {
       anchorEl: null
     }
@@ -69,6 +77,24 @@ class CustomEvent extends Component {
   render() {
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
+    const { title, start, end, activities, eventId } = this.props.event
+
+    const rows = activities.map(activity => {
+      const pofActivity = convertToSimpleActivity(
+        findActivity(activity, pofTree)
+      )
+      return (
+        <Activity
+          bufferzone={false}
+          parentId={eventId}
+          parent={this}
+          key={activity.id}
+          pofActivity={pofActivity}
+          activity={activity}
+          deleteActivity={this.deleteActivity}
+        />
+      )
+    })
 
     return (
       <div>
@@ -78,7 +104,7 @@ class CustomEvent extends Component {
           variant="contained"
           onClick={this.handleClick}
         >
-          Open Popover
+          {title}
         </div>
         <Popover
           id="simple-popper"
@@ -94,17 +120,23 @@ class CustomEvent extends Component {
             horizontal: 'center',
           }}
         >
-          <strong>Content of the popover</strong>
+          <h3>{title}</h3>
+          {start.getHours()}:{start.getMinutes()} - {end.getHours()}:{end.getMinutes()}
+          <div>
+            {rows}
+          </div>
         </Popover>
       </div>
     );
   }
 }
 
-export default class EventCalendar extends Component {
+class EventCalendar extends Component {
 
   render() {
     const { events } = this.props
+
+    pofTree = this.props.pofTree // TODO: Use props?
 
     return (
       <div className="event-calendar">
@@ -124,3 +156,11 @@ export default class EventCalendar extends Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    pofTree: state.pofTree,
+  }
+}
+
+export default connect(mapStateToProps)(EventCalendar)
