@@ -401,15 +401,9 @@ span.label {
   border-radius: 50%;
   display: inline-block;
 }
-/*.rbc-month-row, .rbc-event-content {
-  overflow: visible;
+.event-popper-paper {
+  padding: 10px;
 }
-.rbc-row-segment {
-  position: relative;
-}
-.rbc-event {
-  z-index: 999 !important;
-}*/
 
 /* #### EVENT LIST #### */
 .event-list {

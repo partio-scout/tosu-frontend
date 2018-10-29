@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 import BigCalendar from 'react-big-calendar-like-google'
 import moment from 'moment'
 
-import Modal from '@material-ui/core/Modal'
-import Popover from '@material-ui/core/Popover'
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import Popper from '@material-ui/core/Popper'
+// import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import Paper from '@material-ui/core/Paper';
 
 import Activity from './Activity'
 import convertToSimpleActivity from '../functions/activityConverter'
@@ -44,39 +44,29 @@ function Event({ event }) {
 
 function createActivityMarkers(activities) {
   let markers = [' ']
-
   for (var i = 0; i < activities.length; i++) {
     markers.push(<span className="activity-marker" key={activities[i].id}></span>)
   }
-
   return markers
 }
 
 class CustomEvent extends Component {
-
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      anchorEl: null
-    }
+  state = {
+    anchorEl: null,
   }
 
   handleClick = event => {
-    this.setState({
-      anchorEl: event.currentTarget,
-    });
-  };
-
-  handleClose = () => {
-    this.setState({
-      anchorEl: null,
-    });
-  };
+    const { currentTarget } = event
+    this.setState(state => ({
+      anchorEl: state.anchorEl ? null : currentTarget,
+    }))
+  }
 
   render() {
+    const { classes } = this.props
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
+    const id = open ? 'no-transition-popper' : null
     const { title, start, end, activities, eventId } = this.props.event
 
     const rows = activities.map(activity => {
@@ -98,36 +88,22 @@ class CustomEvent extends Component {
 
     return (
       <div>
-        <div
-          aria-owns={open ? 'simple-popper' : null}
-          aria-haspopup="true"
-          variant="contained"
-          onClick={this.handleClick}
-        >
+        <div aria-describedby={id} variant="contained" onClick={this.handleClick}>
           {title}
         </div>
-        <Popover
-          id="simple-popper"
-          open={open}
-          anchorEl={anchorEl}
-          onClose={this.handleClose}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
-        >
-          <h3>{title}</h3>
-          {start.getHours()}:{start.getMinutes()} - {end.getHours()}:{end.getMinutes()}
-          <div>
-            {rows}
-          </div>
-        </Popover>
+        <Popper id={id} open={open} anchorEl={anchorEl} style={{zIndex: 999}}>
+          <Paper className="event-popper-paper">
+            <h3>{title}</h3>
+            {start.getHours()}:{start.getMinutes()} - {end.getHours()}:{end.getMinutes()}
+            <div>
+              {rows}
+            </div>
+            <Button>Muokkaa</Button>
+            <Button>Poista</Button>
+          </Paper>
+        </Popper>
       </div>
-    );
+    )
   }
 }
 
@@ -148,6 +124,7 @@ class EventCalendar extends Component {
           endAccessor="end"
           defaultView="month"
           showMultiDayTimes
+          views={['month']}
           components={{
             event: CustomEvent,
           }}
