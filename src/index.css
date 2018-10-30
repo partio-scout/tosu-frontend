@@ -394,14 +394,14 @@ span.label {
   width: auto;
   padding-top: 20px;
 }
-.activity-marker {
+.calendar-activity-marker {
   height: 8px;
   width: 8px;
   background-color: white;
   border-radius: 50%;
   display: inline-block;
 }
-.event-popper-paper {
+.calendar-event-popper-paper {
   padding: 10px;
 }
 .calendar-event-activity-wrapper {

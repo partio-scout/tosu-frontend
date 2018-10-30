@@ -4,7 +4,6 @@ import BigCalendar from 'react-big-calendar-like-google'
 import moment from 'moment'
 
 import Popper from '@material-ui/core/Popper'
-import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper';
 
@@ -35,12 +34,12 @@ function prepareEvents(events) {
 function createActivityMarkers(activities) {
   let markers = [' ']
   for (var i = 0; i < activities.length; i++) {
-    markers.push(<span className="activity-marker" key={activities[i].id}></span>)
+    markers.push(<span className="calendar-activity-marker" key={activities[i].id}></span>)
   }
   return markers
 }
 
-class CustomEvent extends Component {
+class Event extends Component {
   state = {
     anchorEl: null,
   }
@@ -53,6 +52,7 @@ class CustomEvent extends Component {
   }
 
   deleteActivity = activity => {
+    // TODO
     console.log("delete activity", activity)
   }
 
@@ -92,7 +92,7 @@ class CustomEvent extends Component {
           {createActivityMarkers(event.activities)}
         </div>
         <Popper id={id} open={open} anchorEl={anchorEl} style={{zIndex: 999}}>
-          <Paper className="event-popper-paper">
+          <Paper className="calendar-event-popper-paper">
             <h3>{event.title}</h3>
             {startTime} - {endTime}
             <p>
@@ -127,11 +127,10 @@ class EventCalendar extends Component {
           events={prepareEvents(events)}
           startAccessor="start"
           endAccessor="end"
-          defaultView="month"
           showMultiDayTimes
           views={['month']}
           components={{
-            event: CustomEvent,
+            event: Event
           }}
         />
       </div>
