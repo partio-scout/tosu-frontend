@@ -20,8 +20,8 @@ class AppBar extends React.Component {
   render() {
     return (
       <div className="top-search" id="top-bar-header">
-        <div className="account-name-and-button" onLoad="[](){console.log(':DDd')}">
-          {this.props.scout.name}
+        <div className="account-name-and-button">
+          {this.props.scout ? this.props.scout.name : "<no name>"}
           <AccountIcon />
         </div>
         <div className="Header_root" id="header_root">

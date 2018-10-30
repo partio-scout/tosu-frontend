@@ -29,7 +29,6 @@ class AccountIcon extends React.Component {
 
   render() {
     const open = Boolean(this.state.anchorEl)
-    
     return (
       <span>
         <IconButton

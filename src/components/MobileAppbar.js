@@ -112,7 +112,7 @@ class MobileAppbar extends React.Component {
             />
           </div>
           <div className="account-name-and-button">
-            {this.props.scout.name.split(" ")[0]}
+            {this.props.scout ? this.props.scout.name.split(" ")[0] : "<no name>"}
             <AccountIcon />
           </div>
 
