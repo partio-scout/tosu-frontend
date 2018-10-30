@@ -15,6 +15,12 @@
       "transform-decorators"
     ]
   },
+  "jest": {
+    "coverageReporters": [
+      "text",
+      "html"
+    ]
+  },
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.1.1",
@@ -67,7 +73,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "test-local": "react-scripts test --env=jsdom --coverage",
+    "test-local": "react-scripts test --env=jsdom --coverage --coverageDirectory=./coverage/jest",
     "eject": "react-scripts eject",
     "travis": "npm run test"
   },
