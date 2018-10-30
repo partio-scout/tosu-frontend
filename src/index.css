@@ -390,7 +390,7 @@ span.label {
 
 /* #### CALENDAR #### */
 .event-calendar {
-  height: 450px;
+  height: 500px;
   width: auto;
   padding-top: 20px;
 }
@@ -403,6 +403,12 @@ span.label {
 }
 .event-popper-paper {
   padding: 10px;
+}
+.calendar-event-activity-wrapper {
+  padding-bottom: 10px;
+  max-width: 500px;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 /* #### EVENT LIST #### */

@@ -4,7 +4,7 @@ import BigCalendar from 'react-big-calendar-like-google'
 import moment from 'moment'
 
 import Popper from '@material-ui/core/Popper'
-// import Typography from '@material-ui/core/Typography'
+import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper';
 
@@ -24,22 +24,12 @@ function prepareEvents(events) {
       title: event.title,
       start: new Date(event.startDate + ' ' + event.startTime),
       end: new Date(event.endDate + ' ' + event.endTime),
+      allDay: false,
       activities: event.activities,
       eventId: event.id,
-      allDay: false,
+      information: event.information,
     }
   })
-}
-
-function Event({ event }) {
-  return (
-    <div>
-      <span>
-        {event.title}
-      </span><br/>
-      {createActivityMarkers(event.activities)}
-    </div>
-  )
 }
 
 function createActivityMarkers(activities) {
@@ -62,21 +52,28 @@ class CustomEvent extends Component {
     }))
   }
 
+  deleteActivity = activity => {
+    console.log("delete activity", activity)
+  }
+
   render() {
     const { classes } = this.props
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
     const id = open ? 'no-transition-popper' : null
-    const { title, start, end, activities, eventId } = this.props.event
 
-    const rows = activities.map(activity => {
+    const event = this.props.event
+    const startTime = event.start.toLocaleTimeString('fi-FI', { 'hour':'numeric', 'minute':'numeric' })
+    const endTime = event.end.toLocaleTimeString('fi-FI', { 'hour':'numeric', 'minute':'numeric' })
+
+    const rows = event.activities.map(activity => { // TODO: duplicate code
       const pofActivity = convertToSimpleActivity(
         findActivity(activity, pofTree)
       )
       return (
         <Activity
           bufferzone={false}
-          parentId={eventId}
+          parentId={event.eventId}
           parent={this}
           key={activity.id}
           pofActivity={pofActivity}
@@ -89,13 +86,22 @@ class CustomEvent extends Component {
     return (
       <div>
         <div aria-describedby={id} variant="contained" onClick={this.handleClick}>
-          {title}
+          <span>
+            {event.title}
+          </span><br/>
+          {createActivityMarkers(event.activities)}
         </div>
         <Popper id={id} open={open} anchorEl={anchorEl} style={{zIndex: 999}}>
           <Paper className="event-popper-paper">
-            <h3>{title}</h3>
-            {start.getHours()}:{start.getMinutes()} - {end.getHours()}:{end.getMinutes()}
-            <div>
+            <h3>{event.title}</h3>
+            {startTime} - {endTime}
+            <p>
+              {event.information}
+            </p>
+            <p>
+              Aktiviteetit:
+            </p>
+            <div className="calendar-event-activity-wrapper">
               {rows}
             </div>
             <Button>Muokkaa</Button>
@@ -111,7 +117,6 @@ class EventCalendar extends Component {
 
   render() {
     const { events } = this.props
-
     pofTree = this.props.pofTree // TODO: Use props?
 
     return (
