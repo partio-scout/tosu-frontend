@@ -31,8 +31,7 @@ class AccountIcon extends React.Component {
     const open = Boolean(this.state.anchorEl)
     
     return (
-      <div className="account-button">
-        {this.props.scout.name}
+      <span>
         <IconButton
           aria-owns={open ? 'menu-appbar' : null}
           aria-haspopup="true"
@@ -57,7 +56,7 @@ class AccountIcon extends React.Component {
         >
           <MenuItem onClick={this.forceMyOwnLogout}>Kirjaudu ulos</MenuItem>
         </Menu>
-      </div>
+      </span>
     )
   }
 }

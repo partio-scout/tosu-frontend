@@ -1,9 +1,10 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch'
 import AccountIcon from './AccountIcon'
 
-export default class AppBar extends React.Component {
+class AppBar extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -19,7 +20,10 @@ export default class AppBar extends React.Component {
   render() {
     return (
       <div className="top-search" id="top-bar-header">
-        <AccountIcon />
+        <div className="account-name-and-button">
+          {this.props.scout.name}
+          <AccountIcon />
+        </div>
         <div className="Header_root" id="header_root">
           <FormControlLabel
             control={
@@ -37,3 +41,11 @@ export default class AppBar extends React.Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    scout: state.scout,
+  }
+}
+
+export default connect(mapStateToProps, {})(AppBar)
