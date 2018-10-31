@@ -14,7 +14,6 @@ import { DialogTitle } from '@material-ui/core'
 import moment from 'moment'
 // CSS
 import 'react-sticky-header/styles.css'
-import 'react-big-calendar-like-google/lib/css/react-big-calendar.css'
 import "./index.css"
 // Components
 import NewEvent from './components/NewEvent'

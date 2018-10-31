@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-
 import Popper from '@material-ui/core/Popper'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper';
@@ -27,10 +25,6 @@ class CalendarEvent extends Component {
     }
   }
 
-  // state = {
-  //   anchorEl: null,
-  // }
-
   handleClick = event => {
     const { currentTarget } = event
     this.setState(state => ({
@@ -44,7 +38,6 @@ class CalendarEvent extends Component {
   }
 
   render() {
-    const { classes } = this.props
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
     const id = open ? 'no-transition-popper' : null
@@ -100,10 +93,4 @@ class CalendarEvent extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    pofTree: state.pofTree,
-  }
-}
-
-export default connect(mapStateToProps)(CalendarEvent)
+export default CalendarEvent

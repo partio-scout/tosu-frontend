@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+// React big calendar: https://onursimsek94.github.io/react-big-calendar/examples/index.html
 import BigCalendar from 'react-big-calendar-like-google'
 import moment from 'moment'
+
+import 'react-big-calendar-like-google/lib/css/react-big-calendar.css'
 
 import CalendarToolbar from './CalendarToolbar'
 import CalendarEvent from './CalendarEvent'
@@ -12,7 +15,7 @@ var pofTree
 // to the correct localizer.
 const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
 
-function prepareEvents(events) {
+function prepareEventsToCalendarEvents(events) {
   return events.map(event => {
     return {
       title: event.title,
@@ -26,6 +29,8 @@ function prepareEvents(events) {
   })
 }
 
+// This Event is used to pass pofTree to the actual CalendarEvent.
+// (There might be a better solution somehow using props)
 class Event extends Component {
   render() {
     return (
@@ -38,17 +43,16 @@ class Event extends Component {
 }
 
 class Calendar extends Component {
-
   render() {
     const { events } = this.props
-    pofTree = this.props.pofTree // TODO: Use props?
+    pofTree = this.props.pofTree
 
     return (
       <div className="calendar">
         <BigCalendar
           popup
           localizer={localizer}
-          events={prepareEvents(events)}
+          events={prepareEventsToCalendarEvents(events)}
           startAccessor="start"
           endAccessor="end"
           showMultiDayTimes
