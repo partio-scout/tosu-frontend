@@ -24,7 +24,7 @@ import ClippedDraver from './components/ClippedDrawer'
 import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
 import EventCard from './components/EventCard'
-import EventCalendar from './components/EventCalendar'
+import Calendar from './components/Calendar'
 // Utils
 import { createStatusMessage } from './utils/createStatusMessage'
 import eventComparer from './utils/EventCompare'
@@ -201,8 +201,8 @@ class App extends Component {
       </div>
     )
 
-    const eventCalendar = (
-      <EventCalendar events={this.props.store.getState().events} />
+    const calendar = (
+      <Calendar events={this.props.store.getState().events} />
     )
 
     return (
@@ -256,7 +256,7 @@ class App extends Component {
                   &nbsp;
 
                   <Route exact path="/" render={() => eventsToList} />
-                  <Route exact path="/calendar" render={() => eventCalendar} />
+                  <Route exact path="/calendar" render={() => calendar} />
 
                   <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
                     <DialogTitle>Luo uusi tapahtuma</DialogTitle>

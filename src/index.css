@@ -389,7 +389,7 @@ span.label {
 }
 
 /* #### CALENDAR #### */
-.event-calendar {
+.calendar {
   height: 500px;
   width: auto;
   padding-top: 20px;
