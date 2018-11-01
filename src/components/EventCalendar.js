@@ -41,10 +41,8 @@ function createActivityMarkers(activities) {
 }
 
 export default class EventCalendar extends Component {
-
   render() {
     const { events } = this.props
-
     return (
       <div className="event-calendar">
         <BigCalendar
@@ -53,7 +51,7 @@ export default class EventCalendar extends Component {
           startAccessor="start"
           endAccessor="end"
           showMultiDayTimes
-          views={{ month: true, week: true }}
+          views={{ month: true }}
           components={{
             event: Event,
           }}
