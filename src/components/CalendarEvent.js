@@ -33,6 +33,10 @@ class CalendarEvent extends Component {
     }))
   }
 
+  handleClose = () => {
+    
+  }
+
   render() {
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
@@ -81,13 +85,13 @@ class CalendarEvent extends Component {
               {rows}
             </div>
             <EditEvent
-              buttonClass="buttonRight"
+              buttonClass="calendar-button"
               data={event}
               source={this.handleClose}
               setNotification={this.props.setNotification}
             />
             <DeleteEvent
-              buttonClass="buttonRight"
+              buttonClass="calendar-button"
               data={event}
               source={this.handleClose}
               setNotification={this.props.setNotification}
