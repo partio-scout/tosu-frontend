@@ -8,7 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Button from '@material-ui/core/Button'
 
 import MomentUtils from 'material-ui-pickers/utils/moment-utils'
-import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
+import MuiPickersUtilsProvider from 'material-ui-pickers/MuiPickersUtilsProvider'
 
 import {
   TextValidator,
