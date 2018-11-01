@@ -34,7 +34,7 @@ class CalendarEvent extends Component {
   }
 
   handleClose = () => {
-    
+
   }
 
   render() {
@@ -43,8 +43,8 @@ class CalendarEvent extends Component {
     const id = open ? 'no-transition-popper' : null
 
     const event = this.props.event
-    const startTime = event.start.toLocaleTimeString('fi-FI', { 'hour':'numeric', 'minute':'numeric' })
-    const endTime = event.end.toLocaleTimeString('fi-FI', { 'hour':'numeric', 'minute':'numeric' })
+    const startTime = event.start.toLocaleTimeString('fi-FI', { 'hour': 'numeric', 'minute': 'numeric' })
+    const endTime = event.end.toLocaleTimeString('fi-FI', { 'hour': 'numeric', 'minute': 'numeric' })
 
     const rows = event.activities.map(activity => { // TODO: duplicate code
       const pofActivity = convertToSimpleActivity(
@@ -68,10 +68,10 @@ class CalendarEvent extends Component {
         <div aria-describedby={id} variant="contained" onClick={this.handleClick}>
           <span>
             {event.title}
-          </span><br/>
+          </span><br />
           {createActivityMarkers(event.activities)}
         </div>
-        <Popper id={id} open={open} anchorEl={anchorEl} style={{zIndex: 999}}>
+        <Popper id={id} open={open} anchorEl={anchorEl} style={{ zIndex: 999 }}>
           <Paper className="calendar-event-popper-paper">
             <h3>{event.title}</h3>
             {startTime} - {endTime}
@@ -84,18 +84,20 @@ class CalendarEvent extends Component {
             <div className="calendar-event-activity-wrapper">
               {rows}
             </div>
-            <EditEvent
-              buttonClass="calendar-button"
-              data={event}
-              source={this.handleClose}
-              setNotification={this.props.setNotification}
-            />
-            <DeleteEvent
-              buttonClass="calendar-button"
-              data={event}
-              source={this.handleClose}
-              setNotification={this.props.setNotification}
-            />
+            <div className="calendar-event-button-wrapper">
+              <EditEvent
+                buttonClass="calendar-button"
+                data={event}
+                source={this.handleClose}
+                setNotification={this.props.setNotification}
+              />
+              <DeleteEvent
+                buttonClass="calendar-button"
+                data={event}
+                source={this.handleClose}
+                setNotification={this.props.setNotification}
+              />
+            </div>
           </Paper>
         </Popper>
       </div>
