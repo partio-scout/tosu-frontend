@@ -38,7 +38,7 @@ const reducer = (state = [], action) => {
       return state.filter(event => event.id !== action.eventId)
     case 'DELETE_EVENTGROUP':
       return state.filter(
-        event => event.groupId === null || event.groupId !== action.eventGroupId
+        event => event.eventGroupId === null || event.eventGroupId !== action.eventGroupId
       )
     case 'UPDATE_EVENT':
       return state

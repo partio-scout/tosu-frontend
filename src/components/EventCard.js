@@ -233,7 +233,7 @@ class EventCard extends React.Component {
 
   deleteEventGroup = async () => {
     try {
-      await this.props.deleteEventGroup(this.props.event.groupId)
+      await this.props.deleteEventGroup(this.props.event.eventGroupId)
       this.props.notify('Toistuva tapahtuma poistettu!', 'success')
       await this.props.bufferZoneInitialization()
       await this.emptyBuffer()
@@ -321,8 +321,8 @@ class EventCard extends React.Component {
 
     // This is the popup that appears if you click "poista" on an event
     let actions = []
-    // If groupId exists, it's a recurring event, so we need to enable deleting those
-    if (event.groupId) {
+    // If eventGroupId exists, it's a recurring event, so we need to enable deleting those
+    if (event.eventGroupId) {
       actions = (
         <div>
           <p>Poistetaanko tapahtuma {event.title}?</p>

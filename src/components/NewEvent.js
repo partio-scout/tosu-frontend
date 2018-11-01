@@ -87,7 +87,7 @@ class NewEvent extends React.Component {
           endTime: moment(this.state.endTime).format('HH:mm'),
           type: this.state.type,
           information: this.state.information,
-          groupId: response.groupId
+          eventGroupId: response.id
         }
 
         promises = promises.concat(this.sendEventPostRequest(data))
@@ -118,8 +118,8 @@ class NewEvent extends React.Component {
 
   sendGroupIdPostRequest = async () => {
     try {
-      const groupId = await eventgroupService.create()
-      return groupId
+      const eventGroup = await eventgroupService.create()
+      return eventGroup
     } catch (exception) {
       console.error('Error in event POST:', exception)
       return null
@@ -129,7 +129,7 @@ class NewEvent extends React.Component {
   sendEventPostRequest = async eventData => {
     try {
       await this.props.addEvent(eventData)
-      if (eventData.groupId === undefined) {
+      if (eventData.eventGroupId === undefined) {
         this.props.notify('Uusi tapahtuma luotu!', 'success')
       } else {
         this.props.notify('Uusi toistuva tapahtuma luotu!', 'success')
