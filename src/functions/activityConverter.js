@@ -29,7 +29,7 @@ const convertToBackendActivity = (pofActivity) => {
   }
   const suggestions = (activity, pofActivity) => {
     try {
-      activity.suggestions = pofActivity.suggestions_details.items.map(jtn => {
+      activity.suggestions = pofActivity.suggestions_details.map(jtn => {
         const suggs = {
           title: jtn.title,
           content: jtn.content,
