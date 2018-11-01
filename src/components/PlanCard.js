@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Button from '@material-ui/core/Button'
 import Collapse from '@material-ui/core/Collapse/Collapse';
+import { Parser } from 'html-to-react'
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
 import { notify } from '../reducers/notificationReducer'
@@ -64,6 +65,13 @@ class PlanCard extends React.Component {
       this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
     }
   }
+
+  parseSuggestionContent = (suggestion) => {
+    const htmlParser = new Parser()
+    const parsedContent = htmlParser.parse(suggestion.content)
+    return parsedContent
+  }
+
   render() {
     const { suggestion, savedActivity, plans } = this.props
     // Find plans for current activity from store
@@ -115,7 +123,7 @@ class PlanCard extends React.Component {
         />
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            {suggestion.content}
+            {this.parseSuggestionContent(suggestion)}
             <br />
 
           </CardContent>
