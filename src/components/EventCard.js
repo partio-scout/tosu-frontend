@@ -15,17 +15,14 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { CardContent } from '@material-ui/core'
 import Warning from '@material-ui/icons/Warning'
 import moment from 'moment-with-locales-es6'
-import Dialog from '@material-ui/core/Dialog'
-import Button from '@material-ui/core/Button'
 import Activity from './Activity'
+import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
 import ItemTypes from '../ItemTypes'
 import activityService from '../services/activities'
 import {
   editEvent,
   deleteActivityFromEvent,
-  deleteEvent,
-  deleteEventGroup,
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally
 } from '../reducers/eventReducer'
@@ -40,47 +37,6 @@ import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
 import eventService from '../services/events'
 
-
-// Warning icon
-// No idea if this actually does anything since the warning is actually created in statusmessage.js
-//  -Michael
-/* const warning = (status, event) => {
-  if (status.warnings) {
-    if (
-      status.warnings.firstTaskTooLate &&
-      moment(event.startDate).format('DD.MM.YYYY') === status.dates.firstTask
-    ) {
-      return (
-        <div class="tooltip">
-          <Dialog
-            className="warning"
-          />
-          <span class="tooltiptext">
-            Aktiviteetin ajankohta on virheellinen!
-          </span>
-        </div>
-      )
-    } else if (
-      status.warnings.lastTaskTooSoon &&
-      moment(event.startDate).format('DD.MM.YYYY') === status.dates.majakka
-    ) {
-      return (
-        <Dialog
-          style={{
-            width: 20,
-            height: 20,
-            padding: 0,
-            marginRight: 7,
-            color: 'orange'
-          }}
-        />
-      )
-    }
-  }
-  return null
-} */
-
-// Actual Warning icon
 // Warning icon
 const warning = (
   <div className="tooltip">
@@ -169,7 +125,6 @@ class EventCard extends React.Component {
     super(props)
     this.state = {
       expanded: false,
-      open: false
     }
   }
 
@@ -218,33 +173,6 @@ class EventCard extends React.Component {
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
 
-  deleteEvent = async () => {
-    try {
-      await this.props.deleteEvent(this.props.event.id)
-      await this.props.bufferZoneInitialization()
-      await this.emptyBuffer()
-      this.props.notify('Tapahtuma poistettu!', 'success')
-      this.handleClose()
-    } catch (exception) {
-      console.error('Error in deleting event:', exception)
-      this.props.notify('Tapahtuman poistamisessa tuli virhe. Yritä uudestaan!')
-    }
-  }
-
-  deleteEventGroup = async () => {
-    try {
-      await this.props.deleteEventGroup(this.props.event.groupId)
-      this.props.notify('Toistuva tapahtuma poistettu!', 'success')
-      await this.props.bufferZoneInitialization()
-      await this.emptyBuffer()
-      this.handleClose()
-    } catch (exception) {
-      console.error('Error in deleting event:', exception)
-      this.props.notify(
-        'Toistuvan tapahtuman poistamisessa tuli virhe. Yritä uudestaan!'
-      )
-    }
-  }
   isLeaf = value => {
     if (!value) {
       return false
@@ -270,18 +198,6 @@ class EventCard extends React.Component {
     return child.props.title.props.name
       .toLowerCase()
       .includes(input.toLowerCase())
-  }
-
-  handleDelete = () => {
-    this.handleOpen()
-  }
-
-  handleOpen = () => {
-    this.setState({ open: true })
-  }
-
-  handleClose = () => {
-    this.setState({ open: false })
   }
 
   handleExpandChange = expanded => {
@@ -319,38 +235,6 @@ class EventCard extends React.Component {
         .locale('fi')
         .format('ddd D. MMMM YYYY')} ${event.startTime}`
 
-    // This is the popup that appears if you click "poista" on an event
-    let actions = []
-    // If groupId exists, it's a recurring event, so we need to enable deleting those
-    if (event.groupId) {
-      actions = (
-        <div>
-          <p>Poistetaanko tapahtuma {event.title}?</p>
-          <Button onClick={this.handleClose}>peruuta</Button>
-          <Button
-            onClick={this.deleteEvent}
-          >Poista tämä tapahtuma
-          </Button>
-          <Button
-            onClick={this.deleteEventGroup}
-          >
-            Poista toistuvat tapahtumat
-          </Button>
-        </div>
-      )
-    } else {
-      actions = (
-        <div>
-          <p>Poistetaanko tapahtuma {event.title}?</p>
-          <Button onClick={this.handleClose} >peruuta</Button>
-          <Button
-            onClick={this.deleteEvent}
-          >
-            Poista tapahtuma
-          </Button>
-        </div>
-      )
-    }
     let patternClass
     const { connectDropTarget, canDrop, isOver } = this.props
     let background
@@ -469,22 +353,12 @@ class EventCard extends React.Component {
               source={this.handleClose}
               setNotification={this.props.setNotification}
             />
-            <Button
-              className="buttonRight"
-              onClick={this.handleDelete}
-              variant='contained'
-            >
-              poista
-            </Button>
-
-            <Dialog
-              open={this.state.open}
-              onClose={this.handleClose}
-            >
-              <div>
-                {actions}
-              </div>
-            </Dialog>
+            <DeleteEvent
+              buttonClass="buttonRight"
+              data={event}
+              source={this.handleClose}
+              setNotification={this.props.setNotification}
+            />
           </CardActions>
         </Card>
       </div>
@@ -511,10 +385,8 @@ const DroppableEventCard = DropTarget(
 export default connect(mapStateToProps, {
   notify,
   editEvent,
-  deleteEvent,
   deleteActivityFromEvent,
   bufferZoneInitialization,
-  deleteEventGroup,
   addActivityToEventOnlyLocally,
   deleteActivityFromEventOnlyLocally,
   postActivityToBufferOnlyLocally,

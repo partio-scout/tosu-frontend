@@ -402,7 +402,12 @@ span.label {
   display: inline-block;
 }
 .calendar-event-popper-paper {
+  min-width: 200px;
   padding: 10px;
+}
+.calendar-event-button-wrapper {
+  display: flex;
+  width: 100%;
 }
 .calendar-event-activity-wrapper {
   padding-bottom: 10px;
