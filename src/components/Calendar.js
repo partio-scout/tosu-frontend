@@ -23,7 +23,7 @@ function prepareEventsToCalendarEvents(events) {
       end: new Date(event.endDate + ' ' + event.endTime),
       allDay: false,
       activities: event.activities,
-      eventId: event.id,
+      id: event.id,
       information: event.information,
     }
   })

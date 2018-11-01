@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper';
 
 import Activity from './Activity'
+import DeleteEvent from './DeleteEvent'
 import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
 
@@ -53,7 +54,7 @@ class CalendarEvent extends Component {
       return (
         <Activity
           bufferzone={false}
-          parentId={event.eventId}
+          parentId={event.id}
           parent={this}
           key={activity.id}
           pofActivity={pofActivity}
@@ -85,7 +86,12 @@ class CalendarEvent extends Component {
               {rows}
             </div>
             <Button>Muokkaa</Button>
-            <Button>Poista</Button>
+            <DeleteEvent
+              buttonClass="buttonRight"
+              data={event}
+              source={this.handleClose}
+              setNotification={this.props.setNotification}
+            />
           </Paper>
         </Popper>
       </div>
