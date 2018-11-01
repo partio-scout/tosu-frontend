@@ -38,7 +38,7 @@
     "is-touch-device": "^1.0.1",
     "match-sorter": "^2.3.0",
     "material-ui-fullscreen-dialog": "^0.7.2",
-    "material-ui-pickers": "^1.0.1",
+    "material-ui-pickers": "^1.0.0-rc.14",
     "material-ui-search-bar": "^0.4.2",
     "moment": "^2.22.2",
     "moment-with-locales-es6": "^1.0.1",
