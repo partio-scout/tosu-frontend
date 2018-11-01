@@ -3,13 +3,13 @@ import reducer from './eventReducer'
 const initialEvents = [
   {
     activities: [],
-    groupId: null,
+    eventGroupId: null,
     id: 1,
     title: 'Testi'
   },
   {
     activities: [],
-    groupId: null,
+    eventGroupId: null,
     id: 2,
     title: 'Testi2'
   }
@@ -37,7 +37,7 @@ describe('event reducer', () => {
 
     const newEvent = {
       activities: [],
-      groupId: null,
+      eventGroupId: null,
       id: 3,
       title: 'Testi3'
     }
@@ -77,19 +77,19 @@ describe('event reducer', () => {
     const initialEventgroup = [
       {
         activities: [],
-        groupId: 1,
+        eventGroupId: 1,
         id: 1,
         title: 'Testi'
       },
       {
         activities: [],
-        groupId: 1,
+        eventGroupId: 1,
         id: 2,
         title: 'Testi2'
       },
       {
         activities: [],
-        groupId: null,
+        eventGroupId: null,
         id: 2,
         title: 'Testi3'
       }
@@ -110,7 +110,7 @@ describe('event reducer', () => {
     const expectedState = [
       {
         activities: [],
-        groupId: null,
+        eventGroupId: null,
         id: 2,
         title: 'Testi3'
       }
@@ -129,7 +129,7 @@ describe('event reducer', () => {
 
     const modded = {
       activities: [],
-      groupId: null,
+      eventGroupId: null,
       id: 1,
       title: 'Muokattu'
     }
@@ -168,7 +168,7 @@ describe('event reducer', () => {
     const eventWithActivity = [
       {
         activities: [{ id: 11, title: 'poistettava', eventId: 2 }],
-        groupId: null,
+        eventGroupId: null,
         id: 2,
         title: 'Testi2'
       }
@@ -190,7 +190,7 @@ describe('event reducer', () => {
     expect(newState).toEqual([
       {
         activities: [],
-        groupId: null,
+        eventGroupId: null,
         id: 2,
         title: 'Testi2'
       }
