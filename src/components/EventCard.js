@@ -40,47 +40,6 @@ import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
 import eventService from '../services/events'
 
-
-// Warning icon
-// No idea if this actually does anything since the warning is actually created in statusmessage.js
-//  -Michael
-/* const warning = (status, event) => {
-  if (status.warnings) {
-    if (
-      status.warnings.firstTaskTooLate &&
-      moment(event.startDate).format('DD.MM.YYYY') === status.dates.firstTask
-    ) {
-      return (
-        <div class="tooltip">
-          <Dialog
-            className="warning"
-          />
-          <span class="tooltiptext">
-            Aktiviteetin ajankohta on virheellinen!
-          </span>
-        </div>
-      )
-    } else if (
-      status.warnings.lastTaskTooSoon &&
-      moment(event.startDate).format('DD.MM.YYYY') === status.dates.majakka
-    ) {
-      return (
-        <Dialog
-          style={{
-            width: 20,
-            height: 20,
-            padding: 0,
-            marginRight: 7,
-            color: 'orange'
-          }}
-        />
-      )
-    }
-  }
-  return null
-} */
-
-// Actual Warning icon
 // Warning icon
 const warning = (
   <div className="tooltip">
