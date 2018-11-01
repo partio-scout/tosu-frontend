@@ -18,6 +18,7 @@ import moment from 'moment-with-locales-es6'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
 import Activity from './Activity'
+import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
 import ItemTypes from '../ItemTypes'
 import activityService from '../services/activities'
@@ -269,6 +270,7 @@ class EventCard extends React.Component {
     }
 
     const { event } = this.props
+    console.log('eventcard event: ' + event)
 
     moment.locale('fi')
     const title = this.state.expanded ? '' : event.title
@@ -428,22 +430,12 @@ class EventCard extends React.Component {
               source={this.handleClose}
               setNotification={this.props.setNotification}
             />
-            <Button
-              className="buttonRight"
-              onClick={this.handleDelete}
-              variant='contained'
-            >
-              poista
-            </Button>
-
-            <Dialog
-              open={this.state.open}
-              onClose={this.handleClose}
-            >
-              <div>
-                {actions}
-              </div>
-            </Dialog>
+            <DeleteEvent
+              buttonClass="buttonRight"
+              data={event}
+              source={this.handleClose}
+              setNotification={this.props.setNotification}
+            />
           </CardActions>
         </Card>
       </div>
