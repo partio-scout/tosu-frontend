@@ -391,17 +391,31 @@ span.label {
 }
 
 /* #### CALENDAR #### */
-.event-calendar {
-  height: 450px;
+.calendar {
+  height: 500px;
   width: auto;
   padding-top: 20px;
 }
-.activity-marker {
+.calendar-activity-marker {
   height: 8px;
   width: 8px;
   background-color: white;
   border-radius: 50%;
   display: inline-block;
+}
+.calendar-event-popper-paper {
+  min-width: 200px;
+  padding: 10px;
+}
+.calendar-event-button-wrapper {
+  display: flex;
+  width: 100%;
+}
+.calendar-event-activity-wrapper {
+  padding-bottom: 10px;
+  max-width: 500px;
+  display: flex;
+  flex-flow: row wrap;
 }
 
 /* #### EVENT LIST #### */
