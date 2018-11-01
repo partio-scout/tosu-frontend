@@ -51,7 +51,6 @@ class DeleteEvent extends React.Component {
 
   render() {
     const event  = this.props.data
-    console.log(event)
     // This is the popup that appears if you click "poista" on an event
     let actions = []
     // If groupId exists, it's a recurring event, so we need to enable deleting those
@@ -90,7 +89,7 @@ class DeleteEvent extends React.Component {
           onClick={this.handleDelete}
           variant='contained'
         >
-          Hello World
+          Poista
         </Button>
 
         <Dialog open={this.state.open} onClose={this.handleClose}>

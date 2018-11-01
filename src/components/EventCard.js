@@ -15,8 +15,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { CardContent } from '@material-ui/core'
 import Warning from '@material-ui/icons/Warning'
 import moment from 'moment-with-locales-es6'
-import Dialog from '@material-ui/core/Dialog'
-import Button from '@material-ui/core/Button'
 import Activity from './Activity'
 import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
@@ -25,8 +23,6 @@ import activityService from '../services/activities'
 import {
   editEvent,
   deleteActivityFromEvent,
-  deleteEvent,
-  deleteEventGroup,
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally
 } from '../reducers/eventReducer'
@@ -129,7 +125,6 @@ class EventCard extends React.Component {
     super(props)
     this.state = {
       expanded: false,
-      open: false
     }
   }
 
@@ -178,33 +173,6 @@ class EventCard extends React.Component {
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
 
-  deleteEvent = async () => {
-    try {
-      await this.props.deleteEvent(this.props.event.id)
-      await this.props.bufferZoneInitialization()
-      await this.emptyBuffer()
-      this.props.notify('Tapahtuma poistettu!', 'success')
-      this.handleClose()
-    } catch (exception) {
-      console.error('Error in deleting event:', exception)
-      this.props.notify('Tapahtuman poistamisessa tuli virhe. Yritä uudestaan!')
-    }
-  }
-
-  deleteEventGroup = async () => {
-    try {
-      await this.props.deleteEventGroup(this.props.event.groupId)
-      this.props.notify('Toistuva tapahtuma poistettu!', 'success')
-      await this.props.bufferZoneInitialization()
-      await this.emptyBuffer()
-      this.handleClose()
-    } catch (exception) {
-      console.error('Error in deleting event:', exception)
-      this.props.notify(
-        'Toistuvan tapahtuman poistamisessa tuli virhe. Yritä uudestaan!'
-      )
-    }
-  }
   isLeaf = value => {
     if (!value) {
       return false
@@ -230,18 +198,6 @@ class EventCard extends React.Component {
     return child.props.title.props.name
       .toLowerCase()
       .includes(input.toLowerCase())
-  }
-
-  handleDelete = () => {
-    this.handleOpen()
-  }
-
-  handleOpen = () => {
-    this.setState({ open: true })
-  }
-
-  handleClose = () => {
-    this.setState({ open: false })
   }
 
   handleExpandChange = expanded => {
@@ -279,38 +235,6 @@ class EventCard extends React.Component {
         .locale('fi')
         .format('ddd D. MMMM YYYY')} ${event.startTime}`
 
-    // This is the popup that appears if you click "poista" on an event
-    let actions = []
-    // If groupId exists, it's a recurring event, so we need to enable deleting those
-    if (event.groupId) {
-      actions = (
-        <div>
-          <p>Poistetaanko tapahtuma {event.title}?</p>
-          <Button onClick={this.handleClose}>peruuta</Button>
-          <Button
-            onClick={this.deleteEvent}
-          >Poista tämä tapahtuma
-          </Button>
-          <Button
-            onClick={this.deleteEventGroup}
-          >
-            Poista toistuvat tapahtumat
-          </Button>
-        </div>
-      )
-    } else {
-      actions = (
-        <div>
-          <p>Poistetaanko tapahtuma {event.title}?</p>
-          <Button onClick={this.handleClose} >peruuta</Button>
-          <Button
-            onClick={this.deleteEvent}
-          >
-            Poista tapahtuma
-          </Button>
-        </div>
-      )
-    }
     let patternClass
     const { connectDropTarget, canDrop, isOver } = this.props
     let background
@@ -461,10 +385,8 @@ const DroppableEventCard = DropTarget(
 export default connect(mapStateToProps, {
   notify,
   editEvent,
-  deleteEvent,
   deleteActivityFromEvent,
   bufferZoneInitialization,
-  deleteEventGroup,
   addActivityToEventOnlyLocally,
   deleteActivityFromEventOnlyLocally,
   postActivityToBufferOnlyLocally,
