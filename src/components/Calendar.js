@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 // React big calendar: https://onursimsek94.github.io/react-big-calendar/examples/index.html
 import BigCalendar from 'react-big-calendar-like-google'
 import moment from 'moment'
+import 'moment/locale/fi'
 
 import 'react-big-calendar-like-google/lib/css/react-big-calendar.css'
 
