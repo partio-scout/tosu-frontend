@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import Popper from '@material-ui/core/Popper'
-import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper';
 
 import Activity from './Activity'
 import DeleteEvent from './DeleteEvent'
 import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
+import EditEvent from './EditEvent';
 
 function createActivityMarkers(activities) {
   let markers = [' ']
@@ -31,11 +31,6 @@ class CalendarEvent extends Component {
     this.setState(state => ({
       anchorEl: state.anchorEl ? null : currentTarget,
     }))
-  }
-
-  deleteActivity = activity => {
-    // TODO
-    console.log("delete activity", activity)
   }
 
   render() {
@@ -85,7 +80,12 @@ class CalendarEvent extends Component {
             <div className="calendar-event-activity-wrapper">
               {rows}
             </div>
-            <Button>Muokkaa</Button>
+            <EditEvent
+              buttonClass="buttonRight"
+              data={event}
+              source={this.handleClose}
+              setNotification={this.props.setNotification}
+            />
             <DeleteEvent
               buttonClass="buttonRight"
               data={event}

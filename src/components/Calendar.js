@@ -22,9 +22,14 @@ function prepareEventsToCalendarEvents(events) {
       start: new Date(event.startDate + ' ' + event.startTime),
       end: new Date(event.endDate + ' ' + event.endTime),
       allDay: false,
+      startDate: event.startDate,
+      startTime: event.startTime,
+      endDate: event.endDate,
+      endTime: event.endTime,
       activities: event.activities,
+      type: event.type,
       id: event.id,
-      information: event.information,
+      information: event.information
     }
   })
 }
