@@ -410,6 +410,12 @@ span.label {
   display: flex;
   flex-flow: row wrap;
 }
+.calendar-event-title {
+  width: 100%;
+}
+.calendar-event-close-button-td {
+  text-align: right;
+}
 
 /* #### EVENT LIST #### */
 .event-list {

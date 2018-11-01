@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import Popper from '@material-ui/core/Popper'
 import Button from '@material-ui/core/Button'
-import Paper from '@material-ui/core/Paper';
+import Paper from '@material-ui/core/Paper'
+import Icon from '@material-ui/core/Icon'
+import IconButton from '@material-ui/core/IconButton'
 
 import Activity from './Activity'
 import convertToSimpleActivity from '../functions/activityConverter'
@@ -35,6 +37,12 @@ class CalendarEvent extends Component {
   deleteActivity = activity => {
     // TODO
     console.log("delete activity", activity)
+  }
+
+  closePopper = () => {
+    this.setState(state => ({
+      anchorEl: null,
+    }))
   }
 
   render() {
@@ -73,7 +81,18 @@ class CalendarEvent extends Component {
         </div>
         <Popper id={id} open={open} anchorEl={anchorEl} style={{zIndex: 999}}>
           <Paper className="calendar-event-popper-paper">
-            <h3>{event.title}</h3>
+            <table className="calendar-event-title">
+              <tbody>
+                <tr>
+                  <td><h3>{event.title}</h3></td>
+                  <td className="calendar-event-close-button-td">
+                    <IconButton onClick={this.closePopper}>
+                      <Icon>close</Icon>
+                    </IconButton>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
             {startTime} - {endTime}
             <p>
               {event.information}
