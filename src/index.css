@@ -345,10 +345,12 @@ span.label {
   font-size: 0.8rem;
 }
 
-.account-button {
+
+.account-name-and-button{
   float: right;
   color: white;
 }
+
 /* END OF HEADER #################*/
 
 
