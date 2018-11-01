@@ -270,7 +270,6 @@ class EventCard extends React.Component {
     }
 
     const { event } = this.props
-    console.log('eventcard event: ' + event)
 
     moment.locale('fi')
     const title = this.state.expanded ? '' : event.title
