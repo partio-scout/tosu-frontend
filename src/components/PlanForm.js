@@ -36,7 +36,7 @@ export default class PlanForm extends React.Component {
     const { value } = this.state;
     const { activity, savedActivity } = this.props
 
-    const suggestionDeatails = activity.suggestions.map(suggestion => (
+    const suggestionDetails = activity.suggestions.map(suggestion => (
       <PlanCard
         key={suggestion.guid}
         suggestion={suggestion}
@@ -89,8 +89,8 @@ export default class PlanForm extends React.Component {
           <TabContainer>
             <div>
               <h2 className="headline">Toteutusvinkit</h2>
-              {suggestionDeatails.length !== 0
-                ? suggestionDeatails
+              {suggestionDetails.length !== 0
+                ? suggestionDetails
                 : 'Ei toteutusvinkkejä'}
             </div>
           </TabContainer>}

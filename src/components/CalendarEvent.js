@@ -6,8 +6,10 @@ import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
 
 import Activity from './Activity'
+import DeleteEvent from './DeleteEvent'
 import convertToSimpleActivity from '../functions/activityConverter'
 import findActivity from '../functions/findActivity'
+import EditEvent from './EditEvent';
 
 function createActivityMarkers(activities) {
   let markers = [' ']
@@ -34,9 +36,8 @@ class CalendarEvent extends Component {
     }))
   }
 
-  deleteActivity = activity => {
-    // TODO
-    console.log("delete activity", activity)
+  handleClose = () => {
+
   }
 
   closePopper = () => {
@@ -51,8 +52,8 @@ class CalendarEvent extends Component {
     const id = open ? 'no-transition-popper' : null
 
     const event = this.props.event
-    const startTime = event.start.toLocaleTimeString('fi-FI', { 'hour':'numeric', 'minute':'numeric' })
-    const endTime = event.end.toLocaleTimeString('fi-FI', { 'hour':'numeric', 'minute':'numeric' })
+    const startTime = event.start.toLocaleTimeString('fi-FI', { 'hour': 'numeric', 'minute': 'numeric' })
+    const endTime = event.end.toLocaleTimeString('fi-FI', { 'hour': 'numeric', 'minute': 'numeric' })
 
     const rows = event.activities.map(activity => { // TODO: duplicate code
       const pofActivity = convertToSimpleActivity(
@@ -61,7 +62,7 @@ class CalendarEvent extends Component {
       return (
         <Activity
           bufferzone={false}
-          parentId={event.eventId}
+          parentId={event.id}
           parent={this}
           key={activity.id}
           pofActivity={pofActivity}
@@ -76,10 +77,10 @@ class CalendarEvent extends Component {
         <div aria-describedby={id} variant="contained" onClick={this.handleClick}>
           <span>
             {event.title}
-          </span><br/>
+          </span><br />
           {createActivityMarkers(event.activities)}
         </div>
-        <Popper id={id} open={open} anchorEl={anchorEl} style={{zIndex: 999}}>
+        <Popper id={id} open={open} anchorEl={anchorEl} style={{ zIndex: 999 }}>
           <Paper className="calendar-event-popper-paper">
             <table className="calendar-event-title">
               <tbody>
@@ -103,8 +104,20 @@ class CalendarEvent extends Component {
             <div className="calendar-event-activity-wrapper">
               {rows}
             </div>
-            <Button>Muokkaa</Button>
-            <Button>Poista</Button>
+            <div className="calendar-event-button-wrapper">
+              <EditEvent
+                buttonClass="calendar-button"
+                data={event}
+                source={this.handleClose}
+                setNotification={this.props.setNotification}
+              />
+              <DeleteEvent
+                buttonClass="calendar-button"
+                data={event}
+                source={this.handleClose}
+                setNotification={this.props.setNotification}
+              />
+            </div>
           </Paper>
         </Popper>
       </div>
