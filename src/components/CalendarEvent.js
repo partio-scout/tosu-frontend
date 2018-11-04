@@ -55,7 +55,7 @@ class CalendarEvent extends Component {
         </div>
         <Popper id={id} open={open} anchorEl={anchorEl} style={{ zIndex: 999 }}>
           <Paper className="calendar-event-popper-paper">
-            <ActivityDragAndDropArea bufferzone={false} parentId={this.props.event.eventId}>
+            <ActivityDragAndDropArea bufferzone={false} parentId={this.props.event.id}>
               <h3>{event.title}</h3>
               {startTime} - {endTime}
               <p>
@@ -67,7 +67,7 @@ class CalendarEvent extends Component {
               <ActivityWrapper
                 activities={this.props.event.activities}
                 bufferzone={false}
-                parentId={this.props.event.eventId} 
+                parentId={this.props.event.id} 
               />
               <div className="calendar-event-button-wrapper">
                 <EditEvent
