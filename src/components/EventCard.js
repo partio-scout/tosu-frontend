@@ -13,17 +13,14 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { CardContent } from '@material-ui/core'
 import Warning from '@material-ui/icons/Warning'
 import moment from 'moment-with-locales-es6'
-import Dialog from '@material-ui/core/Dialog'
-import Button from '@material-ui/core/Button'
 
 import ActivityWrapper from './ActivityWrapper'
 import ActivityDragAndDropArea from './ActivityDragAndDropArea'
+import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
 import {
   editEvent,
   deleteActivityFromEvent,
-  deleteEvent,
-  deleteEventGroup,
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally
 } from '../reducers/eventReducer'
@@ -36,8 +33,6 @@ import {
 } from '../reducers/bufferZoneReducer'
 import eventService from '../services/events'
 
-
-// Actual Warning icon
 // Warning icon
 const warning = (
   <div className="tooltip">
@@ -55,7 +50,6 @@ class EventCard extends React.Component {
     super(props)
     this.state = {
       expanded: false,
-      open: false
     }
   }
 
@@ -93,33 +87,6 @@ class EventCard extends React.Component {
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
 
-  deleteEvent = async () => {
-    try {
-      await this.props.deleteEvent(this.props.event.id)
-      await this.props.bufferZoneInitialization()
-      await this.emptyBuffer()
-      this.props.notify('Tapahtuma poistettu!', 'success')
-      this.handleClose()
-    } catch (exception) {
-      console.error('Error in deleting event:', exception)
-      this.props.notify('Tapahtuman poistamisessa tuli virhe. Yritä uudestaan!')
-    }
-  }
-
-  deleteEventGroup = async () => {
-    try {
-      await this.props.deleteEventGroup(this.props.event.groupId)
-      this.props.notify('Toistuva tapahtuma poistettu!', 'success')
-      await this.props.bufferZoneInitialization()
-      await this.emptyBuffer()
-      this.handleClose()
-    } catch (exception) {
-      console.error('Error in deleting event:', exception)
-      this.props.notify(
-        'Toistuvan tapahtuman poistamisessa tuli virhe. Yritä uudestaan!'
-      )
-    }
-  }
   isLeaf = value => {
     if (!value) {
       return false
@@ -147,18 +114,6 @@ class EventCard extends React.Component {
       .includes(input.toLowerCase())
   }
 
-  handleDelete = () => {
-    this.handleOpen()
-  }
-
-  handleOpen = () => {
-    this.setState({ open: true })
-  }
-
-  handleClose = () => {
-    this.setState({ open: false })
-  }
-
   handleExpandChange = expanded => {
     this.setState({ expanded: !this.state.expanded })
   }
@@ -173,18 +128,6 @@ class EventCard extends React.Component {
       : `${moment(event.startDate, 'YYYY-MM-DD')
         .locale('fi')
         .format('ddd D. MMMM YYYY')} ${event.startTime}`
-
-    const actions = (
-      <div>
-        <p>Poistetaanko tapahtuma {event.title}?</p>
-        <Button onClick={this.handleClose}>peruuta</Button>
-        <Button onClick={this.deleteEvent}>Poista {event.groupId?"tämä":null}tapahtuma</Button>
-        {event.groupId ? 
-          <Button onClick={this.deleteEventGroup}>Poista toistuvat tapahtumat</Button>
-        : null}
-      </div>
-    )
-
 
     const taskGroupTree = this.props.pofTree.taskgroups
 
@@ -308,24 +251,15 @@ class EventCard extends React.Component {
                 source={this.handleClose}
                 setNotification={this.props.setNotification}
               />
-              <Button
-                className="buttonRight"
-                onClick={this.handleDelete}
-                variant='contained'
-              >
-                poista
-              </Button>
-
-              <Dialog
-                open={this.state.open}
-                onClose={this.handleClose}
-              >
-                <div>
-                  {actions}
-                </div>
-              </Dialog>
+              <DeleteEvent
+                buttonClass="buttonRight"
+                data={event}
+                source={this.handleClose}
+                setNotification={this.props.setNotification}
+              />
             </CardActions>
           </ActivityDragAndDropArea>
+
         </Card>
       </div>
     )
@@ -346,10 +280,8 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   notify,
   editEvent,
-  deleteEvent,
   deleteActivityFromEvent,
   bufferZoneInitialization,
-  deleteEventGroup,
   addActivityToEventOnlyLocally,
   deleteActivityFromEventOnlyLocally,
   postActivityToBufferOnlyLocally,

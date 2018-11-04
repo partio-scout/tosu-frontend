@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 // React big calendar: https://onursimsek94.github.io/react-big-calendar/examples/index.html
 import BigCalendar from 'react-big-calendar-like-google'
 import moment from 'moment'
+import 'moment/locale/fi'
 
 import 'react-big-calendar-like-google/lib/css/react-big-calendar.css'
 
@@ -22,9 +23,14 @@ function prepareEventsToCalendarEvents(events) {
       start: new Date(event.startDate + ' ' + event.startTime),
       end: new Date(event.endDate + ' ' + event.endTime),
       allDay: false,
+      startDate: event.startDate,
+      startTime: event.startTime,
+      endDate: event.endDate,
+      endTime: event.endTime,
       activities: event.activities,
-      eventId: event.id,
-      information: event.information,
+      type: event.type,
+      id: event.id,
+      information: event.information
     }
   })
 }

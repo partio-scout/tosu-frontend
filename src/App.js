@@ -59,6 +59,8 @@ class App extends Component {
         bufferZoneHeight: 0,
         newEventVisible: false
       })
+    }else if (window.location.pathname === '/calendar') {
+        this.props.store.dispatch(filterChange('CALENDAR'))
     }
     if (getGoogleToken() !== null) {
       try {

@@ -1,4 +1,4 @@
-let root = 'http://localhost:3001';
+let root = 'https://suunnittelu.beta.partio-ohjelma.fi:3002';
 
 const hostname = window && window.location && window.location.hostname;
 
