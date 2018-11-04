@@ -3,9 +3,8 @@ import Popper from '@material-ui/core/Popper'
 import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper';
 
-import Activity from './Activity'
-import convertToSimpleActivity from '../functions/activityConverter'
-import findActivity from '../functions/findActivity'
+import ActivityWrapper from './ActivityWrapper'
+import ActivityDragAndDropArea from './ActivityDragAndDropArea'
 
 function createActivityMarkers(activities) {
   let markers = [' ']
@@ -32,11 +31,6 @@ class CalendarEvent extends Component {
     }))
   }
 
-  deleteActivity = activity => {
-    // TODO
-    console.log("delete activity", activity)
-  }
-
   render() {
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
@@ -45,23 +39,6 @@ class CalendarEvent extends Component {
     const event = this.props.event
     const startTime = event.start.toLocaleTimeString('fi-FI', { 'hour':'numeric', 'minute':'numeric' })
     const endTime = event.end.toLocaleTimeString('fi-FI', { 'hour':'numeric', 'minute':'numeric' })
-
-    const rows = event.activities.map(activity => { // TODO: duplicate code
-      const pofActivity = convertToSimpleActivity(
-        findActivity(activity, this.state.pofTree)
-      )
-      return (
-        <Activity
-          bufferzone={false}
-          parentId={event.eventId}
-          parent={this}
-          key={activity.id}
-          pofActivity={pofActivity}
-          activity={activity}
-          deleteActivity={this.deleteActivity}
-        />
-      )
-    })
 
     return (
       <div>
@@ -73,19 +50,23 @@ class CalendarEvent extends Component {
         </div>
         <Popper id={id} open={open} anchorEl={anchorEl} style={{zIndex: 999}}>
           <Paper className="calendar-event-popper-paper">
-            <h3>{event.title}</h3>
-            {startTime} - {endTime}
-            <p>
-              {event.information}
-            </p>
-            <p>
-              Aktiviteetit:
-            </p>
-            <div className="calendar-event-activity-wrapper">
-              {rows}
-            </div>
-            <Button>Muokkaa</Button>
-            <Button>Poista</Button>
+            <ActivityDragAndDropArea bufferzone={false} parentId={this.props.event.eventId}>
+              <h3>{event.title}</h3>
+              {startTime} - {endTime}
+              <p>
+                {event.information}
+              </p>
+              <p>
+                Aktiviteetit:
+              </p>
+              <ActivityWrapper
+                activities={this.props.event.activities}
+                bufferzone={false}
+                parentId={this.props.event.eventId} 
+              />
+              <Button>Muokkaa</Button>
+              <Button>Poista</Button>
+            </ActivityDragAndDropArea>
           </Paper>
         </Popper>
       </div>
