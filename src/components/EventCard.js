@@ -53,7 +53,6 @@ class EventCard extends React.Component {
     }
   }
 
-  // Mobiilissa..?
   onChangeChildren = async activityGuid => {
     if (this.isLeaf(activityGuid)) {
       try {
@@ -122,7 +121,7 @@ class EventCard extends React.Component {
     const { event } = this.props
 
     moment.locale('fi')
-    const title = this.state.expanded ? '' : event.title
+    const { title } = event
     const subtitle = this.state.expanded
       ? ''
       : `${moment(event.startDate, 'YYYY-MM-DD')
@@ -132,7 +131,7 @@ class EventCard extends React.Component {
     const taskGroupTree = this.props.pofTree.taskgroups
 
     let selectedTaskGroupPofData = []
-    if (this.props.taskgroup !== undefined && this.props.taskgroup !== null) {
+    if (this.props.taskgroup !== undefined && this.props.taskgroup !== null && isTouchDevice()) {
       console.log('Counting selectedTaskGroupPofData')
       const groupfound = taskGroupTree.find(
         group => group.guid === this.props.taskgroup.value
@@ -183,7 +182,7 @@ class EventCard extends React.Component {
         </div>
       </CardContent>
     )
-    const notTouchDeviceNotExpanded = (
+    const notExpanded = (
       <CardContent>
         <div className="activity-header">
           <Activities
@@ -192,6 +191,27 @@ class EventCard extends React.Component {
             parentId={this.props.event.id}
           />
         </div>
+      </CardContent>
+    )
+    const expanded = (
+      <CardContent>
+        <p className="eventTimes">
+          <span>{event.type} alkaa:</span>{' '}
+          {moment(event.startDate).locale('fi').format('ddd D.M.YYYY')} kello{' '}
+          {event.startTime}
+        </p>
+        <p className="eventTimes">
+          <span>{event.type} päättyy:</span>{' '}
+          {moment(event.endDate).locale('fi').format('ddd D.M.YYYY')} kello {event.endTime}
+        </p>
+        <p>{event.information}</p>
+        <p>Aktiviteetit:</p>
+        <Activities
+          activities={this.props.event.activities}
+          bufferzone={false}
+          parentId={this.props.event.id}
+        />
+        <br style={{ clear: 'both' }} />
       </CardContent>
     )
     
@@ -218,32 +238,10 @@ class EventCard extends React.Component {
                 </IconButton>
               }
             />
-            
-            {isTouchDevice() && !this.state.expanded ? touchDeviceNotExpanded : null }
-            {!isTouchDevice() && !this.state.expanded && this.props.event.activities.length !== 0 ? notTouchDeviceNotExpanded  : null}
+            { isTouchDevice() && !this.state.expanded ? touchDeviceNotExpanded : null }
+            { !isTouchDevice() && !this.state.expanded ? notExpanded  : null }
+            { this.state.expanded ? expanded : null }
 
-            <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-              <CardContent>
-                <h2>{event.title}</h2>
-                <p className="eventTimes">
-                  <span>{event.type} alkaa:</span>{' '}
-                  {moment(event.startDate).format('D.M.YYYY')} kello{' '}
-                  {event.startTime}
-                </p>
-                <p className="eventTimes">
-                  <span>{event.type} päättyy:</span>{' '}
-                  {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
-                </p>
-                <p>{event.information}</p>
-                <p>Aktiviteetit:</p>
-                <Activities
-                  activities={this.props.event.activities}
-                  bufferzone={false}
-                  parentId={this.props.event.id}
-                />
-                <br style={{ clear: 'both' }} />
-              </CardContent>
-            </Collapse>
             <CardActions>
               <EditEvent
                 buttonClass="buttonRight"
@@ -259,7 +257,6 @@ class EventCard extends React.Component {
               />
             </CardActions>
           </ActivityDragAndDropTarget>
-
         </Card>
       </div>
     )

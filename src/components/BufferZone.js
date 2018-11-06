@@ -14,7 +14,7 @@ class BufferZone extends React.Component {
       const promises = this.props.buffer.activities.map(activity =>  this.props.deleteActivityFromBuffer(activity.id))
       try {
         await Promise.all(promises)
-        this.props.pofTreeUpdate(this.props.buffer, [])
+        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
         this.props.notify('Aktiviteetit poistettu!', 'success')
       } catch (exception) {
         this.props.notify('Kaikkia aktiviteetteja ei voitu poistaa!')
