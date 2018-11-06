@@ -26,7 +26,7 @@ class DeleteEvent extends React.Component {
 
   deleteEventGroup = async () => {
     try {
-      await this.props.deleteEventGroup(this.props.data.groupId)
+      await this.props.deleteEventGroup(this.props.data.eventGroupId)
       this.props.notify('Toistuva tapahtuma poistettu!', 'success')
       this.handleClose()
     } catch (exception) {
@@ -53,8 +53,8 @@ class DeleteEvent extends React.Component {
     const event  = this.props.data
     // This is the popup that appears if you click "poista" on an event
     let actions = []
-    // If groupId exists, it's a recurring event, so we need to enable deleting those
-    if (event.groupId) {
+    // IfeventGroupId exists, it's a recurring event, so we need to enable deleting those
+    if (event.eventGroupId) {
       actions = (
         <div>
           <p>Poistetaanko tapahtuma {event.title}?</p>
