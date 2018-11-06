@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Popper from '@material-ui/core/Popper'
-import Paper from '@material-ui/core/Paper';
+import Paper from '@material-ui/core/Paper'
+import Icon from '@material-ui/core/Icon'
+import IconButton from '@material-ui/core/IconButton'
 
 import Activities from './Activities'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
@@ -36,6 +38,12 @@ class CalendarEvent extends Component {
 
   }
 
+  closePopper = () => {
+    this.setState(state => ({
+      anchorEl: null,
+    }))
+  }
+
   render() {
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
@@ -47,7 +55,7 @@ class CalendarEvent extends Component {
 
     return (
       <div>
-        <div aria-describedby={id} variant="contained" onClick={this.handleClick}>
+        <div aria-describedby={id} onClick={this.handleClick}>
           <span>
             {event.title}
           </span><br />
@@ -56,7 +64,16 @@ class CalendarEvent extends Component {
         <Popper id={id} open={open} anchorEl={anchorEl} style={{ zIndex: 999 }}>
           <Paper>
             <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id} className="calendar-event-popper">
-              <h3>{event.title}</h3>
+              <div>
+                <div className="left">
+                  <p className="calendar-event-title">{event.title}</p>
+                </div>
+                <div className="right">
+                  <IconButton onClick={this.closePopper}>
+                    <Icon>close</Icon>
+                  </IconButton>
+                </div>
+              </div>
               {startTime} - {endTime}
               <p>
                 {event.information}
