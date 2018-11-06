@@ -29,7 +29,9 @@ class ActivityDragAndDropTarget extends React.Component {
     canDrop: PropTypes.bool.isRequired,
     connectDropTarget: PropTypes.func.isRequired,
 
-    // these parameters are used in DropActivity.js
+    // these props are used in DropActivity.js
+    // (yes, very confusing)
+    // TODO: find a better solution
     bufferzone: PropTypes.bool.isRequired,
     parentId: PropTypes.number.isRequired,
     
