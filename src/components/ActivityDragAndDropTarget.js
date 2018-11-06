@@ -68,6 +68,8 @@ const DroppableActivityDragAndDropTarget = DropTarget(
 
 const mapStateToProps = state => {
   return {
+    buffer: state.buffer,
+    events: state.events,
   }
 }
 

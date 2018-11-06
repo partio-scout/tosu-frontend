@@ -22,9 +22,7 @@ const moveActivityFromEventToBuffer = async (props, activity, parentId, targetId
   } catch (exception) {
     props.deleteActivityFromBufferOnlyLocally(activityId)
     props.addActivityToEventOnlyLocally(parentId, { ...activity, canDrag: true })
-    if (parentId !== targetId) {
-      props.notify('Aktiviteettialue on täynnä!')
-    }
+    props.notify('Aktiviteettialue on täynnä!')
   }
   props.pofTreeUpdate(props.buffer, props.events)
 }
