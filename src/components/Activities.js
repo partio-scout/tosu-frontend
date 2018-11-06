@@ -6,8 +6,8 @@ import findActivity from '../functions/findActivity'
 import convertToSimpleActivity from '../functions/activityConverter'
 import { notify } from '../reducers/notificationReducer' 
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import { postActivityToBufferOnlyLocally, deleteActivityFromBufferOnlyLocally, deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
-import { deleteActivityFromEvent,  deleteActivityFromEventOnlyLocally, addActivityToEventOnlyLocally } from '../reducers/eventReducer'
+import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
+import { deleteActivityFromEvent } from '../reducers/eventReducer'
 
 
 
