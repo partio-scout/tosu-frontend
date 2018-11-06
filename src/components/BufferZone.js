@@ -1,34 +1,47 @@
 import { connect } from 'react-redux'
 import React from 'react'
 import Button from '@material-ui/core/Button'
-import ActivityDragAndDropArea from './ActivityDragAndDropArea'
-import ActivityWrapper from './ActivityWrapper'
+import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
+import Activities from './Activities'
+import { notify } from '../reducers/notificationReducer' 
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
+import { deleteActivityFromBufferOnlyLocally, deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 
 
 class BufferZone extends React.Component {
-  constructor(props){
-    super(props)
-    this.activityDragAndDropArea = React.createRef()
+  clear = async () => {
+    if (this.props.buffer.activities){
+      const promises = this.props.buffer.activities.map(activity => {
+        //this.props.deleteActivityFromBufferOnlyLocally(activity.id) 
+        this.props.deleteActivityFromBuffer(activity.id)
+      })
+      try {
+        Promise.all(promises)
+        this.props.pofTreeUpdate(this.props.buffer, [])
+        this.props.notify('Aktiviteetit poistettu!', 'success')
+      } catch (exception) {
+        this.props.notify('Kaikkia aktiviteetteja ei voitu poistaa!')
+      }
+    }
   }
-
 
   render() {
     if (! this.props.buffer.id){
       return ( <div /> )
     }
     return (
-      <ActivityDragAndDropArea ref={this.activityDragAndDropArea} bufferzone parentId={this.props.buffer.id}>
+      <ActivityDragAndDropTarget bufferzone parentId={this.props.buffer.id}>
         <div id="bufferzone">
-          <ActivityWrapper
+          <Activities
             activities={this.props.buffer.activities}
             bufferzone
             parentId={this.props.buffer.id} 
           />
         </div>
         <div>
-          <Button onClick={this.activityDragAndDropArea.clear}> Tyhjennä </Button>
+          <Button onClick={this.clear}> Tyhjennä </Button>
         </div>
-      </ActivityDragAndDropArea>
+      </ActivityDragAndDropTarget>
     )
   }
 }
@@ -37,9 +50,14 @@ const mapStateToProps = state => {
   return {
     buffer: state.buffer,
     events: state.events,
-    pofTree: state.pofTree
+    pofTree: state.pofTree,
   }
 }
 
 
-export default connect(mapStateToProps, {})(BufferZone)
+export default connect(mapStateToProps, {
+  notify,
+  pofTreeUpdate,
+  deleteActivityFromBufferOnlyLocally,
+  deleteActivityFromBuffer,
+})(BufferZone)

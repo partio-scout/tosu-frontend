@@ -12,7 +12,7 @@ import { deleteActivityFromEvent,  deleteActivityFromEventOnlyLocally, addActivi
 
 
 
-class ActivityWrapper extends React.Component { 
+class Activities extends React.Component { 
   static propTypes = {
     bufferzone: PropTypes.bool.isRequired,
     parentId: PropTypes.number.isRequired,
@@ -28,21 +28,6 @@ class ActivityWrapper extends React.Component {
     deleteActivityFromEvent: PropTypes.func.isRequired,
   }
 
-  
-  clear = async () => {
-    if (this.props.activities){
-      const promises = this.props.activities.map(activity =>
-        this.props.deleteActivityFromBuffer(activity.id)
-      )
-      try {
-        await Promise.all(promises)
-        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-        this.props.notify('Aktiviteetit poistettu!', 'success')
-      } catch (exception) {
-        this.props.notify('Kaikkia aktiviteetteja ei voitu poistaa!')
-      }
-    }
-  }
 
   deleteActivity = async activity => {
     if (this.props.bufferzone){
@@ -90,7 +75,7 @@ class ActivityWrapper extends React.Component {
         )
       })
     }
-    return (<div>{rows}</div>)
+    return (<div className={this.props.className}>{rows}</div>)
   }
 }
 
@@ -112,4 +97,4 @@ export default connect(mapStateToProps, {
   pofTreeUpdate,
   deleteActivityFromBuffer,
   deleteActivityFromEvent,
-})(ActivityWrapper)
+})(Activities)

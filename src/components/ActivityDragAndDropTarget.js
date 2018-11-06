@@ -23,7 +23,7 @@ function collect(connector, monitor) {
 
 
 
-class ActivityDragAndDropArea extends React.Component {
+class ActivityDragAndDropTarget extends React.Component {
   static propTypes = {
     isOver: PropTypes.bool.isRequired,
     canDrop: PropTypes.bool.isRequired,
@@ -46,28 +46,29 @@ class ActivityDragAndDropArea extends React.Component {
   render() {
     const { isOver, canDrop, connectDropTarget } = this.props
 
-    let patternClass
     let background = { backgroundColor: '#FFF' }
     if (canDrop) {
       background = { backgroundColor: '#C8E6C9' }
     }
+    let className = this.props.className
     if (isOver) {
-      patternClass = 'pattern'
+      className += ' pattern'
     }
+    
 
     return connectDropTarget(
-      <div style={background} className={patternClass}>
+      <div style={background} className={className}>
         {this.props.children}
       </div>
     )
   }
 }
 
-const DroppableActivityDragAndDropArea = DropTarget(
+const DroppableActivityDragAndDropTarget = DropTarget(
   ItemTypes.ACTIVITY,
   DropActivity,
   collect,
-)(ActivityDragAndDropArea)
+)(ActivityDragAndDropTarget)
 
 const mapStateToProps = state => {
   return {
@@ -84,4 +85,4 @@ export default connect(mapStateToProps, {
   pofTreeUpdate,
   deleteActivityFromBuffer,
   deleteActivityFromEvent,
-})(DroppableActivityDragAndDropArea)
+})(DroppableActivityDragAndDropTarget)

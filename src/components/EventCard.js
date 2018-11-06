@@ -14,8 +14,8 @@ import { CardContent } from '@material-ui/core'
 import Warning from '@material-ui/icons/Warning'
 import moment from 'moment-with-locales-es6'
 
-import ActivityWrapper from './ActivityWrapper'
-import ActivityDragAndDropArea from './ActivityDragAndDropArea'
+import Activities from './Activities'
+import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
 import {
@@ -146,7 +146,7 @@ class EventCard extends React.Component {
     const touchDeviceNotExpanded = (
       <CardContent>
         <div className="mobile-event-card-media">
-          <ActivityWrapper
+          <Activities
             activities={this.props.event.activities}
             bufferzone={false}
             parentId={this.props.event.id}
@@ -186,7 +186,7 @@ class EventCard extends React.Component {
     const notTouchDeviceNotExpanded = (
       <CardContent>
         <div className="activity-header">
-          <ActivityWrapper
+          <Activities
             activities={this.props.event.activities}
             bufferzone={false}
             parentId={this.props.event.id}
@@ -199,7 +199,7 @@ class EventCard extends React.Component {
     return (
       <div className={this.props.event.activities.length === 0 ? "empty-event-card" : "event-card-wrapper"}>
         <Card>
-          <ActivityDragAndDropArea bufferzone={false} parentId={this.props.event.id}>
+          <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id}>
             <CardHeader
               title={
                 <div>
@@ -236,7 +236,7 @@ class EventCard extends React.Component {
                 </p>
                 <p>{event.information}</p>
                 <p>Aktiviteetit:</p>
-                <ActivityWrapper 
+                <Activities
                   activities={this.props.event.activities}
                   bufferzone={false}
                   parentId={this.props.event.id}
@@ -258,7 +258,7 @@ class EventCard extends React.Component {
                 setNotification={this.props.setNotification}
               />
             </CardActions>
-          </ActivityDragAndDropArea>
+          </ActivityDragAndDropTarget>
 
         </Card>
       </div>

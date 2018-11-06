@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import Popper from '@material-ui/core/Popper'
 import Paper from '@material-ui/core/Paper';
 
-import ActivityWrapper from './ActivityWrapper'
-import ActivityDragAndDropArea from './ActivityDragAndDropArea'
+import Activities from './Activities'
+import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent';
 
@@ -54,8 +54,8 @@ class CalendarEvent extends Component {
           {createActivityMarkers(event.activities)}
         </div>
         <Popper id={id} open={open} anchorEl={anchorEl} style={{ zIndex: 999 }}>
-          <Paper className="calendar-event-popper-paper">
-            <ActivityDragAndDropArea bufferzone={false} parentId={this.props.event.id}>
+          <Paper>
+            <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id} className="calendar-event-popper">
               <h3>{event.title}</h3>
               {startTime} - {endTime}
               <p>
@@ -64,10 +64,11 @@ class CalendarEvent extends Component {
               <p>
                 Aktiviteetit:
               </p>
-              <ActivityWrapper
+              <Activities
                 activities={this.props.event.activities}
                 bufferzone={false}
                 parentId={this.props.event.id} 
+                className='calendar-event-activity-wrapper'
               />
               <div className="calendar-event-button-wrapper">
                 <EditEvent
@@ -83,7 +84,7 @@ class CalendarEvent extends Component {
                   setNotification={this.props.setNotification}
                 />
               </div>
-            </ActivityDragAndDropArea>
+            </ActivityDragAndDropTarget>
           </Paper>
         </Popper>
       </div>

@@ -403,7 +403,7 @@ span.label {
   border-radius: 50%;
   display: inline-block;
 }
-.calendar-event-popper-paper {
+.calendar-event-popper {
   min-width: 200px;
   padding: 10px;
 }
