@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Popper from '@material-ui/core/Popper'
-import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
@@ -74,7 +73,7 @@ class CalendarEvent extends Component {
 
     return (
       <div>
-        <div aria-describedby={id} variant="contained" onClick={this.handleClick}>
+        <div aria-describedby={id} onClick={this.handleClick}>
           <span>
             {event.title}
           </span><br />
@@ -82,18 +81,16 @@ class CalendarEvent extends Component {
         </div>
         <Popper id={id} open={open} anchorEl={anchorEl} style={{ zIndex: 999 }}>
           <Paper className="calendar-event-popper-paper">
-            <table className="calendar-event-title">
-              <tbody>
-                <tr>
-                  <td><h3>{event.title}</h3></td>
-                  <td className="calendar-event-close-button-td">
-                    <IconButton onClick={this.closePopper}>
-                      <Icon>close</Icon>
-                    </IconButton>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div>
+              <div className="left">
+                <p className="calendar-event-title">{event.title}</p>
+              </div>
+              <div className="right">
+                <IconButton onClick={this.closePopper}>
+                  <Icon>close</Icon>
+                </IconButton>
+              </div>
+            </div>
             {startTime} - {endTime}
             <p>
               {event.information}
