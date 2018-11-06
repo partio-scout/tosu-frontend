@@ -417,6 +417,22 @@ span.label {
   display: flex;
   flex-flow: row wrap;
 }
+.calendar-event-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+.calendar-event-close-button-td {
+  text-align: right;
+}
+.left {
+  margin-bottom: auto;
+  display: inline-block;
+}
+.right {
+  float: right;
+  display: inline-block;
+  margin-top: 7px;
+}
 
 /* #### EVENT LIST #### */
 .event-list {
