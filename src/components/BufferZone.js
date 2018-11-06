@@ -11,12 +11,9 @@ import { deleteActivityFromBufferOnlyLocally, deleteActivityFromBuffer } from '.
 class BufferZone extends React.Component {
   clear = async () => {
     if (this.props.buffer.activities){
-      const promises = this.props.buffer.activities.map(activity => {
-        //this.props.deleteActivityFromBufferOnlyLocally(activity.id) 
-        this.props.deleteActivityFromBuffer(activity.id)
-      })
+      const promises = this.props.buffer.activities.map(activity =>  this.props.deleteActivityFromBuffer(activity.id))
       try {
-        Promise.all(promises)
+        await Promise.all(promises)
         this.props.pofTreeUpdate(this.props.buffer, [])
         this.props.notify('Aktiviteetit poistettu!', 'success')
       } catch (exception) {

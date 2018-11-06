@@ -48,7 +48,7 @@ class ActivityDragAndDropTarget extends React.Component {
     const { isOver, canDrop, connectDropTarget } = this.props
 
     const background = { backgroundColor: (canDrop ? '#C8E6C9' : '#FFF' ) }
-    const className = this.props.className + (isOver ? ' pattern' : '' )
+    const className = (this.props.className || '')  + (isOver ? ' pattern' : '' )
 
     return connectDropTarget(
       <div style={background} className={className}>
