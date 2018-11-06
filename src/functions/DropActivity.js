@@ -1,5 +1,7 @@
 import activityService from '../services/activities'
 
+
+
 const moveActivityFromEventToBuffer = async (props, activity, parentId, targetId) => {
   const activityId = activity.id
   try {

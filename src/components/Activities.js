@@ -17,12 +17,7 @@ class Activities extends React.Component {
     bufferzone: PropTypes.bool.isRequired,
     parentId: PropTypes.number.isRequired,
     
-
     notify: PropTypes.func.isRequired,
-    deleteActivityFromEventOnlyLocally: PropTypes.func.isRequired,
-    addActivityToEventOnlyLocally: PropTypes.func.isRequired,
-    deleteActivityFromBufferOnlyLocally: PropTypes.func.isRequired,
-    postActivityToBufferOnlyLocally: PropTypes.func.isRequired,
     pofTreeUpdate: PropTypes.func.isRequired,
     deleteActivityFromBuffer: PropTypes.func.isRequired,
     deleteActivityFromEvent: PropTypes.func.isRequired,
@@ -30,32 +25,18 @@ class Activities extends React.Component {
 
 
   deleteActivity = async activity => {
-    if (this.props.bufferzone){
-      try {
-        await this.props.deleteActivityFromBuffer(activity.id)
-        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-        this.props.notify('Aktiviteetti poistettu!', 'success')
-      } catch (exception) {
-        this.props.notify(
-          'Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!'
-        )
-      }
-    }else{
-      try {
-        await this.props.deleteActivityFromEvent(activity.id)
-        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-        this.props.notify('Aktiviteetti poistettu!', 'success')
-      } catch (exception) {
-        this.props.notify(
-          'Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!'
-        )
-      }
+    try {
+      const deleteActivity= this.props.bufferzone ? this.props.deleteActivityFromBuffer : this.props.deleteActivityFromEvent
+      deleteActivity(activity.id)
+      this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+      this.props.notify('Aktiviteetti poistettu!', 'success')
+    } catch (exception) {
+      this.props.notify('Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!')
     }
   }
 
   render() {
     let rows=[]
-
     if (this.props.activities){
       rows = this.props.activities.map(activity => {
         const pofActivity = convertToSimpleActivity(
@@ -90,10 +71,6 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   notify,
-  deleteActivityFromEventOnlyLocally,
-  addActivityToEventOnlyLocally,
-  deleteActivityFromBufferOnlyLocally,
-  postActivityToBufferOnlyLocally,
   pofTreeUpdate,
   deleteActivityFromBuffer,
   deleteActivityFromEvent,

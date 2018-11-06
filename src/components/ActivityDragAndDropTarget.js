@@ -28,10 +28,11 @@ class ActivityDragAndDropTarget extends React.Component {
     isOver: PropTypes.bool.isRequired,
     canDrop: PropTypes.bool.isRequired,
     connectDropTarget: PropTypes.func.isRequired,
+
+    // these parameters are used in DropActivity.js
     bufferzone: PropTypes.bool.isRequired,
     parentId: PropTypes.number.isRequired,
     
-
     notify: PropTypes.func.isRequired,
     deleteActivityFromEventOnlyLocally: PropTypes.func.isRequired,
     addActivityToEventOnlyLocally: PropTypes.func.isRequired,
@@ -46,15 +47,8 @@ class ActivityDragAndDropTarget extends React.Component {
   render() {
     const { isOver, canDrop, connectDropTarget } = this.props
 
-    let background = { backgroundColor: '#FFF' }
-    if (canDrop) {
-      background = { backgroundColor: '#C8E6C9' }
-    }
-    let className = this.props.className
-    if (isOver) {
-      className += ' pattern'
-    }
-    
+    const background = { backgroundColor: (canDrop ? '#C8E6C9' : '#FFF' ) }
+    const className = this.props.className + (isOver ? ' pattern' : '' )
 
     return connectDropTarget(
       <div style={background} className={className}>
