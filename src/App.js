@@ -11,6 +11,8 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import { DialogTitle } from '@material-ui/core'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
 import moment from 'moment'
 // CSS
 import 'react-sticky-header/styles.css'
@@ -49,7 +51,8 @@ class App extends Component {
       headerVisible: false,
       drawerVisible: true,
       bufferZoneHeight: 0,
-      newEventVisible: false
+      newEventVisible: false,
+      shouldShowAllKuksaEvents: false,
     }
   }
 
@@ -60,7 +63,7 @@ class App extends Component {
         bufferZoneHeight: 0,
         newEventVisible: false
       })
-    }else if (window.location.pathname === '/calendar') {
+    } else if (window.location.pathname === '/calendar') {
         this.props.store.dispatch(filterChange('CALENDAR'))
     }
     if (getGoogleToken() !== null) {
@@ -142,10 +145,21 @@ class App extends Component {
     this.setState({ newEventVisible: false })
   }
 
+  handleKuksaEventSwitchChange = () => {
+    if (this.props.store.getState().filter === "KUKSA") {
+      this.setState({
+        shouldShowAllKuksaEvents: !this.state.shouldShowAllKuksaEvents
+      })
+    }
+  }
+
   render() {
+    const { events, filter } = this.props.store.getState()
+    const shouldShowAllKuksaEvents = this.state.shouldShowAllKuksaEvents
+    console.log(shouldShowAllKuksaEvents)
+
     const eventsToShow = () => {
       const currentDate = moment().format('YYYY-MM-DD')
-      const { events, filter } = this.props.store.getState()
       // If filter is set to FUTURE, show all events with end date equal or greater than today
       // otherwise show events with end date less than today
       switch (filter) {
@@ -154,7 +168,11 @@ class App extends Component {
         case "ALL":
           return events.filter(event => !event.kuksaEvent).sort(eventComparer)
         case "KUKSA":
-          return events.filter(event => event.kuksaEvent).sort(eventComparer)
+          console.log(shouldShowAllKuksaEvents)
+          if (shouldShowAllKuksaEvents) {
+            return events.filter(event => event.kuksaEvent).sort(eventComparer)
+          }
+          return events.filter(event => event.endDate >= currentDate && event.kuksaEvent).sort(eventComparer)
         default:
           return events.sort(eventComparer)
       }
@@ -198,8 +216,22 @@ class App extends Component {
       />
     )
 
+    const kuksaEventsShowAllSwitch = (
+      <FormControlLabel
+        control={
+          <Switch
+            checked={shouldShowAllKuksaEvents}
+            onClick={this.handleKuksaEventSwitchChange}
+            color="primary"
+          />
+        }
+        label="Näytä myös menneet tapahtumat"
+      />
+    )
+
     const eventsToList = (
       <div className='event-list-container'>
+        {filter === "KUKSA" ? (kuksaEventsShowAllSwitch) : null}
         <ul className='event-list'>
           {eventsToShow().map(event => (
             <li className='event-list-item' key={event.id ? event.id : 0}>
