@@ -102,6 +102,6 @@ class DeleteEvent extends React.Component {
   }
 }
 
-export default connect(null, { deleteEvent, notify })(
+export default connect(null, { deleteEvent, notify, deleteEventGroup })(
   DeleteEvent
 )

@@ -5,11 +5,11 @@
  Edited to silence a console warning.
 */
 
-import PropTypes from 'prop-types';
-import React from 'react';
-import { MuiThemeProvider, RaisedButton, FloatingActionButton, DropDownMenu, MenuItem } from 'material-ui';
-import HardwareKeyboardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
-import HardwareKeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
+import PropTypes from 'prop-types'
+import React from 'react'
+import { MuiThemeProvider, RaisedButton, FloatingActionButton, DropDownMenu, MenuItem } from 'material-ui'
+import HardwareKeyboardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left'
+import HardwareKeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right'
 
 let navigate = {
   PREVIOUS: 'PREV',
@@ -38,6 +38,7 @@ class Toolbar extends React.Component {
       <div className='rbc-toolbar'>
         <MuiThemeProvider>
           <div className='rbc-btn-group'>
+            <div></div>
             <div onClick={this.navigate.bind(null, navigate.TODAY)}>
               <RaisedButton
                 label={messages.today}
@@ -115,4 +116,4 @@ class Toolbar extends React.Component {
   }
 }
 
-export default Toolbar;
+export default Toolbar

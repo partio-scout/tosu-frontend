@@ -73,7 +73,7 @@ export const deleteEvent = eventId => async dispatch => {
 }
 
 export const deleteEventGroup = eventGroupId => async dispatch => {
-  await eventGroupService.deleteEventgroup(eventGroupId)
+  await eventGroupService.deleteEventGroup(eventGroupId)
   dispatch({
     type: 'DELETE_EVENTGROUP',
     eventGroupId

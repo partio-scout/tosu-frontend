@@ -4,10 +4,9 @@ import Paper from '@material-ui/core/Paper'
 import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
 
-import Activity from './Activity'
+import Activities from './Activities'
+import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import DeleteEvent from './DeleteEvent'
-import convertToSimpleActivity from '../functions/activityConverter'
-import findActivity from '../functions/findActivity'
 import EditEvent from './EditEvent';
 
 function createActivityMarkers(activities) {
@@ -54,23 +53,6 @@ class CalendarEvent extends Component {
     const startTime = event.start.toLocaleTimeString('fi-FI', { 'hour': 'numeric', 'minute': 'numeric' })
     const endTime = event.end.toLocaleTimeString('fi-FI', { 'hour': 'numeric', 'minute': 'numeric' })
 
-    const rows = event.activities.map(activity => { // TODO: duplicate code
-      const pofActivity = convertToSimpleActivity(
-        findActivity(activity, this.state.pofTree)
-      )
-      return (
-        <Activity
-          bufferzone={false}
-          parentId={event.id}
-          parent={this}
-          key={activity.id}
-          pofActivity={pofActivity}
-          activity={activity}
-          deleteActivity={this.deleteActivity}
-        />
-      )
-    })
-
     return (
       <div>
         <div aria-describedby={id} onClick={this.handleClick}>
@@ -80,41 +62,46 @@ class CalendarEvent extends Component {
           {createActivityMarkers(event.activities)}
         </div>
         <Popper id={id} open={open} anchorEl={anchorEl} style={{ zIndex: 999 }}>
-          <Paper className="calendar-event-popper-paper">
-            <div>
-              <div className="left">
-                <p className="calendar-event-title">{event.title}</p>
+          <Paper>
+            <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id} className="calendar-event-popper">
+              <div>
+                <div className="left">
+                  <p className="calendar-event-title">{event.title}</p>
+                </div>
+                <div className="right">
+                  <IconButton onClick={this.closePopper}>
+                    <Icon>close</Icon>
+                  </IconButton>
+                </div>
               </div>
-              <div className="right">
-                <IconButton onClick={this.closePopper}>
-                  <Icon>close</Icon>
-                </IconButton>
+              {startTime} - {endTime}
+              <p>
+                {event.information}
+              </p>
+              <p>
+                Aktiviteetit:
+              </p>
+              <Activities
+                activities={this.props.event.activities}
+                bufferzone={false}
+                parentId={this.props.event.id} 
+                className='calendar-event-activity-wrapper'
+              />
+              <div className="calendar-event-button-wrapper">
+                <EditEvent
+                  buttonClass="calendar-button"
+                  data={event}
+                  source={this.handleClose}
+                  setNotification={this.props.setNotification}
+                />
+                <DeleteEvent
+                  buttonClass="calendar-button"
+                  data={event}
+                  source={this.handleClose}
+                  setNotification={this.props.setNotification}
+                />
               </div>
-            </div>
-            {startTime} - {endTime}
-            <p>
-              {event.information}
-            </p>
-            <p>
-              Aktiviteetit:
-            </p>
-            <div className="calendar-event-activity-wrapper">
-              {rows}
-            </div>
-            <div className="calendar-event-button-wrapper">
-              <EditEvent
-                buttonClass="calendar-button"
-                data={event}
-                source={this.handleClose}
-                setNotification={this.props.setNotification}
-              />
-              <DeleteEvent
-                buttonClass="calendar-button"
-                data={event}
-                source={this.handleClose}
-                setNotification={this.props.setNotification}
-              />
-            </div>
+            </ActivityDragAndDropTarget>
           </Paper>
         </Popper>
       </div>
