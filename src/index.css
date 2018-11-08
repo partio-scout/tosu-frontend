@@ -393,7 +393,7 @@ span.label {
 /* #### CALENDAR #### */
 .calendar {
   height: 500px;
-  width: auto;
+  width: 700px;
   padding-top: 20px;
 }
 .calendar-activity-marker {

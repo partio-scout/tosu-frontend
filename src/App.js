@@ -23,6 +23,7 @@ import ClippedDraver from './components/ClippedDrawer'
 import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
 import EventCard from './components/EventCard'
+import KuksaEventCard from './components/KuksaEventCard'
 import Calendar from './components/Calendar'
 // Utils
 import { createStatusMessage } from './utils/createStatusMessage'
@@ -147,9 +148,16 @@ class App extends Component {
       const { events, filter } = this.props.store.getState()
       // If filter is set to FUTURE, show all events with end date equal or greater than today
       // otherwise show events with end date less than today
-      return filter === 'FUTURE'
-        ? events.filter(event => event.endDate >= currentDate).sort(eventComparer)
-        : events.sort(eventComparer)
+      switch (filter) {
+        case "FUTURE":
+          return events.filter(event => event.endDate >= currentDate && !event.kuksaEvent).sort(eventComparer)
+        case "ALL":
+          return events.filter(event => !event.kuksaEvent).sort(eventComparer)
+        case "KUKSA":
+          return events.filter(event => event.kuksaEvent).sort(eventComparer)
+        default:
+          return events.sort(eventComparer)
+      }
     }
 
     if (this.props.scout === null) {
@@ -195,7 +203,7 @@ class App extends Component {
         <ul className='event-list'>
           {eventsToShow().map(event => (
             <li className='event-list-item' key={event.id ? event.id : 0}>
-              <EventCard event={event} />
+              {event.kuksaEvent ? (<KuksaEventCard event={event} />) : (<EventCard event={event} />)}
             </li>
           ))}
         </ul>
@@ -239,6 +247,16 @@ class App extends Component {
                     variant="contained"
                   >
                     Kaikki
+                  </Button>
+                  &nbsp;
+                  <Button
+                    className={this.props.store.getState().filter === 'KUKSA' ? 'active' : ''}
+                    component={Link}
+                    to="/"
+                    onClick={this.filterSelected('KUKSA')}
+                    variant="contained"
+                  >
+                    Kuksa
                   </Button>
                   &nbsp;
                   <Button
