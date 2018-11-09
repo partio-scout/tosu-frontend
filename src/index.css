@@ -408,6 +408,7 @@ span.label {
   height: 500px;
   width: auto;
   padding-top: 20px;
+  margin-bottom: calc(100vh - 500px);
 }
 
 .calendar-activity-marker {
