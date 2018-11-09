@@ -156,7 +156,6 @@ class App extends Component {
   render() {
     const { events, filter } = this.props.store.getState()
     const shouldShowAllKuksaEvents = this.state.shouldShowAllKuksaEvents
-    console.log(shouldShowAllKuksaEvents)
 
     const eventsToShow = () => {
       const currentDate = moment().format('YYYY-MM-DD')
@@ -168,7 +167,6 @@ class App extends Component {
         case "ALL":
           return events.filter(event => !event.kuksaEvent).sort(eventComparer)
         case "KUKSA":
-          console.log(shouldShowAllKuksaEvents)
           if (shouldShowAllKuksaEvents) {
             return events.filter(event => event.kuksaEvent).sort(eventComparer)
           }

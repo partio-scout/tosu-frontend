@@ -13,6 +13,8 @@ import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { CardContent } from '@material-ui/core'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
 import Warning from '@material-ui/icons/Warning'
 import moment from 'moment-with-locales-es6'
 import Activity from './Activity'
@@ -245,6 +247,14 @@ class EventCard extends React.Component {
       patternClass = 'pattern'
     }
 
+    let cardClassName = "event-card-wrapper" // Normal
+    if (this.props.event.kuksaEvent) {
+      cardClassName = "kuksa-synced-event-card" // Synced to Kuksa
+    }
+    if (rows.length === 0) { // Prioritize emptiness warning over kuksa sync color
+      cardClassName = "empty-event-card" // No activities
+    }
+
     const taskGroupTree = this.props.pofTree.taskgroups
 
     let selectedTaskGroupPofData = []
@@ -258,10 +268,8 @@ class EventCard extends React.Component {
       )
     }
 
-    // const cardWarning = warning(this.props.status, this.props.event)
-
     return connectDropTarget(
-      <div className={rows.length === 0 ? "empty-event-card" : "event-card-wrapper"}>
+      <div className={cardClassName}>
         <Card
           style={background}
           className={patternClass}
@@ -331,6 +339,16 @@ class EventCard extends React.Component {
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
             <CardContent>
               <h2>{event.title}</h2>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={false}
+                    onClick={()=>{}}
+                    color="primary"
+                  />
+                }
+                label="Synkronoi Kuksaan"
+              />
               <p className="eventTimes">
                 <span>{event.type} alkaa:</span>{' '}
                 {moment(event.startDate).format('D.M.YYYY')} kello{' '}

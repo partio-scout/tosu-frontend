@@ -51,7 +51,9 @@ class NewEvent extends React.Component {
         endDate: moment(endDate).format('YYYY-MM-DD'),
         endTime: moment(this.state.endTime).format('HH:mm'),
         type: this.state.type,
-        information: this.state.information
+        information: this.state.information,
+        tosuEvent: true,
+        kuksaEvent: false
       }
       try {
         await this.sendEventPostRequest(data)

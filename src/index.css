@@ -448,6 +448,12 @@ span.label {
   background-color: orange;
   border-radius: 4px;
 }
+.kuksa-synced-event-card {
+  padding: 5px;
+  margin-bottom: 15px;
+  background-color: #63bcd1;
+  border-radius: 4px;
+}
 .event-card-wrapper {
   padding: 5px;
   margin-bottom: 15px;
