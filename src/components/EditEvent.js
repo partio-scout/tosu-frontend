@@ -73,7 +73,9 @@ class EditEvent extends React.Component {
       this.props.editEvent(moddedEvent)
       this.props.bufferZoneInitialization(0)
       // await eventService.edit(data);
-      this.props.source()
+      if (this.props.source) {
+        this.props.source()
+      }
       this.setState({ open: false })
       this.props.notify('Tapahtuman muokkaus onnistui!', 'success')
     } catch (exception) {
