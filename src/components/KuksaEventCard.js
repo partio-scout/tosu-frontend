@@ -1,27 +1,58 @@
 import { connect } from 'react-redux'
 import 'rc-tree-select/assets/index.css'
 import React from 'react'
-import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
-import CardHeader from '@material-ui/core/CardHeader'
-import Collapse from '@material-ui/core/Collapse'
-import IconButton from '@material-ui/core/IconButton'
-import Button from '@material-ui/core/Button'
+import {
+  Card,
+  CardActions,
+  CardHeader,
+  Collapse,
+  IconButton,
+  Button,
+  Dialog,
+  CardContent,
+} from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { CardContent } from '@material-ui/core'
 import moment from 'moment-with-locales-es6'
 import { notify } from '../reducers/notificationReducer'
 
-class EventCard extends React.Component {
+import { addEvent } from '../reducers/eventReducer'
+
+class KuksaEventCard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       expanded: false,
+      dialogOpen: false,
+      synced: props.event.synced
     }
   }
 
   handleExpandChange = expanded => {
     this.setState({ expanded: !this.state.expanded })
+  }
+
+  handleButtonDialogOpen = () => {
+    this.setState({ dialogOpen: true })
+  }
+
+  handleButtonDialogClose = () => {
+    this.setState({ dialogOpen: false })
+  }
+
+  addEventToTosu = async () => {
+    // The event has event.kuksaEventId -> backend will know it's a synced event.
+    try {
+      let eventData = this.props.event
+      delete eventData.id
+      await this.props.addEvent(eventData)
+
+      this.props.notify('Tapahtuma lisätty suunnitelmaan!', 'success')
+      this.handleButtonDialogClose()
+      this.setState({ synced: true }) // TODO
+    } catch (exception) {
+      console.error('Error in adding event to tosu:', exception)
+      this.props.notify('Tapahtuman lisäämisessä tuli virhe. Yritä uudestaan!')
+    }
   }
 
   render() {
@@ -34,6 +65,29 @@ class EventCard extends React.Component {
       : `${moment(event.startDate, 'YYYY-MM-DD')
         .locale('fi')
         .format('ddd D. MMMM YYYY')} ${event.startTime}`
+
+    const addToTosuButton = (
+      <div>
+        <Button
+          onClick={this.handleButtonDialogOpen}
+          className={this.props.buttonClass}
+          variant='contained'
+          disabled={this.state.synced}
+        >
+          {this.state.synced ? (<span>Lisätty</span>) : (<span>Lisää omaan suunnitelmaan</span>)}
+        </Button>
+        <Dialog
+          open={this.state.dialogOpen}
+          onClose={this.handleButtonDialogClose}
+        >
+          <p>Lisätäänkö tapahtuma <b>{event.title}</b> omaan suunnitelmaan? Tapahtuma synkronoidaan Kuksaan.</p>
+          <Button onClick={this.handleButtonDialogClose} >peruuta</Button>
+          <Button onClick={this.addEventToTosu}>
+            Lisää suunnitelmaan
+          </Button>
+        </Dialog>
+      </div>
+    )
 
     return (
       <div className="event-card-wrapper">
@@ -74,7 +128,7 @@ class EventCard extends React.Component {
             </CardContent>
           </Collapse>
           <CardActions>
-            <Button className="rightButton" variant="contained">Lisää omaan suunnitelmaan</Button>
+            {addToTosuButton}
           </CardActions>
         </Card>
       </div>
@@ -90,4 +144,5 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   notify,
-})(EventCard)
+  addEvent,
+})(KuksaEventCard)

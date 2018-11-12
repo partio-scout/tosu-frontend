@@ -127,6 +127,7 @@ class EventCard extends React.Component {
     super(props)
     this.state = {
       expanded: false,
+      syncToKuksa: props.event.synced // Initial state of sync or no sync from backend
     }
   }
 
@@ -247,12 +248,13 @@ class EventCard extends React.Component {
       patternClass = 'pattern'
     }
 
-    let cardClassName = "event-card-wrapper" // Normal
-    if (this.props.event.kuksaEvent) {
-      cardClassName = "kuksa-synced-event-card" // Synced to Kuksa
+    let cardClassName = "event-card-wrapper" // Style: Normal
+    if (rows.length === 0) {
+      cardClassName = "empty-event-card" // Style: No activities
     }
-    if (rows.length === 0) { // Prioritize emptiness warning over kuksa sync color
-      cardClassName = "empty-event-card" // No activities
+    // Prioritize kuksa sync color over emptiness warning color (warning icon still visible)
+    if (this.props.event.synced) {
+      cardClassName = "kuksa-synced-event-card" // Style: Synced to Kuksa
     }
 
     const taskGroupTree = this.props.pofTree.taskgroups
@@ -342,7 +344,7 @@ class EventCard extends React.Component {
               <FormControlLabel
                 control={
                   <Switch
-                    checked={false}
+                    checked={this.state.syncToKuksa}
                     onClick={()=>{}}
                     color="primary"
                   />
