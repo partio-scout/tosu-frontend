@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Dialog } from '@material-ui/core'
 
-import { deleteEvent, deleteEventGroup } from '../reducers/eventReducer'
+import { deleteEvent, deleteEventGroup, deleteSyncedEvent } from '../reducers/eventReducer'
 import { notify } from '../reducers/notificationReducer'
 
 class DeleteEvent extends React.Component {
@@ -15,9 +15,12 @@ class DeleteEvent extends React.Component {
 
   deleteEvent = async () => {
     try {
-      await this.props.deleteEvent(this.props.data.id)
+      if (this.props.data.synced) {
+        await this.props.deleteSyncedEvent(this.props.data)
+      } else {
+        await this.props.deleteEvent(this.props.data.id)
+      }
       this.props.notify('Tapahtuma poistettu!', 'success')
-      this.handleClose()
     } catch (exception) {
       console.error('Error in deleting event:', exception)
       this.props.notify('Tapahtuman poistamisessa tuli virhe. Yritä uudestaan!')
@@ -36,6 +39,7 @@ class DeleteEvent extends React.Component {
       )
     }
   }
+
 
   handleDelete = () => {
     this.handleOpen()
@@ -74,6 +78,9 @@ class DeleteEvent extends React.Component {
       actions = (
         <div>
           <p>Poistetaanko tapahtuma {event.title}?</p>
+          {event.synced ? (
+            <p>Tapahtuma poistetaan suunnitelmastasi, mutta ei Kuksasta.</p>
+          ) : null}
           <Button onClick={this.handleClose} >peruuta</Button>
           <Button onClick={this.deleteEvent}>
             Poista tapahtuma
@@ -102,6 +109,6 @@ class DeleteEvent extends React.Component {
   }
 }
 
-export default connect(null, { deleteEvent, notify, deleteEventGroup })(
+export default connect(null, { deleteEvent, notify, deleteEventGroup, deleteSyncedEvent })(
   DeleteEvent
 )

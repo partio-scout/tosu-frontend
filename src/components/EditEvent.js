@@ -128,7 +128,8 @@ class EditEvent extends React.Component {
   }
 
   render() {
-    const disabled = false
+    const event = this.props.data
+    const disabled = event.synced // TODO: Allow editing after Kuksa sync works both ways
     return (
       <div>
         <Button
