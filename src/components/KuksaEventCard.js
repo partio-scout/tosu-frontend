@@ -15,7 +15,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
 import { notify } from '../reducers/notificationReducer'
 
-import { addEvent } from '../reducers/eventReducer'
+import { addEventFromKuksa } from '../reducers/eventReducer'
 
 class KuksaEventCard extends React.Component {
   constructor(props) {
@@ -23,7 +23,6 @@ class KuksaEventCard extends React.Component {
     this.state = {
       expanded: false,
       dialogOpen: false,
-      synced: props.event.synced
     }
   }
 
@@ -44,11 +43,8 @@ class KuksaEventCard extends React.Component {
     try {
       let eventData = this.props.event
       delete eventData.id
-      await this.props.addEvent(eventData)
-
+      await this.props.addEventFromKuksa(eventData)
       this.props.notify('Tapahtuma lisätty suunnitelmaan!', 'success')
-      this.handleButtonDialogClose()
-      this.setState({ synced: true }) // TODO
     } catch (exception) {
       console.error('Error in adding event to tosu:', exception)
       this.props.notify('Tapahtuman lisäämisessä tuli virhe. Yritä uudestaan!')
@@ -72,16 +68,15 @@ class KuksaEventCard extends React.Component {
           onClick={this.handleButtonDialogOpen}
           className={this.props.buttonClass}
           variant='contained'
-          disabled={this.state.synced}
         >
-          {this.state.synced ? (<span>Lisätty</span>) : (<span>Lisää omaan suunnitelmaan</span>)}
+          Lisää omaan suunnitelmaan
         </Button>
         <Dialog
           open={this.state.dialogOpen}
           onClose={this.handleButtonDialogClose}
         >
           <p>Lisätäänkö tapahtuma <b>{event.title}</b> omaan suunnitelmaan? Tapahtuma synkronoidaan Kuksaan.</p>
-          <Button onClick={this.handleButtonDialogClose} >peruuta</Button>
+          <Button onClick={this.handleButtonDialogClose}>peruuta</Button>
           <Button onClick={this.addEventToTosu}>
             Lisää suunnitelmaan
           </Button>
@@ -144,5 +139,5 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   notify,
-  addEvent,
+  addEventFromKuksa,
 })(KuksaEventCard)
