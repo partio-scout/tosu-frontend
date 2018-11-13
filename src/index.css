@@ -86,6 +86,7 @@ p.eventTimes > span {
 .mandatory-chip-avatar,
 .non-mandatory-chip-avatar {
   height: 26px !important;
+  width: 26px !important;
   color: #1a237e;
   margin: 4px;
 }
@@ -239,7 +240,7 @@ span.label {
 /* Exclamation point icon */
 .mandatory-chip-avatar > img,
 .non-mandatory-chip-avatar > img {
-  width: 100%;
+  width: 115% !important;
 }
 
 /* Title in Forms */
@@ -405,8 +406,8 @@ span.label {
 
 /* #### CALENDAR #### */
 .calendar {
-  height: 500px;
-  width: auto;
+  height: 45vmin;
+  width: 50vmin;
   padding-top: 20px;
   margin-bottom: calc(100vh - 500px);
 }
@@ -463,6 +464,8 @@ span.label {
   overflow-x: hidden;
   list-style: none;
   padding-left: 0;
+  min-width: 600px;
+  max-width: 50vw;
 }
 
 .empty-event-card {
@@ -532,7 +535,7 @@ span.label {
 }
 
 .event-card-wrapper .activity-header .connect-drag-source {
-  margin: 0 4px 0 4px;
+  margin: 4px;
   align-content: center;
 }
 
