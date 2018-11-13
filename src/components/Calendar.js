@@ -18,10 +18,12 @@ const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
 
 function prepareEventsToCalendarEvents(events) {
   return events.map(event => {
+    const startDate = event.startDate + ' ' + event.startTime
+    const endDate = event.endDate + ' ' + event.endTime
     return {
       title: event.title,
-      start: new Date(event.startDate + ' ' + event.startTime),
-      end: new Date(event.endDate + ' ' + event.endTime),
+      start: new Date(startDate.replace(/-/g, "/")),
+      end: new Date(endDate.replace(/-/g, "/")),
       allDay: false,
       startDate: event.startDate,
       startTime: event.startTime,
