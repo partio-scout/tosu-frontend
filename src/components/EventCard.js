@@ -6,16 +6,24 @@ import 'rc-tree-select/assets/index.css'
 import React from 'react'
 import { DropTarget } from 'react-dnd'
 import PropTypes from 'prop-types'
-import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
-import CardHeader from '@material-ui/core/CardHeader'
-import Collapse from '@material-ui/core/Collapse'
-import IconButton from '@material-ui/core/IconButton'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { CardContent } from '@material-ui/core'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Switch from '@material-ui/core/Switch'
+import {
+  CardActions,
+  CardHeader,
+  Collapse,
+  IconButton,
+  CardContent,
+  FormControlLabel,
+  Switch,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Card,
+} from '@material-ui/core'
 import Warning from '@material-ui/icons/Warning'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
 import Activity from './Activity'
 import DeleteEvent from './DeleteEvent'
@@ -127,7 +135,8 @@ class EventCard extends React.Component {
     super(props)
     this.state = {
       expanded: false,
-      syncToKuksa: props.event.synced // Initial state of sync or no sync from backend
+      syncToKuksa: Boolean(props.event.synced), // Initial state of sync or no sync from backend
+      syncDialogOpen: false
     }
   }
 
@@ -207,6 +216,23 @@ class EventCard extends React.Component {
     this.setState({ expanded: !this.state.expanded })
   }
 
+  handleSyncSwitchClick = async () => {
+    this.setState({ syncDialogOpen: true })
+    console.log("click")
+  }
+
+  handleSyncDialogClose = async () => {
+    this.setState({ syncDialogOpen: false })
+  }
+
+  startSyncingWithKuksa = async () => {
+    // TODO
+  }
+
+  stopSyncingWithKuksa = async () => {
+    // TODO
+  }
+
   render() {
     let rows
     if (this.props.event.activities) {
@@ -269,6 +295,53 @@ class EventCard extends React.Component {
         groupfound.children
       )
     }
+
+    let syncDialogTitle
+    let syncDialogDescription
+    let syncDialogConfirmText
+    let dialogConfirmHandler
+    if (this.state.syncToKuksa) {
+      syncDialogTitle = "Lopetetaanko tapahtuman synkronointi Kuksaan?"
+      syncDialogDescription = "Tapahtuma poistetaan Kuksasta, mutta jää omaan suunnitelmaasi."
+      syncDialogConfirmText = "Lopeta synkronointi"
+      dialogConfirmHandler = this.stopSyncingWithKuksa
+    } else {
+      syncDialogTitle = "Synkronoidaanko tapahtuma Kuksaan?"
+      syncDialogDescription = "Tapahtuma lähetetään Kuksaan. Tapahtuman muokkaus lähettää muutokset Kuksaan ja Kuksassa tehdyt muutokset synkronoidaan suunnitelmaasi. Aktiviteettejä ei synkronoida."
+      syncDialogConfirmText = "Synkronoi tapahtuma"
+      dialogConfirmHandler = this.startSyncingWithKuksa
+    }
+    const syncConfirmDialog = (
+      <div>
+        <Dialog
+          open={this.state.syncDialogOpen}
+          onClose={this.handleSyncDialogClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{syncDialogTitle}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">{syncDialogDescription}</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleSyncDialogClose} color="primary">Peruuta</Button>
+            <Button onClick={dialogConfirmHandler} color="primary" autoFocus>{syncDialogConfirmText}</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    )
+    const syncToKuksaSwitch = (
+      <FormControlLabel
+        control={
+          <Switch
+            checked={this.state.syncToKuksa}
+            onClick={this.handleSyncSwitchClick}
+            color="primary"
+          />
+        }
+        label="Synkronoi Kuksaan"
+      />
+    )
 
     return connectDropTarget(
       <div className={cardClassName}>
@@ -341,16 +414,7 @@ class EventCard extends React.Component {
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
             <CardContent>
               <h2>{event.title}</h2>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={this.state.syncToKuksa}
-                    onClick={()=>{}}
-                    color="primary"
-                  />
-                }
-                label="Synkronoi Kuksaan"
-              />
+              {syncConfirmDialog}
               <p className="eventTimes">
                 <span>{event.type} alkaa:</span>{' '}
                 {moment(event.startDate).format('D.M.YYYY')} kello{' '}
