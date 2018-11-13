@@ -13,6 +13,7 @@ import Dialog from '@material-ui/core/Dialog'
 import { DialogTitle } from '@material-ui/core'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
+import LinearProgress from '@material-ui/core/LinearProgress'
 import moment from 'moment'
 // CSS
 import 'react-sticky-header/styles.css'
@@ -53,6 +54,7 @@ class App extends Component {
       bufferZoneHeight: 0,
       newEventVisible: false,
       shouldShowAllKuksaEvents: false,
+      loading: true,
     }
   }
 
@@ -96,6 +98,9 @@ class App extends Component {
       } catch (exception) {
         console.log("Error in emptying buffer", exception)
       }
+    }
+    if (this.state.loading) {
+      this.setState({ loading: false })
     }
   }
 
@@ -229,6 +234,7 @@ class App extends Component {
 
     const eventsToList = (
       <div className='event-list-container'>
+        {this.state.loading ? (<div className="loading-bar"><LinearProgress /></div>) : null}
         {filter === "KUKSA" ? (kuksaEventsShowAllSwitch) : null}
         <ul className='event-list'>
           {eventsToShow().map(event => (

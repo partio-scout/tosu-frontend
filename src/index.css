@@ -434,6 +434,11 @@ span.label {
   margin-top: 7px;
 }
 
+/* #### LOADING BAR #### */
+.loading-bar {
+  margin-top: 5px;
+}
+
 /* #### EVENT LIST #### */
 .event-list {
   height: calc(100vh - 110px);
