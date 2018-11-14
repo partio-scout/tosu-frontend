@@ -4,12 +4,9 @@ import isTouchDevice from 'is-touch-device'
 import TreeSelect /* ,{ TreeNode, SHOW_PARENT } */ from 'rc-tree-select'
 import 'rc-tree-select/assets/index.css'
 import React from 'react'
-import { DropTarget } from 'react-dnd'
-import PropTypes from 'prop-types'
 import {
   CardActions,
   CardHeader,
-  Collapse,
   IconButton,
   CardContent,
   FormControlLabel,
@@ -159,18 +156,8 @@ class EventCard extends React.Component {
         .locale('fi')
         .format('ddd D. MMMM YYYY')} ${event.startTime}`
 
-    let patternClass
-    const { connectDropTarget, canDrop, isOver } = this.props
-    let background
-    if (canDrop) {
-      background = { backgroundColor: '#C8E6C9' }
-    }
-    if (isOver) {
-      patternClass = 'pattern'
-    }
-
     let cardClassName = "event-card-wrapper" // Style: Normal
-    if (rows.length === 0) {
+    if (this.props.event.activities.length === 0) {
       cardClassName = "empty-event-card" // Style: No activities
     }
     // Prioritize kuksa sync color over emptiness warning color (warning icon still visible)
@@ -314,7 +301,7 @@ class EventCard extends React.Component {
 
 
     return (
-      <div className={this.props.event.activities.length === 0 ? "empty-event-card" : "event-card-wrapper"}>
+      <div className={cardClassName}>
         <Card>
           <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id}>
             <CardHeader

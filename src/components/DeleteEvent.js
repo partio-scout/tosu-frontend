@@ -21,6 +21,7 @@ class DeleteEvent extends React.Component {
         await this.props.deleteEvent(this.props.data.id)
       }
       this.props.notify('Tapahtuma poistettu!', 'success')
+      this.handleClose()
     } catch (exception) {
       console.error('Error in deleting event:', exception)
       this.props.notify('Tapahtuman poistamisessa tuli virhe. Yritä uudestaan!')
@@ -54,7 +55,8 @@ class DeleteEvent extends React.Component {
   }
 
   render() {
-    const event  = this.props.data
+    const event = this.props.data
+    const disabled = event.kuksaEvent // Never allow modifications to kuksaEvents (not synced)
     // This is the popup that appears if you click "poista" on an event
     let actions = []
     // IfeventGroupId exists, it's a recurring event, so we need to enable deleting those
@@ -65,6 +67,7 @@ class DeleteEvent extends React.Component {
           <Button onClick={this.handleClose}>peruuta</Button>
           <Button
             onClick={this.deleteEvent}
+            disabled={disabled}
           >Poista tämä tapahtuma
           </Button>
           <Button
@@ -82,7 +85,7 @@ class DeleteEvent extends React.Component {
             <p>Tapahtuma poistetaan suunnitelmastasi, mutta ei Kuksasta.</p>
           ) : null}
           <Button onClick={this.handleClose} >peruuta</Button>
-          <Button onClick={this.deleteEvent}>
+          <Button onClick={this.deleteEvent} disabled={disabled}>
             Poista tapahtuma
           </Button>
         </div>
@@ -95,6 +98,7 @@ class DeleteEvent extends React.Component {
           className="buttonRight"
           onClick={this.handleDelete}
           variant='contained'
+          disabled={disabled}
         >
           Poista
         </Button>
