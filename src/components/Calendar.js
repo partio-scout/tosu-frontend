@@ -58,13 +58,12 @@ class Calendar extends Component {
     return (
       <div className="calendar">
         <BigCalendar
-          popup
           localizer={localizer}
           events={prepareEventsToCalendarEvents(events)}
           startAccessor="start"
           endAccessor="end"
           showMultiDayTimes
-          views={['month']}
+          views={['month', 'week', 'day']}
           components={{
             event: Event,
             toolbar: CalendarToolbar,

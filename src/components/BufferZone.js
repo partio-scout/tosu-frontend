@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import React from 'react'
 import Button from '@material-ui/core/Button'
+import DeleteIcon from '@material-ui/icons/Delete'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import Activities from './Activities'
 import { notify } from '../reducers/notificationReducer' 
@@ -26,6 +27,9 @@ class BufferZone extends React.Component {
     if (! this.props.buffer.id){
       return ( <div /> )
     }
+    if (this.props.buffer.activities.length === 0) {
+      return ( <div /> )
+    }
     return (
       <ActivityDragAndDropTarget bufferzone parentId={this.props.buffer.id}>
         <div id="bufferzone">
@@ -35,22 +39,20 @@ class BufferZone extends React.Component {
             parentId={this.props.buffer.id} 
           />
         </div>
-        <div>
-          <Button onClick={this.clear}> Tyhjennä </Button>
-        </div>
+        <Button id="empty-button" variant="outlined" color="secondary" onClick={this.clear}>
+          Tyhjennä
+          <DeleteIcon />
+        </Button>
       </ActivityDragAndDropTarget>
     )
   }
 }
 
-const mapStateToProps = state => {
-  return {
+const mapStateToProps = state => ({
     buffer: state.buffer,
     events: state.events,
     pofTree: state.pofTree,
-  }
-}
-
+  })
 
 export default connect(mapStateToProps, {
   notify,
