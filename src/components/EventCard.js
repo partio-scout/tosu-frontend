@@ -25,11 +25,11 @@ import {
 import Warning from '@material-ui/icons/Warning'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
-import Activity from './Activity'
+
+import Activities from './Activities'
+import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
-import ItemTypes from '../ItemTypes'
-import activityService from '../services/activities'
 import {
   editEvent,
   deleteActivityFromEvent,
@@ -43,8 +43,6 @@ import {
   postActivityToBufferOnlyLocally,
   bufferZoneInitialization
 } from '../reducers/bufferZoneReducer'
-import convertToSimpleActivity from '../functions/activityConverter'
-import findActivity from '../functions/findActivity'
 import eventService from '../services/events'
 
 // Warning icon
@@ -59,78 +57,7 @@ const warning = (
   </div>
 )
 
-const moveActivityFromBuffer = async (props, activity, parentId, targetId) => {
-  const activityId = activity.id
-  try {
-    props.addActivityToEventOnlyLocally(targetId, activity)
-    props.deleteActivityFromBufferOnlyLocally(activityId)
-    const res = await activityService.moveActivityFromBufferZoneToEvent(
-      activityId,
-      targetId
-    )
-    await props.deleteActivityFromEventOnlyLocally(activityId)
-    props.addActivityToEventOnlyLocally(targetId, res)
-    props.notify('Aktiviteetti siirretty!', 'success')
-    return res
-  } catch (exception) {
-    props.deleteActivityFromEventOnlyLocally(activityId)
-    props.postActivityToBufferOnlyLocally({ ...activity, canDrag: true })
-    props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
-  }
-  props.pofTreeUpdate(props.buffer, props.events)
-}
-
-const moveActivityFromEvent = async (props, activity, parentId, targetId) => {
-  const activityId = activity.id
-  try {
-    await props.deleteActivityFromEventOnlyLocally(activityId)
-    props.addActivityToEventOnlyLocally(targetId, activity)
-    const res = await activityService.moveActivityFromEventToEvent(
-      activityId,
-      parentId,
-      targetId
-    )
-    await props.deleteActivityFromEventOnlyLocally(activityId)
-    props.addActivityToEventOnlyLocally(targetId, res)
-    props.notify('Aktiviteetti siirretty!', 'success')
-    return res
-  } catch (exception) {
-    await props.deleteActivityFromEventOnlyLocally(activityId)
-    props.addActivityToEventOnlyLocally(parentId, { ...activity, canDrag: true })
-    props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
-  }
-  props.pofTreeUpdate(props.buffer, props.events)
-}
-
-const EventCardTarget = {
-  drop(props, monitor) {
-    const item = monitor.getItem()
-    const targetId = props.event.id
-    const { parentId } = item
-    const activity = { ...item.activity }
-    if (item.bufferzone === 'true') {
-      moveActivityFromBuffer(props, activity, parentId, targetId)
-    } else if (targetId !== parentId) {
-      moveActivityFromEvent(props, activity, parentId, targetId)
-    }
-  }
-}
-
-function collect(connector, monitor) {
-  return {
-    connectDropTarget: connector.dropTarget(),
-    isOver: monitor.isOver(),
-    canDrop: monitor.canDrop(),
-    target: monitor.getItem()
-  }
-}
-
 class EventCard extends React.Component {
-  static propTypes = {
-    isOver: PropTypes.bool.isRequired,
-    canDrop: PropTypes.bool.isRequired,
-    connectDropTarget: PropTypes.func.isRequired
-  }
   constructor(props) {
     super(props)
     this.state = {
@@ -156,18 +83,6 @@ class EventCard extends React.Component {
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
 
-  deleteActivity = async activity => {
-    try {
-      await this.props.deleteActivityFromEvent(activity.id)
-      this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-      this.props.notify('Aktiviteetti poistettu!', 'success')
-    } catch (exception) {
-      console.log(exception)
-      this.props.notify(
-        'Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!'
-      )
-    }
-  }
 
   emptyBuffer = async () => {
     if (isTouchDevice()) {
@@ -234,30 +149,10 @@ class EventCard extends React.Component {
   }
 
   render() {
-    let rows
-    if (this.props.event.activities) {
-      rows = this.props.event.activities.map(activity => {
-        const pofActivity = convertToSimpleActivity(
-          findActivity(activity, this.props.pofTree)
-        )
-        return (
-          <Activity
-            bufferzone={false}
-            parentId={this.props.event.id}
-            parent={this}
-            key={activity.id}
-            pofActivity={pofActivity}
-            activity={activity}
-            deleteActivity={this.deleteActivity}
-          />
-        )
-      })
-    }
-
     const { event } = this.props
 
     moment.locale('fi')
-    const title = this.state.expanded ? '' : event.title
+    const { title } = event
     const subtitle = this.state.expanded
       ? ''
       : `${moment(event.startDate, 'YYYY-MM-DD')
@@ -286,7 +181,7 @@ class EventCard extends React.Component {
     const taskGroupTree = this.props.pofTree.taskgroups
 
     let selectedTaskGroupPofData = []
-    if (this.props.taskgroup !== undefined && this.props.taskgroup !== null) {
+    if (this.props.taskgroup !== undefined && this.props.taskgroup !== null && isTouchDevice()) {
       console.log('Counting selectedTaskGroupPofData')
       const groupfound = taskGroupTree.find(
         group => group.guid === this.props.taskgroup.value
@@ -343,107 +238,122 @@ class EventCard extends React.Component {
       />
     )
 
-    return connectDropTarget(
-      <div className={cardClassName}>
-        <Card
-          style={background}
-          className={patternClass}
-        >
-          <CardHeader
-            title={
-              <div>
-                {title}
-                &nbsp;
-                {this.props.event.activities.length === 0 ? warning : ''}
-              </div>
-            }
-            subheader={subtitle}
-            action={
-              <IconButton
-                onClick={this.handleExpandChange}
-                className={this.state.expanded ? "arrow-up" : ""}
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            }
+    const touchDeviceNotExpanded = (
+      <CardContent>
+        <div className="mobile-event-card-media">
+          <Activities
+            activities={this.props.event.activities}
+            bufferzone={false}
+            parentId={this.props.event.id}
           />
-          {isTouchDevice() && !this.state.expanded ? (
-            <CardContent>
-              <div className="mobile-event-card-media">
-                <div>{rows}</div>
-                {this.props.taskgroup ? (
-                  <div>
-                    <TreeSelect
-                      style={{ width: '90%' }}
-                      transitionName="rc-tree-select-dropdown-slide-up"
-                      choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                      dropdownStyle={{
-                        position: 'absolute',
-                        maxHeight: 400,
-                        overflow: 'auto'
-                      }}
-                      placeholder="Valitse aktiviteetti"
-                      searchPlaceholder="Hae aktiviteettia"
-                      showSearch
-                      allowClear
-                      treeLine
-                      getPopupContainer={() =>
-                        ReactDOM.findDOMNode(this).parentNode
-                      }
-                      value={this.state.value}
-                      treeData={selectedTaskGroupPofData}
-                      treeNodeFilterProp="label"
-                      filterTreeNode={this.filterTreeNode}
-                      onChange={this.onChangeChildren}
-                    />
-                  </div>
-                ) : (
-                  <div style={{ clear: 'both' }}>&nbsp;</div>
-                )}
-              </div>
-            </CardContent>
-          ) : null}
-          {!isTouchDevice() &&
-            !this.state.expanded &&
-            this.props.event.activities.length !== 0 ? (
-              <CardContent>
-                <div className="activity-header">{rows}</div>
-              </CardContent>
-            ) : null}
+          {this.props.taskgroup ? (
+            <div>
+              <TreeSelect
+                style={{ width: '90%' }}
+                transitionName="rc-tree-select-dropdown-slide-up"
+                choiceTransitionName="rc-tree-select-selection__choice-zoom"
+                dropdownStyle={{
+                  position: 'absolute',
+                  maxHeight: 400,
+                  overflow: 'auto'
+                }}
+                placeholder="Valitse aktiviteetti"
+                searchPlaceholder="Hae aktiviteettia"
+                showSearch
+                allowClear
+                treeLine
+                getPopupContainer={() =>
+                  ReactDOM.findDOMNode(this).parentNode
+                }
+                value={this.state.value}
+                treeData={selectedTaskGroupPofData}
+                treeNodeFilterProp="label"
+                filterTreeNode={this.filterTreeNode}
+                onChange={this.onChangeChildren}
+              />
+            </div>
+          ) : (
+            <div style={{ clear: 'both' }}>&nbsp;</div>
+          )}
+        </div>
+      </CardContent>
+    )
+    const notExpanded = (
+      <CardContent>
+        <div className="activity-header">
+          <Activities
+            activities={this.props.event.activities}
+            bufferzone={false}
+            parentId={this.props.event.id}
+          />
+        </div>
+      </CardContent>
+    )
+    const expanded = (
+      <CardContent>
+        {syncConfirmDialog}
+        <p className="eventTimes">
+          <span>{event.type} alkaa:</span>{' '}
+          {moment(event.startDate).locale('fi').format('ddd D.M.YYYY')} kello{' '}
+          {event.startTime}
+        </p>
+        <p className="eventTimes">
+          <span>{event.type} päättyy:</span>{' '}
+          {moment(event.endDate).locale('fi').format('ddd D.M.YYYY')} kello {event.endTime}
+        </p>
+        <p>{event.information}</p>
+        <p>Aktiviteetit:</p>
+        <Activities
+          activities={this.props.event.activities}
+          bufferzone={false}
+          parentId={this.props.event.id}
+        />
+        <br style={{ clear: 'both' }} />
+      </CardContent>
+    )
 
-          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <h2>{event.title}</h2>
-              {syncConfirmDialog}
-              <p className="eventTimes">
-                <span>{event.type} alkaa:</span>{' '}
-                {moment(event.startDate).format('D.M.YYYY')} kello{' '}
-                {event.startTime}
-              </p>
-              <p className="eventTimes">
-                <span>{event.type} päättyy:</span>{' '}
-                {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
-              </p>
-              <p>{event.information}</p>
-              <p>Aktiviteetit:</p>
-              {rows}
-              <br style={{ clear: 'both' }} />
-            </CardContent>
-          </Collapse>
-          <CardActions>
-            <EditEvent
-              buttonClass="buttonRight"
-              data={event}
-              source={this.handleClose}
-              setNotification={this.props.setNotification}
+
+    return (
+      <div className={this.props.event.activities.length === 0 ? "empty-event-card" : "event-card-wrapper"}>
+        <Card>
+          <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id}>
+            <CardHeader
+              title={
+                <div>
+                  {title}
+                  &nbsp;
+                  {this.props.event.activities.length === 0 ? warning : ''}
+                </div>
+              }
+              subheader={subtitle}
+              action={
+                <IconButton
+                  onClick={this.handleExpandChange}
+                  className={this.state.expanded ? "arrow-up" : ""}
+                >
+                  <ExpandMoreIcon />
+                </IconButton>
+              }
             />
-            <DeleteEvent
-              buttonClass="buttonRight"
-              data={event}
-              source={this.handleClose}
-              setNotification={this.props.setNotification}
-            />
-          </CardActions>
+            { isTouchDevice() && !this.state.expanded ? touchDeviceNotExpanded : null }
+            { !isTouchDevice() && !this.state.expanded ? notExpanded  : null }
+            { this.state.expanded ? expanded : null }
+
+            <CardActions>
+              <EditEvent
+                buttonClass="buttonRight"
+                data={event}
+                source={this.handleClose}
+                setNotification={this.props.setNotification}
+              />
+              <DeleteEvent
+                buttonClass="buttonRight"
+                data={event}
+                source={this.handleClose}
+                setNotification={this.props.setNotification}
+              />
+            </CardActions>
+          </ActivityDragAndDropTarget>
         </Card>
       </div>
     )
@@ -460,11 +370,6 @@ const mapStateToProps = state => {
   }
 }
 
-const DroppableEventCard = DropTarget(
-  ItemTypes.ACTIVITY,
-  EventCardTarget,
-  collect
-)(EventCard)
 
 export default connect(mapStateToProps, {
   notify,
@@ -476,4 +381,4 @@ export default connect(mapStateToProps, {
   postActivityToBufferOnlyLocally,
   deleteActivityFromBufferOnlyLocally,
   pofTreeUpdate
-})(DroppableEventCard)
+})(EventCard)

@@ -7,6 +7,7 @@ import Select from 'react-select';
 import store from '../../store'
 import AccountIcon from '../AccountIcon'
 import MobileAppbar from '../MobileAppbar'
+import StatusMessage from '../StatusMessage';
 
 describe('<MobileAppbar />', () => {
 
@@ -21,5 +22,16 @@ describe('<MobileAppbar />', () => {
     it('renders a <Select />', () => {
         const wrapper = shallow(<MobileAppbar store={store} />, {disableLifecycleMethods: true})
         expect(wrapper.dive().find(Select)).to.have.lengthOf(1)
+    })
+
+    it('renders a <StatusMessage />', () => {
+      const wrapper = shallow(
+        <MobileAppbar
+          store={store}
+          headerVisible='true'
+        />,
+        {disableLifecycleMethods: true
+      })
+      expect(wrapper.dive().find(StatusMessage)).to.have.lengthOf(1)
     })
 })

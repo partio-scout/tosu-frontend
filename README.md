@@ -10,22 +10,13 @@
 ## Starting project in localhost
 
 1. Backend: 
-
-$ git clone git@github.com:partio-scout/tosu-backend-node.git
-
-$ npm install
-
-$ npm start
-
-
-
+  * Clone the repository ```$ git clone git@github.com:partio-scout/tosu-backend-node.git```
+  * Follow the [setup guide](https://github.com/partio-scout/tosu-backend-node#tosu-backend-node)
+  * Run in dev mode ```$ npm run watch```
 
 2. Frontend:
-
-$ git clone git@github.com:partio-scout/tosu-frontend.git
-
-$ npm install
-
-$ npm start
-
-
+  * Clone the repository ```$ git clone git@github.com:partio-scout/tosu-frontend.git```
+  * Install npm packages ```$ npm install```
+  * Run the project ```$ npm start```
+  * Run tests ```$ npm test```
+  * Generate test coverage ```$ npm run test-local```
