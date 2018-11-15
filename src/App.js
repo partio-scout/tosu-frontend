@@ -11,6 +11,9 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import { DialogTitle } from '@material-ui/core'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
+import LinearProgress from '@material-ui/core/LinearProgress'
 import moment from 'moment'
 // CSS
 import 'react-sticky-header/styles.css'
@@ -23,6 +26,7 @@ import ClippedDraver from './components/ClippedDrawer'
 import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
 import EventCard from './components/EventCard'
+import KuksaEventCard from './components/KuksaEventCard'
 import Calendar from './components/Calendar'
 // Utils
 import { createStatusMessage } from './utils/createStatusMessage'
@@ -48,7 +52,9 @@ class App extends Component {
       headerVisible: false,
       drawerVisible: true,
       bufferZoneHeight: 0,
-      newEventVisible: false
+      newEventVisible: false,
+      shouldShowAllKuksaEvents: false,
+      loading: true,
     }
   }
 
@@ -59,7 +65,7 @@ class App extends Component {
         bufferZoneHeight: 0,
         newEventVisible: false
       })
-    }else if (window.location.pathname === '/calendar') {
+    } else if (window.location.pathname === '/calendar') {
         this.props.store.dispatch(filterChange('CALENDAR'))
     }
     if (getGoogleToken() !== null) {
@@ -92,6 +98,9 @@ class App extends Component {
       } catch (exception) {
         console.log("Error in emptying buffer", exception)
       }
+    }
+    if (this.state.loading) {
+      this.setState({ loading: false })
     }
   }
 
@@ -141,15 +150,35 @@ class App extends Component {
     this.setState({ newEventVisible: false })
   }
 
+  handleKuksaEventSwitchChange = () => {
+    if (this.props.store.getState().filter === "KUKSA") {
+      this.setState({
+        shouldShowAllKuksaEvents: !this.state.shouldShowAllKuksaEvents
+      })
+    }
+  }
+
   render() {
+    const { events, filter } = this.props.store.getState()
+    const shouldShowAllKuksaEvents = this.state.shouldShowAllKuksaEvents
+
     const eventsToShow = () => {
       const currentDate = moment().format('YYYY-MM-DD')
-      const { events, filter } = this.props.store.getState()
       // If filter is set to FUTURE, show all events with end date equal or greater than today
       // otherwise show events with end date less than today
-      return filter === 'FUTURE'
-        ? events.filter(event => event.endDate >= currentDate).sort(eventComparer)
-        : events.sort(eventComparer)
+      switch (filter) {
+        case "FUTURE":
+          return events.filter(event => event.endDate >= currentDate && !event.kuksaEvent).sort(eventComparer)
+        case "ALL":
+          return events.filter(event => !event.kuksaEvent).sort(eventComparer)
+        case "KUKSA":
+          if (shouldShowAllKuksaEvents) {
+            return events.filter(event => event.kuksaEvent).sort(eventComparer)
+          }
+          return events.filter(event => event.endDate >= currentDate && event.kuksaEvent).sort(eventComparer)
+        default:
+          return events.sort(eventComparer)
+      }
     }
 
     if (this.props.scout === null) {
@@ -190,12 +219,27 @@ class App extends Component {
       />
     )
 
+    const kuksaEventsShowAllSwitch = (
+      <FormControlLabel
+        control={
+          <Switch
+            checked={shouldShowAllKuksaEvents}
+            onClick={this.handleKuksaEventSwitchChange}
+            color="primary"
+          />
+        }
+        label="Näytä myös menneet tapahtumat"
+      />
+    )
+
     const eventsToList = (
       <div className='event-list-container'>
+        {this.state.loading ? (<div className="loading-bar"><LinearProgress /></div>) : null}
+        {filter === "KUKSA" ? (kuksaEventsShowAllSwitch) : null}
         <ul className='event-list'>
           {eventsToShow().map(event => (
             <li className='event-list-item' key={event.id ? event.id : 0}>
-              <EventCard event={event} />
+              {event.kuksaEvent ? (<KuksaEventCard event={event} />) : (<EventCard event={event} />)}
             </li>
           ))}
         </ul>
@@ -239,6 +283,16 @@ class App extends Component {
                     variant="contained"
                   >
                     Kaikki
+                  </Button>
+                  &nbsp;
+                  <Button
+                    className={this.props.store.getState().filter === 'KUKSA' ? 'active' : ''}
+                    component={Link}
+                    to="/"
+                    onClick={this.filterSelected('KUKSA')}
+                    variant="contained"
+                  >
+                    Kuksa
                   </Button>
                   &nbsp;
                   <Button

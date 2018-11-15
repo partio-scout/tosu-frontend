@@ -72,6 +72,21 @@ export const deleteEvent = eventId => async dispatch => {
   })
 }
 
+export const deleteSyncedEvent = event => async dispatch => {
+  await eventService.deleteEvent(event.id)
+  dispatch({
+    type: 'DELETE_EVENT',
+    eventId: event.id
+  })
+  // Add the event back to the list of Kuksa events (to show on the "Kuksa" page)
+  event.id = "kuksa" + event.kuksaEventId
+  event.kuksaEvent = true
+  dispatch({
+    type: 'ADD_EVENT',
+    event: event
+  })
+}
+
 export const deleteEventGroup = eventGroupId => async dispatch => {
   await eventGroupService.deleteEventGroup(eventGroupId)
   dispatch({
@@ -86,6 +101,21 @@ export const addEvent = event => async dispatch => {
   dispatch({
     type: 'ADD_EVENT',
     event: created
+  })
+}
+
+export const addEventFromKuksa = event => async dispatch => {
+  const created = await eventService.create(event)
+  const kuksaEventId = event.id
+  created.activities = []
+  dispatch({
+    type: 'ADD_EVENT',
+    event: created
+  })
+  // Delete the Kuksa event to not shot the same event on multiple pages
+  dispatch({
+    type: 'DELETE_EVENT',
+    kuksaEventId
   })
 }
 

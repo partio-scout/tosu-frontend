@@ -4,14 +4,23 @@ import isTouchDevice from 'is-touch-device'
 import TreeSelect /* ,{ TreeNode, SHOW_PARENT } */ from 'rc-tree-select'
 import 'rc-tree-select/assets/index.css'
 import React from 'react'
-import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
-import CardHeader from '@material-ui/core/CardHeader'
-import Collapse from '@material-ui/core/Collapse'
-import IconButton from '@material-ui/core/IconButton'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { CardContent } from '@material-ui/core'
+import {
+  CardActions,
+  CardHeader,
+  IconButton,
+  CardContent,
+  FormControlLabel,
+  Switch,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Card,
+} from '@material-ui/core'
 import Warning from '@material-ui/icons/Warning'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
 
 import Activities from './Activities'
@@ -50,6 +59,8 @@ class EventCard extends React.Component {
     super(props)
     this.state = {
       expanded: false,
+      syncToKuksa: Boolean(props.event.synced), // Initial state of sync or no sync from backend
+      syncDialogOpen: false
     }
   }
 
@@ -117,6 +128,23 @@ class EventCard extends React.Component {
     this.setState({ expanded: !this.state.expanded })
   }
 
+  handleSyncSwitchClick = async () => {
+    this.setState({ syncDialogOpen: true })
+    console.log("click")
+  }
+
+  handleSyncDialogClose = async () => {
+    this.setState({ syncDialogOpen: false })
+  }
+
+  startSyncingWithKuksa = async () => {
+    // TODO
+  }
+
+  stopSyncingWithKuksa = async () => {
+    // TODO
+  }
+
   render() {
     const { event } = this.props
 
@@ -127,6 +155,15 @@ class EventCard extends React.Component {
       : `${moment(event.startDate, 'YYYY-MM-DD')
         .locale('fi')
         .format('ddd D. MMMM YYYY')} ${event.startTime}`
+
+    let cardClassName = "event-card-wrapper" // Style: Normal
+    if (this.props.event.activities.length === 0) {
+      cardClassName = "empty-event-card" // Style: No activities
+    }
+    // Prioritize kuksa sync color over emptiness warning color (warning icon still visible)
+    if (this.props.event.synced) {
+      cardClassName = "kuksa-synced-event-card" // Style: Synced to Kuksa
+    }
 
     const taskGroupTree = this.props.pofTree.taskgroups
 
@@ -141,7 +178,53 @@ class EventCard extends React.Component {
       )
     }
 
-    
+    let syncDialogTitle
+    let syncDialogDescription
+    let syncDialogConfirmText
+    let dialogConfirmHandler
+    if (this.state.syncToKuksa) {
+      syncDialogTitle = "Lopetetaanko tapahtuman synkronointi Kuksaan?"
+      syncDialogDescription = "Tapahtuma poistetaan Kuksasta, mutta jää omaan suunnitelmaasi."
+      syncDialogConfirmText = "Lopeta synkronointi"
+      dialogConfirmHandler = this.stopSyncingWithKuksa
+    } else {
+      syncDialogTitle = "Synkronoidaanko tapahtuma Kuksaan?"
+      syncDialogDescription = "Tapahtuma lähetetään Kuksaan. Tapahtuman muokkaus lähettää muutokset Kuksaan ja Kuksassa tehdyt muutokset synkronoidaan suunnitelmaasi. Aktiviteettejä ei synkronoida."
+      syncDialogConfirmText = "Synkronoi tapahtuma"
+      dialogConfirmHandler = this.startSyncingWithKuksa
+    }
+    const syncConfirmDialog = (
+      <div>
+        <Dialog
+          open={this.state.syncDialogOpen}
+          onClose={this.handleSyncDialogClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{syncDialogTitle}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">{syncDialogDescription}</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleSyncDialogClose} color="primary">Peruuta</Button>
+            <Button onClick={dialogConfirmHandler} color="primary" autoFocus>{syncDialogConfirmText}</Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    )
+    const syncToKuksaSwitch = (
+      <FormControlLabel
+        control={
+          <Switch
+            checked={this.state.syncToKuksa}
+            onClick={this.handleSyncSwitchClick}
+            color="primary"
+          />
+        }
+        label="Synkronoi Kuksaan"
+      />
+    )
+
     const touchDeviceNotExpanded = (
       <CardContent>
         <div className="mobile-event-card-media">
@@ -195,6 +278,7 @@ class EventCard extends React.Component {
     )
     const expanded = (
       <CardContent>
+        {syncConfirmDialog}
         <p className="eventTimes">
           <span>{event.type} alkaa:</span>{' '}
           {moment(event.startDate).locale('fi').format('ddd D.M.YYYY')} kello{' '}
@@ -214,10 +298,10 @@ class EventCard extends React.Component {
         <br style={{ clear: 'both' }} />
       </CardContent>
     )
-    
+
 
     return (
-      <div className={this.props.event.activities.length === 0 ? "empty-event-card" : "event-card-wrapper"}>
+      <div className={cardClassName}>
         <Card>
           <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id}>
             <CardHeader

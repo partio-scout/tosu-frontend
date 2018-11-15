@@ -406,8 +406,8 @@ span.label {
 
 /* #### CALENDAR #### */
 .calendar {
-  height: 45vmin;
-  width: 50vmin;
+  height: 50vmin;
+  width: 70vmin;
   padding-top: 20px;
   margin-bottom: calc(100vh - 500px);
 }
@@ -457,6 +457,11 @@ span.label {
   margin-top: 7px;
 }
 
+/* #### LOADING BAR #### */
+.loading-bar {
+  margin-top: 5px;
+}
+
 /* #### EVENT LIST #### */
 .event-list {
   height: calc(100vh - 110px);
@@ -472,6 +477,13 @@ span.label {
   padding: 5px;
   margin-bottom: 15px;
   background-color: orange;
+  border-radius: 4px;
+}
+
+.kuksa-synced-event-card {
+  padding: 5px;
+  margin-bottom: 15px;
+  background-color: #63bcd1;
   border-radius: 4px;
 }
 

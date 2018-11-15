@@ -32,7 +32,9 @@ function prepareEventsToCalendarEvents(events) {
       activities: event.activities,
       type: event.type,
       id: event.id,
-      information: event.information
+      information: event.information,
+      synced: event.synced,
+      kuksaEvent: event.kuksaEvent,
     }
   })
 }
