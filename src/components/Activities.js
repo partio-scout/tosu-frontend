@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import Activity from './Activity'
 import findActivity from '../functions/findActivity'
 import convertToSimpleActivity from '../functions/activityConverter'
-import { notify } from '../reducers/notificationReducer' 
+import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
@@ -12,11 +12,11 @@ import { deleteActivityFromEvent } from '../reducers/eventReducer'
 
 
 
-class Activities extends React.Component { 
+class Activities extends React.Component {
   static propTypes = {
     bufferzone: PropTypes.bool.isRequired,
     parentId: PropTypes.number.isRequired,
-    
+
     notify: PropTypes.func.isRequired,
     pofTreeUpdate: PropTypes.func.isRequired,
     deleteActivityFromBuffer: PropTypes.func.isRequired,
@@ -56,7 +56,16 @@ class Activities extends React.Component {
         )
       })
     }
-    return (<div className={this.props.className}>{rows}</div>)
+    return (
+      <div>
+        <p>
+          {rows.length > 0 ? 'Aktiviteetit:' : 'Ei aktiviteettejä.'}
+        </p>
+        <div className={this.props.className}>
+          {rows}
+        </div>
+      </div>
+    )
   }
 }
 
@@ -64,7 +73,7 @@ const mapStateToProps = state => {
   return {
     buffer: state.buffer,
     events: state.events,
-    pofTree: state.pofTree 
+    pofTree: state.pofTree
   }
 }
 
