@@ -85,7 +85,7 @@ class KuksaEventCard extends React.Component {
     )
 
     return (
-      <div className="event-card-wrapper">
+      <div className="kuksa-event-card">
         <Card>
           <CardHeader
             title={
@@ -118,7 +118,6 @@ class KuksaEventCard extends React.Component {
                 {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
               </p>
               <p>{event.information}</p>
-              <p>Aktiviteetit:</p>
               <br style={{ clear: 'both' }} />
             </CardContent>
           </Collapse>

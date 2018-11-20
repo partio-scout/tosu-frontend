@@ -18,7 +18,7 @@ function createActivityMarkers(activities) {
 }
 
 export function eventStyleGetter(event, start, end, isSelected) {
-  const backgroundColor = event.kuksaEvent ? 'lightgrey' : '#' + event.hexColor
+  const backgroundColor = event.kuksaEvent ? 'lightgrey' : '#3A74A9'
   const color = event.kuksaEvent ? 'black' : 'white'
   return {
     style: {
@@ -64,56 +64,93 @@ class CalendarEvent extends Component {
     const startTime = event.start.toLocaleTimeString('fi-FI', { 'hour': 'numeric', 'minute': 'numeric' })
     const endTime = event.end.toLocaleTimeString('fi-FI', { 'hour': 'numeric', 'minute': 'numeric' })
 
+    let popoverContentClassName // Style: Normal
+    if (event.activities.length === 0) {
+      popoverContentClassName = "empty-event-card" // Style: No activities
+    }
+    if (event.synced) {
+      popoverContentClassName = "kuksa-synced-event-card" // Style: Synced to Kuksa
+    }
+    if (event.kuksaEvent) {
+      popoverContentClassName = "kuksa-event-card" // Style: Kuksa event
+    }
+
+    const activities = (
+      <div>
+        <Activities
+          activities={this.props.event.activities}
+          bufferzone={false}
+          parentId={this.props.event.id}
+          className='calendar-event-activity-wrapper'
+        />
+      </div>
+    )
+
+    const editDeleteButtons = (
+      <div>
+        <div className="calendar-event-button-wrapper">
+          <EditEvent
+            buttonClass="calendar-button"
+            data={event}
+            source={this.handleClose}
+            setNotification={this.props.setNotification}
+          />
+          <DeleteEvent
+            buttonClass="calendar-button"
+            data={event}
+            source={this.handleClose}
+            setNotification={this.props.setNotification}
+          />
+        </div>
+      </div>
+    )
+
+    const popoverContent = (
+      <div>
+        <div>
+          <div className="left">
+            <p className="calendar-event-title">{event.title}</p>
+          </div>
+          <div className="right">
+            <IconButton onClick={this.closePopper}>
+              <Icon>close</Icon>
+            </IconButton>
+          </div>
+        </div>
+        {startTime} - {endTime}
+        <p>
+          {event.information}
+        </p>
+        {!event.kuksaEvent ? activities : null}
+        {!event.kuksaEvent ? editDeleteButtons : null}
+      </div>
+    )
+
+    // Don't allow dragging activities to kuksa events
+    const paperContent = event.kuksaEvent ? (
+      <div>
+        {popoverContent}
+        <br />
+      </div>
+    ) : (
+      <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id} className="calendar-event-popper">
+        {popoverContent}
+      </ActivityDragAndDropTarget>
+    )
+
     return (
       <div>
         <div aria-describedby={id} onClick={this.handleClick}>
           <span>
             {event.title}
-          </span><br />
+          </span>
+          <br />
           {createActivityMarkers(event.activities)}
         </div>
         <Popper id={id} open={open} anchorEl={anchorEl} style={{ zIndex: 999 }}>
-          <Paper>
-            <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id} className="calendar-event-popper">
-              <div>
-                <div className="left">
-                  <p className="calendar-event-title">{event.title}</p>
-                </div>
-                <div className="right">
-                  <IconButton onClick={this.closePopper}>
-                    <Icon>close</Icon>
-                  </IconButton>
-                </div>
-              </div>
-              {startTime} - {endTime}
-              <p>
-                {event.information}
-              </p>
-              <p>
-                Aktiviteetit:
-              </p>
-              <Activities
-                activities={this.props.event.activities}
-                bufferzone={false}
-                parentId={this.props.event.id}
-                className='calendar-event-activity-wrapper'
-              />
-              <div className="calendar-event-button-wrapper">
-                <EditEvent
-                  buttonClass="calendar-button"
-                  data={event}
-                  source={this.handleClose}
-                  setNotification={this.props.setNotification}
-                />
-                <DeleteEvent
-                  buttonClass="calendar-button"
-                  data={event}
-                  source={this.handleClose}
-                  setNotification={this.props.setNotification}
-                />
-              </div>
-            </ActivityDragAndDropTarget>
-          </Paper>
+          <div className={popoverContentClassName}>
+            <Paper>{paperContent}</Paper>
+          </div>
         </Popper>
       </div>
     )
