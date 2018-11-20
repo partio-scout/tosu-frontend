@@ -374,6 +374,11 @@ span.label {
   width: 100%;
 }
 
+/* #### RANGE FILTER #### */
+.date-range-container {
+  margin-top: 5px;
+}
+
 /* #### SIDEBAR #### */
 .drawer-root {
   flex-grow: 1;
@@ -464,7 +469,7 @@ span.label {
 
 /* #### EVENT LIST #### */
 .event-list {
-  height: calc(100vh - 110px);
+  height: calc(100vh - 160px);
   overflow-y: scroll;
   overflow-x: hidden;
   list-style: none;
