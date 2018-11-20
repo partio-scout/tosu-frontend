@@ -143,6 +143,7 @@ class App extends Component {
   }
 
   filterSelected = (value) => () => {
+    console.log(value)
     this.props.store.dispatch(filterChange(value))
   }
 
@@ -165,15 +166,30 @@ class App extends Component {
     const { events, filter } = this.props.store.getState()
     const shouldShowAllKuksaEvents = this.state.shouldShowAllKuksaEvents
 
+    const dateRangeUpdate = (start, end) => {
+      if (start) {
+        this.setState({startDate: start})
+      }
+      if (end) {
+        this.setState({endDate: end})
+      }
+      if(start && end) {
+        console.log('Filter should update now!')
+        this.filterSelected('RANGE')()
+      }
+    }
+
     const eventsToShow = () => {
       const currentDate = moment().format('YYYY-MM-DD')
       // If filter is set to FUTURE, show all events with end date equal or greater than today
       // otherwise show events with end date less than today
       switch (filter) {
         case "RANGE": {
+          const rangeStart = this.state.startDate.format('YYYY-MM-DD')
+          const rangeEnd = this.state.endDate.format('YYYY-MM-DD')
           return events.filter(event =>
-            event.startDate <= this.state.endDate
-            && event.startDate <= this.state.startDate
+            event.startDate >= rangeStart
+            && event.startDate <= rangeEnd
             && !event.kuksaEvent).sort(eventComparer)
         }
         case "FUTURE":
@@ -328,7 +344,7 @@ class App extends Component {
                       endDateId="endDate"
                       startDate={this.state.startDate}
                       endDate={this.state.endDate}
-                      onDatesChange={({ startDate, endDate }) => { this.setState({ startDate, endDate }) }}
+                      onDatesChange={({ startDate, endDate }) => dateRangeUpdate(startDate, endDate)}
                       focusedInput={this.state.focusedInput}
                       onFocusChange={(focusedInput) => { this.setState({ focusedInput }) }}
                       startDatePlaceholderText="alku pvm"
