@@ -21,7 +21,6 @@ class DeleteEvent extends React.Component {
         await this.props.deleteEvent(this.props.data.id)
       }
       this.props.notify('Tapahtuma poistettu!', 'success')
-      this.handleClose()
     } catch (exception) {
       console.error('Error in deleting event:', exception)
       this.props.notify('Tapahtuman poistamisessa tuli virhe. Yritä uudestaan!')
@@ -32,7 +31,6 @@ class DeleteEvent extends React.Component {
     try {
       await this.props.deleteEventGroup(this.props.data.eventGroupId)
       this.props.notify('Toistuva tapahtuma poistettu!', 'success')
-      this.handleClose()
     } catch (exception) {
       console.error('Error in deleting event:', exception)
       this.props.notify(

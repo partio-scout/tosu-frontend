@@ -18,8 +18,8 @@ class AddToPlan extends React.Component {
   addEventToTosu = async () => {
     // The event has event.kuksaEventId -> backend will know it's a synced event.
     try {
-      // If event.tosuEventData exists, the event is coming from the calendar. Then use the original event data:
-      let eventData = this.props.event.tosuEventData ? this.props.event.tosuEventData : this.props.event
+      // If event.originalData exists, the event is coming from the calendar. Then use the original event data:
+      let eventData = this.props.event.originalData ? this.props.event.originalData : this.props.event
       delete eventData.id
       await this.props.addEventFromKuksa(eventData)
       this.props.notify('Tapahtuma lisätty suunnitelmaan!', 'success')

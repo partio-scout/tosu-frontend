@@ -326,13 +326,11 @@ class EventCard extends React.Component {
               <EditEvent
                 buttonClass="buttonRight"
                 data={event}
-                source={this.handleClose}
                 setNotification={this.props.setNotification}
               />
               <DeleteEvent
                 buttonClass="buttonRight"
                 data={event}
-                source={this.handleClose}
                 setNotification={this.props.setNotification}
               />
             </CardActions>
