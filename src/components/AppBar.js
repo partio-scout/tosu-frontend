@@ -29,7 +29,9 @@ class AppBar extends React.Component {
             control={
               <Switch
                 className="toggle-sidebar"
+                checked={this.state.sidebarVisible}
                 onClick={this.toggleSideBar}
+                color="primary"
               />
             }
             label={
