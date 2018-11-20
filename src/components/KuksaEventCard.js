@@ -84,12 +84,6 @@ class KuksaEventCard extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    // events: state.events,
-  }
-}
-
-export default connect(mapStateToProps, {
+export default connect(null, {
   notify,
 })(KuksaEventCard)
