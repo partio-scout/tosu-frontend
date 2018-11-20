@@ -29,11 +29,13 @@ class AppBar extends React.Component {
             control={
               <Switch
                 className="toggle-sidebar"
+                checked={this.state.sidebarVisible}
                 onClick={this.toggleSideBar}
+                color="primary"
               />
             }
             label={
-              this.state.sidebarVisible ? 'Piilota' : 'Suunnittelunäkymä'
+              this.state.sidebarVisible ? 'Piilota suunnittelunäkymä' : 'Näytä suunnittelunäkymä'
             }
           />
         </div>
