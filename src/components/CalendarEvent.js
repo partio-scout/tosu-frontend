@@ -17,6 +17,17 @@ function createActivityMarkers(activities) {
   return markers
 }
 
+export function eventStyleGetter(event, start, end, isSelected) {
+  const backgroundColor = event.kuksaEvent ? 'lightgrey' : '#' + event.hexColor
+  const color = event.kuksaEvent ? 'black' : 'white'
+  return {
+    style: {
+      backgroundColor: backgroundColor,
+      color: color,
+    }
+  }
+}
+
 class CalendarEvent extends Component {
   constructor(props) {
     super(props)
@@ -84,7 +95,7 @@ class CalendarEvent extends Component {
               <Activities
                 activities={this.props.event.activities}
                 bufferzone={false}
-                parentId={this.props.event.id} 
+                parentId={this.props.event.id}
                 className='calendar-event-activity-wrapper'
               />
               <div className="calendar-event-button-wrapper">
