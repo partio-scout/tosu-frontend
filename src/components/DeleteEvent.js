@@ -81,9 +81,9 @@ class DeleteEvent extends React.Component {
       actions = (
         <div>
           <p>Poistetaanko tapahtuma {event.title}?</p>
-          {event.synced ? (
+          {event.synced && (
             <p>Tapahtuma poistetaan suunnitelmastasi, mutta ei Kuksasta.</p>
-          ) : null}
+          )}
           <Button onClick={this.handleClose} >peruuta</Button>
           <Button onClick={this.deleteEvent} disabled={disabled}>
             Poista tapahtuma

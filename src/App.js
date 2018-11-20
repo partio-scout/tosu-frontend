@@ -234,8 +234,8 @@ class App extends Component {
 
     const eventsToList = (
       <div className='event-list-container'>
-        {this.state.loading ? (<div className="loading-bar"><LinearProgress /></div>) : null}
-        {filter === "KUKSA" ? (kuksaEventsShowAllSwitch) : null}
+        {this.state.loading && (<div className="loading-bar"><LinearProgress /></div>)}
+        {filter === "KUKSA" && kuksaEventsShowAllSwitch}
         <ul className='event-list'>
           {eventsToShow().map(event => (
             <li className='event-list-item' key={event.id ? event.id : 0}>

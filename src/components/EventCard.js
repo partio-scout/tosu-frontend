@@ -130,7 +130,6 @@ class EventCard extends React.Component {
 
   handleSyncSwitchClick = async () => {
     this.setState({ syncDialogOpen: true })
-    console.log("click")
   }
 
   handleSyncDialogClose = async () => {

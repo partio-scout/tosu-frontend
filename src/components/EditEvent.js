@@ -9,7 +9,7 @@ import EventForm from './EventForm'
 import { notify } from '../reducers/notificationReducer'
 import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
-import { DialogTitle } from '@material-ui/core';
+import { DialogTitle } from '@material-ui/core'
 
 class EditEvent extends React.Component {
   constructor(props) {
