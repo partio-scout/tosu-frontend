@@ -124,7 +124,7 @@ class CalendarEvent extends Component {
 
     // Don't allow dragging activities to kuksa events
     const paperContent = event.kuksaEvent ? (
-      <div>
+      <div className="calendar-event-popper">
         {popoverContent}
         <br />
       </div>
