@@ -18,7 +18,7 @@ function createActivityMarkers(activities) {
 }
 
 export function eventStyleGetter(event, start, end, isSelected) {
-  const backgroundColor = event.kuksaEvent ? 'lightgrey' : '#' + event.hexColor
+  const backgroundColor = event.kuksaEvent ? 'lightgrey' : '#3A74A9'
   const color = event.kuksaEvent ? 'black' : 'white'
   return {
     style: {

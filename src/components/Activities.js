@@ -59,7 +59,7 @@ class Activities extends React.Component {
     return (
       <div>
         <p>
-          {rows.length > 0 ? 'Aktiviteetit:' : 'Ei aktiviteettejä.'}
+          {rows.length > 0 && 'Aktiviteetit:'}
         </p>
         <div className={this.props.className}>
           {rows}
