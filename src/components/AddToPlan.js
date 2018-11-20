@@ -29,14 +29,6 @@ class AddToPlan extends React.Component {
     }
   }
 
-  handleButtonDialogOpen = () => {
-    this.setState({ dialogOpen: true })
-  }
-
-  handleButtonDialogClose = () => {
-    this.setState({ dialogOpen: false })
-  }
-
   render() {
     const event = this.props.event
 

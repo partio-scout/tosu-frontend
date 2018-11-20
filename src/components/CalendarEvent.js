@@ -18,6 +18,17 @@ function createActivityMarkers(activities) {
   return markers
 }
 
+export function eventStyleGetter(event, start, end, isSelected) {
+  const backgroundColor = event.kuksaEvent ? 'lightgrey' : '#3A74A9'
+  const color = event.kuksaEvent ? 'black' : 'white'
+  return {
+    style: {
+      backgroundColor: backgroundColor,
+      color: color,
+    }
+  }
+}
+
 class CalendarEvent extends Component {
   constructor(props) {
     super(props)
