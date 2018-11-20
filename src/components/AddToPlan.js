@@ -52,8 +52,6 @@ class AddToPlan extends React.Component {
         <Dialog
           open={this.state.dialogOpen}
           onClose={this.handleButtonDialogClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
         >
           <DialogTitle>
             Lisätäänkö tapahtuma <b>{event.title}</b> omaan suunnitelmaan?

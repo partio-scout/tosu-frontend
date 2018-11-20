@@ -197,12 +197,10 @@ class EventCard extends React.Component {
         <Dialog
           open={this.state.syncDialogOpen}
           onClose={this.handleSyncDialogClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{syncDialogTitle}</DialogTitle>
+          <DialogTitle>{syncDialogTitle}</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">{syncDialogDescription}</DialogContentText>
+            <DialogContentText>{syncDialogDescription}</DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleSyncDialogClose} color="primary">Peruuta</Button>
