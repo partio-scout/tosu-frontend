@@ -86,7 +86,7 @@ class KuksaEventCard extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    events: state.events,
+    // events: state.events,
   }
 }
 

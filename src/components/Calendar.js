@@ -44,6 +44,7 @@ function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
       information: event.information,
       synced: event.synced,
       kuksaEvent: event.kuksaEvent,
+      tosuEventData: event, // Used when it's better to use the original event for API calls
     }
   })
 }
