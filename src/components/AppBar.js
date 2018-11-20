@@ -33,7 +33,7 @@ class AppBar extends React.Component {
               />
             }
             label={
-              this.state.sidebarVisible ? 'Piilota' : 'Suunnittelunäkymä'
+              this.state.sidebarVisible ? 'Piilota suunnittelunäkymä' : 'Näytä suunnittelunäkymä'
             }
           />
         </div>
