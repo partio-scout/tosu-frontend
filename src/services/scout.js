@@ -16,4 +16,9 @@ const logout = async () => {
   return response.data
 }
 
-export default { deleteScout, findOrCreateScout, logout }
+const partioLogin = async () => {
+  const response = await axios.get(`${API_ROOT}/scouts/login`, {})
+  console.log(response)
+}
+
+export default { deleteScout, findOrCreateScout, logout, partioLogin }

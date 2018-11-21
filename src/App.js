@@ -41,7 +41,7 @@ import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import { bufferZoneInitialization, deleteActivityFromBuffer } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
-import { scoutLogin } from './reducers/scoutReducer'
+import { scoutLogin, scoutPartioIdLogin } from './reducers/scoutReducer'
 import { filterChange } from './reducers/filterReducer'
 
 
@@ -136,7 +136,18 @@ class App extends Component {
   }
 
   googleLoginFail = async response => {
-    // console.log('login failed')
+    notify("Google-kirjautuminen epäonnistui. Yritä uudestaan.")
+  }
+
+  partioLogin = async () => {
+    if (this.props.scout === null) {
+      await this.props.scoutPartioIdLogin()
+      // await Promise.all([
+      //   this.props.eventsInitialization(),
+      //   this.props.bufferZoneInitialization()
+      // ])
+      // this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+    }
   }
 
   filterSelected = (value) => () => {
@@ -199,9 +210,18 @@ class App extends Component {
             <FontAwesome className="icon" name="google" />
             <span className="label">
               {' '}
-              <span className="appbar-button-text">Kirjaudu sisään</span>
+              <span className="appbar-button-text">Kirjaudu sisään Googlella</span>
             </span>
           </GoogleLogin>
+          <Button
+            className="login-button"
+            onClick={this.partioLogin}
+          >
+            <span className="label">
+              {' '}
+              <span className="appbar-button-text">Kirjaudu sisään PartioID:llä</span>
+            </span>
+          </Button>
         </div>
       )
     }
@@ -364,5 +384,6 @@ export default connect(mapStateToProps, {
   deleteActivityFromBuffer,
   addStatusInfo,
   scoutLogin,
+  scoutPartioIdLogin,
   filterChange
 })(AppDnD)

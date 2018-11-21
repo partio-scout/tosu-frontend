@@ -27,6 +27,14 @@ export const scoutLogin = (token) => async dispatch => {
     })
 }
 
+export const scoutPartioIdLogin = () => async dispatch => {
+    scoutService.partioLogin()
+    // dispatch({
+    //     type: 'SCOUT_LOGIN',
+    //     scout: scout
+    // })
+}
+
 export const scoutLogout = () => async dispatch => {
     await scoutService.logout()
     removeGoogleToken()
