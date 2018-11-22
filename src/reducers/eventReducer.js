@@ -81,6 +81,7 @@ export const deleteSyncedEvent = event => async dispatch => {
   // Add the event back to the list of Kuksa events (to show on the "Kuksa" page)
   event.id = "kuksa" + event.kuksaEventId
   event.kuksaEvent = true
+  event.activities = []
   dispatch({
     type: 'ADD_EVENT',
     event: event
