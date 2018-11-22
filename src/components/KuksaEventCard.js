@@ -11,9 +11,11 @@ import {
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
-import { notify } from '../reducers/notificationReducer'
+import { Parser } from 'html-to-react'
 
 import AddToPlan from './AddToPlan'
+import { notify } from '../reducers/notificationReducer'
+import { addEventFromKuksa } from '../reducers/eventReducer'
 
 class KuksaEventCard extends React.Component {
   constructor(props) {
@@ -37,6 +39,8 @@ class KuksaEventCard extends React.Component {
       : `${moment(event.startDate, 'YYYY-MM-DD')
         .locale('fi')
         .format('ddd D. MMMM YYYY')} ${event.startTime}`
+
+    const information = new Parser().parse(event.information)
 
     return (
       <div className="kuksa-event-card">
@@ -71,7 +75,7 @@ class KuksaEventCard extends React.Component {
                 <span>{event.type} päättyy:</span>{' '}
                 {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
               </p>
-              <p>{event.information}</p>
+              <p>{information}</p>
               <br style={{ clear: 'both' }} />
             </CardContent>
           </Collapse>
