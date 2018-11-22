@@ -50,6 +50,7 @@
     "react-append-to-body": "^2.0.20",
     "react-big-calendar-like-google": "0.0.3",
     "react-cookie-consent": "^1.7.0",
+    "react-dates": "^18.2.2",
     "react-dnd": "^5.0.0",
     "react-dnd-html5-backend": "^2.6.0",
     "react-dnd-multi-backend": "^3.1.8",

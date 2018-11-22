@@ -15,6 +15,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import moment from 'moment'
+import { DateRangePicker } from 'react-dates';
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 // CSS
 import 'react-sticky-header/styles.css'
 import "./index.css"
@@ -66,7 +69,7 @@ class App extends Component {
         newEventVisible: false
       })
     } else if (window.location.pathname === '/calendar') {
-        this.props.store.dispatch(filterChange('CALENDAR'))
+      this.props.store.dispatch(filterChange('CALENDAR'))
     }
     if (getGoogleToken() !== null) {
       try {
@@ -143,6 +146,11 @@ class App extends Component {
     this.props.store.dispatch(filterChange(value))
   }
 
+  clearRange = () => {
+    this.filterSelected('ALL')()
+    this.setState({startDate: '', endDate: ''})
+  }
+
   newEvent = () => {
     this.setState({ newEventVisible: true })
   }
@@ -162,11 +170,31 @@ class App extends Component {
     const { events, filter } = this.props.store.getState()
     const shouldShowAllKuksaEvents = this.state.shouldShowAllKuksaEvents
 
+    const dateRangeUpdate = (start, end) => {
+      if (start) {
+        this.setState({startDate: start})
+      }
+      if (end) {
+        this.setState({endDate: end})
+      }
+      if(start && end) {
+        this.filterSelected('RANGE')()
+      }
+    }
+
     const eventsToShow = () => {
       const currentDate = moment().format('YYYY-MM-DD')
       // If filter is set to FUTURE, show all events with end date equal or greater than today
       // otherwise show events with end date less than today
       switch (filter) {
+        case "RANGE": {
+          const rangeStart = this.state.startDate.format('YYYY-MM-DD')
+          const rangeEnd = this.state.endDate.format('YYYY-MM-DD')
+          return events.filter(event =>
+            event.endDate >= rangeStart
+            && event.startDate <= rangeEnd
+            && !event.kuksaEvent).sort(eventComparer)
+        }
         case "FUTURE":
           return events.filter(event => event.endDate >= currentDate && !event.kuksaEvent).sort(eventComparer)
         case "ALL":
@@ -265,50 +293,77 @@ class App extends Component {
               }
               <div id="container" style={{ paddingTop: 0 }}>
                 <div className="content">
-                  <Button
-                    className={this.props.store.getState().filter === 'FUTURE' ? 'active' : ''}
-                    component={Link}
-                    to="/"
-                    onClick={this.filterSelected('FUTURE')}
-                    variant="contained"
-                  >
-                    Tulevat
-                  </Button>
-                  &nbsp;
-                  <Button
-                    className={this.props.store.getState().filter === 'ALL' ? 'active' : ''}
-                    component={Link}
-                    to="/"
-                    onClick={this.filterSelected('ALL')}
-                    variant="contained"
-                  >
-                    Kaikki
-                  </Button>
-                  &nbsp;
-                  <Button
-                    className={this.props.store.getState().filter === 'KUKSA' ? 'active' : ''}
-                    component={Link}
-                    to="/"
-                    onClick={this.filterSelected('KUKSA')}
-                    variant="contained"
-                  >
-                    Kuksa
-                  </Button>
-                  &nbsp;
-                  <Button
-                    className={this.props.store.getState().filter === 'CALENDAR' ? 'active' : ''}
-                    component={Link}
-                    to="/calendar"
-                    onClick={this.filterSelected('CALENDAR')}
-                    variant="contained"
-                  >
-                    Kalenteri
-                  </Button>
-                  &nbsp;
-                  <Button onClick={this.newEvent} variant="contained">
-                    Uusi tapahtuma
-                  </Button>
-                  &nbsp;
+                  <div className="button-row">
+                    {/* <Button
+                      className={this.props.store.getState().filter === 'FUTURE' ? 'active' : ''}
+                      component={Link}
+                      to="/"
+                      onClick={this.filterSelected('FUTURE')}
+                      variant="contained"
+                    >
+                      Tulevat
+                    </Button>
+                    */}
+                    &nbsp;
+                    <Button
+                      className={this.props.store.getState().filter === 'ALL' ? 'active' : ''}
+                      component={Link}
+                      to="/"
+                      onClick={this.filterSelected('ALL')}
+                      variant="contained"
+                    >
+                      Omat
+                    </Button>
+                    &nbsp;
+                    <Button
+                      className={this.props.store.getState().filter === 'KUKSA' ? 'active' : ''}
+                      component={Link}
+                      to="/"
+                      onClick={this.filterSelected('KUKSA')}
+                      variant="contained"
+                    >
+                      Kuksa
+                    </Button>
+                    &nbsp;
+                    <Button
+                      className={this.props.store.getState().filter === 'CALENDAR' ? 'active' : ''}
+                      component={Link}
+                      to="/calendar"
+                      onClick={this.filterSelected('CALENDAR')}
+                      variant="contained"
+                    >
+                      Kalenteri
+                    </Button>
+                    &nbsp;
+                    <Button onClick={this.newEvent} variant="contained">
+                      Uusi tapahtuma
+                    </Button>
+                    &nbsp;
+                  </div>
+                  <div className="date-range-container">
+                    Rajaa tapahtumia:
+                    <DateRangePicker
+                      startDateId="startDate"
+                      endDateId="endDate"
+                      startDate={this.state.startDate}
+                      endDate={this.state.endDate}
+                      onDatesChange={({ startDate, endDate }) => dateRangeUpdate(startDate, endDate)}
+                      focusedInput={this.state.focusedInput}
+                      onFocusChange={(focusedInput) => { this.setState({ focusedInput }) }}
+                      startDatePlaceholderText="alku pvm"
+                      endDatePlaceholderText="loppu pvm"
+                      isOutsideRange={() => false}
+                    />
+                    <Button
+                      component={Link}
+                      className={this.props.store.getState().filter === 'RANGE' ? '' : 'hidden'}
+                      to="/"
+                      onClick={this.clearRange}
+                      variant="contained"
+                    >
+                      Poista rajaus
+                    </Button>
+                  </div>
 
                   <Route exact path="/" render={() => eventsToList} />
                   <Route exact path="/calendar" render={() => calendar} />
