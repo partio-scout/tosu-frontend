@@ -428,6 +428,7 @@ span.label {
 .calendar-event-popper {
   min-width: 200px;
   padding: 10px;
+  border-radius: 4px;
 }
 
 .calendar-event-button-wrapper {
@@ -489,6 +490,13 @@ span.label {
   padding: 5px;
   margin-bottom: 15px;
   background-color: #63bcd1;
+  border-radius: 4px;
+}
+
+.kuksa-event-card {
+  padding: 5px;
+  margin-bottom: 15px;
+  background-color: lightgrey;
   border-radius: 4px;
 }
 

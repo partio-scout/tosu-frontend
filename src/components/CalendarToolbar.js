@@ -10,6 +10,7 @@ import React from 'react'
 import { MuiThemeProvider, RaisedButton, FloatingActionButton, DropDownMenu, MenuItem } from 'material-ui'
 import HardwareKeyboardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left'
 import HardwareKeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right'
+import { Switch, FormControlLabel } from '@material-ui/core'
 
 let navigate = {
   PREVIOUS: 'PREV',
@@ -28,10 +29,12 @@ class Toolbar extends React.Component {
     messages: PropTypes.object,
     onNavigate: PropTypes.func.isRequired,
     onViewChange: PropTypes.func.isRequired,
+    onSwitchChange: PropTypes.func.isRequired,
+    switchState: PropTypes.bool,
   }
 
   render() {
-    let { messages, label } = this.props;
+    let { messages, label, onSwitchChange, switchState } = this.props;
 
     // edited by onursimsek94 (button to div)
     return (
@@ -45,7 +48,6 @@ class Toolbar extends React.Component {
                 style={{boxShadow: 'none', borderRadius: '5px'}}
                 buttonStyle={{backgroundColor: 'rgb(245, 245, 245)', width: '90%', borderRadius: '5px'}}
                 labelStyle={{color: 'rgb(74, 74, 74)'}} />&nbsp;
-              {/* {messages.today}&nbsp; */}
             </div>
             <div onClick={this.navigate.bind(null, navigate.PREVIOUS)}>
               <FloatingActionButton
@@ -55,7 +57,6 @@ class Toolbar extends React.Component {
                 iconStyle={{color: 'rgb(117, 117, 117)', fill: 'rgb(117, 117, 117)'}}>
                 <HardwareKeyboardArrowLeft />
               </FloatingActionButton>&nbsp;
-              {/* {messages.previous}&nbsp; */}
             </div>
             <div onClick={this.navigate.bind(null, navigate.NEXT)}>
               <FloatingActionButton
@@ -65,7 +66,6 @@ class Toolbar extends React.Component {
                 iconStyle={{color: 'rgb(117, 117, 117)', fill: 'rgb(117, 117, 117)'}}>
                 <HardwareKeyboardArrowRight />
               </FloatingActionButton>
-              {/* {messages.next} */}
             </div>
           </div>
         </MuiThemeProvider>
@@ -73,6 +73,17 @@ class Toolbar extends React.Component {
         <span className='rbc-toolbar-label'>
           { label }
         </span>
+
+        <FormControlLabel
+          control={
+            <Switch
+              checked={switchState}
+              onClick={onSwitchChange}
+              color="primary"
+            />
+          }
+          label="Näytä myös Kuksan tapahtumat"
+        />
 
         <span className='rbc-btn-group'>
         {

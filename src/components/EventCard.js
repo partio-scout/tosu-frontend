@@ -289,7 +289,6 @@ class EventCard extends React.Component {
           {moment(event.endDate).locale('fi').format('ddd D.M.YYYY')} kello {event.endTime}
         </p>
         <p>{event.information}</p>
-        <p>Aktiviteetit:</p>
         <Activities
           activities={this.props.event.activities}
           bufferzone={false}
