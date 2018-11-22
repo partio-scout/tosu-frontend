@@ -9,7 +9,7 @@ import EventForm from './EventForm'
 import { notify } from '../reducers/notificationReducer'
 import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
-import { DialogTitle } from '@material-ui/core';
+import { DialogTitle } from '@material-ui/core'
 
 class EditEvent extends React.Component {
   constructor(props) {
@@ -73,9 +73,6 @@ class EditEvent extends React.Component {
       this.props.editEvent(moddedEvent)
       this.props.bufferZoneInitialization(0)
       // await eventService.edit(data);
-      if (this.props.source) {
-        this.props.source()
-      }
       this.setState({ open: false })
       this.props.notify('Tapahtuman muokkaus onnistui!', 'success')
     } catch (exception) {

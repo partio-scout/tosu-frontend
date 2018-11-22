@@ -15,10 +15,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import moment from 'moment'
-import { DateRangePicker } from 'react-dates';
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
+import { DateRangePicker } from 'react-dates'
+import 'react-dates/initialize'
 // CSS
+import 'react-dates/lib/css/_datepicker.css'
 import 'react-sticky-header/styles.css'
 import "./index.css"
 // Components
@@ -262,7 +262,7 @@ class App extends Component {
 
     const eventsToList = (
       <div className='event-list-container'>
-        {filter === "KUKSA" ? (kuksaEventsShowAllSwitch) : null}
+        {filter === "KUKSA" && kuksaEventsShowAllSwitch}
         <ul className='event-list'>
           {eventsToShow().map(event => (
             <li className='event-list-item' key={event.id ? event.id : 0}>

@@ -427,6 +427,7 @@ span.label {
 /* #### CALENDAR #### */
 .calendar {
   height: 50vmin;
+  min-height: 500px;
   width: 70vmin;
   padding-top: 20px;
   margin-bottom: calc(100vh - 500px);

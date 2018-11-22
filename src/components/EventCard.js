@@ -131,7 +131,6 @@ class EventCard extends React.Component {
 
   handleSyncSwitchClick = async () => {
     this.setState({ syncDialogOpen: true })
-    console.log("click")
   }
 
   handleSyncDialogClose = async () => {
@@ -201,12 +200,10 @@ class EventCard extends React.Component {
         <Dialog
           open={this.state.syncDialogOpen}
           onClose={this.handleSyncDialogClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{syncDialogTitle}</DialogTitle>
+          <DialogTitle>{syncDialogTitle}</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">{syncDialogDescription}</DialogContentText>
+            <DialogContentText>{syncDialogDescription}</DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleSyncDialogClose} color="primary">Peruuta</Button>
@@ -342,14 +339,12 @@ class EventCard extends React.Component {
               <EditEvent
                 buttonClass="buttonRight"
                 data={event}
-                source={this.handleClose}
                 setNotification={this.props.setNotification}
                 minimal={!this.state.expanded}
               />
               <DeleteEvent
                 buttonClass="buttonRight"
                 data={event}
-                source={this.handleClose}
                 setNotification={this.props.setNotification}
                 minimal={!this.state.expanded}
               />
