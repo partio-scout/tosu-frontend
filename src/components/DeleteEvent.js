@@ -14,6 +14,7 @@ class DeleteEvent extends React.Component {
   }
 
   deleteEvent = async () => {
+    this.handleClose()
     try {
       if (this.props.data.synced) {
         await this.props.deleteSyncedEvent(this.props.data)

@@ -16,6 +16,7 @@ class AddToPlan extends React.Component {
   }
 
   addEventToTosu = async () => {
+    this.handleButtonDialogClose()
     // The event has event.kuksaEventId -> backend will know it's a synced event.
     try {
       // If event.originalData exists, the event is coming from the calendar. Then use the original event data:
