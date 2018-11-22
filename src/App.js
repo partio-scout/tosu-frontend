@@ -143,7 +143,6 @@ class App extends Component {
   }
 
   filterSelected = (value) => () => {
-    console.log(value)
     this.props.store.dispatch(filterChange(value))
   }
 
@@ -174,7 +173,6 @@ class App extends Component {
         this.setState({endDate: end})
       }
       if(start && end) {
-        console.log('Filter should update now!')
         this.filterSelected('RANGE')()
       }
     }
