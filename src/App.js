@@ -262,7 +262,6 @@ class App extends Component {
 
     const eventsToList = (
       <div className='event-list-container'>
-        {this.state.loading ? (<div className="loading-bar"><LinearProgress /></div>) : null}
         {filter === "KUKSA" ? (kuksaEventsShowAllSwitch) : null}
         <ul className='event-list'>
           {eventsToShow().map(event => (
@@ -365,6 +364,7 @@ class App extends Component {
                     </Button>
                   </div>
 
+                  {this.state.loading ? (<div className="loading-bar"><LinearProgress /></div>) : null}
                   <Route exact path="/" render={() => eventsToList} />
                   <Route exact path="/calendar" render={() => calendar} />
 
