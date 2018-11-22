@@ -95,6 +95,7 @@ class DeleteEvent extends React.Component {
     return (
       <div>
         <Button
+          size={this.props.minimal?'small':'medium'}
           className="buttonRight"
           onClick={this.handleDelete}
           variant='contained'

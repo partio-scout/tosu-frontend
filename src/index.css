@@ -69,17 +69,23 @@ p.eventTimes > span {
 }
 
 .mandatory-chip,
-.non-mandatory-chip {
+.non-mandatory-chip,
+.mandatory-chip-minimal,
+.non-mandatory-chip-minimal {
   cursor: 'move';
 }
 
 .mandatory-chip,
-.mandatory-chip-avatar {
+.mandatory-chip-avatar,
+.mandatory-chip-minimal,
+.mandatory-chip-avatar-minimal {
   background-color: #2196f3 !important;
 }
 
 .non-mandatory-chip,
-.non-mandatory-chip-avatar {
+.non-mandatory-chip-avatar,
+.non-mandatory-chip-minimal,
+.non-mandatory-chip-avatar-minimal {
   background-color: #90caf9 !important;
 }
 
@@ -89,6 +95,15 @@ p.eventTimes > span {
   width: 26px !important;
   color: #1a237e;
   margin: 4px;
+}
+
+.mandatory-chip-avatar-minimal > img,
+.non-mandatory-chip-avatar-minimal > img  {
+  height: 26px !important;
+  width: 26px !important;
+  color: #1a237e;
+  margin: 4px;
+
 }
 
 .activityTitle {
@@ -158,8 +173,8 @@ span.label {
 }
 
 .activity-header {
-  margin: 10px 0 5px;
-  min-height: 12px;
+  margin: 0px;
+  min-height: 0px;
   border-radius: 8px;
   display: flex;
   flex-flow: row wrap;
@@ -231,17 +246,17 @@ span.label {
   margin: 4px;
 }
 
+.connect-drag-source-minimal {
+  float: left;
+  margin: 1px;
+}
+
 .event-card-error {
   position: absolute;
   margin-bottom: -22px;
   color: red;
 }
 
-/* Exclamation point icon */
-.mandatory-chip-avatar > img,
-.non-mandatory-chip-avatar > img {
-  width: 115% !important;
-}
 
 /* Title in Forms */
 .headline {
@@ -448,13 +463,12 @@ span.label {
 }
 
 .left {
+  float: left;
   margin-bottom: auto;
-  display: inline-block;
 }
 
 .right {
   float: right;
-  display: inline-block;
   margin-top: 7px;
 }
 
@@ -476,28 +490,32 @@ span.label {
 
 .empty-event-card {
   padding: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   background-color: orange;
   border-radius: 4px;
 }
 
 .kuksa-synced-event-card {
   padding: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   background-color: #63bcd1;
   border-radius: 4px;
 }
 
 .kuksa-event-card {
   padding: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   background-color: lightgrey;
   border-radius: 4px;
 }
 
+.event-card-subheader {
+  margin-top: 7px !important;
+}
+
 .event-card-wrapper {
   padding: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .mobile-event-card-media {
@@ -550,12 +568,12 @@ span.label {
 }
 
 .event-card-wrapper .activity-header {
-  margin: 0 4px 0 4px;
+  margin: 0px;
   align-content: center;
 }
 
-.event-card-wrapper .activity-header .connect-drag-source {
-  margin: 4px;
+.event-card-wrapper .activity-header .connect-drag-source .connect-drag-source-minimal {
+  margin: 0px;
   align-content: center;
 }
 

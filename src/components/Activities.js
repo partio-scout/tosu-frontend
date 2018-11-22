@@ -52,15 +52,14 @@ class Activities extends React.Component {
             key={activity.id}
             pofActivity={pofActivity}
             activity={activity}
+            minimal={this.props.minimal?true:false}
           />
         )
       })
     }
     return (
       <div>
-        <p>
-          {rows.length > 0 && 'Aktiviteetit:'}
-        </p>
+        {rows.length > 0 && !this.props.minimal && (<p>Aktiviteetit:</p>)}
         <div className={this.props.className}>
           {rows}
         </div>

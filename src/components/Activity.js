@@ -75,31 +75,29 @@ class Activity extends Component {
       const lastParentIndex = pofActivity.parents.length - 1
       lastGuid = pofActivity.parents[lastParentIndex].guid
     }
+    let chipClass = (pofActivity.mandatory ? '' : 'non-') + 'mandatory-chip' + ( this.props.minimal ? '-minimal' :  '' )
+    let avatarClass = (pofActivity.mandatory ? '' : 'non-') + 'mandatory-chip-avatar' + ( this.props.minimal ? '-minimal' :  '' )
 
     if (activity && pofActivity) {
       return connectDragSource(
         <div
-          className='connect-drag-source'
+          className={this.props.minimal?'connect-drag-source-minimal':'connect-drag-source'}
           style={{
             visibility: 'visible'
           }}
         >
           <Chip
             onDelete={() => this.props.deleteActivity(activity)}
-            className={
-              pofActivity.mandatory ? 'mandatory-chip' : 'non-mandatory-chip'
-            }
+            className={chipClass}
             key={activity.id}
             onClick={this.handleClick}
+            style={this.props.minimal ? {height: '25px'} : {} }
             avatar={
               <Avatar
                 alt='Mandatory Icon'
                 src={pofActivity.mandatoryIconUrl}
-                className={
-                  pofActivity.mandatory
-                    ? 'mandatory-chip-avatar'
-                    : 'non-mandatory-chip-avatar'
-                }
+                className={avatarClass}
+                style={this.props.minimal ? {height: '28px'} : {}}
               />
             }
             label={pofActivity.title}

@@ -136,6 +136,7 @@ class EditEvent extends React.Component {
     return (
       <div>
         <Button
+          size={this.props.minimal?'small':'medium'}
           onClick={this.handleOpen}
           className={this.props.buttonClass}
           disabled={disabled}
