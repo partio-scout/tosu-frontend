@@ -22,6 +22,7 @@ import {
 import Warning from '@material-ui/icons/Warning'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
+import { Parser } from 'html-to-react'
 
 import Activities from './Activities'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
@@ -178,6 +179,8 @@ class EventCard extends React.Component {
       )
     }
 
+    const information = new Parser().parse(event.information)
+
     let syncDialogTitle
     let syncDialogDescription
     let syncDialogConfirmText
@@ -288,7 +291,7 @@ class EventCard extends React.Component {
           <span>{event.type} päättyy:</span>{' '}
           {moment(event.endDate).locale('fi').format('ddd D.M.YYYY')} kello {event.endTime}
         </p>
-        <p>{event.information}</p>
+        <p>{information}</p>
         <Activities
           activities={this.props.event.activities}
           bufferzone={false}
