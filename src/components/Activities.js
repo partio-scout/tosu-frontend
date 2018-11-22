@@ -52,7 +52,7 @@ class Activities extends React.Component {
             key={activity.id}
             pofActivity={pofActivity}
             activity={activity}
-            minimal={this.props.minimal?true:false}
+            minimal={this.props.minimal}
           />
         )
       })
