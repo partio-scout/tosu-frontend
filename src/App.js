@@ -146,6 +146,11 @@ class App extends Component {
     this.props.store.dispatch(filterChange(value))
   }
 
+  clearRange = () => {
+    this.filterSelected('ALL')()
+    this.setState({startDate: '', endDate: ''})
+  }
+
   newEvent = () => {
     this.setState({ newEventVisible: true })
   }
@@ -353,7 +358,7 @@ class App extends Component {
                       component={Link}
                       className={this.props.store.getState().filter === 'RANGE' ? '' : 'hidden'}
                       to="/"
-                      onClick={this.filterSelected('ALL')}
+                      onClick={this.clearRange}
                       variant="contained"
                     >
                       Poista rajaus
