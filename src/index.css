@@ -646,3 +646,9 @@ color-class {
   color: #C8E6C9; /*green100*/
   color: #E3F2FD; /*blue50*/
 }
+
+
+/* UTILITY CLASSES */
+.hidden {
+  display: none !important;
+}

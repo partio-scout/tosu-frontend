@@ -349,7 +349,17 @@ class App extends Component {
                       onFocusChange={(focusedInput) => { this.setState({ focusedInput }) }}
                       startDatePlaceholderText="alku pvm"
                       endDatePlaceholderText="loppu pvm"
+                      isOutsideRange={() => false}
                     />
+                    <Button
+                      component={Link}
+                      className={this.props.store.getState().filter === 'RANGE' ? '' : 'hidden'}
+                      to="/"
+                      onClick={this.filterSelected('ALL')}
+                      variant="contained"
+                    >
+                      Poista rajaus
+                    </Button>
                   </div>
 
                   <Route exact path="/" render={() => eventsToList} />
