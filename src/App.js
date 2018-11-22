@@ -309,7 +309,7 @@ class App extends Component {
                       onClick={this.filterSelected('ALL')}
                       variant="contained"
                     >
-                      Kaikki
+                      Omat
                     </Button>
                     &nbsp;
                     <Button
