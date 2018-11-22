@@ -225,9 +225,13 @@ class EventCard extends React.Component {
       />
     )
 
+    // This is used to make unexpended elements smaller
+    // It seems that using style is easiest way to override material ui styles
+    const cardStyle=this.state.expanded ? {'padding-top':'3px','padding-right':'12px'} : {padding: '3px 12px 3px 3px'}
+
 
     const touchDeviceNotExpanded = (
-      <CardContent style={this.state.expanded ? {} : {padding: '3px' }}>
+      <CardContent style={cardStyle}>
         <div className="mobile-event-card-media">
           <Activities
             activities={this.props.event.activities}
@@ -267,7 +271,7 @@ class EventCard extends React.Component {
       </CardContent>
     )
     const notExpanded = (
-      <CardContent style={this.state.expanded ? {} : {padding: '3px' } }>
+      <CardContent style={cardStyle}>
         <div className="activity-header">
           <Activities
             activities={this.props.event.activities}
@@ -305,7 +309,7 @@ class EventCard extends React.Component {
         <Card>
           <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id}>
             <CardHeader
-              style={this.state.expanded ? {} : {padding: '3px' }}
+              style={cardStyle}
               title={
                 <div>
                   {title}
@@ -335,7 +339,7 @@ class EventCard extends React.Component {
             { !isTouchDevice() && !this.state.expanded ? notExpanded  : null }
             { this.state.expanded ? expanded : null }
 
-            <CardActions style={this.state.expanded ? {} : {padding: '3px' }}>
+            <CardActions style={cardStyle}>
               <EditEvent
                 buttonClass="buttonRight"
                 data={event}

@@ -91,13 +91,13 @@ class Activity extends Component {
             className={chipClass}
             key={activity.id}
             onClick={this.handleClick}
-            style={this.props.minimal ? {height: '25px'} : {} }
+            style={this.props.minimal ? {height: '25px'} : {}}
             avatar={
               <Avatar
                 alt='Mandatory Icon'
                 src={pofActivity.mandatoryIconUrl}
                 className={avatarClass}
-                style={this.props.minimal ? {height: '28px'} : {}}
+                style={this.props.minimal ? {height: '24px'} : {}}
               />
             }
             label={pofActivity.title}

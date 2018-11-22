@@ -99,8 +99,8 @@ p.eventTimes > span {
 
 .mandatory-chip-avatar-minimal > img,
 .non-mandatory-chip-avatar-minimal > img  {
-  height: 26px !important;
-  width: 26px !important;
+  height: 22px !important;
+  width: 22px !important;
   color: #1a237e;
   margin: 4px;
 
@@ -533,13 +533,12 @@ span.label {
 }
 
 .tooltip {
-  position: relative;
   display: inline-block;
+  position: relative;
 }
 
 .tooltip .tooltiptext {
-  visibility: hidden;
-  min-width: 200px;
+  min-width: 230px;
   font-size: 14px;
   background-color: black;
   color: #fff;
@@ -548,6 +547,13 @@ span.label {
   padding: 5px;
   z-index: 1;
 }
+
+.tooltiptext {
+  visibility: hidden;
+  position: absolute;
+  display: inline-block;
+}
+
 
 .tooltip:hover .tooltiptext {
   visibility: visible;
