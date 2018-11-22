@@ -191,7 +191,7 @@ class App extends Component {
           const rangeStart = this.state.startDate.format('YYYY-MM-DD')
           const rangeEnd = this.state.endDate.format('YYYY-MM-DD')
           return events.filter(event =>
-            event.startDate >= rangeStart
+            event.endDate >= rangeStart
             && event.startDate <= rangeEnd
             && !event.kuksaEvent).sort(eventComparer)
         }
