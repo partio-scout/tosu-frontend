@@ -154,7 +154,7 @@ class EventCard extends React.Component {
       ? ''
       : `${moment(event.startDate, 'YYYY-MM-DD')
         .locale('fi')
-        .format('ddd D.M.YYYY')} ${event.startTime}`
+        .format('ddd D.M.YYYY')} ${event.startTime.substring(0,5)}`
 
     let cardClassName = "event-card-wrapper" // Style: Normal
     if (this.props.event.activities.length === 0) {
@@ -284,11 +284,11 @@ class EventCard extends React.Component {
         <p className="eventTimes">
           <span>{event.type} alkaa:</span>{' '}
           {moment(event.startDate).locale('fi').format('ddd D.M.YYYY')} kello{' '}
-          {event.startTime}
+          {event.startTime.substring(0,5)}
         </p>
         <p className="eventTimes">
           <span>{event.type} päättyy:</span>{' '}
-          {moment(event.endDate).locale('fi').format('ddd D.M.YYYY')} kello {event.endTime}
+          {moment(event.endDate).locale('fi').format('ddd D.M.YYYY')} kello {event.endTime.substring(0,5)}
         </p>
         <p>{information}</p>
         <Activities
