@@ -1,9 +1,26 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Dialog } from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete'
+import { withStyles } from '@material-ui/core/styles'
 
 import { deleteEvent, deleteEventGroup, deleteSyncedEvent } from '../reducers/eventReducer'
 import { notify } from '../reducers/notificationReducer'
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
+  iconSmall: {
+    fontSize: 20,
+  },
+});
 
 class DeleteEvent extends React.Component {
   constructor(props) {
@@ -53,7 +70,8 @@ class DeleteEvent extends React.Component {
     this.setState({ open: false })
   }
 
-  render() {
+  render(props) {
+    const { classes } = props;
     const event = this.props.data
     const disabled = event.kuksaEvent // Never allow modifications to kuksaEvents (not synced)
     // This is the popup that appears if you click "poista" on an event
@@ -100,6 +118,7 @@ class DeleteEvent extends React.Component {
           variant='contained'
           disabled={disabled}
         >
+          <DeleteIcon className={classes.rightIcon} />
           Poista
         </Button>
 
@@ -113,6 +132,6 @@ class DeleteEvent extends React.Component {
   }
 }
 
-export default connect(null, { deleteEvent, notify, deleteEventGroup, deleteSyncedEvent })(
+export default connect(null, { deleteEvent, notify, deleteEventGroup, deleteSyncedEvent })withStyles(styles)(
   DeleteEvent
 )
