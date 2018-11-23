@@ -14,6 +14,7 @@ import { eventStyleGetter } from './CalendarEvent'
 var pofTree
 var onSwitchChange
 var switchState
+var popOpen = false
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -52,11 +53,16 @@ function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
 // This Event is used to pass pofTree to the actual CalendarEvent.
 // (There might be a better solution somehow using props)
 class Event extends Component {
+  handlePopOver = () => {
+    popOpen = !popOpen
+  }
   render() {
     return (
       <CalendarEvent
         event={this.props.event}
         pofTree={pofTree}
+        popOver={popOpen}
+        change={this.handlePopOver}
       />
     )
   }
