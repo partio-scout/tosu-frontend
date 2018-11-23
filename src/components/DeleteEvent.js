@@ -9,16 +9,13 @@ import { notify } from '../reducers/notificationReducer'
 
 const styles = theme => ({
   button: {
-    margin: theme.spacing.unit,
-  },
-  leftIcon: {
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing.unit
   },
   rightIcon: {
     marginLeft: theme.spacing.unit,
   },
   iconSmall: {
-    fontSize: 20,
+    fontSize: 14,
   },
 });
 
@@ -71,7 +68,7 @@ class DeleteEvent extends React.Component {
   }
 
   render(props) {
-    const { classes } = props;
+    const { classes } = this.props;
     const event = this.props.data
     const disabled = event.kuksaEvent // Never allow modifications to kuksaEvents (not synced)
     // This is the popup that appears if you click "poista" on an event
@@ -113,14 +110,16 @@ class DeleteEvent extends React.Component {
       <div>
         <Button
           size={this.props.minimal?'small':'medium'}
-          className="buttonRight"
+          className={classes.button}
           onClick={this.handleDelete}
           variant='contained'
+          color='secondary'
           disabled={disabled}
         >
-          <DeleteIcon className={classes.rightIcon} />
           Poista
+          <DeleteIcon className={classes.rightIcon} />
         </Button>
+
 
         <Dialog open={this.state.open} onClose={this.handleClose}>
           <div>
@@ -132,6 +131,6 @@ class DeleteEvent extends React.Component {
   }
 }
 
-export default connect(null, { deleteEvent, notify, deleteEventGroup, deleteSyncedEvent })withStyles(styles)(
-  DeleteEvent
+export default connect(null, { deleteEvent, notify, deleteEventGroup, deleteSyncedEvent })(
+  withStyles(styles)(DeleteEvent)
 )

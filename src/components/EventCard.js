@@ -305,7 +305,7 @@ class EventCard extends React.Component {
         <Card>
           <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id}>
             <CardHeader
-              style={this.state.expanded ? {} : {padding: '16px 24px 5px 24px' }}
+              style={this.state.expanded ? {} : {paddingBottom: '5px' }}
               title={
                 <div>
                   {title}
@@ -335,7 +335,7 @@ class EventCard extends React.Component {
             { !isTouchDevice() && !this.state.expanded ? notExpanded  : null }
             { this.state.expanded ? expanded : null }
 
-            <CardActions style={this.state.expanded ? {} : {padding: '5px 24px 16px 24px' }}>
+            <CardActions style={this.state.expanded ? {} : {paddingTop: '5px' }}>
               <EditEvent
                 buttonClass="buttonRight"
                 data={event}
