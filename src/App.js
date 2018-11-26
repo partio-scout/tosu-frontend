@@ -35,13 +35,14 @@ import eventComparer from './utils/EventCompare'
 import { getGoogleToken, removeGoogleToken, setGoogleToken } from './services/googleToken'
 import pofService from './services/pof'
 import { loadCachedPofData } from './services/localStorage'
+import { API_ROOT } from './api-config'
 // Reducers
 import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import { bufferZoneInitialization, deleteActivityFromBuffer } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
-import { scoutLogin, scoutPartioIdLogin } from './reducers/scoutReducer'
+import { scoutLogin } from './reducers/scoutReducer'
 import { filterChange } from './reducers/filterReducer'
 
 
@@ -139,17 +140,6 @@ class App extends Component {
     notify("Google-kirjautuminen epäonnistui. Yritä uudestaan.")
   }
 
-  partioLogin = async () => {
-    if (this.props.scout === null) {
-      await this.props.scoutPartioIdLogin()
-      // await Promise.all([
-      //   this.props.eventsInitialization(),
-      //   this.props.bufferZoneInitialization()
-      // ])
-      // this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-    }
-  }
-
   filterSelected = (value) => () => {
     this.props.store.dispatch(filterChange(value))
   }
@@ -215,7 +205,7 @@ class App extends Component {
           </GoogleLogin>
           <Button
             className="login-button"
-            onClick={this.partioLogin}
+            href={`${API_ROOT}/scouts/login`}
           >
             <span className="label">
               {' '}
@@ -384,6 +374,5 @@ export default connect(mapStateToProps, {
   deleteActivityFromBuffer,
   addStatusInfo,
   scoutLogin,
-  scoutPartioIdLogin,
   filterChange
 })(AppDnD)

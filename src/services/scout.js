@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { API_ROOT } from '../api-config';
+import { API_ROOT } from '../api-config'
 
 const deleteScout = async (scoutId,token) => {
   const response = await axios.delete(`${API_ROOT}/scouts/${scoutId}`)
@@ -16,9 +16,4 @@ const logout = async () => {
   return response.data
 }
 
-const partioLogin = async () => {
-  const response = await axios.get(`${API_ROOT}/scouts/login`, {})
-  console.log(response)
-}
-
-export default { deleteScout, findOrCreateScout, logout, partioLogin }
+export default { deleteScout, findOrCreateScout, logout }
