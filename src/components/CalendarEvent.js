@@ -41,12 +41,16 @@ class CalendarEvent extends Component {
 
   handleClick = event => {
     const { currentTarget } = event
-    this.setState(state => ({
-      anchorEl: state.anchorEl ? null : currentTarget,
-    }))
+    if (!this.props.popOver){
+      this.props.change()
+      this.setState(state => ({
+        anchorEl: state.anchorEl ? null : currentTarget,
+      }))
+    }
   }
 
   closePopper = () => {
+    this.props.change()
     this.setState(state => ({
       anchorEl: null,
     }))
@@ -90,11 +94,13 @@ class CalendarEvent extends Component {
             buttonClass="calendar-button"
             data={event}
             setNotification={this.props.setNotification}
+            minimal='true'
           />
           <DeleteEvent
             buttonClass="calendar-button"
             data={event}
             setNotification={this.props.setNotification}
+            minimal='true'
           />
         </div>
       </div>

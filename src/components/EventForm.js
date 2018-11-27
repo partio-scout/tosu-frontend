@@ -7,17 +7,16 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Button from '@material-ui/core/Button'
 
-import MomentUtils from 'material-ui-pickers/utils/moment-utils'
-import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
-
 import {
   TextValidator,
   ValidatorForm,
   SelectValidator
 } from 'react-material-ui-form-validator'
+
 import ValidatedDatePicker from "../utils/ValidatedDatePicker"
 import ValidatedTimePicker from "../utils/ValidatedTimePicker"
-
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import MomentUtils from '@date-io/moment'
 
 
 export default class EventForm extends React.Component {
@@ -190,7 +189,6 @@ export default class EventForm extends React.Component {
             fullWidth
             margin="normal"
           />
-
           <MuiPickersUtilsProvider utils={MomentUtils}>
             <ValidatedDatePicker
               label="Tapahtuman alkamispäivä"
@@ -221,7 +219,6 @@ export default class EventForm extends React.Component {
               disabled={this.state.startDate === ''}
               margin="normal"
             />
-
             <ValidatedDatePicker
               label="Tapahtuman loppumispäivä"
               onChange={this.handleEndDate}
@@ -250,6 +247,7 @@ export default class EventForm extends React.Component {
               disabled={this.state.endDate === ''}
               margin="normal"
             />
+
           </MuiPickersUtilsProvider>
           <br />
 
