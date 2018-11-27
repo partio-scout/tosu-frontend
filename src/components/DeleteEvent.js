@@ -113,7 +113,7 @@ class DeleteEvent extends React.Component {
           className={classes.button}
           onClick={this.handleDelete}
           variant='contained'
-          color='secondary'
+          color='default'
           disabled={disabled}
         >
           Poista
