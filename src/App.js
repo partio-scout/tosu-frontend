@@ -148,7 +148,7 @@ class App extends Component {
 
   clearRange = () => {
     this.filterSelected('ALL')()
-    this.setState({startDate: '', endDate: ''})
+    this.setState({startDate: null, endDate: null})
   }
 
   newEvent = () => {
