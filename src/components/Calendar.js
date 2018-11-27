@@ -91,6 +91,7 @@ class Calendar extends Component {
     super(props)
     onSwitchChange = this.handleSwitchChange
     switchState = false
+    popOpen = false
     this.state = {
       shouldShowKuksaEventsAlso: switchState
     }
