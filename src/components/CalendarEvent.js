@@ -7,7 +7,8 @@ import IconButton from '@material-ui/core/IconButton'
 import Activities from './Activities'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import DeleteEvent from './DeleteEvent'
-import EditEvent from './EditEvent';
+import EditEvent from './EditEvent'
+import AddToPlan from './AddToPlan'
 
 function createActivityMarkers(activities) {
   let markers = [' ']
@@ -43,10 +44,6 @@ class CalendarEvent extends Component {
     this.setState(state => ({
       anchorEl: state.anchorEl ? null : currentTarget,
     }))
-  }
-
-  handleClose = () => {
-
   }
 
   closePopper = () => {
@@ -92,13 +89,11 @@ class CalendarEvent extends Component {
           <EditEvent
             buttonClass="calendar-button"
             data={event}
-            source={this.handleClose}
             setNotification={this.props.setNotification}
           />
           <DeleteEvent
             buttonClass="calendar-button"
             data={event}
-            source={this.handleClose}
             setNotification={this.props.setNotification}
           />
         </div>
@@ -121,14 +116,15 @@ class CalendarEvent extends Component {
         <p>
           {event.information}
         </p>
-        {!event.kuksaEvent ? activities : null}
-        {!event.kuksaEvent ? editDeleteButtons : null}
+        {!event.kuksaEvent && activities}
+        {!event.kuksaEvent && editDeleteButtons}
+        {event.kuksaEvent && (<AddToPlan event={event} />)}
       </div>
     )
 
     // Don't allow dragging activities to kuksa events
     const paperContent = event.kuksaEvent ? (
-      <div>
+      <div className="calendar-event-popper">
         {popoverContent}
         <br />
       </div>

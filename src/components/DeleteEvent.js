@@ -14,6 +14,7 @@ class DeleteEvent extends React.Component {
   }
 
   deleteEvent = async () => {
+    this.handleClose()
     try {
       if (this.props.data.synced) {
         await this.props.deleteSyncedEvent(this.props.data)
@@ -21,7 +22,6 @@ class DeleteEvent extends React.Component {
         await this.props.deleteEvent(this.props.data.id)
       }
       this.props.notify('Tapahtuma poistettu!', 'success')
-      this.handleClose()
     } catch (exception) {
       console.error('Error in deleting event:', exception)
       this.props.notify('Tapahtuman poistamisessa tuli virhe. Yritä uudestaan!')
@@ -32,7 +32,6 @@ class DeleteEvent extends React.Component {
     try {
       await this.props.deleteEventGroup(this.props.data.eventGroupId)
       this.props.notify('Toistuva tapahtuma poistettu!', 'success')
-      this.handleClose()
     } catch (exception) {
       console.error('Error in deleting event:', exception)
       this.props.notify(
@@ -81,9 +80,9 @@ class DeleteEvent extends React.Component {
       actions = (
         <div>
           <p>Poistetaanko tapahtuma {event.title}?</p>
-          {event.synced ? (
+          {event.synced && (
             <p>Tapahtuma poistetaan suunnitelmastasi, mutta ei Kuksasta.</p>
-          ) : null}
+          )}
           <Button onClick={this.handleClose} >peruuta</Button>
           <Button onClick={this.deleteEvent} disabled={disabled}>
             Poista tapahtuma
@@ -95,6 +94,7 @@ class DeleteEvent extends React.Component {
     return (
       <div>
         <Button
+          size={this.props.minimal?'small':'medium'}
           className="buttonRight"
           onClick={this.handleDelete}
           variant='contained'
