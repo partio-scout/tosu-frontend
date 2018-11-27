@@ -339,7 +339,7 @@ class App extends Component {
                     </Button>
                     &nbsp;
                   </div>
-                  <div className="date-range-container">
+                  <div className="date-range-container" style={this.props.store.getState().filter === 'CALENDAR' ? {display: 'none'} : {}}>
                     Rajaa tapahtumia:
                     <DateRangePicker
                       startDateId="startDate"
