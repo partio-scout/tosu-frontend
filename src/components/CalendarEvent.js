@@ -109,10 +109,10 @@ class CalendarEvent extends Component {
     const popoverContent = (
       <div>
         <div>
-          <div className="left">
+          <div className="calendar-popover-left">
             <p className="calendar-event-title">{event.title}</p>
           </div>
-          <div className="right">
+          <div className="calendar-popover-right">
             <IconButton onClick={this.closePopper}>
               <Icon>close</Icon>
             </IconButton>
