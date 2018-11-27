@@ -315,11 +315,11 @@ class EventCard extends React.Component {
               }
               subheader={subtitle}
               titleTypographyProps={{
-                classes:{root:'left'},
+                classes:{root:'event-card-title-left'},
                 variant:'title',
               }}
               subheaderTypographyProps={{
-                classes:{root:'right event-card-subheader'},
+                classes:{root:'event-card-title-right event-card-subheader'},
                 variant:'subtitle2',
               }}
               action={

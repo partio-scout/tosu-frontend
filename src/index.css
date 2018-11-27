@@ -468,12 +468,23 @@ span.label {
   text-align: right;
 }
 
-.left {
-  float: left;
+.calendar-popover-left {
   margin-bottom: auto;
+  display: inline-block;
 }
 
-.right {
+.calendar-popover-right {
+  float: right;
+  display: inline-block;
+  margin-top: 7px;
+}
+
+.event-card-title-left {
+  margin-bottom: auto;
+  float: left;
+}
+
+.event-card-title-right {
   float: right;
   margin-top: 7px;
 }
