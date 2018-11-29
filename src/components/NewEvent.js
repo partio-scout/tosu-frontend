@@ -189,6 +189,7 @@ class NewEvent extends React.Component {
             close={this.handleClose.bind(this)}
             update={this.update.bind(this)}
             data={this.state}
+            allowRepeatedEvent
           />
         </Paper>
       </div>

@@ -126,8 +126,11 @@ class App extends Component {
     this.setState({ drawerVisible: !this.state.drawerVisible })
   }
 
+
   googleLoginSuccess = async response => {
     if (this.props.scout === null) {
+      this.setState({ loading: true })
+      
       await this.props.scoutLogin(response.tokenId)
       setGoogleToken(response.tokenId)
       await Promise.all([
@@ -135,6 +138,10 @@ class App extends Component {
         this.props.bufferZoneInitialization()
       ])
       this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+      
+      if (this.state.loading) {
+        this.setState({ loading: false })
+      }
     }
   }
 
