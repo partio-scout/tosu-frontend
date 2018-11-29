@@ -35,6 +35,7 @@ const warning = message => (
 )
 
 const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
+  console.log(statusMessage)
   // Information in status box when taskgroup is first or last and contains only mandatory tasks
   const specialPlanInformation = () => (
     <div style={{ fontSize: '0.8rem', lineHeight: '1.6rem' }}>
@@ -43,7 +44,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
           {taskgroup.title}{' '}
           {statusMessage.status.taskgroupDone ? <span>(valmis)</span> : null}
         </h2>
-        
+
         {statusMessage.status.taskgroupDone
           ? [done, `Pakolliset aktiviteetit valittu ${statusMessage.status.dates.mandatory}`]
           : `Valitse pakolliset aktiviteetit ${statusMessage.status.mandatory}/${taskgroup.children.length}`

@@ -225,10 +225,11 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
   }
 
   // Format dates
+  console.log(dates.mandatory)
   dates.firstTask = moment(dates.firstTask).format('DD.MM.YYYY')
   dates.leaderTask = moment(dates.leaderTask).format('DD.MM.YYYY')
-  dates.mandatory = moment(dates.mandatory).format('DD.MM.YYYY')
-  dates.nonMandatory = moment(dates.nonMandatory).format('DD.MM.YYYY')
+  dates.mandatory = moment(dates.lastMandatory).format('DD.MM.YYYY')
+  dates.nonMandatory = moment(dates.lastNonMandatory).format('DD.MM.YYYY')
   dates.suhdeItseen = moment(dates.suhdeItseen).format('DD.MM.YYYY')
   dates.suhdeToiseen = moment(dates.suhdeToiseen).format('DD.MM.YYYY')
   dates.suhdeYhteiskuntaan = moment(dates.suhdeYhteiskuntaan).format('DD.MM.YYYY')
