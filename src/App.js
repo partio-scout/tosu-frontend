@@ -159,7 +159,6 @@ class App extends Component {
     this.setState({ newEventVisible: true })
   }
   handleClose = () => {
-    console.log('handleClose')
     this.setState({ newEventVisible: false })
   }
 
