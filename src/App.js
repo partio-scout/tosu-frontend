@@ -119,7 +119,8 @@ class App extends Component {
     }
     // PartioID login
     if (getScout() !== null) {
-      readScout()
+      // TODO: Rather save a token and fetch the scout from backend (more secure?)
+      readScout() // Reads scout from a cookie.
     }
   }
 
