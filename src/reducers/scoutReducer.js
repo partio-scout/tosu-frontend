@@ -1,5 +1,5 @@
 import scoutService from '../services/scout'
-import { setGoogleToken, removeGoogleToken } from '../services/googleToken';
+import { setGoogleToken, removeGoogleToken, getScout } from '../services/googleToken';
 
 
 
@@ -21,6 +21,14 @@ export const scoutLogin = (token) => async dispatch => {
     const scout = await scoutService.findOrCreateScout(token)
     setGoogleToken(token)
 
+    dispatch({
+        type: 'SCOUT_LOGIN',
+        scout: scout
+    })
+}
+
+export const readScout = () => async dispatch => {
+    const scout = getScout()
     dispatch({
         type: 'SCOUT_LOGIN',
         scout: scout

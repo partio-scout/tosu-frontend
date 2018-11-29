@@ -32,7 +32,7 @@ import Calendar from './components/Calendar'
 import { createStatusMessage } from './utils/createStatusMessage'
 import eventComparer from './utils/EventCompare'
 // Services
-import { getGoogleToken, removeGoogleToken, setGoogleToken } from './services/googleToken'
+import { getGoogleToken, removeGoogleToken, setGoogleToken, getScout } from './services/googleToken' // TODO: rename service
 import pofService from './services/pof'
 import { loadCachedPofData } from './services/localStorage'
 import { API_ROOT } from './api-config'
@@ -42,7 +42,7 @@ import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import { bufferZoneInitialization, deleteActivityFromBuffer } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
-import { scoutLogin } from './reducers/scoutReducer'
+import { scoutLogin, readScout } from './reducers/scoutReducer'
 import { filterChange } from './reducers/filterReducer'
 
 
@@ -69,13 +69,7 @@ class App extends Component {
     } else if (window.location.pathname === '/calendar') {
         this.props.store.dispatch(filterChange('CALENDAR'))
     }
-    if (getGoogleToken() !== null) {
-      try {
-        await this.props.scoutLogin(getGoogleToken())
-      } catch (exception) {
-        removeGoogleToken()
-      }
-    }
+    await this.checkLoggedIn()
     let pofData = loadCachedPofData()
 
     if (pofData === undefined || pofData === {}) {
@@ -112,6 +106,21 @@ class App extends Component {
       this.props.taskgroup
     )
     this.props.addStatusInfo(status)
+  }
+
+  checkLoggedIn = async () => {
+    // Google login
+    if (getGoogleToken() !== null) {
+      try {
+        await this.props.scoutLogin(getGoogleToken())
+      } catch (exception) {
+        removeGoogleToken()
+      }
+    }
+    // PartioID login
+    if (getScout() !== null) {
+      readScout()
+    }
   }
 
   setHeaderHeight = height => {
