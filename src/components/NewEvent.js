@@ -38,7 +38,6 @@ class NewEvent extends React.Component {
       information: '',
     })
     this.props.closeMe()
-    this.props.history.push('/')
   }
 
   handleCloseAndSend = async () => {
