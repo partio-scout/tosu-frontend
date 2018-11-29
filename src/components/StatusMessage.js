@@ -43,10 +43,9 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
           {taskgroup.title}{' '}
           {statusMessage.status.taskgroupDone ? <span>(valmis)</span> : null}
         </h2>
-        {statusMessage.status.taskgroupDone ? done : null}
-
+        
         {statusMessage.status.taskgroupDone
-          ? `Pakolliset aktiviteetit valittu ${statusMessage.status.dates.mandatory}`
+          ? [done, `Pakolliset aktiviteetit valittu ${statusMessage.status.dates.mandatory}`]
           : `Valitse pakolliset aktiviteetit ${statusMessage.status.mandatory}/${taskgroup.children.length}`
         }
         <br />
