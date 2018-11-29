@@ -9,8 +9,8 @@ const reducer = (state = [], action) => {
       const filledTree = fillWithNeededVariable(sortedTree)
       return filledTree
     case 'SET_TREE_POF':
-      // update data by diasbling existing activities &
-      // locking non-mandatory tasks if a tarppo has mandatort tasks left to pick
+      // update data by disabling existing activities &
+      // locking non-mandatory tasks if a tarppo has mandatory tasks left to pick
       return updateState(state, action.existingActivityGuids)
     default:
       return state
@@ -29,47 +29,37 @@ export const pofTreeInitialization = pofJson => {
 
 export const pofTreeUpdate = (buffer, events) => {
   let usedBuffer = buffer
-
   if (isTouchDevice()) {
     usedBuffer = { id: 0, activities: [] }
   }
   return async dispatch => {
-    const existingActivityGuids = arrayActivityGuidsFromBufferAndEvents(
-      usedBuffer,
-      events
-    )
+    const existingActivityGuids = arrayActivityGuidsFromBufferAndEvents(usedBuffer, events)
 
     dispatch({
       type: 'SET_TREE_POF',
-      existingActivityGuids: existingActivityGuids
+      existingActivityGuids
     })
   }
 }
 
 const updateState = (state, existingActivityGuids) => {
   let updatedState = Object.assign({}, state)
-  updatedState = disableTasksInFilterIfExists(
-    updatedState,
-    existingActivityGuids
-  )
-  updatedState = lockOptionalTasksIfMandatoryLeftToPickInAGroup(
-    updatedState,
-    existingActivityGuids
-  )
+  updatedState = disableTasksInFilterIfExists(updatedState, existingActivityGuids)
+  updatedState = lockOptionalTasksIfMandatoryLeftToPickInAGroup( updatedState,existingActivityGuids)
   return updatedState
 }
 
-const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (
-  pof,
-  existingActivityGuids
-) => {
+const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (pof, existingActivityGuids) => {
+  if (!pof) return {}
+  if (!pof.taskgroups) return {}
+  if (!pof.taskgroups.forEach) return {}
   pof.taskgroups.forEach(majorTaskGroup => {
-    const mandatoryTaskGuids = majorTaskGroup.mandatory_tasks.split(',') //mandatory tasks are listed in major group
+    const mandatoryTaskGuids = majorTaskGroup.mandatory_tasks.split(',') // mandatory tasks are listed in major group
     if (mandatoryTaskGuids[0] === '') {
-      //empty split return and array with only value as ""
+      // empty split return and array with only value as ""
       return
     }
-    //if existing activities do not contain all mandatory tasks -> disable all optional
+    // if existing activities do not contain all mandatory tasks -> disable all optional
     mandatoryTaskGuids.forEach(mandatoryTaskGuid => {
       if (existingActivityGuids.includes(mandatoryTaskGuid) === false) {
         setChildrenTasksDisabled(majorTaskGroup)
@@ -78,25 +68,30 @@ const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (
   })
   return pof
 }
-//recursively go into taskgroups of taskgroups and disable all optional tasks
+
+// recursively go into taskgroups of taskgroups and disable all optional tasks
 const setChildrenTasksDisabled = pofChild => {
   let root = pofChild
-  if (root === null || root === undefined) return
-  if (root.children !== undefined) {
-    //groups have children, tasks do not ->recursion into groups
+  if (!root) return
+
+  if (root.children && root.children.forEach) {
+    // groups have children, tasks do not ->recursion into groups
     root.children.forEach(setChildrenTasksDisabled)
   }
-  if (root.tasks === undefined) {
-    //it's a task
+  if (!root.tasks) {
+    // it's a task
     if (root.tags.pakollisuus[0].slug !== 'mandatory') {
       root.disabled = true
     }
   }
 }
 
-//recursively disable existing tasks and enable if removed
+// recursively disable existing tasks and enable if removed
 const disableTasksInFilterIfExists = (root, existingActivityGuids) => {
-  if (root === null || root === undefined) return
+  if (!root) return {}
+  if (!root.taskgroups) return {}
+  if (!root.taskgroups.forEach) return {}
+
 
   try {
     root.taskgroups.forEach(group =>
@@ -106,21 +101,20 @@ const disableTasksInFilterIfExists = (root, existingActivityGuids) => {
     console.log('problem occurred iterating throguh taskgroups', exception)
   }
 
-  if (root !== undefined && root.tasks !== undefined) {
+  if (root && root.children && root.children.forEach) {
     root.children.forEach(task => {
-      if (existingActivityGuids.includes(task.value)) task.disabled = true
-      else {
-        task.disabled = false
-      }
+      task.disabled = existingActivityGuids.includes(task.value)
     })
   }
   return root
 }
-//TreeSearchBar needs specific variables addedto our pofdata
-//which is done here recursively
-const fillWithNeededVariable = pof => {
-  let root = pof
-  if (root === null) return
+
+// TreeSearchBar needs specific variables added to our pofdata
+// which is done here recursively
+const fillWithNeededVariable = root => {
+  if (!root) return {}
+  if (!root.taskgroups) return {}
+  if (!root.taskgroups.forEach) return {}
 
   root.taskgroups.forEach(fillWithNeededVariable)
 
@@ -130,54 +124,41 @@ const fillWithNeededVariable = pof => {
   root.value = root.guid
   root.children = [].concat(root.taskgroups)
 
-  if (root !== undefined && root.tasks !== undefined) {
-    root.children = root.children.concat(root.tasks.sort(orderSorter))
+  if (root && root.tasks && root.tasks.sort) {
     root.tasks.forEach(task => {
       task.key = task.guid
       task.value = task.guid
-      if (task.tags.pakollisuus[0].slug === 'mandatory') {
-        task.label = task.title
-        task.title = (
-          <span
-            name={task.title}
-            className="tree-search-title"
-            style={{ backgroundColor: '#2196f3' }}
-          >
-            {task.title}
-          </span>
-        )
-      } else {
-        task.label = task.title
-        task.title = (
-          <span
-            name={task.title}
-            className="tree-search-title"
-            style={{ backgroundColor: '#E3F2FD' }}
-          >
-            {task.title}
-          </span>
-        )
-      }
+      // add isMandatory -> avoid hardcoded mandatory string check
+      task.isMandatory = (task.tags.pakollisuus[0].slug === 'mandatory')
+      task.label = task.title
+      task.title = (
+        <span
+          name={task.title}
+          className="tree-search-title"
+          style={{ backgroundColor: (task.isMandatory ? '#2196f3' : '#E3F2FD' )}}
+        >
+          {task.title}
+        </span>
+      )
     })
+    root.children = root.children.concat(root.tasks.sort(orderSorter))
   }
   return root
 }
 
 const sortTreeByOrder = root => {
-  let taskgroup = root
-  if (taskgroup === undefined) {
-    return
-  }
-  taskgroup.taskgroups.forEach(sortTreeByOrder)
-  taskgroup.taskgroup = taskgroup.taskgroups.sort((a, b) => {
-    return a.order - b.order
-  })
-  return taskgroup
+  if (!root) return {}
+  if (!root.taskgroups) return {}
+  if (!root.taskgroups.forEach) return {}
+
+  root.taskgroups.forEach(sortTreeByOrder)
+  root.taskgroups = root.taskgroups.sort((a, b) => a.order - b.order)
+  return root
 }
 
-//helpers
-//put all picked activities from events and buffer into a string array made of their guid
-//we use that to search/filter from pofdata
+// helpers
+// put all picked activities from events and buffer into a string array made of their guid
+// we use that to search/filter from pofdata
 const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
   let activities = []
   buffer.activities.forEach(activity => {
@@ -190,20 +171,8 @@ const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
   })
   return activities
 }
-//pof contains a specific order which is why we sort
-const orderSorter = (a, b) => {
-  if (
-    a.tags.pakollisuus[0].slug === 'mandatory' &&
-    b.tags.pakollisuus[0].slug === 'not_mandatory'
-  ) {
-    return -1
-  } else if (
-    b.tags.pakollisuus[0].slug === 'mandatory' &&
-    a.tags.pakollisuus[0].slug === 'not_mandatory'
-  ) {
-    return 1
-  }
-  return 0
-}
+
+// pof contains a specific order which is why we sort
+const orderSorter = (a, b) => b.isMandatory - a.isMandatory
 
 export default reducer
