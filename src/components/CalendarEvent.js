@@ -92,13 +92,13 @@ class CalendarEvent extends Component {
         <div className="calendar-event-button-wrapper">
           <EditEvent
             buttonClass="calendar-button"
-            data={event}
+            data={event.originalData}
             setNotification={this.props.setNotification}
             minimal='true'
           />
           <DeleteEvent
             buttonClass="calendar-button"
-            data={event}
+            data={event.originalData}
             setNotification={this.props.setNotification}
             minimal='true'
           />
@@ -124,7 +124,7 @@ class CalendarEvent extends Component {
         </p>
         {!event.kuksaEvent && activities}
         {!event.kuksaEvent && editDeleteButtons}
-        {event.kuksaEvent && (<AddToPlan event={event} />)}
+        {event.kuksaEvent && (<AddToPlan event={event.originalData} />)}
       </div>
     )
 
