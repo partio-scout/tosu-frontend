@@ -46,18 +46,20 @@ import { eventsInitialization } from './reducers/eventReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutLogin } from './reducers/scoutReducer'
 import { filterChange } from './reducers/filterReducer'
+import { viewChange } from './reducers/viewReducer'
 
 
 class App extends Component {
   constructor() {
     super()
+    const currentDate = moment()
     this.state = {
       headerVisible: false,
       drawerVisible: true,
       bufferZoneHeight: 0,
       newEventVisible: false,
-      shouldShowAllKuksaEvents: false,
       loading: true,
+      startDate: currentDate,
     }
   }
 
@@ -69,7 +71,7 @@ class App extends Component {
         newEventVisible: false
       })
     } else if (window.location.pathname === '/calendar') {
-      this.props.store.dispatch(filterChange('CALENDAR'))
+      this.props.store.dispatch(viewChange('CALENDAR'))
     }
     if (getGoogleToken() !== null) {
       try {
@@ -114,6 +116,7 @@ class App extends Component {
       this.props.taskgroup
     )
     this.props.addStatusInfo(status)
+    this.filterUpdate()
   }
 
   setHeaderHeight = height => {
@@ -146,12 +149,16 @@ class App extends Component {
     // console.log('login failed')
   }
 
+  selectView = (value) => () => {
+    this.props.store.dispatch(viewChange(value))
+  }
+
   filterSelected = (value) => () => {
     this.props.store.dispatch(filterChange(value))
   }
 
   clearRange = () => {
-    this.filterSelected('ALL')()
+    this.filterSelected('NONE')()
     this.setState({startDate: null, endDate: null})
   }
 
@@ -162,55 +169,55 @@ class App extends Component {
     this.setState({ newEventVisible: false })
   }
 
-  handleKuksaEventSwitchChange = () => {
-    if (this.props.store.getState().filter === "KUKSA") {
-      this.setState({
-        shouldShowAllKuksaEvents: !this.state.shouldShowAllKuksaEvents
-      })
+  filterUpdate = () => {
+    if (this.state.startDate && this.state.endDate) {
+      this.filterSelected('RANGE')()
+    }
+    if (this.state.startDate && !this.state.endDate) {
+      this.filterSelected('ONLY_START')()
+    }
+    if (!this.state.startDate && this.state.endDate) {
+      this.filterSelected('ONLY_END')()
     }
   }
 
-  render() {
-    const { events, filter } = this.props.store.getState()
-    const shouldShowAllKuksaEvents = this.state.shouldShowAllKuksaEvents
+  dateRangeUpdate = ({startDate, endDate}) => {
+    this.setState({startDate, endDate})
+  }
 
-    const dateRangeUpdate = (start, end) => {
-      if (start) {
-        this.setState({startDate: start})
-      }
-      if (end) {
-        this.setState({endDate: end})
-      }
-      if(start && end) {
-        this.filterSelected('RANGE')()
-      }
-    }
+  render() {
+    const { filter, view } = this.props.store.getState()
+    let { events } = this.props.store.getState()
+    
 
     const eventsToShow = () => {
-      const currentDate = moment().format('YYYY-MM-DD')
-      // If filter is set to FUTURE, show all events with end date equal or greater than today
-      // otherwise show events with end date less than today
       switch (filter) {
-        case "RANGE": {
-          const rangeStart = this.state.startDate.format('YYYY-MM-DD')
-          const rangeEnd = this.state.endDate.format('YYYY-MM-DD')
-          return events.filter(event =>
-            event.endDate >= rangeStart
-            && event.startDate <= rangeEnd
-            && !event.kuksaEvent).sort(eventComparer)
-        }
-        case "FUTURE":
-          return events.filter(event => event.endDate >= currentDate && !event.kuksaEvent).sort(eventComparer)
-        case "ALL":
-          return events.filter(event => !event.kuksaEvent).sort(eventComparer)
-        case "KUKSA":
-          if (shouldShowAllKuksaEvents) {
-            return events.filter(event => event.kuksaEvent).sort(eventComparer)
-          }
-          return events.filter(event => event.endDate >= currentDate && event.kuksaEvent).sort(eventComparer)
+        case 'ONLY_START':
+          events = events.filter(event => event.endDate >= this.state.startDate.format('YYYY-MM-DD'))
+          break
+        case 'ONLY_END':
+          events = events.filter(event => event.startDate <= this.state.endDate.format('YYYY-MM-DD'))
+          break
+        case 'RANGE':
+          events = events.filter(event =>
+            event.endDate >= this.state.startDate.format('YYYY-MM-DD')
+            && event.startDate <= this.state.endDate.format('YYYY-MM-DD')
+          )
+          break
         default:
-          return events.sort(eventComparer)
+          events = events.sort(eventComparer)
       }
+      switch (view) {
+        case "OWN":
+          events = events.filter(event => !event.kuksaEvent)
+          break
+        case "KUKSA":
+          events = events.filter(event => event.kuksaEvent)
+          break
+        default:
+          events = events.sort(eventComparer)
+      }
+      return events
     }
 
     if (this.props.scout === null) {
@@ -251,22 +258,9 @@ class App extends Component {
       />
     )
 
-    const kuksaEventsShowAllSwitch = (
-      <FormControlLabel
-        control={
-          <Switch
-            checked={shouldShowAllKuksaEvents}
-            onClick={this.handleKuksaEventSwitchChange}
-            color="primary"
-          />
-        }
-        label="Näytä myös menneet tapahtumat"
-      />
-    )
-
     const eventsToList = (
       <div className='event-list-container'>
-        {filter === "KUKSA" && kuksaEventsShowAllSwitch}
+        {view === "KUKSA"}
         <ul className='event-list'>
           {eventsToShow().map(event => (
             <li className='event-list-item' key={event.id ? event.id : 0}>
@@ -309,30 +303,30 @@ class App extends Component {
                     */}
                     &nbsp;
                     <Button
-                      className={this.props.store.getState().filter === 'ALL' ? 'active' : ''}
+                      className={this.props.store.getState().view === 'OWN' ? 'active' : ''}
                       component={Link}
                       to="/"
-                      onClick={this.filterSelected('ALL')}
+                      onClick={this.selectView('OWN')}
                       variant="contained"
                     >
                       Omat
                     </Button>
                     &nbsp;
                     <Button
-                      className={this.props.store.getState().filter === 'KUKSA' ? 'active' : ''}
+                      className={this.props.store.getState().view === 'KUKSA' ? 'active' : ''}
                       component={Link}
                       to="/"
-                      onClick={this.filterSelected('KUKSA')}
+                      onClick={this.selectView('KUKSA')}
                       variant="contained"
                     >
                       Kuksa
                     </Button>
                     &nbsp;
                     <Button
-                      className={this.props.store.getState().filter === 'CALENDAR' ? 'active' : ''}
+                      className={this.props.store.getState().view === 'CALENDAR' ? 'active' : ''}
                       component={Link}
                       to="/calendar"
-                      onClick={this.filterSelected('CALENDAR')}
+                      onClick={this.selectView('CALENDAR')}
                       variant="contained"
                     >
                       Kalenteri
@@ -343,14 +337,14 @@ class App extends Component {
                     </Button>
                     &nbsp;
                   </div>
-                  <div className="date-range-container" style={this.props.store.getState().filter === 'CALENDAR' ? {display: 'none'} : {}}>
+                  <div className="date-range-container" style={this.props.store.getState().view === 'CALENDAR' ? {display: 'none'} : {}}>
                     Rajaa tapahtumia:
                     <DateRangePicker
                       startDateId="startDate"
                       endDateId="endDate"
                       startDate={this.state.startDate}
                       endDate={this.state.endDate}
-                      onDatesChange={({ startDate, endDate }) => dateRangeUpdate(startDate, endDate)}
+                      onDatesChange={this.dateRangeUpdate}
                       focusedInput={this.state.focusedInput}
                       onFocusChange={(focusedInput) => { this.setState({ focusedInput }) }}
                       startDatePlaceholderText="alku pvm"
@@ -359,7 +353,7 @@ class App extends Component {
                     />
                     <Button
                       component={Link}
-                      className={this.props.store.getState().filter === 'RANGE' ? '' : 'hidden'}
+                      className={this.props.store.getState().filter !== 'NONE' ? '' : 'hidden'}
                       to="/"
                       onClick={this.clearRange}
                       variant="contained"
@@ -398,7 +392,8 @@ const mapStateToProps = state => ({
   pofTree: state.pofTree,
   taskgroup: state.taskgroup,
   scout: state.scout,
-  filter: state.filter
+  filter: state.filter,
+  view: state.view
 })
 
 const HTML5toTouch = {
@@ -423,5 +418,6 @@ export default connect(mapStateToProps, {
   deleteActivityFromBuffer,
   addStatusInfo,
   scoutLogin,
-  filterChange
+  filterChange,
+  viewChange
 })(AppDnD)
