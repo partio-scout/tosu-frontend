@@ -29,6 +29,7 @@ import UserInfo from './components/UserInfo'
 import EventCard from './components/EventCard'
 import KuksaEventCard from './components/KuksaEventCard'
 import Calendar from './components/Calendar'
+import ButtonRow from './components/ButtonRow'
 // Utils
 import { createStatusMessage } from './utils/createStatusMessage'
 import eventComparer from './utils/EventCompare'
@@ -155,12 +156,8 @@ class App extends Component {
     this.props.store.dispatch(filterChange(value))
   }
 
-  clearRange = () => {
-    this.filterSelected('NONE')()
-    this.setState({startDate: null, endDate: null})
-  }
-
   newEvent = () => {
+    console.log('newEvent called')
     this.setState({ newEventVisible: true })
   }
   handleClose = () => {
@@ -288,81 +285,15 @@ class App extends Component {
               }
               <div id="container" style={{ paddingTop: 0 }}>
                 <div className="content">
-                  <div className="button-row">
-                    {/* <Button
-                      className={this.props.store.getState().filter === 'FUTURE' ? 'active' : ''}
-                      component={Link}
-                      to="/"
-                      onClick={this.filterSelected('FUTURE')}
-                      variant="contained"
-                    >
-                      Tulevat
-                    </Button>
-                    */}
-                    &nbsp;
-                    <Button
-                      className={this.props.store.getState().view === 'OWN' ? 'active' : ''}
-                      component={Link}
-                      to="/"
-                      onClick={this.selectView('OWN')}
-                      variant="contained"
-                    >
-                      Omat
-                    </Button>
-                    &nbsp;
-                    <Button
-                      className={this.props.store.getState().view === 'KUKSA' ? 'active' : ''}
-                      component={Link}
-                      to="/"
-                      onClick={this.selectView('KUKSA')}
-                      variant="contained"
-                    >
-                      Kuksa
-                    </Button>
-                    &nbsp;
-                    <Button
-                      className={this.props.store.getState().view === 'CALENDAR' ? 'active' : ''}
-                      component={Link}
-                      to="/calendar"
-                      onClick={this.selectView('CALENDAR')}
-                      variant="contained"
-                    >
-                      Kalenteri
-                    </Button>
-                    &nbsp;
-                    <Button onClick={this.newEvent} variant="contained">
-                      Uusi tapahtuma
-                    </Button>
-                    &nbsp;
-                  </div>
-                  <div className="date-range-container" style={this.props.store.getState().view === 'CALENDAR' ? {display: 'none'} : {}}>
-                    Rajaa tapahtumia:
-                    <DateRangePicker
-                      startDateId="startDate"
-                      endDateId="endDate"
-                      startDate={this.state.startDate}
-                      endDate={this.state.endDate}
-                      onDatesChange={this.dateRangeUpdate}
-                      focusedInput={this.state.focusedInput}
-                      onFocusChange={(focusedInput) => { this.setState({ focusedInput }) }}
-                      startDatePlaceholderText="alku pvm"
-                      endDatePlaceholderText="loppu pvm"
-                      isOutsideRange={() => false}
-                    />
-                    <Button
-                      component={Link}
-                      className={this.props.store.getState().filter !== 'NONE' ? '' : 'hidden'}
-                      to="/"
-                      onClick={this.clearRange}
-                      variant="contained"
-                    >
-                      Poista rajaus
-                    </Button>
-                  </div>
+                  <ButtonRow
+                    view={this.state.view}
+                    filter={this.state.filter}
+                    newEvent={this.newEvent} 
+                    dateRangeUpdate={this.dateRangeUpdate}
+                  />
 
                   {this.state.loading ? (<div className="loading-bar"><LinearProgress /></div>) : null}
-                  <Route exact path="/" render={() => eventsToList} />
-                  <Route exact path="/calendar" render={() => calendar} />
+                  {this.props.store.getState().view === 'CALENDAR' ? calendar : eventsToList}
 
                   <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
                     <DialogTitle>Luo uusi tapahtuma</DialogTitle>
