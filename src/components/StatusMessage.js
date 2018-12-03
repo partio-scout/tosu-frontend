@@ -10,6 +10,7 @@ import Clear from '@material-ui/icons/Clear'
 const done = (
   <Done
     className='done'
+    key='done'
   />
 )
 
@@ -17,17 +18,18 @@ const done = (
 const smallDone = (
   <Done
     className='small-done'
+    key='done'
   />
 )
 
 // Warning icon
-const warning = (
-  <div className="tooltip">
+const warning = message => (
+  <div className="tooltip"  key='warning'>
     <Warning
       className='warning'
     />
     <span className="tooltiptext">
-      Aktiviteetin ajankohta on virheellinen!
+      {message}
     </span>
   </div>
 )
@@ -41,16 +43,11 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
           {taskgroup.title}{' '}
           {statusMessage.status.taskgroupDone ? <span>(valmis)</span> : null}
         </h2>
-        {statusMessage.status.taskgroupDone ? done : null}
 
         {statusMessage.status.taskgroupDone
-          ? `Pakolliset aktiviteetit valittu ${
-          statusMessage.status.dates.mandatory
-          }`
-          : `Valitse pakolliset aktiviteetit ${
-          statusMessage.status.mandatory
-          }/${taskgroup.children.length}`}
-
+          ? [done, `Pakolliset aktiviteetit valittu ${statusMessage.status.dates.mandatory}`]
+          : `Valitse pakolliset aktiviteetit ${statusMessage.status.mandatory}/${taskgroup.children.length}`
+        }
         <br />
       </p>
     </div>
@@ -62,95 +59,68 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
       <div style={{ marginBottom: 0 }}>
         <h2>
           {taskgroup.title}{' '}
-          {statusMessage.status.taskgroupDone ? (
-            <span>(valmis)</span>
-              ) : null}
+          {statusMessage.status.taskgroupDone ? (<span>(valmis)</span>) : null}
         </h2>
-        {statusMessage.status.firstTask === 1 &&
-            !statusMessage.status.warnings.firstTaskTooLate
-            ? done
-            : null}
-        {statusMessage.status.warnings.firstTaskTooLate ? warning : null}
 
         {statusMessage.status.firstTask === 1
-            ? `Suuntaus valittu - ${statusMessage.status.dates.firstTask}`
-            : 'Valitse suuntaus'}
-
+          ? [
+              (statusMessage.status.warnings.firstTaskTooLate ? warning(statusMessage.status.warnings.firstTaskTooLate) : done),
+              `Suuntaus valittu - ${statusMessage.status.dates.firstTask}`
+            ]
+          : 'Valitse suuntaus'
+        }
         <br />
-        {statusMessage.status.mandatory === 5 ? done : null}
-
         {statusMessage.status.mandatory === 5
-            ? `Pakolliset aktiviteetit valittu - ${
-            statusMessage.status.dates.mandatory
-            }`
-            : `Valitse pakolliset aktiviteetit ${
-            statusMessage.status.mandatory
-            }/5`}
-
+          ? [done, `Pakolliset aktiviteetit valittu - ${statusMessage.status.dates.mandatory}`]
+          : `Valitse pakolliset aktiviteetit ${statusMessage.status.mandatory}/5`
+        }
         <br />
-        {statusMessage.status.leaderTask === 1 ? done : null}
+
         {statusMessage.status.leaderTask === 1
-            ? `Johtamis- tai vastuutehtävä valittu - ${
-            statusMessage.status.dates.leaderTask
-            }`
-            : 'Valitse johtamis- tai vastuutehtävä'}
-
+          ? [done, `Johtamis- tai vastuutehtävä valittu - ${statusMessage.status.dates.leaderTask}`]
+          : 'Valitse johtamis- tai vastuutehtävä'
+        }
         <br />
-        {statusMessage.status.nonMandatory.total === 4 ? done : null}
 
         {statusMessage.status.nonMandatory.total === 4
-            ? `Vapaaehtoiset aktiviteetit valittu - ${
-            statusMessage.status.dates.nonMandatory
-            }`
-            : `Valitse vapaaehtoiset aktiviteetit ${
-            statusMessage.status.nonMandatory.total
-            }/4`}
+          ? [done, `Vapaaehtoiset aktiviteetit valittu - ${statusMessage.status.dates.nonMandatory}`]
+          : `Valitse vapaaehtoiset aktiviteetit ${statusMessage.status.nonMandatory.total}/4`
+        }
       </div>
+
       <p style={{ margin: 0, marginLeft: 20 }}>
         {statusMessage.status.nonMandatory.suhdeItseen >= 1
-            ? smallDone
-            : null}
-          Suhde itseen, valittu {statusMessage.status.nonMandatory.suhdeItseen}{' '}
-        {statusMessage.status.nonMandatory.suhdeItseen >= 1
-            ? ` - ${statusMessage.status.dates.suhdeItseen}`
-            : null}
+            ? [smallDone, `Suhde itseen, valittu ${statusMessage.status.nonMandatory.suhdeItseen} `, ` - ${statusMessage.status.dates.suhdeItseen}`]
+            : `Suhde itseen, valittu ${statusMessage.status.nonMandatory.suhdeItseen} `
+        }
         <br />
+          
         {statusMessage.status.nonMandatory.suhdeToiseen >= 1
-            ? smallDone
-            : null}
-          Suhde toiseen, valittu{' '}
-        {statusMessage.status.nonMandatory.suhdeToiseen}{' '}
-        {statusMessage.status.nonMandatory.suhdeToiseen >= 1
-            ? ` - ${statusMessage.status.dates.suhdeToiseen}`
-            : null}
+            ? [smallDone, `Suhde toiseen, valittu ${statusMessage.status.nonMandatory.suhdeToiseen} `, ` - ${statusMessage.status.dates.suhdeToiseen}`]
+            : `Suhde toiseen, valittu ${statusMessage.status.nonMandatory.suhdeToiseen} `
+        }
         <br />
+
         {statusMessage.status.nonMandatory.suhdeYhteiskuntaan >= 1
-            ? smallDone
-            : null}
-          Suhde yhteiskuntaan, valittu{' '}
-        {statusMessage.status.nonMandatory.suhdeYhteiskuntaan}{' '}
-        {statusMessage.status.nonMandatory.suhdeYhteiskuntaan >= 1
-            ? ` - ${statusMessage.status.dates.suhdeYhteiskuntaan}`
-            : null}
+            ? [smallDone,  `Suhde yhteiskuntaan, valittu ${statusMessage.status.nonMandatory.suhdeYhteiskuntaan} `,  ` - ${statusMessage.status.dates.suhdeYhteiskuntaan}`]
+            : `Suhde yhteiskuntaan, valittu ${statusMessage.status.nonMandatory.suhdeYhteiskuntaan} `
+        }
         <br />
+          
         {statusMessage.status.nonMandatory.suhdeYmparistoon >= 1
-            ? smallDone
-            : null}
-          Suhde ympäristöön, valittu{' '}
-        {statusMessage.status.nonMandatory.suhdeYmparistoon}{' '}
-        {statusMessage.status.nonMandatory.suhdeYmparistoon >= 1
-            ? ` - ${statusMessage.status.dates.suhdeYmparistoon}`
-            : null}
+          ? [smallDone, `Suhde ympäristöön, valittu ${statusMessage.status.nonMandatory.suhdeYmparistoon} `, ` - ${statusMessage.status.dates.suhdeYmparistoon}`]
+          : `Suhde ympäristöön, valittu ${statusMessage.status.nonMandatory.suhdeYmparistoon} `
+        }
       </p>
+
       <div style={{ marginTop: 0, marginBottom: 0 }}>
-        {statusMessage.status.nonMandatory.majakka === 1 &&
-            !statusMessage.status.warnings.lastTaskTooSoon
-            ? done
-            : null}
-        {statusMessage.status.warnings.lastTaskTooSoon ? warning : null}
         {statusMessage.status.nonMandatory.majakka === 1
-            ? `Majakkavaihtoehto valittu ${statusMessage.status.dates.majakka}`
-            : 'Valitse majakkavaihtoehto'}
+          ? [ 
+              (statusMessage.status.warnings.lastTaskTooSoon ? warning(statusMessage.status.warnings.lastTaskTooSoon) : done),
+              `Majakkavaihtoehto valittu ${statusMessage.status.dates.majakka}`
+            ]
+          : 'Valitse majakkavaihtoehto'
+        }
       </div>
     </div>
     )

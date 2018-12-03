@@ -554,6 +554,10 @@ span.label {
   display: inline-block;
 }
 
+.tooltiptext {
+  position: absolute;
+}
+
 .tooltip .tooltiptext {
   visibility: hidden;
   min-width: 200px;
