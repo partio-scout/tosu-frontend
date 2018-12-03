@@ -22,6 +22,7 @@ import {
 import Warning from '@material-ui/icons/Warning'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
+import { Parser } from 'html-to-react'
 
 import Activities from './Activities'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
@@ -130,7 +131,6 @@ class EventCard extends React.Component {
 
   handleSyncSwitchClick = async () => {
     this.setState({ syncDialogOpen: true })
-    console.log("click")
   }
 
   handleSyncDialogClose = async () => {
@@ -154,7 +154,7 @@ class EventCard extends React.Component {
       ? ''
       : `${moment(event.startDate, 'YYYY-MM-DD')
         .locale('fi')
-        .format('ddd D. MMMM YYYY')} ${event.startTime}`
+        .format('ddd D.M.YYYY')} ${event.startTime.substring(0,5)}`
 
     let cardClassName = "event-card-wrapper" // Style: Normal
     if (this.props.event.activities.length === 0) {
@@ -178,6 +178,8 @@ class EventCard extends React.Component {
       )
     }
 
+    const information = new Parser().parse(event.information)
+
     let syncDialogTitle
     let syncDialogDescription
     let syncDialogConfirmText
@@ -198,12 +200,10 @@ class EventCard extends React.Component {
         <Dialog
           open={this.state.syncDialogOpen}
           onClose={this.handleSyncDialogClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{syncDialogTitle}</DialogTitle>
+          <DialogTitle>{syncDialogTitle}</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">{syncDialogDescription}</DialogContentText>
+            <DialogContentText>{syncDialogDescription}</DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleSyncDialogClose} color="primary">Peruuta</Button>
@@ -225,8 +225,9 @@ class EventCard extends React.Component {
       />
     )
 
+
     const touchDeviceNotExpanded = (
-      <CardContent>
+      <CardContent style={this.state.expanded ? {} : {padding: '3px' }}>
         <div className="mobile-event-card-media">
           <Activities
             activities={this.props.event.activities}
@@ -266,12 +267,13 @@ class EventCard extends React.Component {
       </CardContent>
     )
     const notExpanded = (
-      <CardContent>
+      <CardContent style={this.state.expanded ? {} : {padding: '3px' } }>
         <div className="activity-header">
           <Activities
             activities={this.props.event.activities}
             bufferzone={false}
             parentId={this.props.event.id}
+            minimal
           />
         </div>
       </CardContent>
@@ -282,13 +284,13 @@ class EventCard extends React.Component {
         <p className="eventTimes">
           <span>{event.type} alkaa:</span>{' '}
           {moment(event.startDate).locale('fi').format('ddd D.M.YYYY')} kello{' '}
-          {event.startTime}
+          {event.startTime.substring(0,5)}
         </p>
         <p className="eventTimes">
           <span>{event.type} päättyy:</span>{' '}
-          {moment(event.endDate).locale('fi').format('ddd D.M.YYYY')} kello {event.endTime}
+          {moment(event.endDate).locale('fi').format('ddd D.M.YYYY')} kello {event.endTime.substring(0,5)}
         </p>
-        <p>{event.information}</p>
+        <p>{information}</p>
         <Activities
           activities={this.props.event.activities}
           bufferzone={false}
@@ -298,12 +300,12 @@ class EventCard extends React.Component {
       </CardContent>
     )
 
-
     return (
       <div className={cardClassName}>
         <Card>
           <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id}>
             <CardHeader
+              style={this.state.expanded ? {} : {paddingBottom: '5px' }}
               title={
                 <div>
                   {title}
@@ -312,6 +314,14 @@ class EventCard extends React.Component {
                 </div>
               }
               subheader={subtitle}
+              titleTypographyProps={{
+                classes:{root:'event-card-title-left'},
+                variant:'title',
+              }}
+              subheaderTypographyProps={{
+                classes:{root:'event-card-title-right event-card-subheader'},
+                variant:'subtitle2',
+              }}
               action={
                 <IconButton
                   onClick={this.handleExpandChange}
@@ -325,18 +335,18 @@ class EventCard extends React.Component {
             { !isTouchDevice() && !this.state.expanded ? notExpanded  : null }
             { this.state.expanded ? expanded : null }
 
-            <CardActions>
+            <CardActions style={this.state.expanded ? {} : {paddingTop: '5px' }}>
               <EditEvent
                 buttonClass="buttonRight"
                 data={event}
-                source={this.handleClose}
                 setNotification={this.props.setNotification}
+                minimal={!this.state.expanded}
               />
               <DeleteEvent
                 buttonClass="buttonRight"
                 data={event}
-                source={this.handleClose}
                 setNotification={this.props.setNotification}
+                minimal={!this.state.expanded}
               />
             </CardActions>
           </ActivityDragAndDropTarget>

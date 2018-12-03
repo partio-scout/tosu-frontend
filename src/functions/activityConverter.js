@@ -3,9 +3,6 @@ const convertToBackendActivity = (pofActivity) => {
     return pofActivity
   }
 
-  const pakollisuus = (mandatory) => (
-    mandatory === "Pakollinen"
-  )
   const johtamistaito = (activity, pofActivity) => {
     try {
       activity.johtamistaito = pofActivity.tags.johtamistaito.map(jtn => (jtn.name))
@@ -45,7 +42,7 @@ const convertToBackendActivity = (pofActivity) => {
     guid: pofActivity.guid,
     title: pofActivity.title.props.name,
     content: pofActivity.content,
-    mandatory: pakollisuus(pofActivity.tags.pakollisuus[0].name),
+    mandatory: pofActivity.isMandatory,
     ingress: pofActivity.ingress,
     leader_tasks: pofActivity.leader_tasks,
     duration: pofActivity.tags.suoritus_kesto.name,

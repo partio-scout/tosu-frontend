@@ -38,7 +38,6 @@ class NewEvent extends React.Component {
       information: '',
     })
     this.props.closeMe()
-    this.props.history.push('/')
   }
 
   handleCloseAndSend = async () => {
@@ -189,6 +188,7 @@ class NewEvent extends React.Component {
             close={this.handleClose.bind(this)}
             update={this.update.bind(this)}
             data={this.state}
+            allowRepeatedEvent
           />
         </Paper>
       </div>

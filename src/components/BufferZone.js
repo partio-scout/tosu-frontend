@@ -1,13 +1,25 @@
 import { connect } from 'react-redux'
 import React from 'react'
 import Button from '@material-ui/core/Button'
-import DeleteIcon from '@material-ui/icons/Delete'
+import Icon from '@material-ui/core/Icon'
+import { withStyles } from '@material-ui/core/styles'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import Activities from './Activities'
 import { notify } from '../reducers/notificationReducer' 
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { deleteActivityFromBufferOnlyLocally, deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 
+const styles = theme => ({
+    button: {
+        marginRight: theme.spacing.unit
+    },
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
+    },
+    iconSmall: {
+        fontSize: 14,
+    },
+});
 
 class BufferZone extends React.Component {
   clear = async () => {
@@ -39,9 +51,9 @@ class BufferZone extends React.Component {
             parentId={this.props.buffer.id} 
           />
         </div>
-        <Button id="empty-button" variant="outlined" color="secondary" onClick={this.clear}>
+        <Button id="empty-button" variant="outlined" color="default" onClick={this.clear}>
           Tyhjennä
-          <DeleteIcon />
+            <Icon>clear</Icon>
         </Button>
       </ActivityDragAndDropTarget>
     )
@@ -59,4 +71,4 @@ export default connect(mapStateToProps, {
   pofTreeUpdate,
   deleteActivityFromBufferOnlyLocally,
   deleteActivityFromBuffer,
-})(BufferZone)
+})(withStyles(styles)(BufferZone))
