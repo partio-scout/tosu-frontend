@@ -2,6 +2,7 @@ import {connect} from 'react-redux'
 import Avatar from '@material-ui/core/Avatar'
 import Dialog from '@material-ui/core/Dialog'
 import Chip from '@material-ui/core/Chip'
+import Icon from '@material-ui/core/Icon'
 import {DragSource} from 'react-dnd'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
@@ -92,6 +93,7 @@ class Activity extends Component {
                         className={chipClass}
                         key={activity.id}
                         onClick={this.handleClick}
+                        deleteIcon={<Icon color='primary'>clear</Icon>}
                         style={this.props.minimal ? {height: '25px'} : {}}
                         avatar={
                             <Avatar
