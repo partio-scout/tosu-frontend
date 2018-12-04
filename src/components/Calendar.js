@@ -11,10 +11,7 @@ import CalendarToolbar from './CalendarToolbar'
 import CalendarEvent from './CalendarEvent'
 import { eventStyleGetter } from './CalendarEvent'
 
-var pofTree
-var onSwitchChange
-var switchState
-var popOpen = false
+import { closePopper } from '../reducers/calendarReducer'
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -50,62 +47,17 @@ function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
   })
 }
 
-// This Event is used to pass pofTree to the actual CalendarEvent.
-// (There might be a better solution somehow using props)
-class Event extends Component {
-  handlePopOver = () => {
-    popOpen = !popOpen
-  }
-  render() {
-    return (
-      <CalendarEvent
-        event={this.props.event}
-        pofTree={pofTree}
-        popOver={popOpen}
-        change={this.handlePopOver}
-      />
-    )
-  }
-}
 
-// ^ Same for handling switch click
-class Toolbar extends Component {
-  render() {
-    return (
-      <CalendarToolbar
-        view={this.props.view}
-        views={this.props.views}
-        label={this.props.label}
-        messages={this.props.messages}
-        onNavigate={this.props.onNavigate}
-        onViewChange={this.props.onViewChange}
-        onSwitchChange={onSwitchChange}
-        switchState={switchState}
-      />
-    )
-  }
-}
 
 class Calendar extends Component {
   constructor(props) {
     super(props)
-    onSwitchChange = this.handleSwitchChange
-    switchState = false
-    popOpen = false
-    this.state = {
-      shouldShowKuksaEventsAlso: switchState
-    }
-  }
-
-  handleSwitchChange = () => {
-    this.setState({ shouldShowKuksaEventsAlso: !this.state.shouldShowKuksaEventsAlso })
-    switchState = !switchState
+    this.props.closePopper() 
   }
 
   render() {
     const { events } = this.props
-    pofTree = this.props.pofTree
-    const eventsToShow = prepareEventsToCalendarEvents(events, this.state.shouldShowKuksaEventsAlso)
+    const eventsToShow = prepareEventsToCalendarEvents(events, this.props.shouldShowKuksaEventsAlso)
 
     return (
       <div className="calendar">
@@ -117,8 +69,8 @@ class Calendar extends Component {
           showMultiDayTimes
           views={['month', 'week', 'day']}
           components={{
-            event: Event,
-            toolbar: Toolbar,
+            event:  CalendarEvent,
+            toolbar: CalendarToolbar,
           }}
           eventPropGetter={eventStyleGetter}
         />
@@ -130,7 +82,10 @@ class Calendar extends Component {
 const mapStateToProps = state => {
   return {
     pofTree: state.pofTree,
+    shouldShowKuksaEventsAlso: state.calendar.showKuksa,
   }
 }
 
-export default connect(mapStateToProps)(Calendar)
+export default connect(mapStateToProps, {
+  closePopper,
+})(Calendar)
