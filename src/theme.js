@@ -33,7 +33,10 @@ const theme = createMuiTheme({
         fontWeight: 700,
       }
     },
-    MuiPaper: {
+    MuiButton: {
+      contained: {
+        boxShadow: 'none'
+      }
     }
   },
 });

@@ -174,6 +174,7 @@ class App extends Component {
   render() {
     const { events, filter } = this.props.store.getState()
     const shouldShowAllKuksaEvents = this.state.shouldShowAllKuksaEvents
+    let odd = true
 
     const dateRangeUpdate = (start, end) => {
       if (start) {
@@ -264,16 +265,17 @@ class App extends Component {
         label="Näytä myös menneet tapahtumat"
       />
     )
-
     const eventsToList = (
       <div className='event-list-container'>
         {filter === "KUKSA" && kuksaEventsShowAllSwitch}
         <ul className='event-list'>
-          {eventsToShow().map(event => (
+          {eventsToShow().map(event => {
+            odd=!odd
+            return(
             <li className='event-list-item' key={event.id ? event.id : 0}>
-              {event.kuksaEvent ? (<KuksaEventCard event={event} />) : (<EventCard event={event} />)}
+              {event.kuksaEvent ? (<KuksaEventCard event={event} />) : (<EventCard event={event} odd={odd} />)}
             </li>
-          ))}
+          )})}
         </ul>
       </div>
     )
