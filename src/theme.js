@@ -32,6 +32,8 @@ const theme = createMuiTheme({
       label: {
         fontWeight: 700,
       }
+    },
+    MuiPaper: {
     }
   },
 });

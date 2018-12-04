@@ -318,7 +318,7 @@ span.label {
 .Login {
   padding: 60px 0;
   text-align: center;
-  background: rgb(93, 188, 210);
+  background: #253264;
 }
 
 .Login form {
@@ -346,7 +346,7 @@ span.label {
   width: auto !important;
   background: #fff;
   border: 0;
-  color: rgb(93, 188, 210);
+  color: #253264;
   border-radius: 5px;
 }
 
@@ -613,6 +613,9 @@ span.label {
   padding: 10px 0 10px 20px;
   font-size: 0.9rem;
   position: absolute;
+  background-color: #D6E8F7 !important;
+  box-shadow: none !important;
+  border-radius: 2px !important;
 }
 
 .status-box .done {
@@ -637,7 +640,7 @@ span.label {
   padding: 0;
   margin-right: 20px;
   margin-left: -10px;
-  color: #ccc;
+  color: #253264;
   cursor: pointer;
 }
 
@@ -672,7 +675,7 @@ span.label {
 
 /* #### BUFFER ZONE #### */
 #bufferzone {
-  margin: 10px 10px 5px;
+  margin: 0 14px;
   min-height: 60px;
   min-width: 200px;
   border-radius: 8px;

@@ -267,7 +267,7 @@ class EventCard extends React.Component {
       </CardContent>
     )
     const notExpanded = (
-      <CardContent style={this.state.expanded ? {} : {padding: '3px' } }>
+      <CardContent style={this.state.expanded ? {} : {padding: '3px 10px' } }>
         <div className="activity-header">
           <Activities
             activities={this.props.event.activities}
