@@ -24,7 +24,6 @@ const moveActivityFromEventToBuffer = async (props, activity, parentId, targetId
     props.addActivityToEventOnlyLocally(parentId, { ...activity, canDrag: true })
     props.notify('Aktiviteettialue on täynnä!')
   }
-  props.pofTreeUpdate(props.buffer, props.events)
 }
 
 const moveActivityFromBufferToEvent = async (props, activity, targetId) => {
@@ -45,7 +44,6 @@ const moveActivityFromBufferToEvent = async (props, activity, targetId) => {
     props.postActivityToBufferOnlyLocally({ ...activity, canDrag: true })
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
-  props.pofTreeUpdate(props.buffer, props.events)
 }
 
 const moveActivityFromEventToEvent = async (props, activity, parentId, targetId) => {
@@ -67,7 +65,6 @@ const moveActivityFromEventToEvent = async (props, activity, parentId, targetId)
     props.addActivityToEventOnlyLocally(parentId, { ...activity, canDrag: true })
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
-  props.pofTreeUpdate(props.buffer, props.events)
 }
 
 
@@ -86,6 +83,7 @@ const DropActivity = {
     } else if (!targetIsBufferzone && !itemInBufferzone) {
       moveActivityFromEventToEvent(props, activity, parentId, targetId)
     }
+    props.pofTreeUpdate(props.buffer, props.events)
   }
 }
 
