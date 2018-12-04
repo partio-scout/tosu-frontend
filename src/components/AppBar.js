@@ -31,7 +31,7 @@ class AppBar extends React.Component {
                 className="toggle-sidebar"
                 checked={this.state.sidebarVisible}
                 onClick={this.toggleSideBar}
-                color="primary"
+                color="secondary"
               />
             }
             label={

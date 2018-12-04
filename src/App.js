@@ -17,6 +17,8 @@ import LinearProgress from '@material-ui/core/LinearProgress'
 import moment from 'moment'
 import { DateRangePicker } from 'react-dates'
 import 'react-dates/initialize'
+import { MuiThemeProvider } from '@material-ui/core/styles'
+import theme from './theme'
 // CSS
 import 'react-dates/lib/css/_datepicker.css'
 import 'react-sticky-header/styles.css'
@@ -46,7 +48,6 @@ import { eventsInitialization } from './reducers/eventReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutLogin } from './reducers/scoutReducer'
 import { filterChange } from './reducers/filterReducer'
-
 
 class App extends Component {
   constructor() {
@@ -282,6 +283,7 @@ class App extends Component {
     )
 
     return (
+        <MuiThemeProvider theme={theme}>
       <div className="App" >
         <Router>
           <div>
@@ -314,6 +316,7 @@ class App extends Component {
                       to="/"
                       onClick={this.filterSelected('ALL')}
                       variant="contained"
+                      color="secondary"
                     >
                       Omat
                     </Button>
@@ -324,6 +327,7 @@ class App extends Component {
                       to="/"
                       onClick={this.filterSelected('KUKSA')}
                       variant="contained"
+                      color="secondary"
                     >
                       Kuksa
                     </Button>
@@ -334,11 +338,12 @@ class App extends Component {
                       to="/calendar"
                       onClick={this.filterSelected('CALENDAR')}
                       variant="contained"
+                      color="secondary"
                     >
                       Kalenteri
                     </Button>
                     &nbsp;
-                    <Button onClick={this.newEvent} variant="contained">
+                    <Button onClick={this.newEvent} variant="contained" color="secondary">
                       Uusi tapahtuma
                     </Button>
                     &nbsp;
@@ -363,6 +368,7 @@ class App extends Component {
                       to="/"
                       onClick={this.clearRange}
                       variant="contained"
+                      color="secondary"
                     >
                       Poista rajaus
                     </Button>
@@ -387,6 +393,7 @@ class App extends Component {
           </div>
         </Router>
       </div>
+        </MuiThemeProvider>
     )
   }
 }

@@ -51,7 +51,7 @@ class BufferZone extends React.Component {
             parentId={this.props.buffer.id} 
           />
         </div>
-        <Button id="empty-button" variant="outlined" color="default" onClick={this.clear}>
+        <Button id="empty-button" color="primary" onClick={this.clear}>
           Tyhjennä
             <Icon>clear</Icon>
         </Button>

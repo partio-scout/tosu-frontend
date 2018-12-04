@@ -27,7 +27,7 @@ p.eventTimes > span {
 
 .top-search {
   padding: 0;
-  background-color: #5DBCD2;
+  background-color: #253264;
 }
 
 .footerError,
@@ -79,14 +79,14 @@ p.eventTimes > span {
 .mandatory-chip-avatar,
 .mandatory-chip-minimal,
 .mandatory-chip-avatar-minimal {
-  background-color: #2196f3 !important;
+  background-color: #b1d5f1 !important;
 }
 
 .non-mandatory-chip,
 .non-mandatory-chip-avatar,
 .non-mandatory-chip-minimal,
 .non-mandatory-chip-avatar-minimal {
-  background-color: #90caf9 !important;
+  background-color: #b9e3ff !important;
 }
 
 .mandatory-chip-avatar,
@@ -99,8 +99,8 @@ p.eventTimes > span {
 
 .mandatory-chip-avatar-minimal > img,
 .non-mandatory-chip-avatar-minimal > img  {
-  height: 26px !important;
-  width: 26px !important;
+  height: 21px !important;
+  width: 21px !important;
   color: #1a237e;
   margin: 4px;
 
@@ -280,7 +280,7 @@ span.label {
 }
 
 .active {
-  background-color: #90caf9 !important;
+  background-color: #253264 !important;
 }
 
 /* ################################
@@ -367,9 +367,10 @@ span.label {
 
 /* #### SWITCH #### */
 .toggle-sidebar {
-  background-color: #5DBCD2 !important;
+  background-color: #253264 !important;
   color: #FFF;
   font-size: 0.8rem;
+  margin-left: 10px;
 }
 
 .account-name-and-button {
@@ -392,6 +393,13 @@ span.label {
 /* #### RANGE FILTER #### */
 .date-range-container {
   margin-top: 5px;
+}
+.DateRangePicker {
+    margin-left: 10px !important;
+}
+
+.DateInput_input {
+    width: 75% !important;
 }
 
 /* #### SIDEBAR #### */
@@ -508,7 +516,7 @@ span.label {
 .empty-event-card {
   padding: 5px;
   margin-bottom: 10px;
-  background-color: orange;
+  background-color: #F14150;
   border-radius: 4px;
 }
 
@@ -546,7 +554,7 @@ span.label {
   height: 15px;
   padding: 0;
   margin-right: 7px;
-  color: orange;
+  color: #F14150;
 }
 
 .tooltip {
@@ -612,7 +620,7 @@ span.label {
   height: 15px;
   padding: 0;
   margin-right: 7px;
-  color: green;
+  color: #14A54B;
 }
 
 .status-box .small-done {
@@ -620,7 +628,7 @@ span.label {
   height: 10px;
   padding: 0;
   margin-right: 7px;
-  color: green;
+  color: #14A54B;
 }
 
 .status-box .clear {
@@ -635,21 +643,21 @@ span.label {
 
 .status-box .clear:hover,
 .status-box .clear:focus{
-  color: #f42328;
+  color: #F14150;
 }
 
 .action-help {
   width: 30px;
   height: 30px;
   padding: 0;
-  color: #2196f3;
+  color: #28AAE0;
   margin: 10px 10px 10px 20px;
   cursor: pointer;
 }
 
 .action-help:hover,
 .action-help:focus{
-  color: #204385;
+  color: #253264;
 }
 
 .status-message-container {
