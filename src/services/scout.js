@@ -11,9 +11,4 @@ const findOrCreateScout = async (token) => {
   return response.data
 }
 
-const logout = async () => {
-  const response = await axios.post(`${API_ROOT}/scouts/google/logout`, {})
-  return response.data
-}
-
-export default { deleteScout, findOrCreateScout, logout }
+export default { deleteScout, findOrCreateScout }

@@ -42,7 +42,7 @@ import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import { bufferZoneInitialization, deleteActivityFromBuffer } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
-import { scoutLogin, readScout } from './reducers/scoutReducer'
+import { scoutGoogleLogin, readScout } from './reducers/scoutReducer'
 import { filterChange } from './reducers/filterReducer'
 
 
@@ -112,7 +112,7 @@ class App extends Component {
     // Google login
     if (getGoogleToken() !== null) {
       try {
-        await this.props.scoutLogin(getGoogleToken())
+        await this.props.scoutGoogleLogin(getGoogleToken())
       } catch (exception) {
         removeGoogleToken()
       }
@@ -120,7 +120,7 @@ class App extends Component {
     // PartioID login
     if (getScout() !== null) {
       // TODO: Rather save a token and fetch the scout from backend (more secure?)
-      readScout() // Reads scout from a cookie.
+      await this.props.readScout() // Reads scout from a cookie.
     }
   }
 
@@ -136,7 +136,7 @@ class App extends Component {
 
   googleLoginSuccess = async response => {
     if (this.props.scout === null) {
-      await this.props.scoutLogin(response.tokenId)
+      await this.props.scoutGoogleLogin(response.tokenId)
       setGoogleToken(response.tokenId)
       await Promise.all([
         this.props.eventsInitialization(),
@@ -383,6 +383,7 @@ export default connect(mapStateToProps, {
   bufferZoneInitialization,
   deleteActivityFromBuffer,
   addStatusInfo,
-  scoutLogin,
+  scoutGoogleLogin,
+  readScout,
   filterChange
 })(AppDnD)
