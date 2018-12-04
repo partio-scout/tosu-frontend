@@ -15,7 +15,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import moment from 'moment'
+import { DateRangePicker } from 'react-dates'
+import 'react-dates/initialize'
 // CSS
+import 'react-dates/lib/css/_datepicker.css'
 import 'react-sticky-header/styles.css'
 import "./index.css"
 // Components
@@ -67,7 +70,7 @@ class App extends Component {
         newEventVisible: false
       })
     } else if (window.location.pathname === '/calendar') {
-        this.props.store.dispatch(filterChange('CALENDAR'))
+      this.props.store.dispatch(filterChange('CALENDAR'))
     }
     await this.checkLoggedIn()
     let pofData = loadCachedPofData()
@@ -136,6 +139,8 @@ class App extends Component {
 
   googleLoginSuccess = async response => {
     if (this.props.scout === null) {
+      this.setState({ loading: true })
+      
       await this.props.scoutGoogleLogin(response.tokenId)
       setGoogleToken(response.tokenId)
       await Promise.all([
@@ -143,6 +148,8 @@ class App extends Component {
         this.props.bufferZoneInitialization()
       ])
       this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+
+      this.setState({ loading: false })
     }
   }
 
@@ -152,6 +159,11 @@ class App extends Component {
 
   filterSelected = (value) => () => {
     this.props.store.dispatch(filterChange(value))
+  }
+
+  clearRange = () => {
+    this.filterSelected('ALL')()
+    this.setState({startDate: null, endDate: null})
   }
 
   newEvent = () => {
@@ -173,11 +185,31 @@ class App extends Component {
     const { events, filter } = this.props.store.getState()
     const shouldShowAllKuksaEvents = this.state.shouldShowAllKuksaEvents
 
+    const dateRangeUpdate = (start, end) => {
+      if (start) {
+        this.setState({startDate: start})
+      }
+      if (end) {
+        this.setState({endDate: end})
+      }
+      if(start && end) {
+        this.filterSelected('RANGE')()
+      }
+    }
+
     const eventsToShow = () => {
       const currentDate = moment().format('YYYY-MM-DD')
       // If filter is set to FUTURE, show all events with end date equal or greater than today
       // otherwise show events with end date less than today
       switch (filter) {
+        case "RANGE": {
+          const rangeStart = this.state.startDate.format('YYYY-MM-DD')
+          const rangeEnd = this.state.endDate.format('YYYY-MM-DD')
+          return events.filter(event =>
+            event.endDate >= rangeStart
+            && event.startDate <= rangeEnd
+            && !event.kuksaEvent).sort(eventComparer)
+        }
         case "FUTURE":
           return events.filter(event => event.endDate >= currentDate && !event.kuksaEvent).sort(eventComparer)
         case "ALL":
@@ -254,8 +286,7 @@ class App extends Component {
 
     const eventsToList = (
       <div className='event-list-container'>
-        {this.state.loading ? (<div className="loading-bar"><LinearProgress /></div>) : null}
-        {filter === "KUKSA" ? (kuksaEventsShowAllSwitch) : null}
+        {filter === "KUKSA" && kuksaEventsShowAllSwitch}
         <ul className='event-list'>
           {eventsToShow().map(event => (
             <li className='event-list-item' key={event.id ? event.id : 0}>
@@ -285,51 +316,79 @@ class App extends Component {
               }
               <div id="container" style={{ paddingTop: 0 }}>
                 <div className="content">
-                  <Button
-                    className={this.props.store.getState().filter === 'FUTURE' ? 'active' : ''}
-                    component={Link}
-                    to="/"
-                    onClick={this.filterSelected('FUTURE')}
-                    variant="contained"
-                  >
-                    Tulevat
-                  </Button>
-                  &nbsp;
-                  <Button
-                    className={this.props.store.getState().filter === 'ALL' ? 'active' : ''}
-                    component={Link}
-                    to="/"
-                    onClick={this.filterSelected('ALL')}
-                    variant="contained"
-                  >
-                    Kaikki
-                  </Button>
-                  &nbsp;
-                  <Button
-                    className={this.props.store.getState().filter === 'KUKSA' ? 'active' : ''}
-                    component={Link}
-                    to="/"
-                    onClick={this.filterSelected('KUKSA')}
-                    variant="contained"
-                  >
-                    Kuksa
-                  </Button>
-                  &nbsp;
-                  <Button
-                    className={this.props.store.getState().filter === 'CALENDAR' ? 'active' : ''}
-                    component={Link}
-                    to="/calendar"
-                    onClick={this.filterSelected('CALENDAR')}
-                    variant="contained"
-                  >
-                    Kalenteri
-                  </Button>
-                  &nbsp;
-                  <Button onClick={this.newEvent} variant="contained">
-                    Uusi tapahtuma
-                  </Button>
-                  &nbsp;
+                  <div className="button-row">
+                    {/* <Button
+                      className={this.props.store.getState().filter === 'FUTURE' ? 'active' : ''}
+                      component={Link}
+                      to="/"
+                      onClick={this.filterSelected('FUTURE')}
+                      variant="contained"
+                    >
+                      Tulevat
+                    </Button>
+                    */}
+                    &nbsp;
+                    <Button
+                      className={this.props.store.getState().filter === 'ALL' ? 'active' : ''}
+                      component={Link}
+                      to="/"
+                      onClick={this.filterSelected('ALL')}
+                      variant="contained"
+                    >
+                      Omat
+                    </Button>
+                    &nbsp;
+                    <Button
+                      className={this.props.store.getState().filter === 'KUKSA' ? 'active' : ''}
+                      component={Link}
+                      to="/"
+                      onClick={this.filterSelected('KUKSA')}
+                      variant="contained"
+                    >
+                      Kuksa
+                    </Button>
+                    &nbsp;
+                    <Button
+                      className={this.props.store.getState().filter === 'CALENDAR' ? 'active' : ''}
+                      component={Link}
+                      to="/calendar"
+                      onClick={this.filterSelected('CALENDAR')}
+                      variant="contained"
+                    >
+                      Kalenteri
+                    </Button>
+                    &nbsp;
+                    <Button onClick={this.newEvent} variant="contained">
+                      Uusi tapahtuma
+                    </Button>
+                    &nbsp;
+                  </div>
+                  <div className="date-range-container" style={this.props.store.getState().filter === 'CALENDAR' ? {display: 'none'} : {}}>
+                    Rajaa tapahtumia:
+                    <DateRangePicker
+                      startDateId="startDate"
+                      endDateId="endDate"
+                      startDate={this.state.startDate}
+                      endDate={this.state.endDate}
+                      onDatesChange={({ startDate, endDate }) => dateRangeUpdate(startDate, endDate)}
+                      focusedInput={this.state.focusedInput}
+                      onFocusChange={(focusedInput) => { this.setState({ focusedInput }) }}
+                      startDatePlaceholderText="alku pvm"
+                      endDatePlaceholderText="loppu pvm"
+                      isOutsideRange={() => false}
+                    />
+                    <Button
+                      component={Link}
+                      className={this.props.store.getState().filter === 'RANGE' ? '' : 'hidden'}
+                      to="/"
+                      onClick={this.clearRange}
+                      variant="contained"
+                    >
+                      Poista rajaus
+                    </Button>
+                  </div>
 
+                  {this.state.loading ? (<div className="loading-bar"><LinearProgress /></div>) : null}
                   <Route exact path="/" render={() => eventsToList} />
                   <Route exact path="/calendar" render={() => calendar} />
 

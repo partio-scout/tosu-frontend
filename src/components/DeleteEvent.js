@@ -1,9 +1,23 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Button, Dialog } from '@material-ui/core'
+import DeleteIcon from '@material-ui/icons/Delete'
+import { withStyles } from '@material-ui/core/styles'
 
 import { deleteEvent, deleteEventGroup, deleteSyncedEvent } from '../reducers/eventReducer'
 import { notify } from '../reducers/notificationReducer'
+
+const styles = theme => ({
+  button: {
+    marginLeft: theme.spacing.unit
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
+  iconSmall: {
+    fontSize: 14,
+  },
+});
 
 class DeleteEvent extends React.Component {
   constructor(props) {
@@ -14,6 +28,7 @@ class DeleteEvent extends React.Component {
   }
 
   deleteEvent = async () => {
+    this.handleClose()
     try {
       if (this.props.data.synced) {
         await this.props.deleteSyncedEvent(this.props.data)
@@ -21,7 +36,6 @@ class DeleteEvent extends React.Component {
         await this.props.deleteEvent(this.props.data.id)
       }
       this.props.notify('Tapahtuma poistettu!', 'success')
-      this.handleClose()
     } catch (exception) {
       console.error('Error in deleting event:', exception)
       this.props.notify('Tapahtuman poistamisessa tuli virhe. Yritä uudestaan!')
@@ -32,7 +46,6 @@ class DeleteEvent extends React.Component {
     try {
       await this.props.deleteEventGroup(this.props.data.eventGroupId)
       this.props.notify('Toistuva tapahtuma poistettu!', 'success')
-      this.handleClose()
     } catch (exception) {
       console.error('Error in deleting event:', exception)
       this.props.notify(
@@ -54,7 +67,8 @@ class DeleteEvent extends React.Component {
     this.setState({ open: false })
   }
 
-  render() {
+  render(props) {
+    const { classes } = this.props;
     const event = this.props.data
     const disabled = event.kuksaEvent // Never allow modifications to kuksaEvents (not synced)
     // This is the popup that appears if you click "poista" on an event
@@ -81,9 +95,9 @@ class DeleteEvent extends React.Component {
       actions = (
         <div>
           <p>Poistetaanko tapahtuma {event.title}?</p>
-          {event.synced ? (
+          {event.synced && (
             <p>Tapahtuma poistetaan suunnitelmastasi, mutta ei Kuksasta.</p>
-          ) : null}
+          )}
           <Button onClick={this.handleClose} >peruuta</Button>
           <Button onClick={this.deleteEvent} disabled={disabled}>
             Poista tapahtuma
@@ -95,13 +109,17 @@ class DeleteEvent extends React.Component {
     return (
       <div>
         <Button
-          className="buttonRight"
+          size={this.props.minimal?'small':'medium'}
+          className={classes.button}
           onClick={this.handleDelete}
           variant='contained'
+          color='default'
           disabled={disabled}
         >
           Poista
+          <DeleteIcon className={classes.rightIcon} />
         </Button>
+
 
         <Dialog open={this.state.open} onClose={this.handleClose}>
           <div>
@@ -114,5 +132,5 @@ class DeleteEvent extends React.Component {
 }
 
 export default connect(null, { deleteEvent, notify, deleteEventGroup, deleteSyncedEvent })(
-  DeleteEvent
+  withStyles(styles)(DeleteEvent)
 )

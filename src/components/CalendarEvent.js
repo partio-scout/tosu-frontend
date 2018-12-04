@@ -7,7 +7,8 @@ import IconButton from '@material-ui/core/IconButton'
 import Activities from './Activities'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import DeleteEvent from './DeleteEvent'
-import EditEvent from './EditEvent';
+import EditEvent from './EditEvent'
+import AddToPlan from './AddToPlan'
 
 function createActivityMarkers(activities) {
   let markers = [' ']
@@ -40,16 +41,16 @@ class CalendarEvent extends Component {
 
   handleClick = event => {
     const { currentTarget } = event
-    this.setState(state => ({
-      anchorEl: state.anchorEl ? null : currentTarget,
-    }))
-  }
-
-  handleClose = () => {
-
+    if (!this.props.popOver){
+      this.props.change()
+      this.setState(state => ({
+        anchorEl: state.anchorEl ? null : currentTarget,
+      }))
+    }
   }
 
   closePopper = () => {
+    this.props.change()
     this.setState(state => ({
       anchorEl: null,
     }))
@@ -91,15 +92,15 @@ class CalendarEvent extends Component {
         <div className="calendar-event-button-wrapper">
           <EditEvent
             buttonClass="calendar-button"
-            data={event}
-            source={this.handleClose}
+            data={event.originalData}
             setNotification={this.props.setNotification}
+            minimal='true'
           />
           <DeleteEvent
             buttonClass="calendar-button"
-            data={event}
-            source={this.handleClose}
+            data={event.originalData}
             setNotification={this.props.setNotification}
+            minimal='true'
           />
         </div>
       </div>
@@ -108,10 +109,10 @@ class CalendarEvent extends Component {
     const popoverContent = (
       <div>
         <div>
-          <div className="left">
+          <div className="calendar-popover-left">
             <p className="calendar-event-title">{event.title}</p>
           </div>
-          <div className="right">
+          <div className="calendar-popover-right">
             <IconButton onClick={this.closePopper}>
               <Icon>close</Icon>
             </IconButton>
@@ -121,14 +122,15 @@ class CalendarEvent extends Component {
         <p>
           {event.information}
         </p>
-        {!event.kuksaEvent ? activities : null}
-        {!event.kuksaEvent ? editDeleteButtons : null}
+        {!event.kuksaEvent && activities}
+        {!event.kuksaEvent && editDeleteButtons}
+        {event.kuksaEvent && (<AddToPlan event={event.originalData} />)}
       </div>
     )
 
     // Don't allow dragging activities to kuksa events
     const paperContent = event.kuksaEvent ? (
-      <div>
+      <div className="calendar-event-popper">
         {popoverContent}
         <br />
       </div>

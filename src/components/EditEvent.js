@@ -1,7 +1,9 @@
 import React from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
+import Icon from '@material-ui/core/Icon'
 import Paper from '@material-ui/core/Paper'
+import { withStyles } from '@material-ui/core/styles'
 // import eventgroupService from '../services/eventgroups';
 import moment from 'moment'
 import { connect } from 'react-redux'
@@ -9,7 +11,19 @@ import EventForm from './EventForm'
 import { notify } from '../reducers/notificationReducer'
 import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
-import { DialogTitle } from '@material-ui/core';
+import { DialogTitle } from '@material-ui/core'
+
+const styles = theme => ({
+  button: {
+    marginRight: theme.spacing.unit
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
+  iconSmall: {
+    fontSize: 14,
+  },
+});
 
 class EditEvent extends React.Component {
   constructor(props) {
@@ -73,9 +87,6 @@ class EditEvent extends React.Component {
       this.props.editEvent(moddedEvent)
       this.props.bufferZoneInitialization(0)
       // await eventService.edit(data);
-      if (this.props.source) {
-        this.props.source()
-      }
       this.setState({ open: false })
       this.props.notify('Tapahtuman muokkaus onnistui!', 'success')
     } catch (exception) {
@@ -129,19 +140,23 @@ class EditEvent extends React.Component {
     })
   }
 
-  render() {
+  render(props) {
+    const { classes } = this.props;
     const event = this.props.data
     // Never allow modifications to kuksaEvents (not synced)
     let disabled = event.synced || event.kuksaEvent // TODO: Allow editing after Kuksa sync works both ways (remove event.synced check)
     return (
       <div>
         <Button
+          size={this.props.minimal?'small':'medium'}
           onClick={this.handleOpen}
-          className={this.props.buttonClass}
           disabled={disabled}
+          className={classes.button}
           variant='contained'
+          color='default'
         >
           Muokkaa
+          <Icon className={classes.rightIcon}>edit_icon</Icon>
         </Button>
         <Dialog
           open={this.state.open}
@@ -165,5 +180,5 @@ class EditEvent extends React.Component {
 }
 
 export default connect(null, { editEvent, bufferZoneInitialization, notify })(
-  EditEvent
+  withStyles(styles)(EditEvent)
 )
