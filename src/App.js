@@ -30,7 +30,7 @@ import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
 // Utils
 import { createStatusMessage } from './utils/createStatusMessage'
-import eventComparer from './utils/EventCompare'
+import filterEvents from './functions/filterEvents'
 // Services
 import { getGoogleToken, removeGoogleToken, setGoogleToken } from './services/googleToken'
 import pofService from './services/pof'
@@ -137,14 +137,11 @@ class App extends Component {
         this.props.bufferZoneInitialization()
       ])
       this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-
       this.setState({ loading: false })
     }
   }
 
-  googleLoginFail = async response => {
-    // console.log('login failed')
-  }
+  googleLoginFail = async response => {}
 
   selectView = (value) => () => {
     this.props.store.dispatch(viewChange(value))
@@ -154,13 +151,8 @@ class App extends Component {
     this.props.store.dispatch(filterChange(value))
   }
 
-  newEvent = () => {
-    console.log('newEvent called')
-    this.setState({ newEventVisible: true })
-  }
-  handleClose = () => {
-    this.setState({ newEventVisible: false })
-  }
+  newEvent = () => (this.setState({ newEventVisible: true }))
+  handleClose = () => (this.setState({ newEventVisible: false }))
 
   filterUpdate = () => {
     if (this.state.startDate && this.state.endDate) {
@@ -179,39 +171,10 @@ class App extends Component {
   }
 
   render() {
-    const { filter, view } = this.props.store.getState()
-    let { events } = this.props.store.getState()
-    
-
-    const eventsToShow = () => {
-      switch (filter) {
-        case 'ONLY_START':
-          events = events.filter(event => event.endDate >= this.state.startDate.format('YYYY-MM-DD'))
-          break
-        case 'ONLY_END':
-          events = events.filter(event => event.startDate <= this.state.endDate.format('YYYY-MM-DD'))
-          break
-        case 'RANGE':
-          events = events.filter(event =>
-            event.endDate >= this.state.startDate.format('YYYY-MM-DD')
-            && event.startDate <= this.state.endDate.format('YYYY-MM-DD')
-          )
-          break
-        default:
-          events = events.sort(eventComparer)
-      }
-      switch (view) {
-        case "OWN":
-          events = events.filter(event => !event.kuksaEvent)
-          break
-        case "KUKSA":
-          events = events.filter(event => event.kuksaEvent)
-          break
-        default:
-          events = events.sort(eventComparer)
-      }
-      return events
-    }
+    const { view, filter } = this.props.store.getState()
+    const { startDate, endDate } = this.state
+    const initialEvents = this.props.store.getState().events
+    const eventsToShow = () => (filterEvents(view, filter, initialEvents, startDate, endDate))
 
     if (this.props.scout === null) {
       return (
@@ -238,12 +201,6 @@ class App extends Component {
       )
     }
 
-    const dndMenu = () => (
-      <AppBar
-        toggleSideBar={this.toggleDrawer}
-      />
-    )
-
     const mobileMenu = () => (
       <MobileAppbar
         setHeaderHeight={this.setHeaderHeight}
@@ -264,17 +221,14 @@ class App extends Component {
       </div>
     )
 
-    const calendar = (
-      <Calendar events={this.props.store.getState().events} />
-    )
-
+    const dndMenu = () => (<AppBar toggleSideBar={this.toggleDrawer} />)
+    const calendar = (<Calendar events={this.props.store.getState().events} />)
+    
     return (
       <div className="App" >
         <Router>
           <div>
-            <div>
-              {isTouchDevice() ? mobileMenu() : dndMenu()}
-            </div>
+            <div> {isTouchDevice() ? mobileMenu() : dndMenu()} </div>
             <div className='flexbox'>
               {isTouchDevice() ? null :
                 <div className={this.state.drawerVisible ? 'visible-drawer' : 'hidden-drawer'}>
@@ -324,15 +278,7 @@ const mapStateToProps = state => ({
 })
 
 const HTML5toTouch = {
-  backends: [
-    {
-      backend: HTML5Backend
-    },
-    {
-      backend: HTML5Backend
-    }
-  ]
-}
+  backends: [{backend: HTML5Backend}, {backend: HTML5Backend}]}
 
 const AppDnD = DragDropContext(MultiBackend(HTML5toTouch))(App)
 
