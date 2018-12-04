@@ -3,6 +3,13 @@ import { connect } from 'react-redux'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch'
 import AccountIcon from './AccountIcon'
+import { withStyles } from '@material-ui/core/styles'
+
+const styles = theme => ({
+  label: {
+    color: 'white'
+  }
+})
 
 class AppBar extends React.Component {
   constructor(props) {
@@ -17,7 +24,8 @@ class AppBar extends React.Component {
     this.props.toggleSideBar()
   }
 
-  render() {
+  render(props) {
+    const { classes } = this.props
     return (
       <div className="top-search" id="top-bar-header">
         <div className="account-name-and-button">
@@ -26,6 +34,9 @@ class AppBar extends React.Component {
         </div>
         <div className="Header_root" id="header_root">
           <FormControlLabel
+            classes={{
+              label: classes.label
+            }}
             control={
               <Switch
                 className="toggle-sidebar"
@@ -50,4 +61,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, {})(AppBar)
+export default connect(mapStateToProps, {})( withStyles(styles)(AppBar))

@@ -20,11 +20,6 @@ const theme = createMuiTheme({
     }
   },
   overrides: {
-    MuiFormControlLabel: {
-      label: {
-        color: 'white',
-      },
-    },
     MuiChip: {
       root: {
         borderRadius: '4px'
