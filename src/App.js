@@ -122,8 +122,7 @@ class App extends Component {
     }
     // PartioID login
     if (getScout() !== null) {
-      // TODO: Rather save a token and fetch the scout from backend (more secure?)
-      await this.props.readScout() // Reads scout from a cookie.
+      await this.props.readScout() // Reads scout from a cookie. (Has only name)
     }
   }
 
@@ -140,7 +139,7 @@ class App extends Component {
   googleLoginSuccess = async response => {
     if (this.props.scout === null) {
       this.setState({ loading: true })
-      
+
       await this.props.scoutGoogleLogin(response.tokenId)
       setGoogleToken(response.tokenId)
       await Promise.all([
