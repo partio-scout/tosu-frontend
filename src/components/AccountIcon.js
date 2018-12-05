@@ -5,7 +5,6 @@ import Menu from '@material-ui/core/Menu'
 import IconButton from '@material-ui/core/IconButton'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import { scoutLogout } from '../reducers/scoutReducer'
-import { removeScout } from '../services/googleToken'
 import { API_ROOT } from '../api-config'
 
 class AccountIcon extends React.Component {
