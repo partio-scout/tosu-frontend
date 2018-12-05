@@ -245,10 +245,10 @@ class App extends Component {
             </span>
           </GoogleLogin>
           <Button
-            className="login-button"
+            style={{ backgroundColor: 'transparent' }}
             href={`${API_ROOT}/scouts/login`}
           >
-            <span className="label">
+            <span className="login-button">
               {' '}
               <span className="appbar-button-text">Kirjaudu sisään PartioID:llä</span>
             </span>
