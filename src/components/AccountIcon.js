@@ -4,8 +4,9 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import IconButton from '@material-ui/core/IconButton'
 import AccountCircle from '@material-ui/icons/AccountCircle'
-import { scoutLogin, scoutLogout } from '../reducers/scoutReducer'
-
+import { scoutLogout } from '../reducers/scoutReducer'
+import { removeScout } from '../services/googleToken'
+import { API_ROOT } from '../api-config'
 
 class AccountIcon extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class AccountIcon extends React.Component {
 
   forceMyOwnLogout = async response => {
     await this.props.scoutLogout()
+    window.location = `${API_ROOT}/scouts/logout`
   }
 
   handleMenu = event => {
@@ -68,6 +70,5 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, {
-  scoutLogin,
   scoutLogout
 })(AccountIcon)
