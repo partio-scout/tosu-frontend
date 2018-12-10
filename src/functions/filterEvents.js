@@ -28,7 +28,7 @@ const filterEvents = (view, filter, initialEvents, start, end) => {
     default:
       events = events.sort(eventComparer)
   }
-  return events
+  return events.sort(eventComparer)
 }
 
 export default filterEvents
