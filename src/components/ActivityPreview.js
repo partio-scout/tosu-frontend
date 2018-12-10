@@ -55,8 +55,6 @@ function getItemStyles(currentOffset, startPoint, mandatory) {
   };
 }
 
-
-
 class ActivityPreview extends React.Component {
   render() {
     const { isDragging, currentOffset, startPoint, pofActivity } = this.props
@@ -65,19 +63,17 @@ class ActivityPreview extends React.Component {
     }
     const img = pofActivity.mandatoryIconUrl
     /* if (pofActivity.mandatory) {
-      img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png"
+      img = 'https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png'
     } else {
-      img = "https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3562.png"
+      img = 'https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3562.png'
     } */
     return (
       <Chip
         style={getItemStyles(currentOffset, startPoint, pofActivity.mandatory)}
         className='previewChip'
-        label={<span className="activityTitle">{pofActivity.title}</span>}
+        label={<span className='activityTitle'>{pofActivity.title}</span>}
         avatar={
-          <Avatar
-            style={pofActivity.mandatory ? styles.avatarMandatory : styles.avatar}
-          >
+          <Avatar style={pofActivity.mandatory ? styles.avatarMandatory : styles.avatar}>
             src={img}
           </Avatar>
         }
@@ -85,7 +81,5 @@ class ActivityPreview extends React.Component {
     )
   }
 }
-
-
 
 export default DragLayer(collect)(ActivityPreview);

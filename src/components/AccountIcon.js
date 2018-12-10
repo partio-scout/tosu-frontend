@@ -34,14 +34,14 @@ class AccountIcon extends React.Component {
       <span>
         <IconButton
           aria-owns={open ? 'menu-appbar' : null}
-          aria-haspopup="true"
+          aria-haspopup='true'
           onClick={this.handleMenu}
-          color="inherit"
+          color='inherit'
         >
           <AccountCircle />
         </IconButton>
         <Menu
-          id="menu-appbar"
+          id='menu-appbar'
           anchorEl={this.state.anchorEl}
           anchorOrigin={{
             vertical: 'top',

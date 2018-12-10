@@ -9,9 +9,6 @@ import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 
-
-
-
 class Activities extends React.Component {
   static propTypes = {
     bufferzone: PropTypes.bool.isRequired,
@@ -22,7 +19,6 @@ class Activities extends React.Component {
     deleteActivityFromBuffer: PropTypes.func.isRequired,
     deleteActivityFromEvent: PropTypes.func.isRequired,
   }
-
 
   deleteActivity = async activity => {
     try {
@@ -75,7 +71,6 @@ const mapStateToProps = state => {
     pofTree: state.pofTree
   }
 }
-
 
 export default connect(mapStateToProps, {
   notify,
