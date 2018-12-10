@@ -56,7 +56,7 @@ const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (pof, existingActivityGui
   pof.taskgroups.forEach(majorTaskGroup => {
     const mandatoryTaskGuids = majorTaskGroup.mandatory_tasks.split(',') // mandatory tasks are listed in major group
     if (mandatoryTaskGuids[0] === '') {
-      // empty split return and array with only value as ""
+      // empty split return and array with only value as ''
       return
     }
     // if existing activities do not contain all mandatory tasks -> disable all optional
@@ -134,7 +134,7 @@ const fillWithNeededVariable = root => {
       task.title = (
         <span
           name={task.title}
-          className="tree-search-title"
+          className='tree-search-title'
           style={{ backgroundColor: (task.isMandatory ? '#2196f3' : '#E3F2FD' )}}
         >
           {task.title}
