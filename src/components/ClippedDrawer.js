@@ -1,10 +1,19 @@
 import React from 'react';
 import Drawer from '@material-ui/core/Drawer';
+import Divider from '@material-ui/core/Divider'
 import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
 import StatusMessage from './StatusMessage'
+import { withStyles } from '@material-ui/core/styles'
 
-
+const styles = theme => ({
+  divider: {
+    height: 4,
+    backgroundColor: '#243265',
+    marginTop: '20px',
+    marginBottom: '20px'
+  }
+});
 
 class ClippedDrawer extends React.Component {
   constructor(props) {
@@ -20,7 +29,8 @@ class ClippedDrawer extends React.Component {
     this.setState({ showStatusBox: false })
   }
 
-  render() {
+  render(props) {
+    const { classes } = this.props
     return (
       <div className='drawer-root'>
         <Drawer
@@ -28,6 +38,7 @@ class ClippedDrawer extends React.Component {
           className='drawer-paper'
         >
           <TreeSearchBar />
+          <Divider variant={"middle"} className={classes.divider}/>
           <BufferZone />
           <StatusMessage
             showStatusBox={this.state.showStatusBox}
@@ -40,4 +51,4 @@ class ClippedDrawer extends React.Component {
   }
 }
 
-export default ClippedDrawer;
+export default withStyles(styles)(ClippedDrawer)

@@ -43,8 +43,8 @@ class KuksaEventCard extends React.Component {
     const information = new Parser().parse(event.information)
 
     return (
-      <div className="kuksa-event-card">
-        <Card>
+      <div className="event-card-wrapper">
+        <Card style={{backgroundColor: "#D6E8F6", boxShadow: 'none', borderRadius: '4px'}}>
           <CardHeader
             title={
               <div>

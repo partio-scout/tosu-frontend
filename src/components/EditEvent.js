@@ -153,7 +153,7 @@ class EditEvent extends React.Component {
           disabled={disabled}
           className={classes.button}
           variant='contained'
-          color='default'
+          color='primary'
         >
           Muokkaa
           <Icon className={classes.rightIcon}>edit_icon</Icon>

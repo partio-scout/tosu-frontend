@@ -146,7 +146,7 @@ class EventCard extends React.Component {
   }
 
   render() {
-    const { event } = this.props
+    const { event, odd } = this.props
 
     moment.locale('fi')
     const { title } = event
@@ -267,7 +267,7 @@ class EventCard extends React.Component {
       </CardContent>
     )
     const notExpanded = (
-      <CardContent style={this.state.expanded ? {} : {padding: '3px' } }>
+      <CardContent style={this.state.expanded ? {} : {padding: '3px 10px' } }>
         <div className="activity-header">
           <Activities
             activities={this.props.event.activities}
@@ -302,8 +302,8 @@ class EventCard extends React.Component {
 
     return (
       <div className={cardClassName}>
-        <Card>
-          <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id}>
+      <Card style={{boxShadow: 'none'}}>
+        <ActivityDragAndDropTarget odd={odd} event={true} bufferzone={false} parentId={this.props.event.id}>
             <CardHeader
               style={this.state.expanded ? {} : {paddingBottom: '5px' }}
               title={

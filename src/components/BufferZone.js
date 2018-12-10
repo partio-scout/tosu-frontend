@@ -2,6 +2,7 @@ import { connect } from 'react-redux'
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
+import Divider from "@material-ui/core/Divider/Divider"
 import { withStyles } from '@material-ui/core/styles'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import Activities from './Activities'
@@ -10,15 +11,20 @@ import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { deleteActivityFromBufferOnlyLocally, deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 
 const styles = theme => ({
-    button: {
-        marginRight: theme.spacing.unit
-    },
-    rightIcon: {
-        marginLeft: theme.spacing.unit,
-    },
-    iconSmall: {
-        fontSize: 14,
-    },
+  button: {
+    marginRight: theme.spacing.unit
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
+  iconSmall: {
+    fontSize: 14,
+  },
+  divider: {
+    height: 4,
+    backgroundColor: '#243265',
+    marginBottom: '20px'
+  }
 });
 
 class BufferZone extends React.Component {
@@ -36,6 +42,7 @@ class BufferZone extends React.Component {
   }
 
   render() {
+    const { classes } = this.props
     if (! this.props.buffer.id){
       return ( <div /> )
     }
@@ -51,10 +58,11 @@ class BufferZone extends React.Component {
             parentId={this.props.buffer.id} 
           />
         </div>
-        <Button id="empty-button" variant="outlined" color="default" onClick={this.clear}>
+        <Button id="empty-button" color="primary" onClick={this.clear}>
           Tyhjennä
             <Icon>clear</Icon>
         </Button>
+        <Divider variant={"middle"} className={classes.divider}/>
       </ActivityDragAndDropTarget>
     )
   }

@@ -55,6 +55,7 @@ class ButtonRow extends React.Component {
             className={this.props.view === 'OWN' ? 'active' : ''}
             onClick={this.selectView('OWN')}
             variant="contained"
+            color="secondary"
           >
             Omat
           </Button>
@@ -63,6 +64,7 @@ class ButtonRow extends React.Component {
             className={this.props.view === 'KUKSA' ? 'active' : ''}
             onClick={this.selectView('KUKSA')}
             variant="contained"
+            color="secondary"
           >
             Kuksa
           </Button>
@@ -71,11 +73,12 @@ class ButtonRow extends React.Component {
             className={this.props.view === 'CALENDAR' ? 'active' : ''}
             onClick={this.selectView('CALENDAR')}
             variant="contained"
+            color="secondary"
           >
             Kalenteri
           </Button>
           &nbsp;
-          <Button onClick={this.props.newEvent} variant="contained">
+          <Button onClick={this.props.newEvent} variant="contained" color="secondary">
             Uusi tapahtuma
           </Button>
           &nbsp;

@@ -14,6 +14,8 @@ import { DialogTitle } from '@material-ui/core'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import moment from 'moment'
 import 'react-dates/initialize'
+import { MuiThemeProvider } from '@material-ui/core/styles'
+import theme from './theme'
 // CSS
 import 'react-dates/lib/css/_datepicker.css'
 import 'react-sticky-header/styles.css'
@@ -188,6 +190,7 @@ class App extends Component {
     const { startDate, endDate } = this.state
     const initialEvents = this.props.store.getState().events
     const eventsToShow = () => (filterEvents(view, filter, initialEvents, startDate, endDate))
+    let odd = true
 
     if (this.props.scout === null) {
       return (
@@ -234,11 +237,14 @@ class App extends Component {
       <div className='event-list-container'>
         {view === "KUKSA"}
         <ul className='event-list'>
-          {eventsToShow().map(event => (
-            <li className='event-list-item' key={event.id ? event.id : 0}>
-              {event.kuksaEvent ? (<KuksaEventCard event={event} />) : (<EventCard event={event} />)}
-            </li>
-          ))}
+            {eventsToShow().map(event => {
+              odd=!odd
+              return(
+                <li className='event-list-item' key={event.id ? event.id : 0}>
+                  {event.kuksaEvent ? (<KuksaEventCard event={event} />) : (<EventCard event={event} />)}
+                  {event.kuksaEvent ? (<KuksaEventCard event={event} />) : (<EventCard event={event} odd={odd} />)}
+                </li>
+            )})}
         </ul>
       </div>
     )
@@ -247,6 +253,7 @@ class App extends Component {
     const calendar = (<Calendar events={this.props.store.getState().events} />)
     
     return (
+      <MuiThemeProvider theme={theme}>
       <div className="App" >
         <Router>
           <div>
@@ -284,6 +291,7 @@ class App extends Component {
           </div>
         </Router>
       </div>
+      </MuiThemeProvider>
     )
   }
 }

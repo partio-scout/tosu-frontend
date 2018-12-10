@@ -1,14 +1,15 @@
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import Avatar from '@material-ui/core/Avatar'
 import Dialog from '@material-ui/core/Dialog'
 import Chip from '@material-ui/core/Chip'
-import { DragSource } from 'react-dnd'
-import React, { Component } from 'react'
+import Icon from '@material-ui/core/Icon'
+import {DragSource} from 'react-dnd'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import { notify } from '../reducers/notificationReducer'
-import { deleteActivityFromEvent } from '../reducers/eventReducer'
-import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
+import {pofTreeUpdate} from '../reducers/pofTreeReducer'
+import {notify} from '../reducers/notificationReducer'
+import {deleteActivityFromEvent} from '../reducers/eventReducer'
+import {deleteActivityFromBuffer} from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
 // import ActivityPreview from './ActivityPreview'
@@ -16,7 +17,7 @@ import PlanForm from './PlanForm'
 const activitySource = {
   beginDrag(props, monitor) {
     return {
-      activity: { ...props.activity, canDrag: false },
+      activity: {...props.activity, canDrag: false},
       parentId: props.parentId,
       bufferzone: props.bufferzone,
       startPoint: monitor.getDifferenceFromInitialOffset(),
@@ -59,29 +60,30 @@ class Activity extends Component {
       open: false
     }
   }
+
   componentDidMount() {
 
   }
 
   handleClick = () => {
-    this.setState({ open: !this.state.open })
+    this.setState({open: !this.state.open})
   }
 
   render() {
-    const { activity, pofActivity, connectDragSource } = this.props
+    const {activity, pofActivity, connectDragSource} = this.props
 
     let lastGuid = 0
     if (pofActivity) {
       const lastParentIndex = pofActivity.parents.length - 1
       lastGuid = pofActivity.parents[lastParentIndex].guid
     }
-    let chipClass = (pofActivity.mandatory ? '' : 'non-') + 'mandatory-chip' + ( this.props.minimal ? '-minimal' :  '' )
-    let avatarClass = (pofActivity.mandatory ? '' : 'non-') + 'mandatory-chip-avatar' + ( this.props.minimal ? '-minimal' :  '' )
+    let chipClass = (pofActivity.mandatory ? '' : 'non-') + 'mandatory-chip' + (this.props.minimal ? '-minimal' : '')
+    let avatarClass = (pofActivity.mandatory ? '' : 'non-') + 'mandatory-chip-avatar' + (this.props.minimal ? '-minimal' : '')
 
     if (activity && pofActivity) {
       return connectDragSource(
         <div
-          className={this.props.minimal?'connect-drag-source-minimal':'connect-drag-source'}
+          className={this.props.minimal ? 'connect-drag-source-minimal' : 'connect-drag-source'}
           style={{
             visibility: 'visible'
           }}
@@ -91,13 +93,14 @@ class Activity extends Component {
             className={chipClass}
             key={activity.id}
             onClick={this.handleClick}
-            style={this.props.minimal ? {height: '25px'} : {} }
+            deleteIcon={<Icon color='primary'>clear</Icon>}
+            style={this.props.minimal ? {height: '25px'} : {}}
             avatar={
               <Avatar
                 alt='Mandatory Icon'
                 src={pofActivity.mandatoryIconUrl}
                 className={avatarClass}
-                style={this.props.minimal ? {height: '28px'} : {}}
+                style={this.props.minimal ? {height: '25px'} : {}}
               />
             }
             label={pofActivity.title}
@@ -114,10 +117,10 @@ class Activity extends Component {
                   x
                 </button>
 
-                <br />
+                <br/>
 
                 {pofActivity.parents.map(parent => (
-                  <span style={{ fontSize: '0.9rem' }} key={parent.guid}>
+                  <span style={{fontSize: '0.9rem'}} key={parent.guid}>
                     {parent.title} {parent.guid === lastGuid ? null : ' - '}
                   </span>
                 ))}
@@ -126,7 +129,7 @@ class Activity extends Component {
             open={this.state.open}
             onClose={this.handleClick}
           >
-            <PlanForm activity={pofActivity} savedActivity={activity} />
+            <PlanForm activity={pofActivity} savedActivity={activity}/>
           </Dialog>
         </div>
       )

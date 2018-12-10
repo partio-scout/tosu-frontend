@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: Source Sans Pro Black, sans-serif;
+  font-family:  PT Sans, Source Sans Pro Black, sans-serif;
   overflow: hidden;
 }
 
@@ -17,7 +17,7 @@ p.eventTimes::first-letter {
 }
 
 p.eventTimes > span {
-  font-family: Source Sans Pro Black, sans-serif;
+  font-family: PT Sans, Source Sans Pro Black, sans-serif;
   font-weight: bold;
 }
 
@@ -27,7 +27,7 @@ p.eventTimes > span {
 
 .top-search {
   padding: 0;
-  background-color: #5DBCD2;
+  background-color: #253264;
 }
 
 .footerError,
@@ -79,14 +79,14 @@ p.eventTimes > span {
 .mandatory-chip-avatar,
 .mandatory-chip-minimal,
 .mandatory-chip-avatar-minimal {
-  background-color: #2196f3 !important;
+  background-color: #97bcd7 !important;
 }
 
 .non-mandatory-chip,
 .non-mandatory-chip-avatar,
 .non-mandatory-chip-minimal,
 .non-mandatory-chip-avatar-minimal {
-  background-color: #90caf9 !important;
+  background-color: #aed3eb !important;
 }
 
 .mandatory-chip-avatar,
@@ -99,8 +99,8 @@ p.eventTimes > span {
 
 .mandatory-chip-avatar-minimal > img,
 .non-mandatory-chip-avatar-minimal > img  {
-  height: 26px !important;
-  width: 26px !important;
+  height: 21px !important;
+  width: 21px !important;
   color: #1a237e;
   margin: 4px;
 
@@ -257,6 +257,13 @@ span.label {
   color: red;
 }
 
+.event-card-odd {
+  background-color: #D6E8F7;
+}
+
+.event-card-even {
+  background-color: #efeeee;
+}
 
 /* Title in Forms */
 .headline {
@@ -280,7 +287,7 @@ span.label {
 }
 
 .active {
-  background-color: #90caf9 !important;
+  background-color: #253264 !important;
 }
 
 /* ################################
@@ -318,7 +325,7 @@ span.label {
 .Login {
   padding: 60px 0;
   text-align: center;
-  background: rgb(93, 188, 210);
+  background: #253264;
 }
 
 .Login form {
@@ -346,9 +353,8 @@ span.label {
   width: auto !important;
   background: #fff;
   border: 0;
-  color: rgb(93, 188, 210);
+  color: #253264;
   border-radius: 5px;
-  cursor: pointer;
 }
 
 /* END OF LOGIN ##################*/
@@ -368,9 +374,10 @@ span.label {
 
 /* #### SWITCH #### */
 .toggle-sidebar {
-  background-color: #5DBCD2 !important;
+  background-color: #253264 !important;
   color: #FFF;
   font-size: 0.8rem;
+  margin-left: 10px;
 }
 
 .account-name-and-button {
@@ -393,6 +400,13 @@ span.label {
 /* #### RANGE FILTER #### */
 .date-range-container {
   margin-top: 5px;
+}
+.DateRangePicker {
+  margin-left: 10px !important;
+}
+
+.DateInput_input {
+  width: 75% !important;
 }
 
 /* #### SIDEBAR #### */
@@ -427,9 +441,9 @@ span.label {
 
 /* #### CALENDAR #### */
 .calendar {
-  height: 50vmin;
+  height: 70vmin;
   min-height: 500px;
-  width: 70vmin;
+  width: 80vmin;
   padding-top: 20px;
   margin-bottom: calc(100vh - 500px);
 }
@@ -506,28 +520,34 @@ span.label {
   max-width: 50vw;
 }
 
-/* Used in event list and calendar popover */
-.empty-event-card, .kuksa-synced-event-card, .kuksa-event-card {
+.empty-event-card {
   padding: 5px;
   margin-bottom: 10px;
+  background-color: #F14150;
   border-radius: 4px;
-  max-width: 50vw;
-}
-
-.empty-event-card {
-  background-color: orange;
 }
 
 .kuksa-synced-event-card {
+  padding: 5px;
+  margin-bottom: 10px;
   background-color: #63bcd1;
+  border-radius: 4px;
 }
 
 .kuksa-event-card {
+  padding: 5px;
+  margin-bottom: 10px;
   background-color: lightgrey;
+  border-radius: 4px;
 }
 
 .event-card-subheader {
   margin-top: 7px !important;
+}
+
+.event-card-wrapper {
+  padding: 5px;
+  margin-bottom: 10px;
 }
 
 .mobile-event-card-media {
@@ -541,7 +561,7 @@ span.label {
   height: 15px;
   padding: 0;
   margin-right: 7px;
-  color: orange;
+  color: #F14150;
 }
 
 .tooltip {
@@ -600,6 +620,9 @@ span.label {
   padding: 10px 0 10px 20px;
   font-size: 0.9rem;
   position: absolute;
+  background-color: #D6E8F7 !important;
+  box-shadow: none !important;
+  border-radius: 2px !important;
 }
 
 .status-box .done {
@@ -607,7 +630,7 @@ span.label {
   height: 15px;
   padding: 0;
   margin-right: 7px;
-  color: green;
+  color: #14A54B;
 }
 
 .status-box .small-done {
@@ -615,7 +638,7 @@ span.label {
   height: 10px;
   padding: 0;
   margin-right: 7px;
-  color: green;
+  color: #14A54B;
 }
 
 .status-box .clear {
@@ -624,27 +647,27 @@ span.label {
   padding: 0;
   margin-right: 20px;
   margin-left: -10px;
-  color: #ccc;
+  color: #253264;
   cursor: pointer;
 }
 
 .status-box .clear:hover,
 .status-box .clear:focus{
-  color: #f42328;
+  color: #F14150;
 }
 
 .action-help {
   width: 30px;
   height: 30px;
   padding: 0;
-  color: #2196f3;
+  color: #28AAE0;
   margin: 10px 10px 10px 20px;
   cursor: pointer;
 }
 
 .action-help:hover,
 .action-help:focus{
-  color: #204385;
+  color: #253264;
 }
 
 .status-message-container {
@@ -659,7 +682,7 @@ span.label {
 
 /* #### BUFFER ZONE #### */
 #bufferzone {
-  margin: 10px 10px 5px;
+  margin: 0 14px;
   min-height: 60px;
   min-width: 200px;
   border-radius: 8px;

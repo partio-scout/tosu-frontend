@@ -154,10 +154,10 @@ export default class EventForm extends React.Component {
   render() {
     const actions = (
       <div>
-        <Button variant="outlined" onClick={this.props.close}>
+        <Button style={{marginRight: 10}} variant='contained' color="primary" onClick={this.props.close}>
           Peruuta
         </Button>
-        <Button type="submit" variant="outlined" color="primary">
+        <Button variant='contained' type="submit" color="primary">
           Tallenna
         </Button>
       </div>

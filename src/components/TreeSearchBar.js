@@ -172,7 +172,7 @@ class TreeSearchBar extends React.Component {
     )
 
     return (
-      <div style={{ margin: 10 }}>
+      <div style={{ margin: 10, padding: 10, backgroundColor: '#d6e8f7', borderRadius: 2 }}>
         <div style={{ float: 'left', marginRight: 10, marginBottom: 5 }}>
           <Select
             menuContainerStyle={{ width: '100%' }}
