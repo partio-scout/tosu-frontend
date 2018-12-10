@@ -348,6 +348,7 @@ span.label {
   border: 0;
   color: rgb(93, 188, 210);
   border-radius: 5px;
+  cursor: pointer;
 }
 
 /* END OF LOGIN ##################*/

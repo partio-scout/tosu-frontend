@@ -32,16 +32,17 @@ import ButtonRow from './components/ButtonRow'
 import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
 // Services
-import { getGoogleToken, removeGoogleToken, setGoogleToken } from './services/googleToken'
+import { getGoogleToken, removeGoogleToken, setGoogleToken, getScout } from './services/googleToken' // TODO: rename service
 import pofService from './services/pof'
 import { loadCachedPofData } from './services/localStorage'
+import { API_ROOT } from './api-config'
 // Reducers
 import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import { bufferZoneInitialization, deleteActivityFromBuffer } from './reducers/bufferZoneReducer'
 import { eventsInitialization } from './reducers/eventReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
-import { scoutLogin } from './reducers/scoutReducer'
+import { scoutGoogleLogin, readScout } from './reducers/scoutReducer'
 import { filterChange } from './reducers/filterReducer'
 import { viewChange } from './reducers/viewReducer'
 
@@ -70,13 +71,7 @@ class App extends Component {
     } else if (window.location.pathname === '/calendar') {
       this.props.store.dispatch(viewChange('CALENDAR'))
     }
-    if (getGoogleToken() !== null) {
-      try {
-        await this.props.scoutLogin(getGoogleToken())
-      } catch (exception) {
-        removeGoogleToken()
-      }
-    }
+    await this.checkLoggedIn()
     let pofData = loadCachedPofData()
 
     if (pofData === undefined || pofData === {}) {
@@ -116,6 +111,21 @@ class App extends Component {
     this.filterUpdate()
   }
 
+  checkLoggedIn = async () => {
+    // Google login
+    if (getGoogleToken() !== null) {
+      try {
+        await this.props.scoutGoogleLogin(getGoogleToken())
+      } catch (exception) {
+        removeGoogleToken()
+      }
+    }
+    // PartioID login
+    if (getScout() !== null) {
+      await this.props.readScout() // Reads scout from a cookie. (Has only name)
+    }
+  }
+
   setHeaderHeight = height => {
     if (height !== this.state.bufferZoneHeight) {
       this.setState({ bufferZoneHeight: height })
@@ -129,8 +139,8 @@ class App extends Component {
   googleLoginSuccess = async response => {
     if (this.props.scout === null) {
       this.setState({ loading: true })
-      
-      await this.props.scoutLogin(response.tokenId)
+
+      await this.props.scoutGoogleLogin(response.tokenId)
       setGoogleToken(response.tokenId)
       await Promise.all([
         this.props.eventsInitialization(),
@@ -141,7 +151,9 @@ class App extends Component {
     }
   }
 
-  googleLoginFail = async response => {}
+  googleLoginFail = async response => {
+    notify("Google-kirjautuminen epäonnistui. Yritä uudestaan.")
+  }
 
   selectView = (value) => () => {
     this.props.store.dispatch(viewChange(value))
@@ -194,9 +206,18 @@ class App extends Component {
             <FontAwesome className="icon" name="google" />
             <span className="label">
               {' '}
-              <span className="appbar-button-text">Kirjaudu sisään</span>
+              <span className="appbar-button-text">Kirjaudu sisään Googlella</span>
             </span>
           </GoogleLogin>
+          <Button
+            style={{ backgroundColor: 'transparent' }}
+            href={`${API_ROOT}/scouts/login`}
+          >
+            <span className="login-button">
+              {' '}
+              <span className="appbar-button-text">Kirjaudu sisään PartioID:llä</span>
+            </span>
+          </Button>
         </div>
       )
     }
@@ -290,7 +311,8 @@ export default connect(mapStateToProps, {
   bufferZoneInitialization,
   deleteActivityFromBuffer,
   addStatusInfo,
-  scoutLogin,
+  scoutGoogleLogin,
+  readScout,
   filterChange,
-  viewChange
+  viewChange,
 })(AppDnD)
