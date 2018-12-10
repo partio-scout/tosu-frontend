@@ -6,6 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Button from '@material-ui/core/Button'
+import { withStyles } from '@material-ui/core/styles'
 
 import {
   TextValidator,
@@ -154,10 +155,10 @@ export default class EventForm extends React.Component {
   render() {
     const actions = (
       <div>
-        <Button variant="outlined" onClick={this.props.close}>
+        <Button style={{marginRight: 10}} variant='contained' color="primary" onClick={this.props.close}>
           Peruuta
         </Button>
-        <Button type="submit" variant="outlined" color="primary">
+        <Button variant='contained' type="submit" color="primary">
           Tallenna
         </Button>
       </div>

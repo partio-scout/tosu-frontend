@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles'
 
 import { deleteEvent, deleteEventGroup, deleteSyncedEvent } from '../reducers/eventReducer'
 import { notify } from '../reducers/notificationReducer'
-import SvgIcon from '@material-ui/core/SvgIcon';
 
 const styles = theme => ({
   button: {

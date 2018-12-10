@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: Source Sans Pro Black, sans-serif;
+  font-family:  PT Sans, Source Sans Pro Black, sans-serif;
   overflow: hidden;
 }
 
@@ -17,7 +17,7 @@ p.eventTimes::first-letter {
 }
 
 p.eventTimes > span {
-  font-family: Source Sans Pro Black, sans-serif;
+  font-family: PT Sans, Source Sans Pro Black, sans-serif;
   font-weight: bold;
 }
 
