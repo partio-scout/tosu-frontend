@@ -67,7 +67,6 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     extraTask: null
   }
 
-
   // Warnings about order of tasks
   const warnings = {
     firstTaskTooLate: false,
