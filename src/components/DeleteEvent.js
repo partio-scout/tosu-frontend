@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Button, Dialog } from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogTitle } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { withStyles } from '@material-ui/core/styles'
 
@@ -77,7 +77,6 @@ class DeleteEvent extends React.Component {
     if (event.eventGroupId) {
       actions = (
         <div>
-          <p>Poistetaanko tapahtuma {event.title}?</p>
           <Button onClick={this.handleClose}>peruuta</Button>
           <Button
             onClick={this.deleteEvent}
@@ -94,7 +93,6 @@ class DeleteEvent extends React.Component {
     } else {
       actions = (
         <div>
-          <p>Poistetaanko tapahtuma {event.title}?</p>
           {event.synced && (
             <p>Tapahtuma poistetaan suunnitelmastasi, mutta ei Kuksasta.</p>
           )}
@@ -122,9 +120,10 @@ class DeleteEvent extends React.Component {
 
 
         <Dialog open={this.state.open} onClose={this.handleClose}>
-          <div>
+          <DialogTitle>Poistetaanko tapahtuma {event.title}?</DialogTitle>
+          <DialogActions>
             {actions}
-          </div>
+          </DialogActions>
         </Dialog>
       </div>
     )
