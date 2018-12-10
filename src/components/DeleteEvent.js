@@ -43,6 +43,7 @@ class DeleteEvent extends React.Component {
   }
 
   deleteEventGroup = async () => {
+    this.handleClose()
     try {
       await this.props.deleteEventGroup(this.props.data.eventGroupId)
       this.props.notify('Toistuva tapahtuma poistettu!', 'success')
