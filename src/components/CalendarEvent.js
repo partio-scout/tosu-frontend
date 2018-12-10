@@ -3,6 +3,7 @@ import Popper from '@material-ui/core/Popper'
 import Paper from '@material-ui/core/Paper'
 import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
+import { connect } from 'react-redux'
 import { Parser } from 'html-to-react'
 
 import Activities from './Activities'
@@ -10,11 +11,12 @@ import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
 import AddToPlan from './AddToPlan'
+import { openPopper, closePopper } from '../reducers/calendarReducer'
 
 function createActivityMarkers(activities) {
   let markers = [' ']
   for (var i = 0; i < activities.length; i++) {
-    markers.push(<span className="calendar-activity-marker" key={activities[i].id}></span>)
+    markers.push(<span className="calendar-activity-marker" key={activities[i].id} />)
   }
   return markers
 }
@@ -24,8 +26,8 @@ export function eventStyleGetter(event, start, end, isSelected) {
   const color = event.kuksaEvent ? 'black' : 'white'
   return {
     style: {
-      backgroundColor: backgroundColor,
-      color: color,
+      backgroundColor,
+      color,
     }
   }
 }
@@ -40,23 +42,49 @@ class CalendarEvent extends Component {
     }
   }
 
+
+  closePopper = () => {
+    this.setState(state => ({ anchorEl: null }))
+    this.props.closePopper()
+  }
+
+  openPopper = (target) => {
+    this.setState(state => ({ anchorEl: target }))
+    this.props.openPopper(this.props.event.id)
+  }
   handleClick = event => {
     const { currentTarget } = event
-    if (!this.props.popOver){
-      this.props.change()
-      this.setState(state => ({
-        anchorEl: state.anchorEl ? null : currentTarget,
-      }))
+    if (!this.props.popperOpen){
+      this.openPopper(currentTarget)
+    } else if (this.state.anchorEl){
+      this.closePopper()
     }
   }
 
-  closePopper = () => {
-    this.props.change()
-    this.setState(state => ({
-      anchorEl: null,
-    }))
+  componentWillUnmount(){
+    if (this.state.anchorEl){
+      this.closePopper()
+    }
   }
 
+  // It is possible that when event is removed (or added) on calendar view, the event
+  // of a CalendarEvent component changes (Calendar probably uses 
+  // the same component to draw the event with same index in the event list)
+  // In that case the we need to update the state
+  // If popup was open, close it...
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.event.id !== this.props.event.id){
+      if (this.state.anchorEl){
+        this.closePopper()
+      }
+      this.setState({
+        event: nextProps.event,
+        pofTree: nextProps.pofTree,
+        anchorEl: null,
+      })
+    }
+  } 
+  
   render() {
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
@@ -161,4 +189,16 @@ class CalendarEvent extends Component {
   }
 }
 
-export default CalendarEvent
+const mapStateToProps = state => {
+  return {
+    pofTree: state.pofTree,
+    popperOpen: state.calendar.popperOpen,
+    popperEventId: state.calendar.popperEventId,
+  }
+}
+
+
+export default connect(mapStateToProps, {
+  openPopper,
+  closePopper,
+})(CalendarEvent)

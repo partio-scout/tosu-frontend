@@ -7,10 +7,13 @@
 
 import PropTypes from 'prop-types'
 import React from 'react'
+import { connect } from 'react-redux'
 import { MuiThemeProvider, RaisedButton, FloatingActionButton, DropDownMenu, MenuItem } from 'material-ui'
 import HardwareKeyboardArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left'
 import HardwareKeyboardArrowRight from 'material-ui/svg-icons/hardware/keyboard-arrow-right'
 import { Switch, FormControlLabel } from '@material-ui/core'
+
+import { showKuksaEvents, hideKuksaEvents } from '../reducers/calendarReducer'
 
 let navigate = {
   PREVIOUS: 'PREV',
@@ -29,25 +32,64 @@ class Toolbar extends React.Component {
     messages: PropTypes.object,
     onNavigate: PropTypes.func.isRequired,
     onViewChange: PropTypes.func.isRequired,
-    onSwitchChange: PropTypes.func.isRequired,
     switchState: PropTypes.bool,
   }
 
+  navigate = (action) => {
+    this.props.onNavigate(action)
+  }
+
+  view = (event, index, view) => {
+    this.props.onViewChange(view)
+  }
+
+  // edited by onursimsek94
+  viewNamesGroup(messages) {
+    let viewNames = this.props.views
+
+    if (viewNames.length > 1) {
+      return (
+        <MuiThemeProvider>
+          <DropDownMenu
+            value={this.props.view}
+            onChange={(event, index, value) => this.props.onViewChange(value)}
+          >
+            {viewNames.map(name => (
+              <MenuItem
+                key={name}
+                value={name}
+                primaryText={messages[name]}
+              />
+            ))}
+          </DropDownMenu>
+        </MuiThemeProvider>
+      )
+    }
+  }
+  onSwitchChange = () => {
+    if (this.props.switchState){
+      this.props.hideKuksaEvents()
+    }else{
+      this.props.showKuksaEvents()
+    }
+  }
+
   render() {
-    let { messages, label, onSwitchChange, switchState } = this.props;
+    let { messages, label, switchState } = this.props;
 
     // edited by onursimsek94 (button to div)
     return (
       <div className='rbc-toolbar'>
         <MuiThemeProvider>
           <div className='rbc-btn-group'>
-            <div></div>
+            <div />
             <div onClick={this.navigate.bind(null, navigate.TODAY)}>
               <RaisedButton
                 label={messages.today}
                 style={{boxShadow: 'none', borderRadius: '5px'}}
                 buttonStyle={{backgroundColor: 'rgb(245, 245, 245)', width: '90%', borderRadius: '5px'}}
-                labelStyle={{color: 'rgb(74, 74, 74)'}} />&nbsp;
+                labelStyle={{color: 'rgb(74, 74, 74)'}} 
+              />&nbsp;
             </div>
             <div onClick={this.navigate.bind(null, navigate.PREVIOUS)}>
               <FloatingActionButton
@@ -78,7 +120,7 @@ class Toolbar extends React.Component {
           control={
             <Switch
               checked={switchState}
-              onClick={onSwitchChange}
+              onClick={this.onSwitchChange}
               color="primary"
             />
           }
@@ -86,45 +128,20 @@ class Toolbar extends React.Component {
         />
 
         <span className='rbc-btn-group'>
-        {
-          this.viewNamesGroup(messages)
-        }
+          { this.viewNamesGroup(messages)}
         </span>
       </div>
     );
   }
+}
 
-  navigate = (action) => {
-    this.props.onNavigate(action)
-  }
-
-  view = (event, index, view) => {
-    this.props.onViewChange(view)
-  }
-
-  // edited by onursimsek94
-  viewNamesGroup(messages) {
-    let viewNames = this.props.views
-
-    if (viewNames.length > 1) {
-      return (
-        <MuiThemeProvider>
-          <DropDownMenu
-            value={this.props.view}
-            onChange={(event, index, value) => this.props.onViewChange(value)}
-          >
-            {viewNames.map(name =>
-              <MenuItem
-                key={name}
-                value={name}
-                primaryText={messages[name]}
-              />
-            )}
-          </DropDownMenu>
-        </MuiThemeProvider>
-      )
-    }
+const mapStateToProps = state => {
+  return {
+    switchState: state.calendar.showKuksa,
   }
 }
 
-export default Toolbar
+export default connect(mapStateToProps, {
+  showKuksaEvents,
+  hideKuksaEvents,
+})(Toolbar)
