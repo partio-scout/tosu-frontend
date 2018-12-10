@@ -16,7 +16,7 @@ const filterEvents = (view, filter, initialEvents, start, end) => {
       )
       break
     default:
-      events = initialEvents.sort(eventComparer)
+      events = initialEvents
   }
   switch (view) {
     case "OWN":
@@ -26,7 +26,7 @@ const filterEvents = (view, filter, initialEvents, start, end) => {
       events = events.filter(event => event.kuksaEvent)
       break
     default:
-      events = events.sort(eventComparer)
+    
   }
   return events.sort(eventComparer)
 }
