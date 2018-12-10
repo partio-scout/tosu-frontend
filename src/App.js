@@ -7,15 +7,11 @@ import MultiBackend from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
 import { GoogleLogin } from 'react-google-login'
 import FontAwesome from 'react-fontawesome'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
-import Button from '@material-ui/core/Button'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import Dialog from '@material-ui/core/Dialog'
 import { DialogTitle } from '@material-ui/core'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Switch from '@material-ui/core/Switch'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import moment from 'moment'
-import { DateRangePicker } from 'react-dates'
 import 'react-dates/initialize'
 // CSS
 import 'react-dates/lib/css/_datepicker.css'
@@ -31,9 +27,10 @@ import UserInfo from './components/UserInfo'
 import EventCard from './components/EventCard'
 import KuksaEventCard from './components/KuksaEventCard'
 import Calendar from './components/Calendar'
+import ButtonRow from './components/ButtonRow'
 // Utils
 import { createStatusMessage } from './utils/createStatusMessage'
-import eventComparer from './utils/EventCompare'
+import filterEvents from './functions/filterEvents'
 // Services
 import { getGoogleToken, removeGoogleToken, setGoogleToken, getScout } from './services/googleToken' // TODO: rename service
 import pofService from './services/pof'
@@ -47,18 +44,20 @@ import { eventsInitialization } from './reducers/eventReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutGoogleLogin, readScout } from './reducers/scoutReducer'
 import { filterChange } from './reducers/filterReducer'
+import { viewChange } from './reducers/viewReducer'
 
 
 class App extends Component {
   constructor() {
     super()
+    const currentDate = moment()
     this.state = {
       headerVisible: false,
       drawerVisible: true,
       bufferZoneHeight: 0,
       newEventVisible: false,
-      shouldShowAllKuksaEvents: false,
       loading: true,
+      startDate: currentDate,
     }
   }
 
@@ -70,7 +69,7 @@ class App extends Component {
         newEventVisible: false
       })
     } else if (window.location.pathname === '/calendar') {
-      this.props.store.dispatch(filterChange('CALENDAR'))
+      this.props.store.dispatch(viewChange('CALENDAR'))
     }
     await this.checkLoggedIn()
     let pofData = loadCachedPofData()
@@ -109,6 +108,7 @@ class App extends Component {
       this.props.taskgroup
     )
     this.props.addStatusInfo(status)
+    this.filterUpdate()
   }
 
   checkLoggedIn = async () => {
@@ -147,7 +147,6 @@ class App extends Component {
         this.props.bufferZoneInitialization()
       ])
       this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-
       this.setState({ loading: false })
     }
   }
@@ -156,72 +155,38 @@ class App extends Component {
     notify("Google-kirjautuminen epäonnistui. Yritä uudestaan.")
   }
 
+  selectView = (value) => () => {
+    this.props.store.dispatch(viewChange(value))
+  }
+
   filterSelected = (value) => () => {
     this.props.store.dispatch(filterChange(value))
   }
 
-  clearRange = () => {
-    this.filterSelected('ALL')()
-    this.setState({startDate: null, endDate: null})
-  }
+  newEvent = () => (this.setState({ newEventVisible: true }))
+  handleClose = () => (this.setState({ newEventVisible: false }))
 
-  newEvent = () => {
-    this.setState({ newEventVisible: true })
-  }
-  handleClose = () => {
-    this.setState({ newEventVisible: false })
-  }
-
-  handleKuksaEventSwitchChange = () => {
-    if (this.props.store.getState().filter === "KUKSA") {
-      this.setState({
-        shouldShowAllKuksaEvents: !this.state.shouldShowAllKuksaEvents
-      })
+  filterUpdate = () => {
+    if (this.state.startDate && this.state.endDate) {
+      this.filterSelected('RANGE')()
     }
+    if (this.state.startDate && !this.state.endDate) {
+      this.filterSelected('ONLY_START')()
+    }
+    if (!this.state.startDate && this.state.endDate) {
+      this.filterSelected('ONLY_END')()
+    }
+  }
+
+  dateRangeUpdate = ({startDate, endDate}) => {
+    this.setState({startDate, endDate})
   }
 
   render() {
-    const { events, filter } = this.props.store.getState()
-    const shouldShowAllKuksaEvents = this.state.shouldShowAllKuksaEvents
-
-    const dateRangeUpdate = (start, end) => {
-      if (start) {
-        this.setState({startDate: start})
-      }
-      if (end) {
-        this.setState({endDate: end})
-      }
-      if(start && end) {
-        this.filterSelected('RANGE')()
-      }
-    }
-
-    const eventsToShow = () => {
-      const currentDate = moment().format('YYYY-MM-DD')
-      // If filter is set to FUTURE, show all events with end date equal or greater than today
-      // otherwise show events with end date less than today
-      switch (filter) {
-        case "RANGE": {
-          const rangeStart = this.state.startDate.format('YYYY-MM-DD')
-          const rangeEnd = this.state.endDate.format('YYYY-MM-DD')
-          return events.filter(event =>
-            event.endDate >= rangeStart
-            && event.startDate <= rangeEnd
-            && !event.kuksaEvent).sort(eventComparer)
-        }
-        case "FUTURE":
-          return events.filter(event => event.endDate >= currentDate && !event.kuksaEvent).sort(eventComparer)
-        case "ALL":
-          return events.filter(event => !event.kuksaEvent).sort(eventComparer)
-        case "KUKSA":
-          if (shouldShowAllKuksaEvents) {
-            return events.filter(event => event.kuksaEvent).sort(eventComparer)
-          }
-          return events.filter(event => event.endDate >= currentDate && event.kuksaEvent).sort(eventComparer)
-        default:
-          return events.sort(eventComparer)
-      }
-    }
+    const { view, filter } = this.props.store.getState()
+    const { startDate, endDate } = this.state
+    const initialEvents = this.props.store.getState().events
+    const eventsToShow = () => (filterEvents(view, filter, initialEvents, startDate, endDate))
 
     if (this.props.scout === null) {
       return (
@@ -257,12 +222,6 @@ class App extends Component {
       )
     }
 
-    const dndMenu = () => (
-      <AppBar
-        toggleSideBar={this.toggleDrawer}
-      />
-    )
-
     const mobileMenu = () => (
       <MobileAppbar
         setHeaderHeight={this.setHeaderHeight}
@@ -270,22 +229,9 @@ class App extends Component {
       />
     )
 
-    const kuksaEventsShowAllSwitch = (
-      <FormControlLabel
-        control={
-          <Switch
-            checked={shouldShowAllKuksaEvents}
-            onClick={this.handleKuksaEventSwitchChange}
-            color="primary"
-          />
-        }
-        label="Näytä myös menneet tapahtumat"
-      />
-    )
-
     const eventsToList = (
       <div className='event-list-container'>
-        {filter === "KUKSA" && kuksaEventsShowAllSwitch}
+        {view === "KUKSA"}
         <ul className='event-list'>
           {eventsToShow().map(event => (
             <li className='event-list-item' key={event.id ? event.id : 0}>
@@ -296,17 +242,14 @@ class App extends Component {
       </div>
     )
 
-    const calendar = (
-      <Calendar events={this.props.store.getState().events} />
-    )
-
+    const dndMenu = () => (<AppBar toggleSideBar={this.toggleDrawer} />)
+    const calendar = (<Calendar events={this.props.store.getState().events} />)
+    
     return (
       <div className="App" >
         <Router>
           <div>
-            <div>
-              {isTouchDevice() ? mobileMenu() : dndMenu()}
-            </div>
+            <div> {isTouchDevice() ? mobileMenu() : dndMenu()} </div>
             <div className='flexbox'>
               {isTouchDevice() ? null :
                 <div className={this.state.drawerVisible ? 'visible-drawer' : 'hidden-drawer'}>
@@ -315,81 +258,15 @@ class App extends Component {
               }
               <div id="container" style={{ paddingTop: 0 }}>
                 <div className="content">
-                  <div className="button-row">
-                    {/* <Button
-                      className={this.props.store.getState().filter === 'FUTURE' ? 'active' : ''}
-                      component={Link}
-                      to="/"
-                      onClick={this.filterSelected('FUTURE')}
-                      variant="contained"
-                    >
-                      Tulevat
-                    </Button>
-                    */}
-                    &nbsp;
-                    <Button
-                      className={this.props.store.getState().filter === 'ALL' ? 'active' : ''}
-                      component={Link}
-                      to="/"
-                      onClick={this.filterSelected('ALL')}
-                      variant="contained"
-                    >
-                      Omat
-                    </Button>
-                    &nbsp;
-                    <Button
-                      className={this.props.store.getState().filter === 'KUKSA' ? 'active' : ''}
-                      component={Link}
-                      to="/"
-                      onClick={this.filterSelected('KUKSA')}
-                      variant="contained"
-                    >
-                      Kuksa
-                    </Button>
-                    &nbsp;
-                    <Button
-                      className={this.props.store.getState().filter === 'CALENDAR' ? 'active' : ''}
-                      component={Link}
-                      to="/calendar"
-                      onClick={this.filterSelected('CALENDAR')}
-                      variant="contained"
-                    >
-                      Kalenteri
-                    </Button>
-                    &nbsp;
-                    <Button onClick={this.newEvent} variant="contained">
-                      Uusi tapahtuma
-                    </Button>
-                    &nbsp;
-                  </div>
-                  <div className="date-range-container" style={this.props.store.getState().filter === 'CALENDAR' ? {display: 'none'} : {}}>
-                    Rajaa tapahtumia:
-                    <DateRangePicker
-                      startDateId="startDate"
-                      endDateId="endDate"
-                      startDate={this.state.startDate}
-                      endDate={this.state.endDate}
-                      onDatesChange={({ startDate, endDate }) => dateRangeUpdate(startDate, endDate)}
-                      focusedInput={this.state.focusedInput}
-                      onFocusChange={(focusedInput) => { this.setState({ focusedInput }) }}
-                      startDatePlaceholderText="alku pvm"
-                      endDatePlaceholderText="loppu pvm"
-                      isOutsideRange={() => false}
-                    />
-                    <Button
-                      component={Link}
-                      className={this.props.store.getState().filter === 'RANGE' ? '' : 'hidden'}
-                      to="/"
-                      onClick={this.clearRange}
-                      variant="contained"
-                    >
-                      Poista rajaus
-                    </Button>
-                  </div>
+                  <ButtonRow
+                    view={this.state.view}
+                    filter={this.state.filter}
+                    newEvent={this.newEvent} 
+                    dateRangeUpdate={this.dateRangeUpdate}
+                  />
 
                   {this.state.loading ? (<div className="loading-bar"><LinearProgress /></div>) : null}
-                  <Route exact path="/" render={() => eventsToList} />
-                  <Route exact path="/calendar" render={() => calendar} />
+                  {this.props.store.getState().view === 'CALENDAR' ? calendar : eventsToList}
 
                   <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
                     <DialogTitle>Luo uusi tapahtuma</DialogTitle>
@@ -417,19 +294,12 @@ const mapStateToProps = state => ({
   pofTree: state.pofTree,
   taskgroup: state.taskgroup,
   scout: state.scout,
-  filter: state.filter
+  filter: state.filter,
+  view: state.view
 })
 
 const HTML5toTouch = {
-  backends: [
-    {
-      backend: HTML5Backend
-    },
-    {
-      backend: HTML5Backend
-    }
-  ]
-}
+  backends: [{backend: HTML5Backend}, {backend: HTML5Backend}]}
 
 const AppDnD = DragDropContext(MultiBackend(HTML5toTouch))(App)
 
@@ -443,5 +313,6 @@ export default connect(mapStateToProps, {
   addStatusInfo,
   scoutGoogleLogin,
   readScout,
-  filterChange
+  filterChange,
+  viewChange,
 })(AppDnD)

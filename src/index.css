@@ -506,34 +506,28 @@ span.label {
   max-width: 50vw;
 }
 
-.empty-event-card {
+/* Used in event list and calendar popover */
+.empty-event-card, .kuksa-synced-event-card, .kuksa-event-card {
   padding: 5px;
   margin-bottom: 10px;
-  background-color: orange;
   border-radius: 4px;
+  max-width: 50vw;
+}
+
+.empty-event-card {
+  background-color: orange;
 }
 
 .kuksa-synced-event-card {
-  padding: 5px;
-  margin-bottom: 10px;
   background-color: #63bcd1;
-  border-radius: 4px;
 }
 
 .kuksa-event-card {
-  padding: 5px;
-  margin-bottom: 10px;
   background-color: lightgrey;
-  border-radius: 4px;
 }
 
 .event-card-subheader {
   margin-top: 7px !important;
-}
-
-.event-card-wrapper {
-  padding: 5px;
-  margin-bottom: 10px;
 }
 
 .mobile-event-card-media {
