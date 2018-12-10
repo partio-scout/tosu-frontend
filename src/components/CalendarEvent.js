@@ -16,7 +16,7 @@ import { openPopper, closePopper } from '../reducers/calendarReducer'
 function createActivityMarkers(activities) {
   let markers = [' ']
   for (var i = 0; i < activities.length; i++) {
-    markers.push(<span className="calendar-activity-marker" key={activities[i].id} />)
+    markers.push(<span className='calendar-activity-marker' key={activities[i].id} />)
   }
   return markers
 }
@@ -43,7 +43,6 @@ class CalendarEvent extends Component {
       anchorEl: null,
     }
   }
-
 
   closePopper = () => {
     this.setState(state => ({ anchorEl: null }))
@@ -99,13 +98,13 @@ class CalendarEvent extends Component {
 
     let popoverContentClassName // Style: Normal
     if (event.activities.length === 0) {
-      popoverContentClassName = "empty-event-card" // Style: No activities
+      popoverContentClassName = 'empty-event-card' // Style: No activities
     }
     if (event.synced) {
-      popoverContentClassName = "kuksa-synced-event-card" // Style: Synced to Kuksa
+      popoverContentClassName = 'kuksa-synced-event-card' // Style: Synced to Kuksa
     }
     if (event.kuksaEvent) {
-      popoverContentClassName = "kuksa-event-card" // Style: Kuksa event
+      popoverContentClassName = 'kuksa-event-card' // Style: Kuksa event
     }
 
     const activities = (
@@ -121,15 +120,15 @@ class CalendarEvent extends Component {
 
     const editDeleteButtons = (
       <div>
-        <div className="calendar-event-button-wrapper">
+        <div className='calendar-event-button-wrapper'>
           <EditEvent
-            buttonClass="calendar-button"
+            buttonClass='calendar-button'
             data={event.originalData}
             setNotification={this.props.setNotification}
             minimal='true'
           />
           <DeleteEvent
-            buttonClass="calendar-button"
+            buttonClass='calendar-button'
             data={event.originalData}
             setNotification={this.props.setNotification}
             minimal='true'
@@ -141,10 +140,10 @@ class CalendarEvent extends Component {
     const popoverContent = (
       <div>
         <div>
-          <div className="calendar-popover-left">
-            <p className="calendar-event-title">{event.title}</p>
+          <div className='calendar-popover-left'>
+            <p className='calendar-event-title'>{event.title}</p>
           </div>
-          <div className="calendar-popover-right">
+          <div className='calendar-popover-right'>
             <IconButton onClick={this.closePopper}>
               <Icon>close</Icon>
             </IconButton>
@@ -162,12 +161,12 @@ class CalendarEvent extends Component {
 
     // Don't allow dragging activities to kuksa events
     const paperContent = event.kuksaEvent ? (
-      <div className="calendar-event-popper">
+      <div className='calendar-event-popper'>
         {popoverContent}
         <br />
       </div>
     ) : (
-      <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id} className="calendar-event-popper">
+      <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id} className='calendar-event-popper'>
         {popoverContent}
       </ActivityDragAndDropTarget>
     )
@@ -198,7 +197,6 @@ const mapStateToProps = state => {
     popperEventId: state.calendar.popperEventId,
   }
 }
-
 
 export default connect(mapStateToProps, {
   openPopper,

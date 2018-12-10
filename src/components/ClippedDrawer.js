@@ -1,10 +1,11 @@
 import React from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider'
+import { withStyles } from '@material-ui/core/styles'
+
 import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
 import StatusMessage from './StatusMessage'
-import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({
   divider: {
@@ -34,11 +35,11 @@ class ClippedDrawer extends React.Component {
     return (
       <div className='drawer-root'>
         <Drawer
-          variant="permanent"
+          variant='permanent'
           className='drawer-paper'
         >
           <TreeSearchBar />
-          <Divider variant={"middle"} className={classes.divider}/>
+          <Divider variant={'middle'} className={classes.divider}/>
           <BufferZone />
           <StatusMessage
             showStatusBox={this.state.showStatusBox}

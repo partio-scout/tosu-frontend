@@ -4,13 +4,11 @@ import { connect } from 'react-redux'
 import BigCalendar from 'react-big-calendar-like-google'
 import moment from 'moment'
 import 'moment/locale/fi'
-
 import 'react-big-calendar-like-google/lib/css/react-big-calendar.css'
 
 import CalendarToolbar from './CalendarToolbar'
 import CalendarEvent from './CalendarEvent'
 import { eventStyleGetter } from './CalendarEvent'
-
 import { closePopper } from '../reducers/calendarReducer'
 
 // Setup the localizer by providing the moment (or globalize) Object
@@ -29,8 +27,8 @@ function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
     const endDate = event.endDate + ' ' + event.endTime
     return {
       title: event.title,
-      start: new Date(startDate.replace(/-/g, "/")),
-      end: new Date(endDate.replace(/-/g, "/")),
+      start: new Date(startDate.replace(/-/g, '/')),
+      end: new Date(endDate.replace(/-/g, '/')),
       allDay: false,
       startDate: event.startDate,
       startTime: event.startTime,
@@ -47,8 +45,6 @@ function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
   })
 }
 
-
-
 class Calendar extends Component {
   constructor(props) {
     super(props)
@@ -60,12 +56,12 @@ class Calendar extends Component {
     const eventsToShow = prepareEventsToCalendarEvents(events, this.props.shouldShowKuksaEventsAlso)
 
     return (
-      <div className="calendar">
+      <div className='calendar'>
         <BigCalendar
           localizer={localizer}
           events={eventsToShow}
-          startAccessor="start"
-          endAccessor="end"
+          startAccessor='start'
+          endAccessor='end'
           showMultiDayTimes
           views={['month', 'week', 'day']}
           components={{

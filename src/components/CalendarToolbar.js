@@ -49,17 +49,43 @@ class Toolbar extends React.Component {
     }
   }
 
+  navigate = (action) => {
+    this.props.onNavigate(action)
+  }
+
+  view = (event, index, view) => {
+    this.props.onViewChange(event.target.value)
+  }
+
+  viewNamesGroup(messages) {
+    const viewNames = this.props.views
+
+    if (viewNames.length > 1) {
+      return (
+        <Select
+          value={this.props.view}
+          onChange={this.view}
+        >
+          <MenuItem value='month'>Month</MenuItem>
+          <MenuItem value='week'>Week</MenuItem>
+          <MenuItem value='day'>Day</MenuItem>
+        </Select>
+      )
+    }
+    return ''
+  }
+
   render(props) {
     const { messages, label, switchState, classes } = this.props;
     return (
       <div style={{marginBottom: 10}}>
-        <Button color="primary" variant="outlined" onClick={this.navigate.bind(null, navigate.TODAY)}>
+        <Button color='primary' variant='outlined' onClick={this.navigate.bind(null, navigate.TODAY)}>
           Tänään
         </Button>
-        <IconButton className={classes.button} color="primary" onClick={this.navigate.bind(null, navigate.PREVIOUS)}>
+        <IconButton className={classes.button} color='primary' onClick={this.navigate.bind(null, navigate.PREVIOUS)}>
           <ChevronLeft />
         </IconButton >
-        <IconButton className={classes.button} color="primary" onClick={this.navigate.bind(null, navigate.NEXT)}>
+        <IconButton className={classes.button} color='primary' onClick={this.navigate.bind(null, navigate.NEXT)}>
           <ChevronRight />
         </IconButton>
 
@@ -73,44 +99,17 @@ class Toolbar extends React.Component {
             <Switch
               checked={switchState}
               onClick={this.onSwitchChange}
-              color="primary"
+              color='primary'
             />
           }
-          label="Näytä myös Kuksan tapahtumat"
+          label='Näytä myös Kuksan tapahtumat'
         />
 
         <span className='rbc-btn-group'>
-        {
-          this.viewNamesGroup(messages)
-        }
+          { this.viewNamesGroup(messages) }
         </span>
       </div>
     );
-  }
-
-  navigate = (action) => {
-    this.props.onNavigate(action)
-  }
-
-  view = (event, index, view) => {
-    this.props.onViewChange(event.target.value)
-  }
-
-  viewNamesGroup(messages) {
-    let viewNames = this.props.views
-
-    if (viewNames.length > 1) {
-      return (
-        <Select
-          value={this.props.view}
-          onChange={this.view}
-        >
-          <MenuItem value="month">Month</MenuItem>
-          <MenuItem value="week">Week</MenuItem>
-          <MenuItem value="day">Day</MenuItem>
-        </Select>
-      )
-    }
   }
 }
 

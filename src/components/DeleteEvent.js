@@ -55,7 +55,6 @@ class DeleteEvent extends React.Component {
     }
   }
 
-
   handleDelete = () => {
     this.handleOpen()
   }
@@ -72,7 +71,7 @@ class DeleteEvent extends React.Component {
     const { classes } = this.props;
     const event = this.props.data
     const disabled = event.kuksaEvent // Never allow modifications to kuksaEvents (not synced)
-    // This is the popup that appears if you click "poista" on an event
+    // This is the popup that appears if you click 'poista' on an event
     let actions = []
     // IfeventGroupId exists, it's a recurring event, so we need to enable deleting those
     if (event.eventGroupId) {
