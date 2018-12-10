@@ -18,6 +18,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles'
 import theme from './theme'
 // CSS
 import 'react-dates/lib/css/_datepicker.css'
+import './react_dates_overrides.css'
 import 'react-sticky-header/styles.css'
 import "./index.css"
 // Components
@@ -241,7 +242,6 @@ class App extends Component {
               odd=!odd
               return(
                 <li className='event-list-item' key={event.id ? event.id : 0}>
-                  {event.kuksaEvent ? (<KuksaEventCard event={event} />) : (<EventCard event={event} />)}
                   {event.kuksaEvent ? (<KuksaEventCard event={event} />) : (<EventCard event={event} odd={odd} />)}
                 </li>
             )})}

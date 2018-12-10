@@ -23,7 +23,8 @@ const styles = theme => ({
   divider: {
     height: 4,
     backgroundColor: '#243265',
-    marginBottom: '20px'
+    marginBottom: '20px',
+    marginTop: '20px'
   }
 });
 
@@ -50,6 +51,7 @@ class BufferZone extends React.Component {
       return ( <div /> )
     }
     return (
+      <div>
       <ActivityDragAndDropTarget bufferzone parentId={this.props.buffer.id}>
         <div id="bufferzone">
           <Activities
@@ -62,8 +64,9 @@ class BufferZone extends React.Component {
           Tyhjennä
             <Icon>clear</Icon>
         </Button>
-        <Divider variant={"middle"} className={classes.divider}/>
       </ActivityDragAndDropTarget>
+        <Divider variant={"middle"} className={classes.divider}/>
+        </div>
     )
   }
 }
