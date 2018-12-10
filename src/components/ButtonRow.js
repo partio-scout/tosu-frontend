@@ -5,6 +5,8 @@ import { DateRangePicker } from 'react-dates'
 import moment from 'moment'
 import { filterChange } from '../reducers/filterReducer'
 import { viewChange } from '../reducers/viewReducer'
+import IconButton from "@material-ui/core/IconButton/IconButton"
+import Icon from "@material-ui/core/Icon/Icon"
 
 class ButtonRow extends React.Component {
   constructor(props) {
@@ -55,6 +57,7 @@ class ButtonRow extends React.Component {
             className={this.props.view === 'OWN' ? 'active' : ''}
             onClick={this.selectView('OWN')}
             variant="contained"
+            color="secondary"
           >
             Omat
           </Button>
@@ -63,6 +66,7 @@ class ButtonRow extends React.Component {
             className={this.props.view === 'KUKSA' ? 'active' : ''}
             onClick={this.selectView('KUKSA')}
             variant="contained"
+            color="secondary"
           >
             Kuksa
           </Button>
@@ -71,11 +75,12 @@ class ButtonRow extends React.Component {
             className={this.props.view === 'CALENDAR' ? 'active' : ''}
             onClick={this.selectView('CALENDAR')}
             variant="contained"
+            color="secondary"
           >
             Kalenteri
           </Button>
           &nbsp;
-          <Button onClick={this.props.newEvent} variant="contained">
+          <Button onClick={this.props.newEvent} variant="contained" color="secondary">
             Uusi tapahtuma
           </Button>
           &nbsp;
@@ -94,13 +99,14 @@ class ButtonRow extends React.Component {
             endDatePlaceholderText="loppu pvm"
             isOutsideRange={() => false}
           />
-          <Button
+          <IconButton
             className={this.props.filter !== 'NONE' ? '' : 'hidden'}
+            color="primary"
             onClick={this.clearRange}
-            variant="contained"
+            style={{marginLeft:5}}
           >
-            Poista rajaus
-          </Button>
+            <Icon color='primary'>clear</Icon>
+          </IconButton>
         </div>
       </div>
     )

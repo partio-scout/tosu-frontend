@@ -45,6 +45,7 @@ class AddToPlan extends React.Component {
           onClick={this.handleButtonDialogOpen}
           className={this.props.buttonClass}
           variant='contained'
+          color='primary'
         >
           Lisää omaan suunnitelmaan
         </Button>
