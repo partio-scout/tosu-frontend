@@ -9,7 +9,7 @@ window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
 
 function TabContainer(props) {
   return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
+    <Typography component='div' style={{ padding: 8 * 3 }}>
       {props.children}
     </Typography>
   )
@@ -49,8 +49,8 @@ export default class PlanForm extends React.Component {
     return (
       <div>
         <Tabs value={value} onChange={this.handleChange}>
-          <Tab label="Tiedot" />
-          <Tab label="Vinkit" />
+          <Tab label='Tiedot' />
+          <Tab label='Vinkit' />
         </Tabs>
         {value === 0 &&
           <TabContainer>
@@ -72,8 +72,8 @@ export default class PlanForm extends React.Component {
                 {activity.mandatory ? 'Pakollinen ' : 'Ei pakollinen '}
                 <img
                   src={activity.mandatoryIconUrl}
-                  alt="mandatoryIcon"
-                  height="15px"
+                  alt='mandatoryIcon'
+                  height='15px'
                 />
               </p>
               <p>
@@ -91,7 +91,7 @@ export default class PlanForm extends React.Component {
         {value === 1 &&
           <TabContainer>
             <div>
-              <h2 className="headline">Toteutusvinkit</h2>
+              <h2 className='headline'>Toteutusvinkit</h2>
               {suggestionDetails.length !== 0
                 ? suggestionDetails
                 : 'Ei toteutusvinkkejä'}

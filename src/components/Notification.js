@@ -8,15 +8,15 @@ const Notification = props => {
   }
   if (props.notification.textType === 'error') {
     return (
-      <div className="footerError">
-        <FontAwesome className="notification-icon" name="exclamation-circle" />
+      <div className='footerError'>
+        <FontAwesome className='notification-icon' name='exclamation-circle' />
         {props.notification.text}
       </div>
     )
   }
   return (
-    <div className="footerSuccess">
-      <FontAwesome className="notification-icon" name="check-circle" />
+    <div className='footerSuccess'>
+      <FontAwesome className='notification-icon' name='check-circle' />
       {props.notification.text}
     </div>
   )

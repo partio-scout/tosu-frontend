@@ -170,7 +170,7 @@ class NewEvent extends React.Component {
   render() {
     if (isTouchDevice()) {
       return (
-        <div className="event-form">
+        <div className='event-form'>
           <EventForm
             submitFunction={this.handleCloseAndSend.bind(this)}
             close={this.handleClose.bind(this)}
@@ -181,8 +181,8 @@ class NewEvent extends React.Component {
       )
     }
     return (
-      <div className="event-form">
-        <Paper className="new-form-paper">
+      <div className='event-form'>
+        <Paper className='new-form-paper'>
           <EventForm
             submitFunction={this.handleCloseAndSend.bind(this)}
             close={this.handleClose.bind(this)}

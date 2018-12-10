@@ -61,7 +61,7 @@ class TreeSearchBar extends React.Component {
 
     const mandatoryActivities = selectedGroup.mandatory_tasks.split(',')
     if (mandatoryActivities[0] !== '') {
-      // empty split return and array with only value as ""
+      // empty split return and array with only value as ''
 
       let activities = []
       this.props.buffer.activities.forEach(activity => {
@@ -150,22 +150,22 @@ class TreeSearchBar extends React.Component {
     const treeSearchBar = () => (
       <TreeSelect
         style={{ width: '100%' }}
-        transitionName="rc-tree-select-dropdown-slide-up"
-        choiceTransitionName="rc-tree-select-selection__choice-zoom"
+        transitionName='rc-tree-select-dropdown-slide-up'
+        choiceTransitionName='rc-tree-select-selection__choice-zoom'
         dropdownStyle={{
           position: 'absolute',
           maxHeight: 400,
           overflow: 'auto'
         }}
         placeholder={this.state.treePlaceHolder}
-        searchPlaceholder="Hae aktiviteettia"
+        searchPlaceholder='Hae aktiviteettia'
         showSearch
         allowClear
         treeLine
         getPopupContainer={() => ReactDOM.findDOMNode(this).parentNode}
         value={this.state.value}
         treeData={selectedTaskGroupPofData}
-        treeNodeFilterProp="label"
+        treeNodeFilterProp='label'
         filterTreeNode={this.filterTreeNode}
         onChange={this.onChangeChildren}
       />
@@ -177,9 +177,9 @@ class TreeSearchBar extends React.Component {
           <Select
             menuContainerStyle={{ width: '100%' }}
             style={{ width: 200 }}
-            name="form-field-name"
+            name='form-field-name'
             value={this.props.taskgroup}
-            placeholder="Valitse tarppo..."
+            placeholder='Valitse tarppo...'
             onChange={this.onChangeTaskgroup}
             options={taskGroupTree.map(rootgroup => {
               const status = createStatusMessage(this.props.events, this.props.pofTree, rootgroup)

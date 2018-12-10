@@ -13,7 +13,6 @@ import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
 import { notify } from '../reducers/notificationReducer'
 
-
 class PlanCard extends React.Component {
   constructor(props) {
     super(props)
@@ -28,7 +27,6 @@ class PlanCard extends React.Component {
   componentDidUpdate = () => {
     this.updateSuggestions()
   }
-
 
   handleExpandChange = expanded => {
     this.setState({ expanded: !this.state.expanded })
@@ -93,7 +91,7 @@ class PlanCard extends React.Component {
     if (selectedPlan.length !== 0) {
       button = () => (
         <Button
-          size="small"
+          size='small'
           onClick={() =>
             this.deleteSuggestion(selectedPlan[0].id, savedActivity.id)}
         >
@@ -101,12 +99,11 @@ class PlanCard extends React.Component {
         </Button>
       )
 
-
       style = { background: '#C8E6C9' }
     } else {
       button = () => (
         <Button
-          size="small"
+          size='small'
           onClick={() => this.saveSuggestion(suggestion, savedActivity.id)}
         >
           Valitse
@@ -121,7 +118,7 @@ class PlanCard extends React.Component {
           title={suggestion.title}
           style={style}
         />
-        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+        <Collapse in={this.state.expanded} timeout='auto' unmountOnExit>
           <CardContent>
             {this.parseSuggestionContent(suggestion)}
             <br />
@@ -131,7 +128,7 @@ class PlanCard extends React.Component {
         <CardActions>
           <IconButton
             onClick={this.handleExpandChange}
-            className={this.state.expanded ? "arrow-up" : ""}
+            className={this.state.expanded ? 'arrow-up' : ''}
           >
             <ExpandMoreIcon />
           </IconButton>

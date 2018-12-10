@@ -24,11 +24,11 @@ const smallDone = (
 
 // Warning icon
 const warning = message => (
-  <div className="tooltip"  key='warning'>
+  <div className='tooltip'  key='warning'>
     <Warning
       className='warning'
     />
-    <span className="tooltiptext">
+    <span className='tooltiptext'>
       {message}
     </span>
   </div>
