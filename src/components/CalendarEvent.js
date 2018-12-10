@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper'
 import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
 import { connect } from 'react-redux'
+import { Parser } from 'html-to-react'
 
 import Activities from './Activities'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
@@ -74,6 +75,7 @@ class CalendarEvent extends Component {
     const event = this.props.event
     const startTime = event.start.toLocaleTimeString('fi-FI', { 'hour': 'numeric', 'minute': 'numeric' })
     const endTime = event.end.toLocaleTimeString('fi-FI', { 'hour': 'numeric', 'minute': 'numeric' })
+    const information = new Parser().parse(event.information)
 
     let popoverContentClassName // Style: Normal
     if (event.activities.length === 0) {
@@ -130,7 +132,7 @@ class CalendarEvent extends Component {
         </div>
         {startTime} - {endTime}
         <p>
-          {event.information}
+          {information}
         </p>
         {!event.kuksaEvent && activities}
         {!event.kuksaEvent && editDeleteButtons}
