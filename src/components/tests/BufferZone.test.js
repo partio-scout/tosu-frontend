@@ -15,7 +15,5 @@ describe('<BufferZone />', () => {
   it('renders an ActivityDragAndDropTarget if bufferzone has an id', () => {
     const wrapper = mount(<BufferZone store={store} buffer={{ id: 5 }} />)
     const bzone = wrapper.find(BufferZone)
-    console.log(bzone.debug())
-    console.log(bzone.prop('buffer'))
   })
 })
