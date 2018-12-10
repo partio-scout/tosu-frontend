@@ -5,7 +5,7 @@ import Icon from '@material-ui/core/Icon'
 import Paper from '@material-ui/core/Paper'
 import { DialogTitle } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
-// import eventgroupService from '../services/eventgroups';
+// import eventgroupService from '../services/eventgroups'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import EventForm from './EventForm'
@@ -23,7 +23,7 @@ const styles = theme => ({
   iconSmall: {
     fontSize: 14,
   },
-});
+})
 
 class EditEvent extends React.Component {
   constructor(props) {
@@ -141,7 +141,7 @@ class EditEvent extends React.Component {
   }
 
   render(props) {
-    const { classes } = this.props;
+    const { classes } = this.props
     const event = this.props.data
     // Never allow modifications to kuksaEvents (not synced)
     let disabled = event.synced || event.kuksaEvent // TODO: Allow editing after Kuksa sync works both ways (remove event.synced check)

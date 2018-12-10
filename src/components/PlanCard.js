@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent'
 import IconButton from '@material-ui/core/IconButton'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Button from '@material-ui/core/Button'
-import Collapse from '@material-ui/core/Collapse/Collapse';
+import Collapse from '@material-ui/core/Collapse/Collapse'
 import { Parser } from 'html-to-react'
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'

@@ -25,7 +25,7 @@ const styles = theme => ({
   input: {
     display: 'none',
   },
-});
+})
 
 class Toolbar extends React.Component {
   static propTypes = {
@@ -76,7 +76,7 @@ class Toolbar extends React.Component {
   }
 
   render(props) {
-    const { messages, label, switchState, classes } = this.props;
+    const { messages, label, switchState, classes } = this.props
     return (
       <div style={{marginBottom: 10}}>
         <Button color='primary' variant='outlined' onClick={this.navigate.bind(null, navigate.TODAY)}>
@@ -109,7 +109,7 @@ class Toolbar extends React.Component {
           { this.viewNamesGroup(messages) }
         </span>
       </div>
-    );
+    )
   }
 }
 

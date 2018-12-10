@@ -1,13 +1,13 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import { expect } from 'chai'
-import Select from 'react-select';
+import Select from 'react-select'
 
 
 import store from '../../store'
 import AccountIcon from '../AccountIcon'
 import MobileAppbar from '../MobileAppbar'
-import StatusMessage from '../StatusMessage';
+import StatusMessage from '../StatusMessage'
 
 describe('<MobileAppbar />', () => {
 

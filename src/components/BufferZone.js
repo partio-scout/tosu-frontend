@@ -26,7 +26,7 @@ const styles = theme => ({
     marginBottom: '20px',
     marginTop: '20px'
   }
-});
+})
 
 class BufferZone extends React.Component {
   clear = async () => {

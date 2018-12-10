@@ -1,5 +1,5 @@
-import React from 'react';
-import Drawer from '@material-ui/core/Drawer';
+import React from 'react'
+import Drawer from '@material-ui/core/Drawer'
 import Divider from '@material-ui/core/Divider'
 import { withStyles } from '@material-ui/core/styles'
 
@@ -14,7 +14,7 @@ const styles = theme => ({
     marginTop: '20px',
     marginBottom: '20px'
   }
-});
+})
 
 class ClippedDrawer extends React.Component {
   constructor(props) {

@@ -17,7 +17,7 @@ const styles = theme => ({
   iconSmall: {
     fontSize: 14,
   },
-});
+})
 
 class DeleteEvent extends React.Component {
   constructor(props) {
@@ -68,7 +68,7 @@ class DeleteEvent extends React.Component {
   }
 
   render(props) {
-    const { classes } = this.props;
+    const { classes } = this.props
     const event = this.props.data
     const disabled = event.kuksaEvent // Never allow modifications to kuksaEvents (not synced)
     // This is the popup that appears if you click 'poista' on an event

@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import AccountIcon from './AccountIcon'
 import { withStyles } from '@material-ui/core/styles'

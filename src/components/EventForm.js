@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import { Button, Checkbox, FormControlLabel, MenuItem, TextField } from '@material-ui/core/'
 import { TextValidator, ValidatorForm, SelectValidator } from 'react-material-ui-form-validator'
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from '@date-io/moment'
 import ValidatedDatePicker from '../utils/ValidatedDatePicker'
 import ValidatedTimePicker from '../utils/ValidatedTimePicker'

@@ -1,6 +1,6 @@
-import React from "react"
-import { DatePicker } from "material-ui-pickers"
-import { ValidatorComponent } from "react-material-ui-form-validator"
+import React from 'react'
+import { DatePicker } from 'material-ui-pickers'
+import { ValidatorComponent } from 'react-material-ui-form-validator'
 
 class ValidatedDatePicker extends ValidatorComponent {
   render() {
@@ -12,7 +12,7 @@ class ValidatedDatePicker extends ValidatorComponent {
       validatorListener,
       ...rest
     } = this.props
-    const { isValid } = this.state;
+    const { isValid } = this.state
     return (
       <DatePicker
         {...rest}

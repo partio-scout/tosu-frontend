@@ -31,10 +31,10 @@ const activitySource = {
   canDrag(props, monitor) {
     if (props.activity.canDrag !== undefined) {
       if (!props.activity.canDrag) {
-        return false;
+        return false
       }
     }
-    return true;
+    return true
   }
 }
 

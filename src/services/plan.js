@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { API_ROOT } from '../api-config';
+import { API_ROOT } from '../api-config'
 
 const deletePlan = async (id) => {
   const response = await axios.delete(`${API_ROOT}/plans/${id}`)

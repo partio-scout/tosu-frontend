@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import { expect } from 'chai'
-import { FormControlLabel } from '@material-ui/core';
+import { FormControlLabel } from '@material-ui/core'
 
 import store from '../../store'
 import AccountIcon from '../AccountIcon'

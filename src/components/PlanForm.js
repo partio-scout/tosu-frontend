@@ -1,7 +1,7 @@
 import React from 'react'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography'
 import PlanCard from './PlanCard'
 
 // Use Typography v2: https://material-ui.com/style/typography/#strategies
@@ -36,7 +36,7 @@ export default class PlanForm extends React.Component {
   }
 
   render() {
-    const { value } = this.state;
+    const { value } = this.state
     const { activity, savedActivity } = this.props
 
     const suggestionDetails = activity.suggestions.map(suggestion => (

@@ -12,7 +12,7 @@ const findInTreePof = (activity, root) => {
     if (root.tasks !== undefined) {
         root.tasks.forEach(task => {
             findInTreePof(activity, task)
-        });
+        })
     }
     if (activity.guid === root.guid) {
         found = root

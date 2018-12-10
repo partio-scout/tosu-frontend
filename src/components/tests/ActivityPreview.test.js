@@ -1,8 +1,8 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import { expect } from 'chai'
-import TestBackend from 'react-dnd-test-backend';
-import { DragDropContext } from 'react-dnd';
+import TestBackend from 'react-dnd-test-backend'
+import { DragDropContext } from 'react-dnd'
 
 import ActivityPreview from '../ActivityPreview'
 
@@ -30,7 +30,7 @@ describe('<ActivityPreview />', () => {
     const props = { isDragging: true, pofActivity, currentOffset: 5 }
     const PreviewContext = wrapInTestContext(ActivityPreview, props)
     const wrapper = mount(<PreviewContext name='test' /> )
-    const backend = wrapper.instance().getManager().getBackend();
+    const backend = wrapper.instance().getManager().getBackend()
     const preview = wrapper.find(ActivityPreview).childAt(0)
     console.log(preview.debug())
     expect(preview.childAt(0).children()).to.have.lengthOf(0)
