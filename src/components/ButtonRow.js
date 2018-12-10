@@ -5,8 +5,8 @@ import { DateRangePicker } from 'react-dates'
 import moment from 'moment'
 import { filterChange } from '../reducers/filterReducer'
 import { viewChange } from '../reducers/viewReducer'
-import IconButton from "@material-ui/core/IconButton/IconButton"
-import Icon from "@material-ui/core/Icon/Icon"
+import IconButton from '@material-ui/core/IconButton/IconButton'
+import Icon from '@material-ui/core/Icon/Icon'
 
 class ButtonRow extends React.Component {
   constructor(props) {
@@ -52,12 +52,12 @@ class ButtonRow extends React.Component {
   render() {
     return (
       <div>
-        <div className="button-row" >
+        <div className='button-row' >
           <Button
             className={this.props.view === 'OWN' ? 'active' : ''}
             onClick={this.selectView('OWN')}
-            variant="contained"
-            color="secondary"
+            variant='contained'
+            color='secondary'
           >
             Omat
           </Button>
@@ -65,8 +65,8 @@ class ButtonRow extends React.Component {
           <Button
             className={this.props.view === 'KUKSA' ? 'active' : ''}
             onClick={this.selectView('KUKSA')}
-            variant="contained"
-            color="secondary"
+            variant='contained'
+            color='secondary'
           >
             Kuksa
           </Button>
@@ -74,34 +74,34 @@ class ButtonRow extends React.Component {
           <Button
             className={this.props.view === 'CALENDAR' ? 'active' : ''}
             onClick={this.selectView('CALENDAR')}
-            variant="contained"
-            color="secondary"
+            variant='contained'
+            color='secondary'
           >
             Kalenteri
           </Button>
           &nbsp;
-          <Button onClick={this.props.newEvent} variant="contained" color="secondary">
+          <Button onClick={this.props.newEvent} variant='contained' color='secondary'>
             Uusi tapahtuma
           </Button>
           &nbsp;
         </div>
-        <div className="date-range-container" style={this.props.view === 'CALENDAR' ? { display: 'none' } : {}}>
+        <div className='date-range-container' style={this.props.view === 'CALENDAR' ? { display: 'none' } : {}}>
           Rajaa tapahtumia:
           <DateRangePicker
-            startDateId="startDate"
-            endDateId="endDate"
+            startDateId='startDate'
+            endDateId='endDate'
             startDate={this.state.startDate}
             endDate={this.state.endDate}
             onDatesChange={this.dateRangeUpdate}
             focusedInput={this.state.focusedInput}
             onFocusChange={(focusedInput) => { this.setState({ focusedInput }) }}
-            startDatePlaceholderText="alku pvm"
-            endDatePlaceholderText="loppu pvm"
+            startDatePlaceholderText='alku pvm'
+            endDatePlaceholderText='loppu pvm'
             isOutsideRange={() => false}
           />
           <IconButton
             className={this.props.filter !== 'NONE' ? '' : 'hidden'}
-            color="primary"
+            color='primary'
             onClick={this.clearRange}
             style={{marginLeft:5}}
           >

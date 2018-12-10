@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
-import Divider from "@material-ui/core/Divider/Divider"
+import Divider from '@material-ui/core/Divider/Divider'
 import { withStyles } from '@material-ui/core/styles'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import Activities from './Activities'
@@ -52,21 +52,21 @@ class BufferZone extends React.Component {
     }
     return (
       <div>
-      <ActivityDragAndDropTarget bufferzone parentId={this.props.buffer.id}>
-        <div id="bufferzone">
-          <Activities
-            activities={this.props.buffer.activities}
-            bufferzone
-            parentId={this.props.buffer.id} 
-          />
-        </div>
-        <Button id="empty-button" color="primary" onClick={this.clear}>
-          Tyhjennä
-            <Icon>clear</Icon>
-        </Button>
-      </ActivityDragAndDropTarget>
-        <Divider variant={"middle"} className={classes.divider}/>
-        </div>
+        <ActivityDragAndDropTarget bufferzone parentId={this.props.buffer.id}>
+          <div id='bufferzone'>
+            <Activities
+              activities={this.props.buffer.activities}
+              bufferzone
+              parentId={this.props.buffer.id} 
+            />
+          </div>
+          <Button id='empty-button' color='primary' onClick={this.clear}>
+            Tyhjennä
+              <Icon>clear</Icon>
+          </Button>
+        </ActivityDragAndDropTarget>
+        <Divider variant={'middle'} className={classes.divider}/>
+      </div>
     )
   }
 }
