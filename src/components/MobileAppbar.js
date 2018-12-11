@@ -8,7 +8,6 @@ import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import StatusMessage from './StatusMessage'
 import { createStatusMessage } from '../utils/createStatusMessage'
-import TreeSearchBar from './TreeSearchBar'
 
 class MobileAppbar extends React.Component {
   constructor(props) {
