@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import { expect } from 'chai'
-import { Menu, IconButton } from '@material-ui/core';
+import { Menu, IconButton } from '@material-ui/core'
 
 import store from '../../store'
 import AccountIcon from '../AccountIcon'

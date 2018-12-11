@@ -1,7 +1,6 @@
 let found = null
 
 const findInTreePof = (activity, root) => {
-
     if (root === undefined || found !== null) {
         return
     }
@@ -13,14 +12,12 @@ const findInTreePof = (activity, root) => {
     if (root.tasks !== undefined) {
         root.tasks.forEach(task => {
             findInTreePof(activity, task)
-        });
+        })
     }
     if (activity.guid === root.guid) {
         found = root
     }
-
 }
-
 
 const findActivity = (activity, pofTree) => {
     found = null
@@ -30,8 +27,6 @@ const findActivity = (activity, pofTree) => {
     }
     findInTreePof(activity, pofTree)
     return found
-
 }
-
 
 export default findActivity

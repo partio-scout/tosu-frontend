@@ -1,16 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
-
-import Button from '@material-ui/core/Button'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Switch from '@material-ui/core/Switch'
-import LinearProgress from '@material-ui/core/LinearProgress'
+import { Button, FormControlLabel, LinearProgress, Switch } from '@material-ui/core'
 import EventCard from './EventCard'
 import KuksaEventCard from './KuksaEventCard'
-
 import eventComparer from '../utils/EventCompare'
-
 
 class EventList extends React.Component {
   constructor() {
@@ -31,11 +25,11 @@ class EventList extends React.Component {
       // If filter is set to FUTURE, show all events with end date equal or greater than today
       // otherwise show events with end date less than today
       switch (filter) {
-        case "FUTURE":
+        case 'FUTURE':
           return events.filter(event => event.endDate >= currentDate && !event.kuksaEvent).sort(eventComparer)
-        case "ALL":
+        case 'ALL':
           return events.filter(event => !event.kuksaEvent).sort(eventComparer)
-        case "KUKSA":
+        case 'KUKSA':
           if (shouldShowAllKuksaEvents) {
             return events.filter(event => event.kuksaEvent).sort(eventComparer)
           }
@@ -51,10 +45,10 @@ class EventList extends React.Component {
           <Switch
             checked={shouldShowAllKuksaEvents}
             onClick={this.handleKuksaEventSwitchChange}
-            color="primary"
+            color='primary'
           />
         }
-        label="Näytä myös menneet tapahtumat"
+        label='Näytä myös menneet tapahtumat'
       />
     )
 
@@ -69,9 +63,9 @@ class EventList extends React.Component {
 
     const eventsToList = (
       <div className='event-list-container'>
-        {this.state.loading && (<div className="loading-bar"><LinearProgress /></div>)}
-        {filter === "KUKSA" && kuksaEventsShowAllSwitch}
-        {filter === "KUKSA" && addKuksaEventsToTosuButton}
+        {this.state.loading && (<div className='loading-bar'><LinearProgress /></div>)}
+        {filter === 'KUKSA' && kuksaEventsShowAllSwitch}
+        {filter === 'KUKSA' && addKuksaEventsToTosuButton}
         <ul className='event-list'>
           {eventsToShow().map(event => (
             <li className='event-list-item' key={event.id ? event.id : 0}>

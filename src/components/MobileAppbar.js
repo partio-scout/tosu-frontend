@@ -76,18 +76,18 @@ class MobileAppbar extends React.Component {
     }
     return (
       <div
-        className="top-search"
-        id="top-bar-header"
+        className='top-search'
+        id='top-bar-header'
         style={{ background: '#5DBCD2', padding: 1 }}
       >
-        <div className="Header_root" id="header_root">
-          <div className="mobile-select">
+        <div className='Header_root' id='header_root'>
+          <div className='mobile-select'>
             <Select
               menuContainerStyle={{ width: '100%' }}
               style={{ width: 200 }}
-              name="form-field-name"
+              name='form-field-name'
               value={this.props.taskgroup}
-              placeholder="Valitse tarppo..."
+              placeholder='Valitse tarppo...'
               onChange={this.onChangeTaskgroup}
               options={taskgroups.map(taskgroup => {
                 const status = createStatusMessage(
@@ -111,8 +111,8 @@ class MobileAppbar extends React.Component {
               })}
             />
           </div>
-          <div className="account-name-and-button">
-            {this.props.scout ? this.props.scout.name.split(" ")[0] : "<no name>"}
+          <div className='account-name-and-button'>
+            {this.props.scout ? this.props.scout.name.split(' ')[0] : '<no name>'}
             <AccountIcon />
           </div>
 
@@ -120,7 +120,7 @@ class MobileAppbar extends React.Component {
         </div>
 
         {this.props.headerVisible ? (
-          <div className="mobile-status-message-box">
+          <div className='mobile-status-message-box'>
             <StatusMessage
               showStatusBox={this.state.showStatusBox}
               handleClose={this.handleClose}

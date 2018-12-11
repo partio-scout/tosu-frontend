@@ -3,15 +3,15 @@ import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
 import Paper from '@material-ui/core/Paper'
+import { DialogTitle } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
-// import eventgroupService from '../services/eventgroups';
+// import eventgroupService from '../services/eventgroups'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import EventForm from './EventForm'
 import { notify } from '../reducers/notificationReducer'
 import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
-import { DialogTitle } from '@material-ui/core'
 
 const styles = theme => ({
   button: {
@@ -23,7 +23,7 @@ const styles = theme => ({
   iconSmall: {
     fontSize: 14,
   },
-});
+})
 
 class EditEvent extends React.Component {
   constructor(props) {
@@ -141,7 +141,7 @@ class EditEvent extends React.Component {
   }
 
   render(props) {
-    const { classes } = this.props;
+    const { classes } = this.props
     const event = this.props.data
     // Never allow modifications to kuksaEvents (not synced)
     let disabled = event.synced || event.kuksaEvent // TODO: Allow editing after Kuksa sync works both ways (remove event.synced check)
@@ -163,8 +163,8 @@ class EditEvent extends React.Component {
           onClose={this.handleClose}
         >
           <DialogTitle>{'Muokataan tapahtumaa'} {this.state.title}</DialogTitle>
-          <div className="event-form">
-            <Paper className="new-form-paper">
+          <div className='event-form'>
+            <Paper className='new-form-paper'>
               <EventForm
                 submitFunction={this.handleCloseAndSend.bind(this)}
                 close={this.handleClose.bind(this)}

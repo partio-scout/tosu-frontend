@@ -123,17 +123,17 @@ class Activity extends Component {
                 <img
                   style={{ width: '100%' }}
                   src={pofActivity.mandatoryIconUrl}
-                  alt="Mandatory Icon"
+                  alt='Mandatory Icon'
                 />
               </Avatar>
-              <span className="activityTitle">{pofActivity.title}</span>
+              <span className='activityTitle'>{pofActivity.title}</span>
               <Dialog
                 title={
                   <div>
                     {pofActivity.title}
 
                     <button
-                      className="dialog-close-button"
+                      className='dialog-close-button'
                       onClick={this.handleClick}
                     >
                       x
@@ -152,9 +152,9 @@ class Activity extends Component {
                 open={this.state.open}
                 onRequestClose={this.handleClick}
                 autoScrollBodyContent
-                bodyClassName="global--modal-body"
-                contentClassName="global--modal-content"
-                paperClassName="global--modal-paper"
+                bodyClassName='global--modal-body'
+                contentClassName='global--modal-content'
+                paperClassName='global--modal-paper'
               >
                 <PlanForm activity={pofActivity} savedActivity={activity} />
               </Dialog>

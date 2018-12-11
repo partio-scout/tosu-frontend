@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { API_ROOT } from '../api-config';
+import { API_ROOT } from '../api-config'
 
 const getAllActivities = async () => {
   const response = await axios.get(`${API_ROOT}/activities/`)

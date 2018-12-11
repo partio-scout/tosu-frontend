@@ -8,19 +8,16 @@ import React, { Component } from 'react'
 import { GoogleLogin } from 'react-google-login'
 import FontAwesome from 'react-fontawesome'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import { DialogTitle } from '@material-ui/core'
-import LinearProgress from '@material-ui/core/LinearProgress'
+import { Button, Dialog, DialogTitle, LinearProgress } from '@material-ui/core'
 import moment from 'moment'
 import 'react-dates/initialize'
 import { MuiThemeProvider } from '@material-ui/core/styles'
-import theme from './theme'
 // CSS
 import 'react-dates/lib/css/_datepicker.css'
-import './react_dates_overrides.css'
 import 'react-sticky-header/styles.css'
-import "./index.css"
+import './react_dates_overrides.css'
+import './index.css'
+import theme from './theme'
 // Components
 import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
@@ -97,7 +94,7 @@ class App extends Component {
       try {
         await Promise.all(promises)
       } catch (exception) {
-        console.log("Error in emptying buffer", exception)
+        console.log('Error in emptying buffer', exception)
       }
     }
     if (this.state.loading) {
@@ -115,6 +112,12 @@ class App extends Component {
     this.filterUpdate()
   }
 
+  setHeaderHeight = height => {
+    if (height !== this.state.bufferZoneHeight) {
+      this.setState({ bufferZoneHeight: height })
+    }
+  }
+
   checkLoggedIn = async () => {
     // Google login
     if (getGoogleToken() !== null) {
@@ -127,12 +130,6 @@ class App extends Component {
     // PartioID login
     if (getScout() !== null) {
       await this.props.readScout() // Reads scout from a cookie. (Has only name)
-    }
-  }
-
-  setHeaderHeight = height => {
-    if (height !== this.state.bufferZoneHeight) {
-      this.setState({ bufferZoneHeight: height })
     }
   }
 
@@ -156,7 +153,7 @@ class App extends Component {
   }
 
   googleLoginFail = async response => {
-    notify("Google-kirjautuminen epäonnistui. Yritä uudestaan.")
+    notify('Google-kirjautuminen epäonnistui. Yritä uudestaan.')
   }
 
   selectView = (value) => () => {
@@ -195,32 +192,32 @@ class App extends Component {
 
     if (this.props.scout === null) {
       return (
-        <div className="Login">
+        <div className='Login'>
           {!isTouchDevice() ?
-            (<p className="login-text">Toiminnan suunnittelusovellus</p>) :
-            (<p className="login-mobile-text">Toiminnan suunnittelusovellus</p>)
+            (<p className='login-text'>Toiminnan suunnittelusovellus</p>) :
+            (<p className='login-mobile-text'>Toiminnan suunnittelusovellus</p>)
           }
 
           <GoogleLogin
-            className="login-button"
-            scope="profile email"
-            clientId="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com"
+            className='login-button'
+            scope='profile email'
+            clientId='1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com'
             onSuccess={this.googleLoginSuccess}
             onFailure={this.googleLoginFail}
           >
-            <FontAwesome className="icon" name="google" />
-            <span className="label">
+            <FontAwesome className='icon' name='google' />
+            <span className='label'>
               {' '}
-              <span className="appbar-button-text">Kirjaudu sisään Googlella</span>
+              <span className='appbar-button-text'>Kirjaudu sisään Googlella</span>
             </span>
           </GoogleLogin>
           <Button
             style={{ backgroundColor: 'transparent' }}
             href={`${API_ROOT}/scouts/login`}
           >
-            <span className="login-button">
+            <span className='login-button'>
               {' '}
-              <span className="appbar-button-text">Kirjaudu sisään PartioID:llä</span>
+              <span className='appbar-button-text'>Kirjaudu sisään PartioID:llä</span>
             </span>
           </Button>
         </div>
@@ -236,15 +233,16 @@ class App extends Component {
 
     const eventsToList = (
       <div className='event-list-container'>
-        {view === "KUKSA"}
+        {view === 'KUKSA'}
         <ul className='event-list'>
-            {eventsToShow().map(event => {
-              odd=!odd
-              return(
-                <li className='event-list-item' key={event.id ? event.id : 0}>
-                  {event.kuksaEvent ? (<KuksaEventCard event={event} />) : (<EventCard event={event} odd={odd} />)}
-                </li>
-            )})}
+          {eventsToShow().map(event => {
+            odd=!odd
+            return(
+              <li className='event-list-item' key={event.id ? event.id : 0}>
+                {event.kuksaEvent ? (<KuksaEventCard event={event} />) : (<EventCard event={event} odd={odd} />)}
+              </li>
+            )}
+          )}
         </ul>
       </div>
     )
@@ -254,43 +252,43 @@ class App extends Component {
     
     return (
       <MuiThemeProvider theme={theme}>
-      <div className="App" >
-        <Router>
-          <div>
-            <div> {isTouchDevice() ? mobileMenu() : dndMenu()} </div>
-            <div className='flexbox'>
-              {isTouchDevice() ? null :
-                <div className={this.state.drawerVisible ? 'visible-drawer' : 'hidden-drawer'}>
-                  <ClippedDraver />
-                </div>
-              }
-              <div id="container" style={{ paddingTop: 0 }}>
-                <div className="content">
-                  <ButtonRow
-                    view={this.state.view}
-                    filter={this.state.filter}
-                    newEvent={this.newEvent} 
-                    dateRangeUpdate={this.dateRangeUpdate}
-                  />
+        <div className='App' >
+          <Router>
+            <div>
+              <div> {isTouchDevice() ? mobileMenu() : dndMenu()} </div>
+              <div className='flexbox'>
+                {isTouchDevice() ? null :
+                  <div className={this.state.drawerVisible ? 'visible-drawer' : 'hidden-drawer'}>
+                    <ClippedDraver />
+                  </div>
+                }
+                <div id='container' style={{ paddingTop: 0 }}>
+                  <div className='content'>
+                    <ButtonRow
+                      view={this.state.view}
+                      filter={this.state.filter}
+                      newEvent={this.newEvent} 
+                      dateRangeUpdate={this.dateRangeUpdate}
+                    />
 
-                  {this.state.loading ? (<div className="loading-bar"><LinearProgress /></div>) : null}
-                  {this.props.store.getState().view === 'CALENDAR' ? calendar : eventsToList}
+                    {this.state.loading ? (<div className='loading-bar'><LinearProgress /></div>) : null}
+                    {this.props.store.getState().view === 'CALENDAR' ? calendar : eventsToList}
 
-                  <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
-                    <DialogTitle>Luo uusi tapahtuma</DialogTitle>
-                    <NewEvent closeMe={this.handleClose} />
-                  </Dialog>
-                  <Route
-                    path="/user-info"
-                    render={() => <UserInfo />}
-                  />
-                  <NotificationFooter />
+                    <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
+                      <DialogTitle>Luo uusi tapahtuma</DialogTitle>
+                      <NewEvent closeMe={this.handleClose} />
+                    </Dialog>
+                    <Route
+                      path='/user-info'
+                      render={() => <UserInfo />}
+                    />
+                    <NotificationFooter />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </Router>
-      </div>
+          </Router>
+        </div>
       </MuiThemeProvider>
     )
   }

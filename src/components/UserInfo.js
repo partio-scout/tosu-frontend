@@ -29,15 +29,15 @@ export default class UserInfo extends Component {
           <h3>Käyttäjän tiedot</h3>
           <ValidatorForm ref={() => 'form'} onSubmit={this.send} disabled>
             <TextValidator
-              name="name"
-              hintText="Käyttäjän nimi"
+              name='name'
+              hintText='Käyttäjän nimi'
               value={this.state.name}
               onChange={this.handleChange}
               fullWidth
             />
             <TextValidator
-              name="username"
-              hintText="Käyttäjänimi"
+              name='username'
+              hintText='Käyttäjänimi'
               value={this.state.username}
               onChange={this.handleChange}
               fullWidth

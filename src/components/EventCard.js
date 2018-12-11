@@ -45,11 +45,11 @@ import eventService from '../services/events'
 
 // Warning icon
 const warning = (
-  <div className="tooltip">
+  <div className='tooltip'>
     <Warning
       className='warning'
     />
-    <span className="tooltiptext">
+    <span className='tooltiptext'>
       Tapahtumasta puuttuu aktiviteetti!
     </span>
   </div>
@@ -80,7 +80,6 @@ class EventCard extends React.Component {
     }
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
-
 
   emptyBuffer = async () => {
     if (isTouchDevice()) {
@@ -156,13 +155,13 @@ class EventCard extends React.Component {
         .locale('fi')
         .format('ddd D.M.YYYY')} ${event.startTime.substring(0,5)}`
 
-    let cardClassName = "event-card-wrapper" // Style: Normal
+    let cardClassName = 'event-card-wrapper' // Style: Normal
     if (this.props.event.activities.length === 0) {
-      cardClassName = "empty-event-card" // Style: No activities
+      cardClassName = 'empty-event-card' // Style: No activities
     }
     // Prioritize kuksa sync color over emptiness warning color (warning icon still visible)
     if (this.props.event.synced) {
-      cardClassName = "kuksa-synced-event-card" // Style: Synced to Kuksa
+      cardClassName = 'kuksa-synced-event-card' // Style: Synced to Kuksa
     }
 
     const taskGroupTree = this.props.pofTree.taskgroups
@@ -185,14 +184,14 @@ class EventCard extends React.Component {
     let syncDialogConfirmText
     let dialogConfirmHandler
     if (this.state.syncToKuksa) {
-      syncDialogTitle = "Lopetetaanko tapahtuman synkronointi Kuksaan?"
-      syncDialogDescription = "Tapahtuma poistetaan Kuksasta, mutta jää omaan suunnitelmaasi."
-      syncDialogConfirmText = "Lopeta synkronointi"
+      syncDialogTitle = 'Lopetetaanko tapahtuman synkronointi Kuksaan?'
+      syncDialogDescription = 'Tapahtuma poistetaan Kuksasta, mutta jää omaan suunnitelmaasi.'
+      syncDialogConfirmText = 'Lopeta synkronointi'
       dialogConfirmHandler = this.stopSyncingWithKuksa
     } else {
-      syncDialogTitle = "Synkronoidaanko tapahtuma Kuksaan?"
-      syncDialogDescription = "Tapahtuma lähetetään Kuksaan. Tapahtuman muokkaus lähettää muutokset Kuksaan ja Kuksassa tehdyt muutokset synkronoidaan suunnitelmaasi. Aktiviteettejä ei synkronoida."
-      syncDialogConfirmText = "Synkronoi tapahtuma"
+      syncDialogTitle = 'Synkronoidaanko tapahtuma Kuksaan?'
+      syncDialogDescription = 'Tapahtuma lähetetään Kuksaan. Tapahtuman muokkaus lähettää muutokset Kuksaan ja Kuksassa tehdyt muutokset synkronoidaan suunnitelmaasi. Aktiviteettejä ei synkronoida.'
+      syncDialogConfirmText = 'Synkronoi tapahtuma'
       dialogConfirmHandler = this.startSyncingWithKuksa
     }
     const syncConfirmDialog = (
@@ -206,8 +205,8 @@ class EventCard extends React.Component {
             <DialogContentText>{syncDialogDescription}</DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleSyncDialogClose} color="primary">Peruuta</Button>
-            <Button onClick={dialogConfirmHandler} color="primary" autoFocus>{syncDialogConfirmText}</Button>
+            <Button onClick={this.handleSyncDialogClose} color='primary'>Peruuta</Button>
+            <Button onClick={dialogConfirmHandler} color='primary' autoFocus>{syncDialogConfirmText}</Button>
           </DialogActions>
         </Dialog>
       </div>
@@ -218,17 +217,17 @@ class EventCard extends React.Component {
           <Switch
             checked={this.state.syncToKuksa}
             onClick={this.handleSyncSwitchClick}
-            color="primary"
+            color='primary'
           />
         }
-        label="Synkronoi Kuksaan"
+        label='Synkronoi Kuksaan'
       />
     )
 
 
     const touchDeviceNotExpanded = (
       <CardContent style={this.state.expanded ? {} : {padding: '3px' }}>
-        <div className="mobile-event-card-media">
+        <div className='mobile-event-card-media'>
           <Activities
             activities={this.props.event.activities}
             bufferzone={false}
@@ -238,15 +237,15 @@ class EventCard extends React.Component {
             <div>
               <TreeSelect
                 style={{ width: '90%' }}
-                transitionName="rc-tree-select-dropdown-slide-up"
-                choiceTransitionName="rc-tree-select-selection__choice-zoom"
+                transitionName='rc-tree-select-dropdown-slide-up'
+                choiceTransitionName='rc-tree-select-selection__choice-zoom'
                 dropdownStyle={{
                   position: 'absolute',
                   maxHeight: 400,
                   overflow: 'auto'
                 }}
-                placeholder="Valitse aktiviteetti"
-                searchPlaceholder="Hae aktiviteettia"
+                placeholder='Valitse aktiviteetti'
+                searchPlaceholder='Hae aktiviteettia'
                 showSearch
                 allowClear
                 treeLine
@@ -255,7 +254,7 @@ class EventCard extends React.Component {
                 }
                 value={this.state.value}
                 treeData={selectedTaskGroupPofData}
-                treeNodeFilterProp="label"
+                treeNodeFilterProp='label'
                 filterTreeNode={this.filterTreeNode}
                 onChange={this.onChangeChildren}
               />
@@ -268,7 +267,7 @@ class EventCard extends React.Component {
     )
     const notExpanded = (
       <CardContent style={this.state.expanded ? {} : {padding: '3px 10px' } }>
-        <div className="activity-header">
+        <div className='activity-header'>
           <Activities
             activities={this.props.event.activities}
             bufferzone={false}
@@ -281,12 +280,12 @@ class EventCard extends React.Component {
     const expanded = (
       <CardContent>
         {syncConfirmDialog}
-        <p className="eventTimes">
+        <p className='eventTimes'>
           <span>{event.type} alkaa:</span>{' '}
           {moment(event.startDate).locale('fi').format('ddd D.M.YYYY')} kello{' '}
           {event.startTime.substring(0,5)}
         </p>
-        <p className="eventTimes">
+        <p className='eventTimes'>
           <span>{event.type} päättyy:</span>{' '}
           {moment(event.endDate).locale('fi').format('ddd D.M.YYYY')} kello {event.endTime.substring(0,5)}
         </p>
@@ -302,8 +301,8 @@ class EventCard extends React.Component {
 
     return (
       <div className={cardClassName}>
-      <Card style={{boxShadow: 'none'}}>
-        <ActivityDragAndDropTarget odd={odd} event={true} bufferzone={false} parentId={this.props.event.id}>
+        <Card style={{boxShadow: 'none'}}>
+          <ActivityDragAndDropTarget odd={odd} event={true} bufferzone={false} parentId={this.props.event.id}>
             <CardHeader
               style={this.state.expanded ? {} : {paddingBottom: '5px' }}
               title={
@@ -325,7 +324,7 @@ class EventCard extends React.Component {
               action={
                 <IconButton
                   onClick={this.handleExpandChange}
-                  className={this.state.expanded ? "arrow-up" : ""}
+                  className={this.state.expanded ? 'arrow-up' : ''}
                 >
                   <ExpandMoreIcon />
                 </IconButton>
@@ -337,13 +336,13 @@ class EventCard extends React.Component {
 
             <CardActions style={this.state.expanded ? {} : {paddingTop: '5px' }}>
               <EditEvent
-                buttonClass="buttonRight"
+                buttonClass='buttonRight'
                 data={event}
                 setNotification={this.props.setNotification}
                 minimal={!this.state.expanded}
               />
               <DeleteEvent
-                buttonClass="buttonRight"
+                buttonClass='buttonRight'
                 data={event}
                 setNotification={this.props.setNotification}
                 minimal={!this.state.expanded}
@@ -365,7 +364,6 @@ const mapStateToProps = state => {
     status: state.statusMessage.status
   }
 }
-
 
 export default connect(mapStateToProps, {
   notify,

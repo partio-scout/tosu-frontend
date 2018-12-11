@@ -9,9 +9,6 @@ import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { postActivityToBufferOnlyLocally, deleteActivityFromBufferOnlyLocally, deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEvent,  deleteActivityFromEventOnlyLocally, addActivityToEventOnlyLocally } from '../reducers/eventReducer'
 
-
-
-
 function collect(connector, monitor) {
   return {
     connectDropTarget: connector.dropTarget(),
@@ -20,8 +17,6 @@ function collect(connector, monitor) {
     target: monitor.getItem(),
   }
 }
-
-
 
 class ActivityDragAndDropTarget extends React.Component {
   static propTypes = {
@@ -44,7 +39,6 @@ class ActivityDragAndDropTarget extends React.Component {
     deleteActivityFromBuffer: PropTypes.func.isRequired,
     deleteActivityFromEvent: PropTypes.func.isRequired,
   }
-
 
   render() {
     const { isOver, canDrop, connectDropTarget, odd, event } = this.props
@@ -72,7 +66,6 @@ const mapStateToProps = state => {
     events: state.events,
   }
 }
-
 
 export default connect(mapStateToProps, {
   notify,

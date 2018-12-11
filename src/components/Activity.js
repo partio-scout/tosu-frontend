@@ -12,7 +12,6 @@ import {deleteActivityFromEvent} from '../reducers/eventReducer'
 import {deleteActivityFromBuffer} from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
-// import ActivityPreview from './ActivityPreview'
 
 const activitySource = {
   beginDrag(props, monitor) {
@@ -32,10 +31,10 @@ const activitySource = {
   canDrag(props, monitor) {
     if (props.activity.canDrag !== undefined) {
       if (!props.activity.canDrag) {
-        return false;
+        return false
       }
     }
-    return true;
+    return true
   }
 }
 
@@ -50,7 +49,6 @@ function collect(connector, monitor) {
 class Activity extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
-    // connectDragPreview: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -59,10 +57,6 @@ class Activity extends Component {
     this.state = {
       open: false
     }
-  }
-
-  componentDidMount() {
-
   }
 
   handleClick = () => {
@@ -84,9 +78,7 @@ class Activity extends Component {
       return connectDragSource(
         <div
           className={this.props.minimal ? 'connect-drag-source-minimal' : 'connect-drag-source'}
-          style={{
-            visibility: 'visible'
-          }}
+          style={{visibility: 'visible'}}
         >
           <Chip
             onDelete={() => this.props.deleteActivity(activity)}
@@ -111,7 +103,7 @@ class Activity extends Component {
                 {pofActivity.title}
 
                 <button
-                  className="dialog-close-button"
+                  className='dialog-close-button'
                   onClick={this.handleClick}
                 >
                   x

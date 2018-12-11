@@ -35,6 +35,4 @@ export const hideKuksaEvents = () => dispatch =>  {
   })
 }
 
-
-
 export default calendarReducer

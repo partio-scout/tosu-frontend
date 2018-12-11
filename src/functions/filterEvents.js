@@ -19,10 +19,10 @@ const filterEvents = (view, filter, initialEvents, start, end) => {
       events = initialEvents
   }
   switch (view) {
-    case "OWN":
+    case 'OWN':
       events = events.filter(event => !event.kuksaEvent)
       break
-    case "KUKSA":
+    case 'KUKSA':
       events = events.filter(event => event.kuksaEvent)
       break
     default:

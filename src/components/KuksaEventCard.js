@@ -43,8 +43,8 @@ class KuksaEventCard extends React.Component {
     const information = new Parser().parse(event.information)
 
     return (
-      <div className="event-card-wrapper">
-        <Card style={{backgroundColor: "#D6E8F6", boxShadow: 'none', borderRadius: '4px'}}>
+      <div className='event-card-wrapper'>
+        <Card style={{backgroundColor: '#D6E8F6', boxShadow: 'none', borderRadius: '4px'}}>
           <CardHeader
             title={
               <div>
@@ -56,22 +56,22 @@ class KuksaEventCard extends React.Component {
             action={
               <IconButton
                 onClick={this.handleExpandChange}
-                className={this.state.expanded ? "arrow-up" : ""}
+                className={this.state.expanded ? 'arrow-up' : ''}
               >
                 <ExpandMoreIcon />
               </IconButton>
             }
           />
 
-          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+          <Collapse in={this.state.expanded} timeout='auto' unmountOnExit>
             <CardContent>
               <h2>{event.title}</h2>
-              <p className="eventTimes">
+              <p className='eventTimes'>
                 <span>{event.type} alkaa:</span>{' '}
                 {moment(event.startDate).format('D.M.YYYY')} kello{' '}
                 {event.startTime}
               </p>
-              <p className="eventTimes">
+              <p className='eventTimes'>
                 <span>{event.type} päättyy:</span>{' '}
                 {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
               </p>

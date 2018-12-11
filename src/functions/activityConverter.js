@@ -51,8 +51,6 @@ const convertToBackendActivity = (pofActivity) => {
     mandatoryIconUrl: pofActivity.tags.pakollisuus[0].icon,
     originUrl: pofActivity.languages[0].details,
     parents: pofActivity.parents
-
-
   }
   kasvatustavoitteet(backendActivity, pofActivity)
   taitoalueet(backendActivity, pofActivity)
