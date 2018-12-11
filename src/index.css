@@ -27,7 +27,7 @@ p.eventTimes > span {
 
 .top-search {
   padding: 0;
-  background-color: #253264;
+  background-color: #253264 !important;
 }
 
 .footerError,
@@ -612,6 +612,10 @@ span.label {
 .event-card-wrapper .activity-header .connect-drag-source .connect-drag-source-minimal {
   margin: 0px;
   align-content: center;
+}
+
+.headline {
+  width: 600px;
 }
 
 /* #### STATUS BOX #### */
