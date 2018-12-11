@@ -71,8 +71,8 @@ class MobileAppbar extends React.Component {
   render() {
     let taskgroups = []
 
-    if (this.props.pofTree.taskgroup) {
-      taskgroups = this.props.pofTree.taskgroup
+    if (this.props.pofTree.taskgroups) {
+      taskgroups = this.props.pofTree.taskgroups
     }
     return (
       <div
