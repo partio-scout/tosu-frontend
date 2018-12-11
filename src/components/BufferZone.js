@@ -23,8 +23,7 @@ const styles = theme => ({
   divider: {
     height: 4,
     backgroundColor: '#243265',
-    marginBottom: '20px',
-    marginTop: '20px'
+    margin: '20px 14px'
   }
 })
 
