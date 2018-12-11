@@ -517,7 +517,7 @@ span.label {
   overflow-x: hidden;
   list-style: none;
   padding-left: 0;
-  min-width: 600px;
+  min-width: 100%;
   max-width: 50vw;
 }
 
