@@ -23,7 +23,7 @@ class Activities extends React.Component {
   deleteActivity = async activity => {
     try {
       const deleteActivity= this.props.bufferzone ? this.props.deleteActivityFromBuffer : this.props.deleteActivityFromEvent
-      deleteActivity(activity.id)
+      await deleteActivity(activity.id)
       this.props.pofTreeUpdate(this.props.buffer, this.props.events)
       this.props.notify('Aktiviteetti poistettu!', 'success')
     } catch (exception) {
