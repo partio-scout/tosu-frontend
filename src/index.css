@@ -537,6 +537,9 @@ span.label {
   min-width: 100%;
   max-width: 50vw;
 }
+.mobile-event-list {
+  height: calc(100vh - 270px) !important;
+}
 
 .empty-event-card {
   padding: 5px;

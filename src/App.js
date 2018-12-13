@@ -234,7 +234,7 @@ class App extends Component {
     const eventsToList = (
       <div className='event-list-container'>
         {view === 'KUKSA'}
-        <ul className='event-list'>
+        <ul className={isTouchDevice() ? 'mobile-event-list event-list' : 'event-list'}>
           {eventsToShow().map(event => {
             odd=!odd
             return(
