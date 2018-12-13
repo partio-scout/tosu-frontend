@@ -56,7 +56,7 @@ class Calendar extends Component {
     const eventsToShow = prepareEventsToCalendarEvents(events, this.props.shouldShowKuksaEventsAlso)
 
     return (
-      <div className='calendar'>
+      <div className={this.props.mobile ? 'mobile-calendar' : 'calendar'}>
         <BigCalendar
           localizer={localizer}
           events={eventsToShow}

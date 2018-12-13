@@ -248,7 +248,12 @@ class App extends Component {
     )
 
     const dndMenu = () => (<AppBar toggleSideBar={this.toggleDrawer} />)
-    const calendar = (<Calendar events={this.props.store.getState().events} />)
+    const calendar = (
+      <Calendar 
+        events={this.props.store.getState().events}
+        mobile={isTouchDevice()}
+      />
+    )
     
     return (
       <MuiThemeProvider theme={theme}>
