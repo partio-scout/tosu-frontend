@@ -269,6 +269,7 @@ class App extends Component {
                       filter={this.state.filter}
                       newEvent={this.newEvent} 
                       dateRangeUpdate={this.dateRangeUpdate}
+                      mobile={isTouchDevice()}
                     />
 
                     {this.state.loading ? (<div className='loading-bar'><LinearProgress /></div>) : null}

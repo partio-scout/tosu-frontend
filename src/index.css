@@ -386,12 +386,29 @@ span.label {
   color: white;
 }
 
+/* ### MOBILE BUTTONS ### */
+.mobile-button {
+  background-color: #28aae0 !important;
+  color: white !important;
+  padding: 10px !important;
+
+}
+
+.active-mobile-button {
+  background-color: #253264 !important;
+}
+
 /* END OF HEADER #################*/
 
 /* ###########################
    # CONTENT CSS STARTS HERE #
    ###########################
 */
+
+.button {
+  margin: 4px !important;
+  color: white !important;
+}
 /* #### CONTENT #### */
 .flexbox {
   display: flex;

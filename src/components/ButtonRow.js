@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button'
 import { DateRangePicker } from 'react-dates'
+import Add from '@material-ui/icons/Add'
+import CalendarToday from '@material-ui/icons/CalendarToday'
 import moment from 'moment'
 import { filterChange } from '../reducers/filterReducer'
 import { viewChange } from '../reducers/viewReducer'
@@ -16,6 +18,7 @@ class ButtonRow extends React.Component {
       startDate: currentDate,
       endDate: props.endDate
     }
+    console.log(props.mobile)
   }
 
   selectView = (value) => () => {
@@ -48,42 +51,62 @@ class ButtonRow extends React.Component {
     this.setState({startDate, endDate})
     this.props.dateRangeUpdate({startDate, endDate})
   }
+  
 
   render() {
+    const calendarIcon = (
+      <IconButton
+        className={this.props.view === 'CALENDAR' ? 
+          'active-mobile-button button' : 'mobile-button button'}
+        onClick={this.selectView('CALENDAR')}
+      >
+        <CalendarToday />
+      </IconButton>
+    )
+    const newEventIcon = (
+      <IconButton
+        className='mobile-button button'
+        onClick={this.props.newEvent}
+      >
+        <Add />
+      </IconButton>
+    )
     return (
       <div>
         <div className='button-row' >
           <Button
-            className={this.props.view === 'OWN' ? 'active' : ''}
+            className={this.props.view === 'OWN' ? 'active button' : 'button'}
             onClick={this.selectView('OWN')}
             variant='contained'
             color='secondary'
           >
             Omat
           </Button>
-          &nbsp;
           <Button
-            className={this.props.view === 'KUKSA' ? 'active' : ''}
+            className={this.props.view === 'KUKSA' ? 'active button' : 'button'}
             onClick={this.selectView('KUKSA')}
             variant='contained'
             color='secondary'
           >
             Kuksa
           </Button>
-          &nbsp;
-          <Button
-            className={this.props.view === 'CALENDAR' ? 'active' : ''}
-            onClick={this.selectView('CALENDAR')}
-            variant='contained'
-            color='secondary'
-          >
-            Kalenteri
-          </Button>
-          &nbsp;
-          <Button onClick={this.props.newEvent} variant='contained' color='secondary'>
-            Uusi tapahtuma
-          </Button>
-          &nbsp;
+          {this.props.mobile ?
+            calendarIcon : 
+            <Button
+              className={this.props.view === 'CALENDAR' ? 'active button' : 'button'}
+              onClick={this.selectView('CALENDAR')}
+              variant='contained'
+              color='secondary'
+            >
+              Kalenteri
+            </Button>
+          }
+          {this.props.mobile ? 
+            newEventIcon : 
+            <Button onClick={this.props.newEvent} variant='contained' color='secondary'>
+              Uusi tapahtuma
+            </Button>
+          }
         </div>
         <div className='date-range-container' style={this.props.view === 'CALENDAR' ? { display: 'none' } : {}}>
           Rajaa tapahtumia:
