@@ -542,7 +542,7 @@ span.label {
 /* #### EVENT LIST #### */
 .event-list {
   height: calc(100vh - 170px);
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   list-style: none;
   padding-left: 0;
