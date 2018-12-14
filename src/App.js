@@ -234,7 +234,7 @@ class App extends Component {
     const eventsToList = (
       <div className='event-list-container'>
         {view === 'KUKSA'}
-        <ul className='event-list'>
+        <ul className={isTouchDevice() ? 'mobile-event-list event-list' : 'event-list'}>
           {eventsToShow().map(event => {
             odd=!odd
             return(
@@ -248,7 +248,12 @@ class App extends Component {
     )
 
     const dndMenu = () => (<AppBar toggleSideBar={this.toggleDrawer} />)
-    const calendar = (<Calendar events={this.props.store.getState().events} />)
+    const calendar = (
+      <Calendar 
+        events={this.props.store.getState().events}
+        mobile={isTouchDevice()}
+      />
+    )
     
     return (
       <MuiThemeProvider theme={theme}>
@@ -269,6 +274,7 @@ class App extends Component {
                       filter={this.state.filter}
                       newEvent={this.newEvent} 
                       dateRangeUpdate={this.dateRangeUpdate}
+                      mobile={isTouchDevice()}
                     />
 
                     {this.state.loading ? (<div className='loading-bar'><LinearProgress /></div>) : null}

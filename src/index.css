@@ -386,12 +386,29 @@ span.label {
   color: white;
 }
 
+/* ### MOBILE BUTTONS ### */
+.mobile-button {
+  background-color: #28aae0 !important;
+  color: white !important;
+  padding: 10px !important;
+
+}
+
+.active-mobile-button {
+  background-color: #253264 !important;
+}
+
 /* END OF HEADER #################*/
 
 /* ###########################
    # CONTENT CSS STARTS HERE #
    ###########################
 */
+
+.button {
+  margin: 4px !important;
+  color: white !important;
+}
 /* #### CONTENT #### */
 .flexbox {
   display: flex;
@@ -441,6 +458,18 @@ span.label {
 }
 
 /* #### CALENDAR #### */
+/* Override flex for toolbar and calendar container */
+.rbc-calendar {
+  display: initial !important;
+}
+
+.mobile-calendar {
+  height: 100px;
+  min-height: calc(100vh - 350px);
+  width: 80vmin;
+  margin-bottom: calc(100vh - 500px);
+}
+
 .calendar {
   height: 70vmin;
   min-height: 500px;
@@ -519,6 +548,9 @@ span.label {
   padding-left: 0;
   min-width: 100%;
   max-width: 50vw;
+}
+.mobile-event-list {
+  height: calc(100vh - 270px) !important;
 }
 
 .empty-event-card {
