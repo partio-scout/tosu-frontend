@@ -8,9 +8,9 @@ const styles = () => ({
   }
 })
 
-const FeedbackButton = () => (
+const FeedbackButton = (props) => (
   <div className='feedback'>
-    <a style={{textDecoration: 'none'}} href='https://docs.google.com/forms/d/e/1FAIpQLSddXqlQaFd8054I75s4UZEPeQAh_ardxRl11YYw3b2JBk0Y-Q/viewform'>
+    <a style={{textDecoration: 'none'}} href={props.feedback_url}>
       <Button type="button" className="button" variant='contained'color='secondary'>
         Anna palautetta
       </Button>

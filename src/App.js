@@ -294,7 +294,7 @@ class App extends Component {
                   </div>
                 </div>
               </div>
-              <FeedbackButton />
+             <FeedbackButton feedback_url='https://docs.google.com/forms/d/e/1FAIpQLSddXqlQaFd8054I75s4UZEPeQAh_ardxRl11YYw3b2JBk0Y-Q/viewform'/>
             </div>
           </Router>
         </div>
