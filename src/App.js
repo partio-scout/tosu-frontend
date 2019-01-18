@@ -29,7 +29,7 @@ import EventCard from './components/EventCard'
 import KuksaEventCard from './components/KuksaEventCard'
 import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
-import AppFooter from './components/AppFooter'
+import FeedbackButton from './components/FeedbackButton'
 // Utils
 import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
@@ -251,12 +251,12 @@ class App extends Component {
 
     const dndMenu = () => (<AppBar toggleSideBar={this.toggleDrawer} />)
     const calendar = (
-      <Calendar 
+      <Calendar
         events={this.props.store.getState().events}
         mobile={isTouchDevice()}
       />
     )
-    
+
     return (
       <MuiThemeProvider theme={theme}>
         <div className='App' >
@@ -274,7 +274,7 @@ class App extends Component {
                     <ButtonRow
                       view={this.state.view}
                       filter={this.state.filter}
-                      newEvent={this.newEvent} 
+                      newEvent={this.newEvent}
                       dateRangeUpdate={this.dateRangeUpdate}
                       mobile={isTouchDevice()}
                     />
@@ -294,7 +294,7 @@ class App extends Component {
                   </div>
                 </div>
               </div>
-              <AppFooter />
+              <FeedbackButton />
             </div>
           </Router>
         </div>
