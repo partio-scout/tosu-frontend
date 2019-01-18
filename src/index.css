@@ -748,3 +748,7 @@ color-class {
 .hidden {
   display: none !important;
 }
+
+.footer {
+  height: 100px;
+}

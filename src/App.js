@@ -29,6 +29,7 @@ import EventCard from './components/EventCard'
 import KuksaEventCard from './components/KuksaEventCard'
 import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
+import AppFooter from './components/AppFooter'
 // Utils
 import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
@@ -46,6 +47,7 @@ import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutGoogleLogin, readScout } from './reducers/scoutReducer'
 import { filterChange } from './reducers/filterReducer'
 import { viewChange } from './reducers/viewReducer'
+
 
 
 class App extends Component {
@@ -292,6 +294,7 @@ class App extends Component {
                   </div>
                 </div>
               </div>
+              <AppFooter />
             </div>
           </Router>
         </div>
