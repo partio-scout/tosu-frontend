@@ -29,6 +29,7 @@ import EventCard from './components/EventCard'
 import KuksaEventCard from './components/KuksaEventCard'
 import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
+import FeedbackButton from './components/FeedbackButton'
 // Utils
 import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
@@ -46,6 +47,7 @@ import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutGoogleLogin, readScout } from './reducers/scoutReducer'
 import { filterChange } from './reducers/filterReducer'
 import { viewChange } from './reducers/viewReducer'
+
 
 
 class App extends Component {
@@ -249,12 +251,12 @@ class App extends Component {
 
     const dndMenu = () => (<AppBar toggleSideBar={this.toggleDrawer} />)
     const calendar = (
-      <Calendar 
+      <Calendar
         events={this.props.store.getState().events}
         mobile={isTouchDevice()}
       />
     )
-    
+
     return (
       <MuiThemeProvider theme={theme}>
         <div className='App' >
@@ -272,7 +274,7 @@ class App extends Component {
                     <ButtonRow
                       view={this.state.view}
                       filter={this.state.filter}
-                      newEvent={this.newEvent} 
+                      newEvent={this.newEvent}
                       dateRangeUpdate={this.dateRangeUpdate}
                       mobile={isTouchDevice()}
                     />
@@ -292,6 +294,7 @@ class App extends Component {
                   </div>
                 </div>
               </div>
+             <FeedbackButton feedback_url='https://docs.google.com/forms/d/e/1FAIpQLSddXqlQaFd8054I75s4UZEPeQAh_ardxRl11YYw3b2JBk0Y-Q/viewform'/>
             </div>
           </Router>
         </div>
