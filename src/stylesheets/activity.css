@@ -1,0 +1,44 @@
+.activityTitle {
+  display: block;
+  max-width: 175px;
+  word-wrap: break-all;
+  white-space: normal;
+  font-weight: bold;
+  line-height: 26px;
+  padding: 3px;
+}
+.activity-header {
+    margin: 0px;
+    min-height: 0px;
+    border-radius: 8px;
+    display: flex;
+    flex-flow: row wrap;
+  }
+  
+.headline {
+    width: 600px;
+  }
+  
+  .action-help {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    color: #28AAE0;
+    margin: 10px 10px 10px 20px;
+    cursor: pointer;
+  }
+  
+  .action-help:hover,
+  .action-help:focus{
+    color: #253264;
+  }
+  
+  .connect-drag-source {
+    float: left;
+    margin: 4px;
+  }
+  
+  .connect-drag-source-minimal {
+    float: left;
+    margin: 1px;
+  }

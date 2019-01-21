@@ -1,0 +1,31 @@
+.appbar-button {
+  margin: 5px;
+  padding: 7px;
+  width: auto !important;
+  background: #fff;
+  border: 0;
+  color: rgb(93, 188, 210);
+  font-size: 1.2rem;
+  border-radius: 5px;
+  float: right;
+}
+
+.Login {
+  padding: 60px 0;
+  text-align: center;
+  background: #253264;
+}
+
+.Login form {
+  margin: 0 auto;
+  max-width: 320px;
+}
+
+.login-text {
+  text-transform: uppercase;
+  line-height: 2.2rem;
+  color: #fff;
+  font-size: 2.2rem;
+}
+
+

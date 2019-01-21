@@ -1,0 +1,49 @@
+@media only screen and (max-width: 768px) {
+  .top-bar-left,
+  .top-bar-right {
+    clear: both;
+    width: 100% !important;
+  }
+
+  .event-form {
+    width: 90%;
+  }
+
+  .global--modal-content {
+    width: 100% !important;
+    transform: translate(0, 0) !important;
+    position: absolute !important;
+    top: 0 !important;
+    height: 100vh !important;
+  }
+
+  .global--modal-body {
+    padding: 10 !important;
+    max-height: none !important;
+  }
+
+  .global--modal-paper {
+    overflow: auto !important;
+    height: 100vh !important;
+  }
+}
+.mobile-select {
+    margin: 5px;
+    float: left;
+    max-width: 200px !important;
+  }
+  .login-mobile-text {
+    text-transform: uppercase;
+    line-height: 1.6rem;
+    color: #fff;
+    font-size: 1.6rem;
+  }
+.mobile-button {
+    background-color: #28aae0 !important;
+    color: white !important;
+    padding: 10px !important;
+  }
+    
+.active-mobile-button {
+    background-color: #253264 !important;
+  }

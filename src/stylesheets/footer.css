@@ -1,0 +1,22 @@
+.footerError {
+  color: #F44336;
+  background-color: #FFEBEE;
+  border-top: 2px solid #F44336;
+}
+
+.footerSuccess {
+  color: #4CAF50;
+  background-color: #E8F5E9;
+  border-top: 2px solid #4CAF50;
+}
+.footerError,
+.footerSuccess {
+  padding: 10px;
+  text-align: center;
+  font-size: 1.1rem;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: auto;
+  width: 100%;
+}
