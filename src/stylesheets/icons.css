@@ -1,0 +1,17 @@
+.warning {
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  margin-right: 7px;
+  color: #F14150;
+}
+
+.notification-icon {
+    font-size: 1.3rem;
+    margin-right: 10px;
+}
+
+.icon {
+    margin: 5px;
+}
+  

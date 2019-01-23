@@ -1,0 +1,14 @@
+.headline {
+  font-size: 24px;
+  padding-top: 16px;
+  margin-bottom: 12px;
+  font-weight: 400;
+}
+.event-form {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+.new-form-paper {
+    padding: 20px;
+  }

@@ -1,0 +1,22 @@
+.top-bar-left {
+  float: left;
+}
+
+.top-bar-right {
+  float: right;
+}
+.loading-bar {
+    margin-top: 5px;
+  }
+.flexbox {
+    display: flex;
+    width: 150%;
+  }
+  
+.content {
+    padding: 10px 10px 0px;
+    max-height: 100%;
+  }
+span.label {
+    margin: 20px 5px 0 0;
+  }
