@@ -18,3 +18,6 @@ after_script:
 - bash .scripts/deploy.sh
 notifications:
   slack: ohtupartio:9Fqci61YwcZE8Wj25AzaV2ID
+env:
+  global:
+    - REACT_APP_GOOGLE_LOGIN_TOKEN=1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com
