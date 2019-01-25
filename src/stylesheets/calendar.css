@@ -1,0 +1,76 @@
+.date-range-container {
+  margin-top: 5px;
+}
+.DateRangePicker {
+  margin-left: 10px !important;
+}
+
+.DateInput_input {
+  width: 75% !important;
+}
+
+/* Override flex for toolbar and calendar container */
+.rbc-calendar {
+  display: initial !important;
+}
+
+.mobile-calendar {
+  height: 100px;
+  min-height: calc(100vh - 350px);
+  width: 80vmin;
+  margin-bottom: calc(100vh - 500px);
+}
+
+.calendar {
+  height: 70vmin;
+  min-height: 500px;
+  width: 80vmin;
+  padding-top: 20px;
+  margin-bottom: calc(100vh - 500px);
+}
+
+.calendar-activity-marker {
+  height: 8px;
+  width: 8px;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.calendar-event-popper {
+  min-width: 200px;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.calendar-event-button-wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.calendar-event-activity-wrapper {
+  padding-bottom: 10px;
+  max-width: 500px;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.calendar-event-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.calendar-event-close-button-td {
+  text-align: right;
+}
+
+.calendar-popover-left {
+  margin-bottom: auto;
+  display: inline-block;
+}
+
+.calendar-popover-right {
+  float: right;
+  display: inline-block;
+  margin-top: 7px;
+}
