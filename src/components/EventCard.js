@@ -278,7 +278,7 @@ class EventCard extends React.Component {
     const renderInformation = () =>{
       this.displayInformation= !this.displayInformation
       if(this.displayInformation){
-        this.information= new Parser().parse(event.information)        
+        this.information= new Parser().parse(event.information)
       }else{
         this.information=""
       }
@@ -297,13 +297,13 @@ class EventCard extends React.Component {
           {moment(event.endDate).locale('fi').format('ddd D.M.YYYY')} kello {event.endTime.substring(0,5)}
         </p>
         <b>Lisätiedot </b>
-        <button onClick={renderInformation} class='information'>+</button>
+        <IconButton onClick={renderInformation}>+</IconButton>
         <p>{this.information}</p>
-        <Activities
+        <b><Activities
           activities={this.props.event.activities}
           bufferzone={false}
           parentId={this.props.event.id}
-        />
+        /></b>
         <br style={{ clear: 'both' }} />
       </CardContent>
     )
