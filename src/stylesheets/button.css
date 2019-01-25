@@ -15,7 +15,16 @@
   border-radius: 100%;
   box-shadow: 1px 1px 3px;
 }
+.information{
+  padding: 2px;
+  padding-right: 5px;
+  padding-left: 5px;
+  border-radius: 5px;
+  font-family: 'Roboto', sans-serif;
+  background:  #253264;
+  color: #fff; 
 
+}
 .feedback{
   textAlign: center;
   padding: 10px;

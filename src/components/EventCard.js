@@ -297,7 +297,7 @@ class EventCard extends React.Component {
           {moment(event.endDate).locale('fi').format('ddd D.M.YYYY')} kello {event.endTime.substring(0,5)}
         </p>
         <b>Lisätiedot </b>
-        <button onClick={renderInformation}>+</button>
+        <button onClick={renderInformation} class='information'>+</button>
         <p>{this.information}</p>
         <Activities
           activities={this.props.event.activities}
