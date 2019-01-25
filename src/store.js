@@ -12,6 +12,8 @@ import ScoutReducer from './reducers/scoutReducer'
 import filterReducer from './reducers/filterReducer'
 import calendarReducer from './reducers/calendarReducer'
 import viewReducer from './reducers/viewReducer'
+import loadingReducer from './reducers/loadingReducer'
+
 
 const reducer = combineReducers({
   notification: notificationReducer,
@@ -25,6 +27,7 @@ const reducer = combineReducers({
   filter: filterReducer,
   calendar: calendarReducer,
   view: viewReducer,
+  loading: loadingReducer
 })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))

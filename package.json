@@ -70,7 +70,8 @@
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.5",
     "redux-thunk": "^2.3.0",
-    "typestyle": "^1.7.2"
+    "typestyle": "^1.7.2",
+    "dotenv": "^6.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
