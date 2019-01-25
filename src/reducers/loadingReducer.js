@@ -1,5 +1,4 @@
 const reducer = (state=true, action) => {
-  console.log(action)
   switch (action.type) {
     case 'SET_LOADING':
       return action.bool
