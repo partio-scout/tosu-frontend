@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/partio-scout/tosu-frontend.svg?branch=master)](https://travis-ci.org/partio-scout/tosu-frontend)
 
-[2018 Spring Project backlog etc.] (https://docs.google.com/spreadsheets/d/1JXfi_ZUgXKkfvnegcy7C4KUzVWvdBlr7t2WN6icuReA/edit#gid=881218288)
+[2018 Spring Project backlog etc.](https://docs.google.com/spreadsheets/d/1JXfi_ZUgXKkfvnegcy7C4KUzVWvdBlr7t2WN6icuReA/edit#gid=881218288)
 
 [Previous Project backlog etc](https://docs.google.com/spreadsheets/d/1s8WgWyk6s9hXbjHSsdBv8X7MHLPGrLpprMkqOl15yBo/)
 
