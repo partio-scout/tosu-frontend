@@ -74,7 +74,9 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => ({
-  scout: state.scout
+  scout: state.scout,
+  buffer: state.buffer,
+  events: state.events
 })
 
 
