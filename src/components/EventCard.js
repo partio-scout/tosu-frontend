@@ -277,7 +277,6 @@ class EventCard extends React.Component {
     )
     const renderInformation = () =>{
       this.displayInformation= !this.displayInformation
-      console.log(this.displayInformation)
       if(this.displayInformation){
         this.information= new Parser().parse(event.information)        
       }else{
