@@ -177,7 +177,6 @@ class App extends Component {
     const initialEvents = this.props.store.getState().events
     const eventsToShow = () => (filterEvents(view, filter, initialEvents, startDate, endDate))
     let odd = true
-    console.log(process.env.REACT_APP_GOOGLE_LOGIN_TOKEN)
     if (this.props.scout === null) {
       return (
         <div className='Login'>
