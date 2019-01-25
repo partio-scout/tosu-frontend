@@ -18,6 +18,7 @@ import {
   DialogContentText,
   DialogTitle,
   Card,
+  TextField,
 } from '@material-ui/core'
 import Warning from '@material-ui/icons/Warning'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -64,8 +65,6 @@ class EventCard extends React.Component {
       syncDialogOpen: false
     }
   }
-  displayInformation = false
-  information = ""
   onChangeChildren = async activityGuid => {
     if (this.isLeaf(activityGuid)) {
       try {
@@ -81,7 +80,8 @@ class EventCard extends React.Component {
     }
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
-
+  editMode=false;
+  editIcon="+"
   emptyBuffer = async () => {
     if (isTouchDevice()) {
       const bufferActivities = this.props.buffer.activities
@@ -124,7 +124,6 @@ class EventCard extends React.Component {
       .toLowerCase()
       .includes(input.toLowerCase())
   }
-
   handleExpandChange = expanded => {
     this.setState({ expanded: !this.state.expanded })
   }
@@ -144,7 +143,7 @@ class EventCard extends React.Component {
   stopSyncingWithKuksa = async () => {
     // TODO
   }
-
+  informationContainer;
   render() {
     const { event, odd } = this.props
 
@@ -176,7 +175,7 @@ class EventCard extends React.Component {
         groupfound.children
       )
     }
-
+    const editButton = ""
     let syncDialogTitle
     let syncDialogDescription
     let syncDialogConfirmText
@@ -192,6 +191,7 @@ class EventCard extends React.Component {
       syncDialogConfirmText = 'Synkronoi tapahtuma'
       dialogConfirmHandler = this.startSyncingWithKuksa
     }
+    const information= new Parser().parse(event.information)
     const syncConfirmDialog = (
       <div>
         <Dialog
@@ -275,14 +275,18 @@ class EventCard extends React.Component {
         </div>
       </CardContent>
     )
-    const renderInformation = () =>{
-      this.displayInformation= !this.displayInformation
-      if(this.displayInformation){
-        this.information= new Parser().parse(event.information)
+    const renderEdit = () =>{
+      console.log(typeof information)
+      if(!this.editMode){
+        this.editIcon="-"
+        this.informationContainer = <textarea defaultValue= {information}></textarea>
+        this.editMode=true
       }else{
-        this.information=""
+        this.editIcon="+"
+        this.informationContainer=<span>{information}</span>
+        this.editMode=false
       }
-      this.forceUpdate();
+      this.forceUpdate()
     }
     const expanded = (
       <CardContent>
@@ -297,8 +301,8 @@ class EventCard extends React.Component {
           {moment(event.endDate).locale('fi').format('ddd D.M.YYYY')} kello {event.endTime.substring(0,5)}
         </p>
         <b>Lisätiedot </b>
-        <IconButton onClick={renderInformation}>+</IconButton>
-        <p>{this.information}</p>
+        {this.editButton}
+        {this.informationContainer}
         <b><Activities
           activities={this.props.event.activities}
           bufferzone={false}
@@ -307,7 +311,12 @@ class EventCard extends React.Component {
         <br style={{ clear: 'both' }} />
       </CardContent>
     )
-
+    this.informationContainer=<span>{information}</span>
+    if(typeof information==="string"){
+      this.editButton=<button onClick={renderEdit} className='information'>{this.editIcon}</button>
+    }else{
+      this.editButton=""
+    }
     return (
       <div className={cardClassName}>
         <Card style={{boxShadow: 'none'}}>
