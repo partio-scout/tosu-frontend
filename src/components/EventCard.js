@@ -64,7 +64,8 @@ class EventCard extends React.Component {
       syncDialogOpen: false
     }
   }
-
+  displayInformation = false
+  information = ""
   onChangeChildren = async activityGuid => {
     if (this.isLeaf(activityGuid)) {
       try {
@@ -154,7 +155,6 @@ class EventCard extends React.Component {
       : `${moment(event.startDate, 'YYYY-MM-DD')
         .locale('fi')
         .format('ddd D.M.YYYY')} ${event.startTime.substring(0,5)}`
-
     let cardClassName = 'event-card-wrapper' // Style: Normal
     if (this.props.event.activities.length === 0) {
       cardClassName = 'empty-event-card' // Style: No activities
@@ -176,8 +176,6 @@ class EventCard extends React.Component {
         groupfound.children
       )
     }
-
-    const information = new Parser().parse(event.information)
 
     let syncDialogTitle
     let syncDialogDescription
@@ -277,6 +275,16 @@ class EventCard extends React.Component {
         </div>
       </CardContent>
     )
+    const renderInformation = () =>{
+      this.displayInformation= !this.displayInformation
+      console.log(this.displayInformation)
+      if(this.displayInformation){
+        this.information= new Parser().parse(event.information)        
+      }else{
+        this.information=""
+      }
+      this.forceUpdate();
+    }
     const expanded = (
       <CardContent>
         {syncConfirmDialog}
@@ -289,7 +297,9 @@ class EventCard extends React.Component {
           <span>{event.type} päättyy:</span>{' '}
           {moment(event.endDate).locale('fi').format('ddd D.M.YYYY')} kello {event.endTime.substring(0,5)}
         </p>
-        <p>{information}</p>
+        <b>Lisätiedot </b>
+        <button onClick={renderInformation}>+</button>
+        <p>{this.information}</p>
         <Activities
           activities={this.props.event.activities}
           bufferzone={false}
