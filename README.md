@@ -16,14 +16,17 @@ See [deployment]() on how to deploy to production.
 
 ### Installing
 
-- Make sure **tosu-backend** is running
+- Make sure [**tosu-backend**](https://github.com/partio-scout/tosu-backend-node#how-to-use) is running
 - Clone the repository `$ git clone git@github.com:partio-scout/tosu-frontend.git`
 - Install npm packages `$ npm install`
 - Run the project `$ npm start`
-- Run tests `$ npm test`
-- Generate test coverage `$ npm run test-local`
 
 The app will be running at http://localhost:3000/.
+
+### Running tests
+
+- Run tests `$ npm test`
+- Generate test coverage `$ npm run test-local`
 
 ## Deployment
 
