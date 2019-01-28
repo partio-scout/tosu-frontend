@@ -28,5 +28,8 @@ const edit = async(event) => {
   const response = await axios.put(`${baseUrl}/${event.id}`, event)
   return response.data
 }
-
-export default {getAll, create, deleteEvent, addActivity, edit}
+const editInfo = async(event) =>{
+  const response = await axios.put(`${baseUrl}/${event.id}/info`, event.information)
+  return response.data
+}
+export default {getAll, create, deleteEvent, addActivity, edit, editInfo}

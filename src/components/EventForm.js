@@ -155,7 +155,6 @@ export default class EventForm extends React.Component {
 
     return (
       <div>
-
         <ValidatorForm
           ref='form'
           onSubmit={this.send}

@@ -23,7 +23,7 @@ import {
 import Warning from '@material-ui/icons/Warning'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
-import { Parser } from 'html-to-react'
+import { Parser } from 'html-to-react'
 
 import Activities from './Activities'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
@@ -33,7 +33,8 @@ import {
   editEvent,
   deleteActivityFromEvent,
   deleteActivityFromEventOnlyLocally,
-  addActivityToEventOnlyLocally
+  addActivityToEventOnlyLocally,
+  editInfo
 } from '../reducers/eventReducer'
 import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
@@ -43,6 +44,7 @@ import {
   bufferZoneInitialization
 } from '../reducers/bufferZoneReducer'
 import eventService from '../services/events'
+import EventForm from './EventForm';
 
 // Warning icon
 const warning = (
@@ -82,6 +84,7 @@ class EventCard extends React.Component {
   }
   editMode=false;
   editIcon="+"
+  editButton = ""
   emptyBuffer = async () => {
     if (isTouchDevice()) {
       const bufferActivities = this.props.buffer.activities
@@ -175,7 +178,7 @@ class EventCard extends React.Component {
         groupfound.children
       )
     }
-    const editButton = ""
+    
     let syncDialogTitle
     let syncDialogDescription
     let syncDialogConfirmText
@@ -275,11 +278,31 @@ class EventCard extends React.Component {
         </div>
       </CardContent>
     )
+
+    const changeInfo = (event) =>{
+      console.log(event)
+      // const editedEvent = {id: this.props.data.id,
+      //   title: this.state.title,
+      //   startDate: moment(this.state.startDate).format('YYYY-MM-DD'),
+      //   startTime: moment(this.state.startTime).format('HH:mm'),
+      //   endDate: moment(this.state.endDate).format('YYYY-MM-DD'),
+      //   endTime: moment(this.state.endTime).format('HH:mm'),
+      //   type: this.state.type,
+      //   information: ""
+      // }
+      // this.props.editInfo(editedEvent)
+    }
+    const handleInfoChange =(event)=>{
+      this.setState({value: event.target.value});
+    }
     const renderEdit = () =>{
-      console.log(typeof information)
       if(!this.editMode){
         this.editIcon="-"
-        this.informationContainer = <textarea defaultValue= {information}></textarea>
+        console.log(event)
+        this.informationContainer = <form onSubmit={changeInfo}>
+            <textarea onChange= {handleInfoChange} value={information}></textarea>
+          <input type="submit" value="tallenna"/> 
+          </form>
         this.editMode=true
       }else{
         this.editIcon="+"
@@ -353,7 +376,7 @@ class EventCard extends React.Component {
             { this.state.expanded ? expanded : null }
 
             <CardActions style={this.state.expanded ? {} : {paddingTop: '5px' }}>
-              <EditEvent
+              <EditEvent  
                 buttonClass='buttonRight'
                 data={event}
                 setNotification={this.props.setNotification}
