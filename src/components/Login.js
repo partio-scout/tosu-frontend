@@ -89,5 +89,5 @@ export default connect(mapStateToProps, {
   deleteActivityFromBuffer,
   scoutGoogleLogin,
   readScout,
-  setLoading,
+  setLoading
 }) (Login)
