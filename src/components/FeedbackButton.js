@@ -14,7 +14,7 @@ const styles = () => ({
 
 const StyledButton = withStyles (styles)(Button)
 
-const FeedbackButton = (props) => (
+export const FeedbackButton = (props) => (
   <div className='feedback'>
     <a style={{textDecoration: 'none'}} href={props.feedback_url}>
       <StyledButton type="button" className="FeedbackButton" variant='contained'>
