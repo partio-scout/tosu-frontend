@@ -45,7 +45,7 @@ const testZone = () => {
     )
 }
 
-const testZoneNoBuffer = () => {
+const testZoneNoBufferId = () => {
     return (
     <Provider store={veryMockStore}>
     <BufferZone buffer={{activities:[]}} deleteActivityFromBuffer={mockDeleteFromBuffer}
@@ -55,10 +55,25 @@ const testZoneNoBuffer = () => {
 }
 
 
+const testZoneNoBufferActivities = () => {
+    return (
+    <Provider store={veryMockStore}>
+    <BufferZone buffer={{id:1, activities:[]}} deleteActivityFromBuffer={mockDeleteFromBuffer}
+    pofTreeUpdate={mockPofTreeUpdate} notify={mockNotify} events={testEvents} classes={testClasses}/>
+    </Provider>
+    )
+}
+
+
 describe('<BufferZone />', () => {
 
   it('renders nothing if bufferzone doesn\'t have an id', () => {
-    const wrapper = shallow(testZoneNoBuffer()).dive()
+    const wrapper = shallow(testZoneNoBufferId()).dive()
+    expect(wrapper.contains(<div />)).to.equal(true)
+  })
+
+  it('renders nothing if bufferzone doesn\'t have activities', () => {
+    const wrapper = shallow(testZoneNoBufferActivities()).dive()
     expect(wrapper.contains(<div />)).to.equal(true)
   })
 
