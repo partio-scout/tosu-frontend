@@ -1,4 +1,5 @@
 // Vendor
+
 import { connect } from 'react-redux'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -12,6 +13,8 @@ import { Button, Dialog, DialogTitle, LinearProgress } from '@material-ui/core'
 import moment from 'moment'
 import 'react-dates/initialize'
 import { MuiThemeProvider } from '@material-ui/core/styles'
+
+
 // CSS
 import 'react-dates/lib/css/_datepicker.css'
 import 'react-sticky-header/styles.css'
@@ -22,7 +25,7 @@ import theme from './theme'
 import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
 import MobileAppbar from './components/MobileAppbar'
-import ClippedDraver from './components/ClippedDrawer'
+import ClippedDrawer from './components/ClippedDrawer'
 import NotificationFooter from './components/NotificationFooter'
 import UserInfo from './components/UserInfo'
 import EventCard from './components/EventCard'
@@ -30,6 +33,7 @@ import KuksaEventCard from './components/KuksaEventCard'
 import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
 import FeedbackButton from './components/FeedbackButton'
+import Login from './components/Login'
 // Utils
 import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
@@ -47,6 +51,7 @@ import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutGoogleLogin, readScout } from './reducers/scoutReducer'
 import { filterChange } from './reducers/filterReducer'
 import { viewChange } from './reducers/viewReducer'
+import { setLoading } from './reducers/loadingReducer'
 
 
 
@@ -59,7 +64,6 @@ class App extends Component {
       drawerVisible: true,
       bufferZoneHeight: 0,
       newEventVisible: false,
-      loading: true,
       startDate: currentDate,
     }
   }
@@ -99,8 +103,8 @@ class App extends Component {
         console.log('Error in emptying buffer', exception)
       }
     }
-    if (this.state.loading) {
-      this.setState({ loading: false })
+    if (this.props.store.getState().loading) {
+      this.props.setLoading(false)
     }
   }
 
@@ -139,24 +143,6 @@ class App extends Component {
     this.setState({ drawerVisible: !this.state.drawerVisible })
   }
 
-  googleLoginSuccess = async response => {
-    if (this.props.scout === null) {
-      this.setState({ loading: true })
-
-      await this.props.scoutGoogleLogin(response.tokenId)
-      setGoogleToken(response.tokenId)
-      await Promise.all([
-        this.props.eventsInitialization(),
-        this.props.bufferZoneInitialization()
-      ])
-      this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-      this.setState({ loading: false })
-    }
-  }
-
-  googleLoginFail = async response => {
-    notify('Google-kirjautuminen epäonnistui. Yritä uudestaan.')
-  }
 
   selectView = (value) => () => {
     this.props.store.dispatch(viewChange(value))
@@ -191,37 +177,10 @@ class App extends Component {
     const initialEvents = this.props.store.getState().events
     const eventsToShow = () => (filterEvents(view, filter, initialEvents, startDate, endDate))
     let odd = true
-
     if (this.props.scout === null) {
       return (
         <div className='Login'>
-          {!isTouchDevice() ?
-            (<p className='login-text'>Toiminnan suunnittelusovellus</p>) :
-            (<p className='login-mobile-text'>Toiminnan suunnittelusovellus</p>)
-          }
-
-          <GoogleLogin
-            className='login-button'
-            scope='profile email'
-            clientId='1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com'
-            onSuccess={this.googleLoginSuccess}
-            onFailure={this.googleLoginFail}
-          >
-            <FontAwesome className='icon' name='google' />
-            <span className='label'>
-              {' '}
-              <span className='appbar-button-text'>Kirjaudu sisään Googlella</span>
-            </span>
-          </GoogleLogin>
-          <Button
-            style={{ backgroundColor: 'transparent' }}
-            href={`${API_ROOT}/scouts/login`}
-          >
-            <span className='login-button'>
-              {' '}
-              <span className='appbar-button-text'>Kirjaudu sisään PartioID:llä</span>
-            </span>
-          </Button>
+        <Login store={this.props.store} token={"1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com"}/>
         </div>
       )
     }
@@ -266,7 +225,7 @@ class App extends Component {
               <div className='flexbox'>
                 {isTouchDevice() ? null :
                   <div className={this.state.drawerVisible ? 'visible-drawer' : 'hidden-drawer'}>
-                    <ClippedDraver />
+                    <ClippedDrawer />
                   </div>
                 }
                 <div id='container' style={{ paddingTop: 0 }}>
@@ -279,7 +238,7 @@ class App extends Component {
                       mobile={isTouchDevice()}
                     />
 
-                    {this.state.loading ? (<div className='loading-bar'><LinearProgress /></div>) : null}
+                    {this.props.store.getState().loading ? (<div className='loading-bar'><LinearProgress /></div>) : null}
                     {this.props.store.getState().view === 'CALENDAR' ? calendar : eventsToList}
 
                     <Dialog open={this.state.newEventVisible} onClose={this.handleClose}>
@@ -311,7 +270,8 @@ const mapStateToProps = state => ({
   taskgroup: state.taskgroup,
   scout: state.scout,
   filter: state.filter,
-  view: state.view
+  view: state.view,
+  loading: state.loading
 })
 
 const HTML5toTouch = {
@@ -331,4 +291,5 @@ export default connect(mapStateToProps, {
   readScout,
   filterChange,
   viewChange,
+  setLoading,
 })(AppDnD)

@@ -1,22 +1,72 @@
-# Ohtupartio
+# Toiminnansuunnittelu
+
 [![Build Status](https://travis-ci.org/partio-scout/tosu-frontend.svg?branch=master)](https://travis-ci.org/partio-scout/tosu-frontend)
 
-[Project backlog etc](https://docs.google.com/spreadsheets/d/1s8WgWyk6s9hXbjHSsdBv8X7MHLPGrLpprMkqOl15yBo/)
+Scouts' activity planning app.
 
-[Trello](https://trello.com/b/87G4Y96t/tosu-app)
+## Getting Started
 
-[Old Project backlog etc](https://docs.google.com/spreadsheets/d/1cA-ldx-M_ppxSicxjL06BmAjhoNi5I55M5BugoUBD98/edit?usp=drivesdk)
+These instructions will help you setup working environment for development and testing purposes.  
+See [deployment]() on how to deploy to production.
 
-## Starting project in localhost
+### Prerequisites
 
-1. Backend: 
-  * Clone the repository ```$ git clone git@github.com:partio-scout/tosu-backend-node.git```
-  * Follow the [setup guide](https://github.com/partio-scout/tosu-backend-node#tosu-backend-node)
-  * Run in dev mode ```$ npm run watch```
+1. [node.js ](https://nodejs.org/en/)
+2. [tosu-backend](https://github.com/partio-scout/tosu-backend-node#how-to-use)
 
-2. Frontend:
-  * Clone the repository ```$ git clone git@github.com:partio-scout/tosu-frontend.git```
-  * Install npm packages ```$ npm install```
-  * Run the project ```$ npm start```
-  * Run tests ```$ npm test```
-  * Generate test coverage ```$ npm run test-local```
+### Installing
+
+- Make sure [**tosu-backend**](https://github.com/partio-scout/tosu-backend-node#how-to-use) is running
+- Clone the repository `$ git clone git@github.com:partio-scout/tosu-frontend.git`
+- Install npm packages `$ npm install`
+- Run the project `$ npm start`
+
+The app will be running at http://localhost:3000/.
+
+### Running tests
+
+- Run tests `$ npm test`
+- Generate test coverage `$ npm run test-local`
+
+## Deployment
+
+### Automatic deployment
+
+The app currently has automatic deployment from Travis CI to the [staging server](https://suunnittelu.beta.partio-ohjelma.fi/).
+
+### Manual deployment
+
+1. Get ssh access to the deployment server.
+2. Connect to remote server.
+3. Execute the following:
+
+```bash
+git clone https://github.com/partio-scout/tosu-frontend.git
+cd tosu-frontend
+npm install
+npm run build
+rm -rf /var/www/html
+cp -a /build /var/www/html
+cd ..
+rm -rf tosu-frontend
+```
+
+## Resources
+
+### Documentation
+
+> TODO: Add documentation
+
+### Backlogs
+
+[Product backlog (Trello)](https://trello.com/b/87G4Y96t/tosu-app)
+
+[Spring 2019 sprint backlog](https://docs.google.com/spreadsheets/d/1JXfi_ZUgXKkfvnegcy7C4KUzVWvdBlr7t2WN6icuReA/edit#gid=881218288)
+
+[Fall 2018 product & sprint backlogs](https://docs.google.com/spreadsheets/d/1s8WgWyk6s9hXbjHSsdBv8X7MHLPGrLpprMkqOl15yBo/)
+
+[Spring 2018 product & sprint backlogs](https://docs.google.com/spreadsheets/d/1cA-ldx-M_ppxSicxjL06BmAjhoNi5I55M5BugoUBD98/edit?usp=drivesdk)
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

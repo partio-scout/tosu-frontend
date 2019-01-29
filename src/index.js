@@ -3,15 +3,12 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import axios from 'axios'
 import './stylesheets/index.css'
-
-
-
-
-
 import App from './App'
 import store from './store'
 import pofService from './services/pof'
 import { savePofData } from './services/localStorage'
+
+
 
 const getPofData = async () => {
   const pofData = await pofService.getAllTree()

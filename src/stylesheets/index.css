@@ -21,15 +21,15 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family:  PT Sans, Source Sans Pro Black, sans-serif;
+  font-family: PT Sans, Source Sans Pro Black, sans-serif;
   overflow: hidden;
 }
 
 .pattern {
   background: radial-gradient(#6eff3f 15%, transparent 16%) 0 0,
-  radial-gradient(#6eff3f 15%, transparent 16%) 8px 8px,
-  radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 0 1px,
-  radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 8px 9px;
+    radial-gradient(#6eff3f 15%, transparent 16%) 8px 8px,
+    radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 0 1px,
+    radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 8px 9px;
   background-color: white;
   background-size: 16px 16px;
 }
@@ -65,6 +65,6 @@ color-class {
   color: #1a237e; /*indigo900*/
   color: #90caf9; /*blue200*/
   color: #2196f3; /*blue500*/
-  color: #C8E6C9; /*green100*/
-  color: #E3F2FD; /*blue50*/
+  color: #c8e6c9; /*green100*/
+  color: #e3f2fd; /*blue50*/
 }

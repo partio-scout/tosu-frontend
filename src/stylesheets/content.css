@@ -6,17 +6,16 @@
   float: right;
 }
 .loading-bar {
-    margin-top: 5px;
-  }
+  margin-top: 5px;
+}
 .flexbox {
-    display: flex;
-    width: 150%;
-  }
-  
+  display: flex;
+}
+
 .content {
-    padding: 10px 10px 0px;
-    max-height: 100%;
-  }
+  padding: 10px 10px 0px;
+  max-height: 100%;
+}
 span.label {
-    margin: 20px 5px 0 0;
-  }
+  margin: 20px 5px 0 0;
+}
