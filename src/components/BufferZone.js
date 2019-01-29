@@ -27,7 +27,7 @@ const styles = theme => ({
   }
 })
 
-class BufferZone extends React.Component {
+export class BufferZone extends React.Component {
   clear = async () => {
     if (this.props.buffer.activities){
       const promises = this.props.buffer.activities.map(activity =>  this.props.deleteActivityFromBuffer(activity.id))

@@ -1,19 +1,76 @@
 import React from 'react'
-import { mount, shallow } from 'enzyme'
+import { shallow } from 'enzyme'
 import { expect } from 'chai'
+import {Provider} from 'react-redux'
+import { BufferZone } from '../BufferZone'
 
-import store from '../../store'
-import BufferZone from '../BufferZone'
+
+
+const testActivity = {
+    activityBufferId:1,
+    createdAt:"2019-01-28T08:58:07.557Z",
+    eventId:1,
+    guid:"asdfghsfgasfsdf",
+    id:1,
+    updatedAt:"2019-01-28T08:58:07.557Z",
+}
+
+const testBuffer = {
+    id:1,
+    activities: [testActivity]
+}
+
+const testClasses = {
+    divider: "none"
+}
+
+const testEvents = []
+
+const mockDeleteFromBuffer = jest.fn()
+const mockPofTreeUpdate = jest.fn()
+const mockNotify = jest.fn()
+
+const veryMockStore = {
+    subscribe:jest.fn(),
+    dispatch:jest.fn(),
+    getState:jest.fn(() => {})
+}
+
+const testZone = () => {
+    return (
+        <Provider store={veryMockStore}>
+        <BufferZone buffer={testBuffer} deleteActivityFromBuffer={mockDeleteFromBuffer}
+        pofTreeUpdate={mockPofTreeUpdate} notify={mockNotify} events={testEvents} classes={testClasses}/>
+        </Provider>
+    )
+}
+
+const testZoneNoBuffer = () => {
+    return (
+    <Provider store={veryMockStore}>
+    <BufferZone buffer={{activities:[]}} deleteActivityFromBuffer={mockDeleteFromBuffer}
+    pofTreeUpdate={mockPofTreeUpdate} notify={mockNotify} events={testEvents} classes={testClasses}/>
+    </Provider>
+    )
+}
+
 
 describe('<BufferZone />', () => {
 
   it('renders nothing if bufferzone doesn\'t have an id', () => {
-    const wrapper = shallow(<BufferZone store={store} />)
-    expect(wrapper.childAt(0)).to.be.empty
+    const wrapper = shallow(testZoneNoBuffer()).dive()
+    expect(wrapper.contains(<div />)).to.equal(true)
   })
 
   it('renders an ActivityDragAndDropTarget if bufferzone has an id', () => {
-    const wrapper = mount(<BufferZone store={store} buffer={{ id: 5 }} />)
-    const bzone = wrapper.find(BufferZone)
+    const wrapper = shallow(testZone()).dive()
+    expect(wrapper.find({activities:[testActivity]}))
+  })
+
+  it('removes activities when clear is clicked', () => {
+    const wrapper = shallow(testZone()).dive()
+    const button = wrapper.find({id: 'empty-button'})
+    button.simulate('click', {currentTarget:wrapper})
+    expect(mockDeleteFromBuffer.mock.calls.length).to.equal(1)
   })
 })
