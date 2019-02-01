@@ -24,16 +24,19 @@ import { eventsInitialization } from '../reducers/eventReducer'
 
 class Login extends React.Component {
   googleLoginSuccess = async response => {
-    if (this.props.scout === null) {
-      this.props.store.dispatch(setLoading(true))
-      await this.props.scoutGoogleLogin(response.tokenId)
-      setGoogleToken(response.tokenId)
-      await Promise.all([
-        this.props.eventsInitialization(),
-        this.props.bufferZoneInitialization(),
-      ])
-      this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-      this.props.store.dispatch(setLoading(false))
+      if (this.props.scout === null) {
+        this.props.store.dispatch(setLoading(true))
+        await this.props.scoutGoogleLogin(response.tokenId)
+        setGoogleToken(response.tokenId)
+        await Promise.all([
+          this.props.eventsInitialization(),
+          this.props.bufferZoneInitialization(),
+
+        ]).then(() => {
+          this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+          this.props.store.dispatch(setLoading(false))
+        })
+      }
     }
   }
 
