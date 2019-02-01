@@ -116,6 +116,7 @@ class ButtonRow extends React.Component {
             startDate={this.state.startDate}
             endDate={this.state.endDate}
             onDatesChange={this.dateRangeUpdate}
+            readOnly={true}
             focusedInput={this.state.focusedInput}
             onFocusChange={(focusedInput) => { this.setState({ focusedInput }) }}
             startDatePlaceholderText='alku pvm'
