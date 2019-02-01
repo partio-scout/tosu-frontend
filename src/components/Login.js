@@ -28,10 +28,12 @@ class Login extends Component {
         setGoogleToken(response.tokenId)
         await Promise.all([
           this.props.eventsInitialization(),
-          this.props.bufferZoneInitialization()
-        ])
-        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-        this.props.store.dispatch(setLoading(false))
+          this.props.bufferZoneInitialization(),
+
+        ]).then(() => {
+          this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+          this.props.store.dispatch(setLoading(false))
+        })
       }
     }
 
