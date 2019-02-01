@@ -8,12 +8,7 @@ import { DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
 import { addEventFromKuksa } from '../reducers/eventReducer'
 
 class AddToPlan extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      dialogOpen: false,
-    }
-  }
+  state = { dialogOpen: false }
 
   addEventToTosu = async () => {
     this.handleButtonDialogClose()
@@ -44,8 +39,8 @@ class AddToPlan extends React.Component {
         <Button
           onClick={this.handleButtonDialogOpen}
           className={this.props.buttonClass}
-          variant='contained'
-          color='primary'
+          variant="contained"
+          color="primary"
         >
           Lisää omaan suunnitelmaan
         </Button>
@@ -56,14 +51,10 @@ class AddToPlan extends React.Component {
           <DialogTitle>
             Lisätäänkö tapahtuma <b>{event.title}</b> omaan suunnitelmaan?
           </DialogTitle>
-          <DialogContent>
-            Tapahtuma synkronoidaan Kuksaan.
-          </DialogContent>
+          <DialogContent>Tapahtuma synkronoidaan Kuksaan.</DialogContent>
           <DialogActions>
             <Button onClick={this.handleButtonDialogClose}>peruuta</Button>
-            <Button onClick={this.addEventToTosu}>
-              Lisää suunnitelmaan
-            </Button>
+            <Button onClick={this.addEventToTosu}>Lisää suunnitelmaan</Button>
           </DialogActions>
         </Dialog>
       </div>
@@ -71,7 +62,10 @@ class AddToPlan extends React.Component {
   }
 }
 
-export default connect(null, {
-  notify,
-  addEventFromKuksa,
-})(AddToPlan)
+export default connect(
+  null,
+  {
+    notify,
+    addEventFromKuksa,
+  }
+)(AddToPlan)

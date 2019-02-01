@@ -4,15 +4,20 @@ const filterEvents = (view, filter, initialEvents, start, end) => {
   let events
   switch (filter) {
     case 'ONLY_START':
-      events = initialEvents.filter(event => event.endDate >= start.format('YYYY-MM-DD'))
+      events = initialEvents.filter(
+        event => event.endDate >= start.format('YYYY-MM-DD')
+      )
       break
     case 'ONLY_END':
-      events = initialEvents.filter(event => event.startDate <= end.format('YYYY-MM-DD'))
+      events = initialEvents.filter(
+        event => event.startDate <= end.format('YYYY-MM-DD')
+      )
       break
     case 'RANGE':
-      events = initialEvents.filter(event =>
-        event.endDate >= start.format('YYYY-MM-DD')
-        && event.startDate <= end.format('YYYY-MM-DD')
+      events = initialEvents.filter(
+        event =>
+          event.endDate >= start.format('YYYY-MM-DD') &&
+          event.startDate <= end.format('YYYY-MM-DD')
       )
       break
     default:
@@ -26,7 +31,6 @@ const filterEvents = (view, filter, initialEvents, start, end) => {
       events = events.filter(event => event.kuksaEvent)
       break
     default:
-    
   }
   return events.sort(eventComparer)
 }

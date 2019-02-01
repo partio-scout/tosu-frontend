@@ -1,7 +1,7 @@
 .CalendarDay__selected_span {
-  background: #28AAE0;
+  background: #28aae0;
   color: white;
-  border: 1px solid #28AAE0;
+  border: 1px solid #28aae0;
 }
 
 .CalendarDay__selected_span:active,
@@ -12,18 +12,18 @@
 }
 
 .CalendarDay__selected {
-   background: #28AAE0;
-   color: white;
-   border: 1px solid #28AAE0;
- }
+  background: #28aae0;
+  color: white;
+  border: 1px solid #28aae0;
+}
 
 .PresetDateRangePicker_button {
-  background: #28AAE0;
-  border: 2px solid #28AAE0;
+  background: #28aae0;
+  border: 2px solid #28aae0;
 }
 
 .CalendarDay__selected:hover,
-.CalendarDay__selected:active{
+.CalendarDay__selected:active {
   background: #243264;
   color: white;
   border: 1px solid #243264;
@@ -31,42 +31,42 @@
 
 .CalendarDay__hovered_span:hover,
 .CalendarDay__hovered_span {
-  background: #D6E8F6;
-  border: 1px solid #D6E8F6;
+  background: #d6e8f6;
+  border: 1px solid #d6e8f6;
   color: #243264;
 }
 
 .PresetDateRangePicker_button__selected {
   color: white;
-  background: #28AAE0
+  background: #28aae0;
 }
 
 .DayPickerKeyboardShortcuts_show__bottomRight {
   border-top: 26px solid transparent;
-  border-right: 33px solid #28AAE0;
+  border-right: 33px solid #28aae0;
   bottom: 0;
-  right: 0
+  right: 0;
 }
 .DayPickerKeyboardShortcuts_show__bottomRight:hover {
-  border-right: 33px solid #243264
+  border-right: 33px solid #243264;
 }
 .DayPickerKeyboardShortcuts_show__topRight {
   border-bottom: 26px solid transparent;
-  border-right: 33px solid #28AAE0;
+  border-right: 33px solid #28aae0;
   top: 0;
-  right: 0
+  right: 0;
 }
 .DayPickerKeyboardShortcuts_show__topRight:hover {
-  border-right: 33px solid #243264
+  border-right: 33px solid #243264;
 }
 .DayPickerKeyboardShortcuts_show__topLeft {
   border-bottom: 26px solid transparent;
-  border-left: 33px solid #28AAE0;
+  border-left: 33px solid #28aae0;
   top: 0;
-  left: 0
+  left: 0;
 }
 .DayPickerKeyboardShortcuts_show__topLeft:hover {
-  border-left: 33px solid #243264
+  border-left: 33px solid #243264;
 }
 
 .DateInput_input__focused {

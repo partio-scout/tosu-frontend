@@ -1,3 +1,3 @@
 export default {
-    ACTIVITY: 'Activity'
+  ACTIVITY: 'Activity',
 }

@@ -1,14 +1,15 @@
 .footerError {
-  color: #F44336;
-  background-color: #FFEBEE;
-  border-top: 2px solid #F44336;
+  color: #f44336;
+  background-color: #ffebee;
+  border-top: 2px solid #f44336;
 }
 
 .footerSuccess {
-  color: #4CAF50;
-  background-color: #E8F5E9;
-  border-top: 2px solid #4CAF50;
+  color: #4caf50;
+  background-color: #e8f5e9;
+  border-top: 2px solid #4caf50;
 }
+
 .footerError,
 .footerSuccess {
   padding: 10px;

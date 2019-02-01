@@ -10,7 +10,7 @@ describe('notification reducer', () => {
 
     const expectedAction = {
       type: 'NOTIFY',
-      note
+      note,
     }
 
     expect(reducer([], expectedAction)).toEqual(note)
@@ -21,7 +21,7 @@ describe('notification reducer', () => {
 
     const expectedAction = {
       type: 'CLEAR_NOTIFICATION',
-      note
+      note,
     }
 
     expect(reducer([note], expectedAction)).toEqual(null)

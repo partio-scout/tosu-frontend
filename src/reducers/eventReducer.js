@@ -38,7 +38,9 @@ const reducer = (state = [], action) => {
       return state.filter(event => event.id !== action.eventId)
     case 'DELETE_EVENTGROUP':
       return state.filter(
-        event => event.eventGroupId === null || event.eventGroupId !== action.eventGroupId
+        event =>
+          event.eventGroupId === null ||
+          event.eventGroupId !== action.eventGroupId
       )
     case 'UPDATE_EVENT':
       return state
@@ -60,7 +62,7 @@ export const eventsInitialization = userId => async dispatch => {
   const events = await eventService.getAll(userId)
   dispatch({
     type: 'INIT_EVENTS',
-    events
+    events,
   })
 }
 
@@ -68,7 +70,7 @@ export const deleteEvent = eventId => async dispatch => {
   await eventService.deleteEvent(eventId)
   dispatch({
     type: 'DELETE_EVENT',
-    eventId
+    eventId,
   })
 }
 
@@ -76,7 +78,7 @@ export const deleteSyncedEvent = event => async dispatch => {
   await eventService.deleteEvent(event.id)
   dispatch({
     type: 'DELETE_EVENT',
-    eventId: event.id
+    eventId: event.id,
   })
   // Add the event back to the list of Kuksa events (to show on the 'Kuksa' page)
   event.id = 'kuksa' + event.kuksaEventId
@@ -84,7 +86,7 @@ export const deleteSyncedEvent = event => async dispatch => {
   event.activities = []
   dispatch({
     type: 'ADD_EVENT',
-    event: event
+    event: event,
   })
 }
 
@@ -92,7 +94,7 @@ export const deleteEventGroup = eventGroupId => async dispatch => {
   await eventGroupService.deleteEventGroup(eventGroupId)
   dispatch({
     type: 'DELETE_EVENTGROUP',
-    eventGroupId
+    eventGroupId,
   })
 }
 
@@ -101,7 +103,7 @@ export const addEvent = event => async dispatch => {
   created.activities = []
   dispatch({
     type: 'ADD_EVENT',
-    event: created
+    event: created,
   })
 }
 
@@ -110,12 +112,12 @@ export const addEventFromKuksa = event => async dispatch => {
   created.activities = []
   dispatch({
     type: 'ADD_EVENT',
-    event: created
+    event: created,
   })
   // Delete the Kuksa event to not shot the same event on multiple pages
   dispatch({
     type: 'DELETE_EVENT',
-    id:  'kuksa'+event.kuksaEventId,
+    id: 'kuksa' + event.kuksaEventId,
   })
 }
 
@@ -123,7 +125,7 @@ export const editEvent = event => async dispatch => {
   const modded = await eventService.edit(event)
   dispatch({
     type: 'UPDATE_EVENT',
-    modded
+    modded,
   })
 }
 
@@ -133,7 +135,7 @@ export const addActivityToEvent = (eventId, activity) => async dispatch => {
   dispatch({
     type: 'ADD_ACTIVITY_TO_EVENT',
     eventId,
-    activity: postedActivity
+    activity: postedActivity,
   })
 }
 
@@ -142,7 +144,7 @@ export const deleteActivityFromEvent = activityId => async dispatch => {
 
   dispatch({
     type: 'DELETE_ACTIVITY_FROM_EVENT',
-    activityId
+    activityId,
   })
 }
 
@@ -153,14 +155,14 @@ export const addActivityToEventOnlyLocally = (
   dispatch({
     type: 'ADD_ACTIVITY_TO_EVENT',
     eventId,
-    activity
+    activity,
   })
 }
 
 export const deleteActivityFromEventOnlyLocally = activityId => async dispatch => {
   dispatch({
     type: 'DELETE_ACTIVITY_FROM_EVENT',
-    activityId
+    activityId,
   })
 }
 

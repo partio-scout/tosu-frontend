@@ -18,4 +18,3 @@ ssh ubuntu@$IP <<EOF
 	echo "Done"
     fi
 EOF
-

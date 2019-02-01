@@ -19,7 +19,7 @@ export const addStatusMessage = id => dispatch => {
 
   dispatch({
     type: 'SHOW_MESSAGE',
-    text
+    text,
   })
 }
 
@@ -35,12 +35,12 @@ export const addStatusInfo = status => dispatch => {
     leaderTask: status.leaderTask,
     extraTask: status.extraTask,
     dates: status.dates,
-    warnings: status.warnings
+    warnings: status.warnings,
   }
 
   dispatch({
     type: 'SHOW_STATUS',
-    status: newStatus
+    status: newStatus,
   })
 }
 

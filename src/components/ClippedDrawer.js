@@ -12,14 +12,11 @@ const styles = theme => ({
     height: 4,
     backgroundColor: '#243265',
     margin: '20px 14px',
-  }
+  },
 })
 
 class ClippedDrawer extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = { showStatusBox: true }
-  }
+  state = { showStatusBox: true }
 
   handleOpen = () => {
     this.setState({ showStatusBox: true })
@@ -32,13 +29,10 @@ class ClippedDrawer extends React.Component {
   render(props) {
     const { classes } = this.props
     return (
-      <div className='drawer-root'>
-        <Drawer
-          variant='permanent'
-          className='drawer-paper'
-        >
+      <div className="drawer-root">
+        <Drawer variant="permanent" className="drawer-paper">
           <TreeSearchBar />
-          <Divider variant={'middle'} className={classes.divider}/>
+          <Divider variant={'middle'} className={classes.divider} />
           <BufferZone />
           <StatusMessage
             showStatusBox={this.state.showStatusBox}

@@ -7,15 +7,15 @@ module.exports = {
         ignoreRefs: true,
         allowArrowFunctions: true,
         allowFunctions: true,
-        allowBind: true
-      }
+        allowBind: true,
+      },
     ],
-    'no-shadow': [1, { builtinGlobals: false, hoist: 'functions', allow: [] }]
+    'no-shadow': [1, { builtinGlobals: false, hoist: 'functions', allow: [] }],
   },
   parser: 'babel-eslint',
   extends: ['airbnb', 'prettier'],
   env: {
     browser: true,
-    jest: true
-  }
+    jest: true,
+  },
 }

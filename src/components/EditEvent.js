@@ -15,7 +15,7 @@ import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
 
 const styles = theme => ({
   button: {
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing.unit,
   },
   rightIcon: {
     marginLeft: theme.spacing.unit,
@@ -26,30 +26,24 @@ const styles = theme => ({
 })
 
 class EditEvent extends React.Component {
-  constructor(props) {
-    super(props)
-    const event = this.props.data
-    const newStartTime = moment(
-      `${event.startDate} ${event.startTime}`,
+  state = {
+    open: false,
+    title: this.props.data.title,
+    startDate: new Date(this.props.data.startDate),
+    startTime: moment(
+      `${this.props.data.startDate} ${this.props.data.startTime}`,
       'YYYY-MM-DD HH:mm'
-    )
-    const newEndTime = moment(
-      `${event.endDate} ${event.endTime}`,
+    ).toDate(),
+    endDate: new Date(this.props.data.endDate),
+    endTime: moment(
+      `${this.props.data.endDate} ${this.props.data.endTime}`,
       'YYYY-MM-DD HH:mm'
-    )
-    this.state = {
-      open: false,
-      title: event.title,
-      startDate: new Date(event.startDate),
-      startTime: newStartTime.toDate(),
-      endDate: new Date(event.endDate),
-      endTime: newEndTime.toDate(),
-      checked: false,
-      repeatCount: 1,
-      repeatFrequency: 0,
-      type: event.type,
-      information: event.information
-    }
+    ).toDate(),
+    checked: false,
+    repeatCount: 1,
+    repeatFrequency: 0,
+    type: this.props.data.type,
+    information: this.props.data.information,
   }
 
   handleOpen = () => {
@@ -57,19 +51,7 @@ class EditEvent extends React.Component {
   }
 
   handleClose = () => {
-    this.setState({
-      open: false
-      /* title: '',
-      startDate: '',
-      startTime: '',
-      endDate: '',
-      endTime: '',
-      checked: false,
-      repeatCount: 1,
-      repeatFrequency: 0,
-      type: '',
-      information: '' */
-    })
+    this.setState({ open: false })
   }
 
   handleCloseAndSend = async () => {
@@ -81,7 +63,7 @@ class EditEvent extends React.Component {
       endDate: moment(this.state.endDate).format('YYYY-MM-DD'),
       endTime: moment(this.state.endTime).format('HH:mm'),
       type: this.state.type,
-      information: this.state.information
+      information: this.state.information,
     }
     try {
       this.props.editEvent(moddedEvent)
@@ -136,7 +118,7 @@ class EditEvent extends React.Component {
       repeatCount: repeatCount,
       repeatFrequency: repeatFrequency,
       type: type,
-      information: information
+      information: information,
     })
   }
 
@@ -148,23 +130,22 @@ class EditEvent extends React.Component {
     return (
       <div>
         <Button
-          size={this.props.minimal?'small':'medium'}
+          size={this.props.minimal ? 'small' : 'medium'}
           onClick={this.handleOpen}
           disabled={disabled}
           className={classes.button}
-          variant='contained'
-          color='primary'
+          variant="contained"
+          color="primary"
         >
           Muokkaa
           <Icon className={classes.rightIcon}>edit_icon</Icon>
         </Button>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-        >
-          <DialogTitle>{'Muokataan tapahtumaa'} {this.state.title}</DialogTitle>
-          <div className='event-form'>
-            <Paper className='new-form-paper'>
+        <Dialog open={this.state.open} onClose={this.handleClose}>
+          <DialogTitle>
+            {'Muokataan tapahtumaa'} {this.state.title}
+          </DialogTitle>
+          <div className="event-form">
+            <Paper className="new-form-paper">
               <EventForm
                 submitFunction={this.handleCloseAndSend.bind(this)}
                 close={this.handleClose.bind(this)}
@@ -179,6 +160,7 @@ class EditEvent extends React.Component {
   }
 }
 
-export default connect(null, { editEvent, bufferZoneInitialization, notify })(
-  withStyles(styles)(EditEvent)
-)
+export default connect(
+  null,
+  { editEvent, bufferZoneInitialization, notify }
+)(withStyles(styles)(EditEvent))

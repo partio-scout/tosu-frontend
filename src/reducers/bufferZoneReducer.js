@@ -33,7 +33,7 @@ export const bufferZoneInitialization = () => async dispatch => {
   const buffer = await activityService.getBufferZoneActivities()
   dispatch({
     type: 'INIT_BUFFER',
-    buffer
+    buffer,
   })
 }
 
@@ -43,7 +43,7 @@ export const postActivityToBuffer = activity => async dispatch => {
   )
   dispatch({
     type: 'ADD_TO_BUFFER',
-    activity: responseActivity
+    activity: responseActivity,
   })
 }
 
@@ -51,21 +51,21 @@ export const deleteActivityFromBuffer = activityId => async dispatch => {
   await activityService.deleteActivity(activityId)
   dispatch({
     type: 'DELETE_FROM_BUFFER',
-    activityId
+    activityId,
   })
 }
 
 export const deleteActivityFromBufferOnlyLocally = activityId => async dispatch => {
   dispatch({
     type: 'DELETE_FROM_BUFFER',
-    activityId
+    activityId,
   })
 }
 
 export const postActivityToBufferOnlyLocally = activity => async dispatch => {
   dispatch({
     type: 'ADD_TO_BUFFER',
-    activity
+    activity,
   })
 }
 

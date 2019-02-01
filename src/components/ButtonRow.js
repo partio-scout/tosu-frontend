@@ -11,17 +11,12 @@ import IconButton from '@material-ui/core/IconButton/IconButton'
 import Icon from '@material-ui/core/Icon/Icon'
 
 class ButtonRow extends React.Component {
-  constructor(props) {
-    super(props)
-    const currentDate = moment()
-    this.state = {
-      startDate: currentDate,
-      endDate: props.endDate
-    }
-    console.log(props.mobile)
+  state = {
+    startDate: moment(),
+    endDate: null,
   }
 
-  selectView = (value) => () => {
+  selectView = value => () => {
     this.props.viewChange(value)
   }
 
@@ -37,27 +32,29 @@ class ButtonRow extends React.Component {
     }
   }
 
-  filterSelected = (value) => () => {
+  filterSelected = value => () => {
     this.props.filterChange(value)
   }
 
   clearRange = () => {
     this.filterSelected('NONE')()
-    this.setState({startDate: null, endDate: null})
-    this.props.dateRangeUpdate({startDate: null, endDate: null})
+    this.setState({ startDate: null, endDate: null })
+    this.props.dateRangeUpdate({ startDate: null, endDate: null })
   }
 
-  dateRangeUpdate = ({startDate, endDate}) => {
-    this.setState({startDate, endDate})
-    this.props.dateRangeUpdate({startDate, endDate})
+  dateRangeUpdate = ({ startDate, endDate }) => {
+    this.setState({ startDate, endDate })
+    this.props.dateRangeUpdate({ startDate, endDate })
   }
-  
 
   render() {
     const calendarIcon = (
       <IconButton
-        className={this.props.view === 'CALENDAR' ? 
-          'active-mobile-button button' : 'mobile-button button'}
+        className={
+          this.props.view === 'CALENDAR'
+            ? 'active-mobile-button button'
+            : 'mobile-button button'
+        }
         onClick={this.selectView('CALENDAR')}
       >
         <CalendarToday />
@@ -65,7 +62,7 @@ class ButtonRow extends React.Component {
     )
     const newEventIcon = (
       <IconButton
-        className='mobile-button button'
+        className="mobile-button button"
         onClick={this.props.newEvent}
       >
         <Add />
@@ -73,62 +70,75 @@ class ButtonRow extends React.Component {
     )
     return (
       <div>
-        <div className='button-row' >
+        <div className="button-row">
           <Button
             className={this.props.view === 'OWN' ? 'active button' : 'button'}
             onClick={this.selectView('OWN')}
-            variant='contained'
-            color='secondary'
+            variant="contained"
+            color="secondary"
           >
             Omat
           </Button>
           <Button
             className={this.props.view === 'KUKSA' ? 'active button' : 'button'}
             onClick={this.selectView('KUKSA')}
-            variant='contained'
-            color='secondary'
+            variant="contained"
+            color="secondary"
           >
             Kuksa
           </Button>
-          {this.props.mobile ?
-            calendarIcon : 
+          {this.props.mobile ? (
+            calendarIcon
+          ) : (
             <Button
-              className={this.props.view === 'CALENDAR' ? 'active button' : 'button'}
+              className={
+                this.props.view === 'CALENDAR' ? 'active button' : 'button'
+              }
               onClick={this.selectView('CALENDAR')}
-              variant='contained'
-              color='secondary'
+              variant="contained"
+              color="secondary"
             >
               Kalenteri
             </Button>
-          }
-          {this.props.mobile ? 
-            newEventIcon : 
-            <Button onClick={this.props.newEvent} variant='contained' color='secondary'>
+          )}
+          {this.props.mobile ? (
+            newEventIcon
+          ) : (
+            <Button
+              onClick={this.props.newEvent}
+              variant="contained"
+              color="secondary"
+            >
               Uusi tapahtuma
             </Button>
-          }
+          )}
         </div>
-        <div className='date-range-container' style={this.props.view === 'CALENDAR' ? { display: 'none' } : {}}>
+        <div
+          className="date-range-container"
+          style={this.props.view === 'CALENDAR' ? { display: 'none' } : {}}
+        >
           Rajaa tapahtumia:
           <DateRangePicker
-            startDateId='startDate'
-            endDateId='endDate'
+            startDateId="startDate"
+            endDateId="endDate"
             startDate={this.state.startDate}
             endDate={this.state.endDate}
             onDatesChange={this.dateRangeUpdate}
             focusedInput={this.state.focusedInput}
-            onFocusChange={(focusedInput) => { this.setState({ focusedInput }) }}
-            startDatePlaceholderText='alku pvm'
-            endDatePlaceholderText='loppu pvm'
+            onFocusChange={focusedInput => {
+              this.setState({ focusedInput })
+            }}
+            startDatePlaceholderText="alku pvm"
+            endDatePlaceholderText="loppu pvm"
             isOutsideRange={() => false}
           />
           <IconButton
             className={this.props.filter !== 'NONE' ? '' : 'hidden'}
-            color='primary'
+            color="primary"
             onClick={this.clearRange}
-            style={{marginLeft:5}}
+            style={{ marginLeft: 5 }}
           >
-            <Icon color='primary'>clear</Icon>
+            <Icon color="primary">clear</Icon>
           </IconButton>
         </div>
       </div>
@@ -141,11 +151,14 @@ const mapStateToProps = state => {
     view: state.view,
     filter: state.filter,
     startDate: state.startDate,
-    endDate: state.endDate
+    endDate: state.endDate,
   }
 }
 
-export default connect(mapStateToProps, {
-  filterChange,
-  viewChange
-})(ButtonRow)
+export default connect(
+  mapStateToProps,
+  {
+    filterChange,
+    viewChange,
+  }
+)(ButtonRow)

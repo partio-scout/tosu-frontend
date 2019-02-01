@@ -7,46 +7,43 @@ import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({
   label: {
-    color: 'white'
-  }
+    color: 'white',
+  },
 })
 
 class AppBar extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      sidebarVisible: true
-    }
-  }
+  state = { sidebarVisible: true }
 
   toggleSideBar = () => {
-    this.setState({sidebarVisible: !this.state.sidebarVisible})
+    this.setState({ sidebarVisible: !this.state.sidebarVisible })
     this.props.toggleSideBar()
   }
 
   render(props) {
     const { classes } = this.props
     return (
-      <div className='top-search' id='top-bar-header'>
-        <div className='account-name-and-button'>
+      <div className="top-search" id="top-bar-header">
+        <div className="account-name-and-button">
           {this.props.scout ? this.props.scout.name : '<no name>'}
           <AccountIcon />
         </div>
-        <div className='Header_root' id='header_root'>
+        <div className="Header_root" id="header_root">
           <FormControlLabel
             classes={{
-              label: classes.label
+              label: classes.label,
             }}
             control={
               <Switch
-                className='toggle-sidebar'
+                className="toggle-sidebar"
                 checked={this.state.sidebarVisible}
                 onClick={this.toggleSideBar}
-                color='secondary'
+                color="secondary"
               />
             }
             label={
-              this.state.sidebarVisible ? 'Piilota suunnittelunäkymä' : 'Näytä suunnittelunäkymä'
+              this.state.sidebarVisible
+                ? 'Piilota suunnittelunäkymä'
+                : 'Näytä suunnittelunäkymä'
             }
           />
         </div>
@@ -61,4 +58,7 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, {})( withStyles(styles)(AppBar))
+export default connect(
+  mapStateToProps,
+  {}
+)(withStyles(styles)(AppBar))

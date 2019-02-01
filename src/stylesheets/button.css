@@ -2,10 +2,12 @@
   margin: 4px !important;
   color: white !important;
 }
+
 .account-name-and-button {
   float: right;
   color: white;
 }
+
 .dialog-close-button {
   background-color: #ccc;
   color: #fff;
@@ -16,17 +18,18 @@
   box-shadow: 1px 1px 3px;
 }
 
-.feedback{
-  textAlign: center;
+.feedback {
+  textalign: center;
   padding: 10px;
   position: fixed;
   left: 0;
   bottom: 0;
   width: 100%;
 }
+
 #empty-button {
-    margin-left: 14px;
-    margin-top: 20px;
+  margin-left: 14px;
+  margin-top: 20px;
 }
 
 .customBtn {
@@ -47,9 +50,10 @@
 .customBtn:hover {
   cursor: pointer;
 }
+
 .toggle-sidebar {
   background-color: #253264 !important;
-  color: #FFF;
+  color: #fff;
   font-size: 0.8rem;
   margin-left: 10px;
 }
@@ -68,18 +72,19 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
 .appbar-button:hover {
-    background: rgba(255, 255, 255, 0.8);
-    cursor: pointer;
-  }
-  
+  background: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+}
+
 .appbar-button span {
-    margin: 5px;
-    padding: 0;
-  }
-  
+  margin: 5px;
+  padding: 0;
+}
+
 .appbar-button-text {
-    text-transform: uppercase;
-    line-height: 1.2rem;
-    font-size: 0.8rem;
-  }
+  text-transform: uppercase;
+  line-height: 1.2rem;
+  font-size: 0.8rem;
+}
