@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider/Divider'
 import { withStyles } from '@material-ui/core/styles'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import Activities from './Activities'
-import { notify } from '../reducers/notificationReducer' 
+import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { deleteActivityFromBufferOnlyLocally, deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 
@@ -56,7 +56,7 @@ export class BufferZone extends React.Component {
             <Activities
               activities={this.props.buffer.activities}
               bufferzone
-              parentId={this.props.buffer.id} 
+              parentId={this.props.buffer.id}
             />
           </div>
           <Button id='empty-button' color='primary' onClick={this.clear}>

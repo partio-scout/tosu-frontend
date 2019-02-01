@@ -27,7 +27,7 @@ const testClasses = {
 const testEvents = []
 
 const mockDeleteFromBuffer = jest.fn()
-const mockPofTreeUpdate = jest.fn()
+const mockPofTreeUpdate = jest.fn((a,b) => {})
 const mockNotify = jest.fn()
 
 const veryMockStore = {
@@ -64,6 +64,11 @@ const testZoneNoBufferActivities = () => {
     )
 }
 
+const tick = () => {
+  return new Promise(resolve => {
+    setTimeout(resolve,0)
+  })
+}
 
 describe('<BufferZone />', () => {
 
@@ -82,10 +87,13 @@ describe('<BufferZone />', () => {
     expect(wrapper.find({activities:[testActivity]}))
   })
 
-  it('removes activities when clear is clicked', () => {
+  it('removes activities when clear is clicked', async () => {
     const wrapper = shallow(testZone()).dive()
     const button = wrapper.find({id: 'empty-button'})
     button.simulate('click', {currentTarget:wrapper})
+    await(tick())
     expect(mockDeleteFromBuffer.mock.calls.length).to.equal(1)
+    expect(mockPofTreeUpdate.mock.calls.length).to.equal(1)
+    expect(mockNotify.mock.calls.length).to.equal(1)
   })
 })
