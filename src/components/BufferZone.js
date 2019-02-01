@@ -48,7 +48,7 @@ export class BufferZone extends React.Component {
 
   render() {
     const { classes } = this.props
-    if (!thisF.props.buffer.id) {
+    if (!this.props.buffer.id) {
       return <div />
     }
     if (this.props.buffer.activities.length === 0) {
