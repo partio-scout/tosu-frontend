@@ -8,11 +8,14 @@ import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import Activities from './Activities'
 import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import { deleteActivityFromBufferOnlyLocally, deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
+import {
+  deleteActivityFromBufferOnlyLocally,
+  deleteActivityFromBuffer,
+} from '../reducers/bufferZoneReducer'
 
 const styles = theme => ({
   button: {
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing.unit,
   },
   rightIcon: {
     marginLeft: theme.spacing.unit,
@@ -23,14 +26,16 @@ const styles = theme => ({
   divider: {
     height: 4,
     backgroundColor: '#243265',
-    margin: '20px 14px'
-  }
+    margin: '20px 14px',
+  },
 })
 
 export class BufferZone extends React.Component {
   clear = async () => {
-    if (this.props.buffer.activities){
-      const promises = this.props.buffer.activities.map(activity =>  this.props.deleteActivityFromBuffer(activity.id))
+    if (this.props.buffer.activities) {
+      const promises = this.props.buffer.activities.map(activity =>
+        this.props.deleteActivityFromBuffer(activity.id)
+      )
       try {
         await Promise.all(promises)
         this.props.pofTreeUpdate(this.props.buffer, this.props.events)
@@ -43,42 +48,45 @@ export class BufferZone extends React.Component {
 
   render() {
     const { classes } = this.props
-    if (! this.props.buffer.id){
-      return ( <div /> )
+    if (!thisF.props.buffer.id) {
+      return <div />
     }
     if (this.props.buffer.activities.length === 0) {
-      return ( <div /> )
+      return <div />
     }
     return (
       <div>
         <ActivityDragAndDropTarget bufferzone parentId={this.props.buffer.id}>
-          <div id='bufferzone'>
+          <div id="bufferzone">
             <Activities
               activities={this.props.buffer.activities}
               bufferzone
               parentId={this.props.buffer.id}
             />
           </div>
-          <Button id='empty-button' color='primary' onClick={this.clear}>
+          <Button id="empty-button" color="primary" onClick={this.clear}>
             Tyhjennä
-              <Icon>clear</Icon>
+            <Icon>clear</Icon>
           </Button>
         </ActivityDragAndDropTarget>
-        <Divider variant={'middle'} className={classes.divider}/>
+        <Divider variant={'middle'} className={classes.divider} />
       </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
-    buffer: state.buffer,
-    events: state.events,
-    pofTree: state.pofTree,
-  })
+  buffer: state.buffer,
+  events: state.events,
+  pofTree: state.pofTree,
+})
 
-export default connect(mapStateToProps, {
-  notify,
-  pofTreeUpdate,
-  deleteActivityFromBufferOnlyLocally,
-  deleteActivityFromBuffer,
-})(withStyles(styles)(BufferZone))
+export default connect(
+  mapStateToProps,
+  {
+    notify,
+    pofTreeUpdate,
+    deleteActivityFromBufferOnlyLocally,
+    deleteActivityFromBuffer,
+  }
+)(withStyles(styles)(BufferZone))
