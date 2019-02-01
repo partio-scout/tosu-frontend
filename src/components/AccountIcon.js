@@ -8,12 +8,7 @@ import { scoutLogout } from '../reducers/scoutReducer'
 import { API_ROOT } from '../api-config'
 
 class AccountIcon extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      anchorEl: null,
-    }
-  }
+  state = { anchorEl: null }
 
   forceMyOwnLogout = async response => {
     await this.props.scoutLogout()
@@ -34,14 +29,14 @@ class AccountIcon extends React.Component {
       <span>
         <IconButton
           aria-owns={open ? 'menu-appbar' : null}
-          aria-haspopup='true'
+          aria-haspopup="true"
           onClick={this.handleMenu}
-          color='inherit'
+          color="inherit"
         >
           <AccountCircle />
         </IconButton>
         <Menu
-          id='menu-appbar'
+          id="menu-appbar"
           anchorEl={this.state.anchorEl}
           anchorOrigin={{
             vertical: 'top',
@@ -64,10 +59,13 @@ class AccountIcon extends React.Component {
 const mapStateToProps = state => {
   return {
     scout: state.scout,
-    buffer: state.buffer
+    buffer: state.buffer,
   }
 }
 
-export default connect(mapStateToProps, {
-  scoutLogout
-})(AccountIcon)
+export default connect(
+  mapStateToProps,
+  {
+    scoutLogout,
+  }
+)(AccountIcon)

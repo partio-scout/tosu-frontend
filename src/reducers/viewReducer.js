@@ -7,10 +7,10 @@ const viewReducer = (state = 'OWN', action) => {
   }
 }
 
-export const viewChange = (filter) => {
+export const viewChange = filter => {
   return {
     type: 'SET_VIEW',
-    filter
+    filter,
   }
 }
 

@@ -4,7 +4,7 @@
   padding: 10px 0 10px 20px;
   font-size: 0.9rem;
   position: absolute;
-  background-color: #D6E8F7 !important;
+  background-color: #d6e8f7 !important;
   box-shadow: none !important;
   border-radius: 2px !important;
 }
@@ -14,7 +14,7 @@
   height: 15px;
   padding: 0;
   margin-right: 7px;
-  color: #14A54B;
+  color: #14a54b;
 }
 
 .status-box .small-done {
@@ -22,7 +22,7 @@
   height: 10px;
   padding: 0;
   margin-right: 7px;
-  color: #14A54B;
+  color: #14a54b;
 }
 
 .status-box .clear {
@@ -36,6 +36,6 @@
 }
 
 .status-box .clear:hover,
-.status-box .clear:focus{
-  color: #F14150;
+.status-box .clear:focus {
+  color: #f14150;
 }

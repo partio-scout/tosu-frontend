@@ -14,7 +14,6 @@ import calendarReducer from './reducers/calendarReducer'
 import viewReducer from './reducers/viewReducer'
 import loadingReducer from './reducers/loadingReducer'
 
-
 const reducer = combineReducers({
   notification: notificationReducer,
   pofTree: pofTreeReducer,
@@ -27,7 +26,7 @@ const reducer = combineReducers({
   filter: filterReducer,
   calendar: calendarReducer,
   view: viewReducer,
-  loading: loadingReducer
+  loading: loadingReducer,
 })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))

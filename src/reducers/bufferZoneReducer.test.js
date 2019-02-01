@@ -10,7 +10,7 @@ describe('bufferZone reducer', () => {
 
     const expectedAction = {
       type: 'INIT_BUFFER',
-      buffer
+      buffer,
     }
 
     expect(reducer(null, expectedAction)).toEqual(buffer)
@@ -25,7 +25,7 @@ describe('bufferZone reducer', () => {
 
     const expectedAction = {
       type: 'ADD_TO_BUFFER',
-      activity
+      activity,
     }
 
     const newState = reducer(firstState, expectedAction)
@@ -37,7 +37,7 @@ describe('bufferZone reducer', () => {
   it('DELETE_FROM_BUFFER removes activity to buffer', () => {
     const buffer = {
       id: 1,
-      activities: [{ id: 1, title: 'testi', guid: 'abc' }]
+      activities: [{ id: 1, title: 'testi', guid: 'abc' }],
     }
 
     const firstState = reducer(null, { type: 'INIT_BUFFER', buffer })
@@ -46,7 +46,7 @@ describe('bufferZone reducer', () => {
 
     const expectedAction = {
       type: 'DELETE_FROM_BUFFER',
-      activityId
+      activityId,
     }
 
     const newState = reducer(firstState, expectedAction)

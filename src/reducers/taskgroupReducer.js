@@ -10,13 +10,13 @@ const reducer = (state = null, action) => {
 export const selectTaskgroup = taskgroup => dispatch => {
   dispatch({
     type: 'SELECT',
-    taskgroup
+    taskgroup,
   })
 }
 
 export const emptyTaskgroup = () => dispatch => {
   dispatch({
-    type: 'EMPTY'
+    type: 'EMPTY',
   })
 }
 

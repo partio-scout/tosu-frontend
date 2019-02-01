@@ -8,18 +8,13 @@ import IconButton from '@material-ui/core/IconButton'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Button from '@material-ui/core/Button'
 import Collapse from '@material-ui/core/Collapse/Collapse'
-import { Parser } from 'html-to-react'
+import { Parser } from 'html-to-react'
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
 import { notify } from '../reducers/notificationReducer'
 
 class PlanCard extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      expanded: false
-    }
-  }
+  state = { expanded: false }
 
   componentDidMount = () => {
     this.updateSuggestions()
@@ -45,7 +40,7 @@ class PlanCard extends React.Component {
     const data = {
       guid: suggestion.guid,
       title: suggestion.title,
-      content: suggestion.content
+      content: suggestion.content,
     }
     try {
       const res = await planService.addPlanToActivity(data, activityId)
@@ -64,7 +59,7 @@ class PlanCard extends React.Component {
     }
   }
 
-  parseSuggestionContent = (suggestion) => {
+  parseSuggestionContent = suggestion => {
     const htmlParser = new Parser()
     const parsedContent = htmlParser.parse(suggestion.content)
     return parsedContent
@@ -91,9 +86,10 @@ class PlanCard extends React.Component {
     if (selectedPlan.length !== 0) {
       button = () => (
         <Button
-          size='small'
+          size="small"
           onClick={() =>
-            this.deleteSuggestion(selectedPlan[0].id, savedActivity.id)}
+            this.deleteSuggestion(selectedPlan[0].id, savedActivity.id)
+          }
         >
           Poista valituista
         </Button>
@@ -103,7 +99,7 @@ class PlanCard extends React.Component {
     } else {
       button = () => (
         <Button
-          size='small'
+          size="small"
           onClick={() => this.saveSuggestion(suggestion, savedActivity.id)}
         >
           Valitse
@@ -114,15 +110,11 @@ class PlanCard extends React.Component {
 
     return (
       <Card>
-        <CardHeader
-          title={suggestion.title}
-          style={style}
-        />
-        <Collapse in={this.state.expanded} timeout='auto' unmountOnExit>
+        <CardHeader title={suggestion.title} style={style} />
+        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
           <CardContent>
             {this.parseSuggestionContent(suggestion)}
             <br />
-
           </CardContent>
         </Collapse>
         <CardActions>
@@ -140,12 +132,15 @@ class PlanCard extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  plans: state.plans
+  plans: state.plans,
 })
 
-export default connect(mapStateToProps, {
-  initPlans,
-  savePlan,
-  deletePlan,
-  notify
-})(PlanCard)
+export default connect(
+  mapStateToProps,
+  {
+    initPlans,
+    savePlan,
+    deletePlan,
+    notify,
+  }
+)(PlanCard)

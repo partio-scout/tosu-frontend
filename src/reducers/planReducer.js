@@ -11,8 +11,8 @@ const reducer = (state = [], action) => {
           ...item,
           plans: item.plans.concat({
             id: action.suggestionId,
-            ...action.suggestion
-          })
+            ...action.suggestion,
+          }),
         }
       })
 
@@ -23,7 +23,7 @@ const reducer = (state = [], action) => {
         }
         return {
           ...item,
-          plans: item.plans.filter(plan => plan.id !== action.id)
+          plans: item.plans.filter(plan => plan.id !== action.id),
         }
       })
     default:
@@ -34,7 +34,7 @@ const reducer = (state = [], action) => {
 export const initPlans = plans => dispatch => {
   dispatch({
     type: 'INIT_PLANS',
-    plans
+    plans,
   })
 }
 
@@ -43,7 +43,7 @@ export const savePlan = (suggestion, id, suggestionId) => dispatch => {
     type: 'SAVE_PLAN',
     id,
     suggestion,
-    suggestionId
+    suggestionId,
   })
 }
 
@@ -51,7 +51,7 @@ export const deletePlan = (id, activityId) => dispatch => {
   dispatch({
     type: 'DELETE_PLAN',
     id,
-    activityId
+    activityId,
   })
 }
 

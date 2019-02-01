@@ -87,7 +87,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {
-    closePopper,
-  }
+  { closePopper }
 )(Calendar)

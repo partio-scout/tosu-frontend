@@ -1,4 +1,4 @@
-const reducer = (state=true, action) => {
+const reducer = (state = true, action) => {
   switch (action.type) {
     case 'SET_LOADING':
       return action.bool
@@ -7,10 +7,10 @@ const reducer = (state=true, action) => {
   }
 }
 
-export const setLoading = (bool) => {
+export const setLoading = bool => {
   return {
     type: 'SET_LOADING',
-    bool
+    bool,
   }
 }
 

@@ -1,17 +1,11 @@
 import React, { Component } from 'react'
 import Paper from '@material-ui/core/Paper'
-import {
-  TextValidator,
-  ValidatorForm
-} from 'react-material-ui-form-validator'
+import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 
 export default class UserInfo extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      name: '',
-      username: ''
-    }
+  state = {
+    name: '',
+    username: '',
   }
 
   send = () => {
@@ -29,15 +23,15 @@ export default class UserInfo extends Component {
           <h3>Käyttäjän tiedot</h3>
           <ValidatorForm ref={() => 'form'} onSubmit={this.send} disabled>
             <TextValidator
-              name='name'
-              hintText='Käyttäjän nimi'
+              name="name"
+              hintText="Käyttäjän nimi"
               value={this.state.name}
               onChange={this.handleChange}
               fullWidth
             />
             <TextValidator
-              name='username'
-              hintText='Käyttäjänimi'
+              name="username"
+              hintText="Käyttäjänimi"
               value={this.state.username}
               onChange={this.handleChange}
               fullWidth

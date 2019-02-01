@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper'
 import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
 import { connect } from 'react-redux'
-import { Parser } from 'html-to-react'
+import { Parser } from 'html-to-react'
 
 import Activities from './Activities'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
@@ -16,7 +16,9 @@ import { openPopper, closePopper } from '../reducers/calendarReducer'
 function createActivityMarkers(activities) {
   let markers = [' ']
   for (var i = 0; i < activities.length; i++) {
-    markers.push(<span className='calendar-activity-marker' key={activities[i].id} />)
+    markers.push(
+      <span className="calendar-activity-marker" key={activities[i].id} />
+    )
   }
   return markers
 }
@@ -28,20 +30,14 @@ export function eventStyleGetter(event, start, end, isSelected) {
     style: {
       backgroundColor: backgroundColor,
       color: color,
-      borderRadius: 2
-
-    }
+      borderRadius: 2,
+    },
   }
 }
 
 class CalendarEvent extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      event: props.event,
-      pofTree: props.pofTree,
-      anchorEl: null,
-    }
+  state = {
+    anchorEl: null,
   }
 
   closePopper = () => {
@@ -49,33 +45,33 @@ class CalendarEvent extends Component {
     this.props.closePopper()
   }
 
-  openPopper = (target) => {
+  openPopper = target => {
     this.setState(state => ({ anchorEl: target }))
     this.props.openPopper(this.props.event.id)
   }
   handleClick = event => {
     const { currentTarget } = event
-    if (!this.props.popperOpen){
+    if (!this.props.popperOpen) {
       this.openPopper(currentTarget)
-    } else if (this.state.anchorEl){
+    } else if (this.state.anchorEl) {
       this.closePopper()
     }
   }
 
-  componentWillUnmount(){
-    if (this.state.anchorEl){
+  componentWillUnmount() {
+    if (this.state.anchorEl) {
       this.closePopper()
     }
   }
 
   // It is possible that when event is removed (or added) on calendar view, the event
-  // of a CalendarEvent component changes (Calendar probably uses 
+  // of a CalendarEvent component changes (Calendar probably uses
   // the same component to draw the event with same index in the event list)
   // In that case the we need to update the state
   // If popup was open, close it...
   componentWillReceiveProps(nextProps) {
-    if (nextProps.event.id !== this.props.event.id){
-      if (this.state.anchorEl){
+    if (nextProps.event.id !== this.props.event.id) {
+      if (this.state.anchorEl) {
         this.closePopper()
       }
       this.setState({
@@ -84,16 +80,22 @@ class CalendarEvent extends Component {
         anchorEl: null,
       })
     }
-  } 
-  
+  }
+
   render() {
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
     const id = open ? 'no-transition-popper' : null
 
     const event = this.props.event
-    const startTime = event.start.toLocaleTimeString('fi-FI', { 'hour': 'numeric', 'minute': 'numeric' })
-    const endTime = event.end.toLocaleTimeString('fi-FI', { 'hour': 'numeric', 'minute': 'numeric' })
+    const startTime = event.start.toLocaleTimeString('fi-FI', {
+      hour: 'numeric',
+      minute: 'numeric',
+    })
+    const endTime = event.end.toLocaleTimeString('fi-FI', {
+      hour: 'numeric',
+      minute: 'numeric',
+    })
     const information = new Parser().parse(event.information)
 
     let popoverContentClassName // Style: Normal
@@ -113,25 +115,25 @@ class CalendarEvent extends Component {
           activities={this.props.event.activities}
           bufferzone={false}
           parentId={this.props.event.id}
-          className='calendar-event-activity-wrapper'
+          className="calendar-event-activity-wrapper"
         />
       </div>
     )
 
     const editDeleteButtons = (
       <div>
-        <div className='calendar-event-button-wrapper'>
+        <div className="calendar-event-button-wrapper">
           <EditEvent
-            buttonClass='calendar-button'
+            buttonClass="calendar-button"
             data={event.originalData}
             setNotification={this.props.setNotification}
-            minimal='true'
+            minimal="true"
           />
           <DeleteEvent
-            buttonClass='calendar-button'
+            buttonClass="calendar-button"
             data={event.originalData}
             setNotification={this.props.setNotification}
-            minimal='true'
+            minimal="true"
           />
         </div>
       </div>
@@ -140,33 +142,35 @@ class CalendarEvent extends Component {
     const popoverContent = (
       <div>
         <div>
-          <div className='calendar-popover-left'>
-            <p className='calendar-event-title'>{event.title}</p>
+          <div className="calendar-popover-left">
+            <p className="calendar-event-title">{event.title}</p>
           </div>
-          <div className='calendar-popover-right'>
+          <div className="calendar-popover-right">
             <IconButton onClick={this.closePopper}>
               <Icon>close</Icon>
             </IconButton>
           </div>
         </div>
         {startTime} - {endTime}
-        <p>
-          {information}
-        </p>
+        <p>{information}</p>
         {!event.kuksaEvent && activities}
         {!event.kuksaEvent && editDeleteButtons}
-        {event.kuksaEvent && (<AddToPlan event={event.originalData} />)}
+        {event.kuksaEvent && <AddToPlan event={event.originalData} />}
       </div>
     )
 
     // Don't allow dragging activities to kuksa events
     const paperContent = event.kuksaEvent ? (
-      <div className='calendar-event-popper'>
+      <div className="calendar-event-popper">
         {popoverContent}
         <br />
       </div>
     ) : (
-      <ActivityDragAndDropTarget bufferzone={false} parentId={this.props.event.id} className='calendar-event-popper'>
+      <ActivityDragAndDropTarget
+        bufferzone={false}
+        parentId={this.props.event.id}
+        className="calendar-event-popper"
+      >
         {popoverContent}
       </ActivityDragAndDropTarget>
     )
@@ -174,9 +178,7 @@ class CalendarEvent extends Component {
     return (
       <div>
         <div aria-describedby={id} onClick={this.handleClick}>
-          <span>
-            {event.title}
-          </span>
+          <span>{event.title}</span>
           <br />
           {createActivityMarkers(event.activities)}
         </div>
@@ -198,7 +200,10 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, {
-  openPopper,
-  closePopper,
-})(CalendarEvent)
+export default connect(
+  mapStateToProps,
+  {
+    openPopper,
+    closePopper,
+  }
+)(CalendarEvent)

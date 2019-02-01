@@ -1,6 +1,6 @@
 // Vendor
 import { connect } from 'react-redux'
-import React, { Component } from 'react'
+import React from 'react'
 import { GoogleLogin } from 'react-google-login'
 import FontAwesome from 'react-fontawesome'
 import { Button } from '@material-ui/core'
