@@ -45,10 +45,10 @@ function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
   })
 }
 
-class Calendar extends Component {
+export class Calendar extends Component {
   constructor(props) {
     super(props)
-    this.props.closePopper() 
+    this.props.closePopper()
   }
 
   render() {
