@@ -31,6 +31,7 @@ import DeleteEvent from "./DeleteEvent"
 import EditEvent from "./EditEvent"
 import {
   editEvent,
+  editEvent2,
   deleteActivityFromEvent,
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally,
@@ -282,9 +283,10 @@ class EventCard extends React.Component {
       </CardContent>
     )
 
+    /*creates a new event with modified information and sends it to eventReducer's editEvent method*/
     const changeInfo = event => {
       event.preventDefault()
-      console.log(event.target.children[0].value)
+
       const moddedEvent = {
         id: this.props.event.id,
         title: this.props.event.title,
@@ -295,38 +297,26 @@ class EventCard extends React.Component {
         type: this.props.event.type,
         information: event.target.children[0].value
       }
-      console.log("ennen", this.state.event)
-      this.setState({ event: moddedEvent })
-      console.log("uusi", moddedEvent)
-      eventService.edit(moddedEvent)
-      information = event.target.children[0].value
-      console.log("nyt", information)
-      this.forceUpdate()
+      this.props.editEvent(moddedEvent)
     }
-    const handleInfoChange = event => {
-      event.preventDefault()
-      console.log(event.target.value)
-    }
+
     const renderEdit = () => {
       if (!this.editMode) {
         this.editIcon = "-"
-        console.log("edit", information)
-        this.informationContainer = (
-          <form onSubmit={changeInfo}>
-            <textarea
-              type="text"
-              onInput={handleInfoChange}
-              defaultValue={information}
-            />
-            <input type="submit" value="tallenna" />
+        this.informationContainer =
+        <form onSubmit={changeInfo}>
+          <textarea defaultValue={information} rows="4" cols="80" ></textarea>
+            <p>
+              <input type="submit" value="tallenna"/>
+              </p>
           </form>
-        )
         this.editMode = true
       } else {
         this.editIcon = "+"
         this.informationContainer = <span>{information}</span>
         this.editMode = false
       }
+      this.forceUpdate()
     }
 
     const expanded = (
@@ -348,7 +338,7 @@ class EventCard extends React.Component {
         </p>
         <b>Lisätiedot </b>
         {this.editButton}
-        {this.informationContainer}
+        <p> {this.informationContainer} </p>
         <b>
           <Activities
             activities={this.props.event.activities}
