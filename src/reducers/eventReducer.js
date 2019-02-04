@@ -46,6 +46,10 @@ const reducer = (state = [], action) => {
       return state
         .filter(event => event.id.toString() !== action.modded.id.toString())
         .concat(action.modded)
+    case 'UPDATE_INFO':
+        return state
+          .filter(event => event.id.toString() !== action.modded.id.toString())
+          .concat(action.modded)
 
     case 'ADD_ACTIVITY_TO_EVENT':
       return addToEvent(state, action)
@@ -126,6 +130,14 @@ export const editEvent = event => async dispatch => {
   dispatch({
     type: 'UPDATE_EVENT',
     modded,
+  })
+}
+
+export const editInfo = info => async dispatch => {
+  const modded = await eventService.editInfo(info)
+  dispatch({
+    type: 'UPDATE_INFO',
+    modded
   })
 }
 

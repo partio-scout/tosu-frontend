@@ -18,6 +18,20 @@
   box-shadow: 1px 1px 3px;
 }
 
+.information {
+  padding: 2px;
+  padding-right: 5px;
+  padding-left: 5px;
+  border-radius: 5px;
+  font-family: 'Roboto', sans-serif;
+  background: #253264;
+  color: #fff;
+}
+#information-button {
+  width: 28px;
+  height: 28px;
+  font-weight: 900;
+}
 .feedback {
   textalign: center;
   padding: 10px;

@@ -35,9 +35,14 @@ export function eventStyleGetter(event, start, end, isSelected) {
   }
 }
 
-export class CalendarEvent extends Component {
-  state = {
-    anchorEl: null,
+class CalendarEvent extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      event: props.event,
+      pofTree: props.pofTree,
+      anchorEl: null,
+    }
   }
 
   closePopper = () => {

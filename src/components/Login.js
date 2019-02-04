@@ -23,10 +23,6 @@ import {
 import { eventsInitialization } from '../reducers/eventReducer'
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   googleLoginSuccess = async response => {
     if (this.props.scout === null) {
       this.props.store.dispatch(setLoading(true))
