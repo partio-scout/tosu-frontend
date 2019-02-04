@@ -4,30 +4,36 @@ import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 
 const styles = () => ({
-    root: {
+  root: {
     background: 'white',
     borderRadius: 3,
     border: '1px solid gray',
-    color: 'black'
-  }
+    color: 'black',
+  },
 })
 
-const StyledButton = withStyles (styles)(Button)
+const StyledButton = withStyles(styles)(Button)
 
-const FeedbackButton = (props) => (
-  <div className='feedback'>
-    <a style={{textDecoration: 'none'}} href={props.feedback_url}>
-      <StyledButton type="button" className="FeedbackButton" variant='contained'>
+export const FeedbackButton = props => (
+  <div className="feedback">
+    <a
+      style={{ textDecoration: 'none' }}
+      href={props.feedback_url}
+      target="_blank"
+    >
+      <StyledButton
+        type="button"
+        className="FeedbackButton"
+        variant="contained"
+      >
         Anna palautetta
       </StyledButton>
     </a>
   </div>
-);
+)
 
-export default (FeedbackButton)
+export default FeedbackButton
 
 FeedbackButton.propTypes = {
-    feedback_url: PropTypes.string.isRequired
+  feedback_url: PropTypes.string.isRequired,
 }
-
-

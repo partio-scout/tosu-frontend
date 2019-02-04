@@ -1,4 +1,3 @@
-
 import React from 'react'
 import DragLayer from 'react-dnd/lib/DragLayer'
 import Chip from '@material-ui/core/Chip/Chip'
@@ -7,13 +6,13 @@ import Avatar from '@material-ui/core/Avatar'
 const styles = {
   chip: {
     margin: 4,
-    backgroundColor: '#90CAF9'
+    backgroundColor: '#90CAF9',
   },
   avatar: {
     size: 28,
     color: '#1A237E',
     backgroundColor: '#90CAF9',
-    margin: 4
+    margin: 4,
   },
   chipMandatory: {
     margin: 4,
@@ -23,22 +22,22 @@ const styles = {
     size: 28,
     color: '#1A237E',
     backgroundColor: '#2196F3',
-    margin: 4
-  }
+    margin: 4,
+  },
 }
 
 function collect(monitor) {
   return {
     currentOffset: monitor.getClientOffset(),
     startPoint: monitor.getInitialClientOffset(),
-    isDragging: monitor.isDragging()
+    isDragging: monitor.isDragging(),
   }
 }
 
 function getItemStyles(currentOffset, startPoint, mandatory) {
   if (!currentOffset) {
     return {
-      display: 'none'
+      display: 'none',
     }
   }
   let { x, y } = currentOffset
@@ -51,11 +50,11 @@ function getItemStyles(currentOffset, startPoint, mandatory) {
     transform,
     WebkitTransform: transform,
     margin: 4,
-    backgroundColor: color
+    backgroundColor: color,
   }
 }
 
-class ActivityPreview extends React.Component {
+export class ActivityPreview extends React.Component {
   render() {
     const { isDragging, currentOffset, startPoint, pofActivity } = this.props
     if (!isDragging) {
@@ -70,10 +69,14 @@ class ActivityPreview extends React.Component {
     return (
       <Chip
         style={getItemStyles(currentOffset, startPoint, pofActivity.mandatory)}
-        className='previewChip'
-        label={<span className='activityTitle'>{pofActivity.title}</span>}
+        className="previewChip"
+        label={<span className="activityTitle">{pofActivity.title}</span>}
         avatar={
-          <Avatar style={pofActivity.mandatory ? styles.avatarMandatory : styles.avatar}>
+          <Avatar
+            style={
+              pofActivity.mandatory ? styles.avatarMandatory : styles.avatar
+            }
+          >
             src={img}
           </Avatar>
         }

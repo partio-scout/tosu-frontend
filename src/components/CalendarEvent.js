@@ -30,8 +30,8 @@ export function eventStyleGetter(event, start, end, isSelected) {
     style: {
       backgroundColor: backgroundColor,
       color: color,
-      borderRadius: 2
-    }
+      borderRadius: 2,
+    },
   }
 }
 
@@ -41,7 +41,7 @@ class CalendarEvent extends Component {
     this.state = {
       event: props.event,
       pofTree: props.pofTree,
-      anchorEl: null
+      anchorEl: null,
     }
   }
 
@@ -82,7 +82,7 @@ class CalendarEvent extends Component {
       this.setState({
         event: nextProps.event,
         pofTree: nextProps.pofTree,
-        anchorEl: null
+        anchorEl: null,
       })
     }
   }
@@ -95,11 +95,11 @@ class CalendarEvent extends Component {
     const event = this.props.event
     const startTime = event.start.toLocaleTimeString('fi-FI', {
       hour: 'numeric',
-      minute: 'numeric'
+      minute: 'numeric',
     })
     const endTime = event.end.toLocaleTimeString('fi-FI', {
       hour: 'numeric',
-      minute: 'numeric'
+      minute: 'numeric',
     })
     const information = new Parser().parse(event.information)
 
@@ -201,7 +201,7 @@ const mapStateToProps = state => {
   return {
     pofTree: state.pofTree,
     popperOpen: state.calendar.popperOpen,
-    popperEventId: state.calendar.popperEventId
+    popperEventId: state.calendar.popperEventId,
   }
 }
 
@@ -209,6 +209,6 @@ export default connect(
   mapStateToProps,
   {
     openPopper,
-    closePopper
+    closePopper,
   }
 )(CalendarEvent)
