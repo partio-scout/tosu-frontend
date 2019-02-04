@@ -31,11 +31,9 @@ import DeleteEvent from "./DeleteEvent"
 import EditEvent from "./EditEvent"
 import {
   editEvent,
-  editEvent2,
   deleteActivityFromEvent,
   deleteActivityFromEventOnlyLocally,
-  addActivityToEventOnlyLocally,
-  editInfo
+  addActivityToEventOnlyLocally
 } from "../reducers/eventReducer"
 import { notify } from "../reducers/notificationReducer"
 import { pofTreeUpdate } from "../reducers/pofTreeReducer"

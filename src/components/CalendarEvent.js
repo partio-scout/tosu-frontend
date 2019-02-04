@@ -1,71 +1,71 @@
-import React, { Component } from "react";
-import Popper from "@material-ui/core/Popper";
-import Paper from "@material-ui/core/Paper";
-import Icon from "@material-ui/core/Icon";
-import IconButton from "@material-ui/core/IconButton";
-import { connect } from "react-redux";
-import { Parser } from "html-to-react";
+import React, { Component } from "react"
+import Popper from "@material-ui/core/Popper"
+import Paper from "@material-ui/core/Paper"
+import Icon from "@material-ui/core/Icon"
+import IconButton from "@material-ui/core/IconButton"
+import { connect } from "react-redux"
+import { Parser } from "html-to-react"
 
-import Activities from "./Activities";
-import ActivityDragAndDropTarget from "./ActivityDragAndDropTarget";
-import DeleteEvent from "./DeleteEvent";
-import EditEvent from "./EditEvent";
-import AddToPlan from "./AddToPlan";
-import { openPopper, closePopper } from "../reducers/calendarReducer";
+import Activities from "./Activities"
+import ActivityDragAndDropTarget from "./ActivityDragAndDropTarget"
+import DeleteEvent from "./DeleteEvent"
+import EditEvent from "./EditEvent"
+import AddToPlan from "./AddToPlan"
+import { openPopper, closePopper } from "../reducers/calendarReducer"
 
 function createActivityMarkers(activities) {
-  let markers = [" "];
+  let markers = [" "]
   for (var i = 0; i < activities.length; i++) {
     markers.push(
       <span className="calendar-activity-marker" key={activities[i].id} />
-    );
+    )
   }
-  return markers;
+  return markers
 }
 
 export function eventStyleGetter(event, start, end, isSelected) {
-  const backgroundColor = event.kuksaEvent ? "lightgrey" : "#27AAE1";
-  const color = event.kuksaEvent ? "black" : "white";
+  const backgroundColor = event.kuksaEvent ? "lightgrey" : "#27AAE1"
+  const color = event.kuksaEvent ? "black" : "white"
   return {
     style: {
       backgroundColor: backgroundColor,
       color: color,
       borderRadius: 2
     }
-  };
+  }
 }
 
 class CalendarEvent extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       event: props.event,
       pofTree: props.pofTree,
       anchorEl: null
-    };
+    }
   }
 
   closePopper = () => {
-    this.setState(state => ({ anchorEl: null }));
-    this.props.closePopper();
-  };
+    this.setState(state => ({ anchorEl: null }))
+    this.props.closePopper()
+  }
 
   openPopper = target => {
-    this.setState(state => ({ anchorEl: target }));
-    this.props.openPopper(this.props.event.id);
-  };
+    this.setState(state => ({ anchorEl: target }))
+    this.props.openPopper(this.props.event.id)
+  }
   handleClick = event => {
-    const { currentTarget } = event;
+    const { currentTarget } = event
     if (!this.props.popperOpen) {
-      this.openPopper(currentTarget);
+      this.openPopper(currentTarget)
     } else if (this.state.anchorEl) {
-      this.closePopper();
+      this.closePopper()
     }
-  };
+  }
 
   componentWillUnmount() {
     if (this.state.anchorEl) {
-      this.closePopper();
+      this.closePopper()
     }
   }
 
@@ -77,41 +77,41 @@ class CalendarEvent extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.event.id !== this.props.event.id) {
       if (this.state.anchorEl) {
-        this.closePopper();
+        this.closePopper()
       }
       this.setState({
         event: nextProps.event,
         pofTree: nextProps.pofTree,
         anchorEl: null
-      });
+      })
     }
   }
 
   render() {
-    const { anchorEl } = this.state;
-    const open = Boolean(anchorEl);
-    const id = open ? "no-transition-popper" : null;
+    const { anchorEl } = this.state
+    const open = Boolean(anchorEl)
+    const id = open ? "no-transition-popper" : null
 
-    const event = this.props.event;
+    const event = this.props.event
     const startTime = event.start.toLocaleTimeString("fi-FI", {
       hour: "numeric",
       minute: "numeric"
-    });
+    })
     const endTime = event.end.toLocaleTimeString("fi-FI", {
       hour: "numeric",
       minute: "numeric"
-    });
-    const information = new Parser().parse(event.information);
+    })
+    const information = new Parser().parse(event.information)
 
-    let popoverContentClassName; // Style: Normal
+    let popoverContentClassName // Style: Normal
     if (event.activities.length === 0) {
-      popoverContentClassName = "empty-event-card"; // Style: No activities
+      popoverContentClassName = "empty-event-card" // Style: No activities
     }
     if (event.synced) {
-      popoverContentClassName = "kuksa-synced-event-card"; // Style: Synced to Kuksa
+      popoverContentClassName = "kuksa-synced-event-card" // Style: Synced to Kuksa
     }
     if (event.kuksaEvent) {
-      popoverContentClassName = "kuksa-event-card"; // Style: Kuksa event
+      popoverContentClassName = "kuksa-event-card" // Style: Kuksa event
     }
 
     const activities = (
@@ -123,7 +123,7 @@ class CalendarEvent extends Component {
           className="calendar-event-activity-wrapper"
         />
       </div>
-    );
+    )
 
     const editDeleteButtons = (
       <div>
@@ -142,7 +142,7 @@ class CalendarEvent extends Component {
           />
         </div>
       </div>
-    );
+    )
 
     const popoverContent = (
       <div>
@@ -162,7 +162,7 @@ class CalendarEvent extends Component {
         {!event.kuksaEvent && editDeleteButtons}
         {event.kuksaEvent && <AddToPlan event={event.originalData} />}
       </div>
-    );
+    )
 
     // Don't allow dragging activities to kuksa events
     const paperContent = event.kuksaEvent ? (
@@ -178,7 +178,7 @@ class CalendarEvent extends Component {
       >
         {popoverContent}
       </ActivityDragAndDropTarget>
-    );
+    )
 
     return (
       <div>
@@ -193,7 +193,7 @@ class CalendarEvent extends Component {
           </div>
         </Popper>
       </div>
-    );
+    )
   }
 }
 
@@ -202,8 +202,8 @@ const mapStateToProps = state => {
     pofTree: state.pofTree,
     popperOpen: state.calendar.popperOpen,
     popperEventId: state.calendar.popperEventId
-  };
-};
+  }
+}
 
 export default connect(
   mapStateToProps,
@@ -211,4 +211,4 @@ export default connect(
     openPopper,
     closePopper
   }
-)(CalendarEvent);
+)(CalendarEvent)
