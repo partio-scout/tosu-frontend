@@ -31,10 +31,12 @@ class Login extends React.Component {
       await Promise.all([
         this.props.eventsInitialization(),
         this.props.bufferZoneInitialization(),
-      ]).then(() => {
-        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-        this.props.store.dispatch(setLoading(false))
-      })
+      ])
+      this.props.pofTreeUpdate(
+        this.props.store.getState().buffer,
+        this.props.store.getState().events
+      )
+      this.props.store.dispatch(setLoading(false))
     }
   }
 
@@ -53,7 +55,7 @@ class Login extends React.Component {
         <GoogleLogin
           className="login-button"
           scope="profile email"
-          clientId={this.props.token} // TODO: GET THE TOKEN FOK OUTTA HERE
+          clientId={this.props.token} // TODO: Maybe get the token out of here
           onSuccess={this.googleLoginSuccess}
           onFailure={this.googleLoginFail}
         >

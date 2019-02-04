@@ -16,7 +16,7 @@ const deleteFromBuffer = (action, state) => {
   return leBuffer
 }
 
-const reducer = (state = [], action) => {
+const reducer = (state = { id: 0, activities: [] }, action) => {
   switch (action.type) {
     case 'INIT_BUFFER':
       return action.buffer
