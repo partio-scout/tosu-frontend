@@ -1,9 +1,9 @@
-import { connect } from "react-redux"
-import ReactDOM from "react-dom"
-import isTouchDevice from "is-touch-device"
-import TreeSelect /* ,{ TreeNode, SHOW_PARENT } */ from "rc-tree-select"
-import "rc-tree-select/assets/index.css"
-import React from "react"
+import { connect } from 'react-redux'
+import ReactDOM from 'react-dom'
+import isTouchDevice from 'is-touch-device'
+import TreeSelect /* ,{ TreeNode, SHOW_PARENT } */ from 'rc-tree-select'
+import 'rc-tree-select/assets/index.css'
+import React from 'react'
 import {
   CardActions,
   CardHeader,
@@ -16,32 +16,32 @@ import {
   DialogContentText,
   DialogTitle,
   Card,
-  TextField
-} from "@material-ui/core"
-import Warning from "@material-ui/icons/Warning"
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
-import moment from "moment-with-locales-es6"
-import { Parser } from "html-to-react"
-
-import Activities from "./Activities"
-import ActivityDragAndDropTarget from "./ActivityDragAndDropTarget"
-import DeleteEvent from "./DeleteEvent"
-import EditEvent from "./EditEvent"
+  FormControlLabel,
+  TextField,
+  Switch,
+} from '@material-ui/core'
+import Warning from '@material-ui/icons/Warning'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import moment from 'moment-with-locales-es6'
+import { Parser } from 'html-to-react'
+import Activities from './Activities'
+import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
+import DeleteEvent from './DeleteEvent'
+import EditEvent from './EditEvent'
 import {
   editEvent,
   deleteActivityFromEvent,
   deleteActivityFromEventOnlyLocally,
-  addActivityToEventOnlyLocally
-} from "../reducers/eventReducer"
-import { notify } from "../reducers/notificationReducer"
-import { pofTreeUpdate } from "../reducers/pofTreeReducer"
+  addActivityToEventOnlyLocally,
+} from '../reducers/eventReducer'
+import { notify } from '../reducers/notificationReducer'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   deleteActivityFromBufferOnlyLocally,
   postActivityToBufferOnlyLocally,
-  bufferZoneInitialization
-} from "../reducers/bufferZoneReducer"
-import eventService from "../services/events"
-
+  bufferZoneInitialization,
+} from '../reducers/bufferZoneReducer'
+import eventService from '../services/events'
 
 // Warning icon
 const warning = (
@@ -59,7 +59,7 @@ class EventCard extends React.Component {
       syncToKuksa: Boolean(props.event.synced), // Initial state of sync or no sync from backend
       syncDialogOpen: false,
       event: props.event,
-      editMode: false
+      editMode: false,
     }
   }
   onChangeChildren = async activityGuid => {
@@ -70,9 +70,9 @@ class EventCard extends React.Component {
         })
 
         this.props.addActivityToEventOnlyLocally(this.props.event.id, res)
-        this.props.notify("Aktiviteetti on lisätty!", "success")
+        this.props.notify('Aktiviteetti on lisätty!', 'success')
       } catch (exception) {
-        this.props.notify("Aktiviteetin lisäämisessä tapahtui virhe!")
+        this.props.notify('Aktiviteetin lisäämisessä tapahtui virhe!')
       }
     }
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
@@ -86,7 +86,7 @@ class EventCard extends React.Component {
       try {
         await Promise.all(promises)
       } catch (exception) {
-        console.log("Error in emptying buffer", exception)
+        console.log('Error in emptying buffer', exception)
       }
     }
 
@@ -141,20 +141,20 @@ class EventCard extends React.Component {
   render() {
     const { event, odd } = this.props
     let editButton = <div />
-    moment.locale("fi")
+    moment.locale('fi')
     const { title } = event
     const subtitle = this.state.expanded
-      ? ""
-      : `${moment(event.startDate, "YYYY-MM-DD")
-          .locale("fi")
-          .format("ddd D.M.YYYY")} ${event.startTime.substring(0, 5)}`
-    let cardClassName = "event-card-wrapper" // Style: Normal
+      ? ''
+      : `${moment(event.startDate, 'YYYY-MM-DD')
+          .locale('fi')
+          .format('ddd D.M.YYYY')} ${event.startTime.substring(0, 5)}`
+    let cardClassName = 'event-card-wrapper' // Style: Normal
     if (this.props.event.activities.length === 0) {
-      cardClassName = "empty-event-card" // Style: No activities
+      cardClassName = 'empty-event-card' // Style: No activities
     }
     // Prioritize kuksa sync color over emptiness warning color (warning icon still visible)
     if (this.props.event.synced) {
-      cardClassName = "kuksa-synced-event-card" // Style: Synced to Kuksa
+      cardClassName = 'kuksa-synced-event-card' // Style: Synced to Kuksa
     }
 
     const taskGroupTree = this.props.pofTree.taskgroups
@@ -165,7 +165,7 @@ class EventCard extends React.Component {
       this.props.taskgroup !== null &&
       isTouchDevice()
     ) {
-      console.log("Counting selectedTaskGroupPofData")
+      console.log('Counting selectedTaskGroupPofData')
       const groupfound = taskGroupTree.find(
         group => group.guid === this.props.taskgroup.value
       )
@@ -179,16 +179,16 @@ class EventCard extends React.Component {
     let syncDialogConfirmText
     let dialogConfirmHandler
     if (this.state.syncToKuksa) {
-      syncDialogTitle = "Lopetetaanko tapahtuman synkronointi Kuksaan?"
+      syncDialogTitle = 'Lopetetaanko tapahtuman synkronointi Kuksaan?'
       syncDialogDescription =
-        "Tapahtuma poistetaan Kuksasta, mutta jää omaan suunnitelmaasi."
-      syncDialogConfirmText = "Lopeta synkronointi"
+        'Tapahtuma poistetaan Kuksasta, mutta jää omaan suunnitelmaasi.'
+      syncDialogConfirmText = 'Lopeta synkronointi'
       dialogConfirmHandler = this.stopSyncingWithKuksa
     } else {
-      syncDialogTitle = "Synkronoidaanko tapahtuma Kuksaan?"
+      syncDialogTitle = 'Synkronoidaanko tapahtuma Kuksaan?'
       syncDialogDescription =
-        "Tapahtuma lähetetään Kuksaan. Tapahtuman muokkaus lähettää muutokset Kuksaan ja Kuksassa tehdyt muutokset synkronoidaan suunnitelmaasi. Aktiviteettejä ei synkronoida."
-      syncDialogConfirmText = "Synkronoi tapahtuma"
+        'Tapahtuma lähetetään Kuksaan. Tapahtuman muokkaus lähettää muutokset Kuksaan ja Kuksassa tehdyt muutokset synkronoidaan suunnitelmaasi. Aktiviteettejä ei synkronoida.'
+      syncDialogConfirmText = 'Synkronoi tapahtuma'
 
       dialogConfirmHandler = this.startSyncingWithKuksa
     }
@@ -228,8 +228,7 @@ class EventCard extends React.Component {
     )
 
     const touchDeviceNotExpanded = (
-      <CardContent style={this.state.expanded ? {} : { padding: "3px" }}>
-
+      <CardContent style={this.state.expanded ? {} : { padding: '3px' }}>
         <div className="mobile-event-card-media">
           <Activities
             activities={this.props.event.activities}
@@ -239,14 +238,13 @@ class EventCard extends React.Component {
           {this.props.taskgroup ? (
             <div>
               <TreeSelect
-                style={{ width: "90%" }}
-
+                style={{ width: '90%' }}
                 transitionName="rc-tree-select-dropdown-slide-up"
                 choiceTransitionName="rc-tree-select-selection__choice-zoom"
                 dropdownStyle={{
-                  position: "absolute",
+                  position: 'absolute',
                   maxHeight: 400,
-                  overflow: "auto"
+                  overflow: 'auto',
                 }}
                 placeholder="Valitse aktiviteetti"
                 searchPlaceholder="Hae aktiviteettia"
@@ -262,13 +260,13 @@ class EventCard extends React.Component {
               />
             </div>
           ) : (
-            <div style={{ clear: "both" }}>&nbsp;</div>
+            <div style={{ clear: 'both' }}>&nbsp;</div>
           )}
         </div>
       </CardContent>
     )
     const notExpanded = (
-      <CardContent style={this.state.expanded ? {} : { padding: "3px 10px" }}>
+      <CardContent style={this.state.expanded ? {} : { padding: '3px 10px' }}>
         <div className="activity-header">
           <Activities
             activities={this.props.event.activities}
@@ -292,7 +290,7 @@ class EventCard extends React.Component {
         startTime: this.props.event.startTime,
         endTime: this.props.event.endTime,
         type: this.props.event.type,
-        information: event.target.children[0].value
+        information: event.target.children[0].value,
       }
       this.props.editEvent(moddedEvent)
       this.setState({ editMode: false })
@@ -315,35 +313,34 @@ class EventCard extends React.Component {
       }
       return <span>{information}</span>
     }
-    if (typeof information === "string" || typeof information === undefined) {
+    if (typeof information === 'string' || typeof information === undefined) {
       editButton = (
         <button
           onClick={renderEdit}
           className="information"
           id="information-button"
         >
-          {this.state.editMode ? "-" : "+"}
+          {this.state.editMode ? '-' : '+'}
         </button>
       )
     } else {
-      editButton = ""
+      editButton = ''
     }
     const expanded = (
       <CardContent>
         {syncConfirmDialog}
         <p className="eventTimes">
-          <span>{event.type} alkaa:</span>{" "}
+          <span>{event.type} alkaa:</span>{' '}
           {moment(event.startDate)
-            .locale("fi")
-            .format("ddd D.M.YYYY")}{" "}
+            .locale('fi')
+            .format('ddd D.M.YYYY')}{' '}
           kello {event.startTime.substring(0, 5)}
         </p>
         <p className="eventTimes">
-          <span>{event.type} päättyy:</span>{" "}
+          <span>{event.type} päättyy:</span>{' '}
           {moment(event.endDate)
-            .locale("fi")
-            .format("ddd D.M.YYYY")}{" "}
-
+            .locale('fi')
+            .format('ddd D.M.YYYY')}{' '}
           kello {event.endTime.substring(0, 5)}
         </p>
         <b>Lisätiedot </b>
@@ -356,14 +353,13 @@ class EventCard extends React.Component {
             parentId={this.props.event.id}
           />
         </b>
-        <br style={{ clear: "both" }} />
+        <br style={{ clear: 'both' }} />
       </CardContent>
     )
 
     return (
       <div className={cardClassName}>
-      <Card style={{ boxShadow: "none" }}>
-
+        <Card style={{ boxShadow: 'none' }}>
           <ActivityDragAndDropTarget
             odd={odd}
             event={true}
@@ -371,30 +367,29 @@ class EventCard extends React.Component {
             parentId={this.props.event.id}
           >
             <CardHeader
-              style={this.state.expanded ? {} : { paddingBottom: "5px" }}
-
+              style={this.state.expanded ? {} : { paddingBottom: '5px' }}
               title={
                 <div>
                   {title}
                   &nbsp;
-                  {this.props.event.activities.length === 0 ? warning : ""}
+                  {this.props.event.activities.length === 0 ? warning : ''}
                 </div>
               }
               subheader={subtitle}
               titleTypographyProps={{
-                classes: { root: "event-card-title-left" },
-                variant: "title"
+                classes: { root: 'event-card-title-left' },
+                variant: 'title',
               }}
               subheaderTypographyProps={{
                 classes: {
-                  root: "event-card-title-right event-card-subheader"
+                  root: 'event-card-title-right event-card-subheader',
                 },
-                variant: "subtitle2"
+                variant: 'subtitle2',
               }}
               action={
                 <IconButton
                   onClick={this.handleExpandChange}
-                  className={this.state.expanded ? "arrow-up" : ""}
+                  className={this.state.expanded ? 'arrow-up' : ''}
                 >
                   <ExpandMoreIcon />
                 </IconButton>
@@ -407,7 +402,7 @@ class EventCard extends React.Component {
             {this.state.expanded ? expanded : null}
 
             <CardActions
-              style={this.state.expanded ? {} : { paddingTop: "5px" }}
+              style={this.state.expanded ? {} : { paddingTop: '5px' }}
             >
               <EditEvent
                 buttonClass="buttonRight"
@@ -450,6 +445,6 @@ export default connect(
     deleteActivityFromEventOnlyLocally,
     postActivityToBufferOnlyLocally,
     deleteActivityFromBufferOnlyLocally,
-    pofTreeUpdate
+    pofTreeUpdate,
   }
 )(EventCard)
