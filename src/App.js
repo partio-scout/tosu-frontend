@@ -81,17 +81,18 @@ class App extends Component {
     }
     await this.checkLoggedIn()
     let pofData = loadCachedPofData()
-
     if (pofData === undefined || pofData === {}) {
       pofData = await pofService.getAllTree()
     }
-    await Promise.all([
-      this.props.pofTreeInitialization(pofData),
-      this.props.eventsInitialization(),
-      this.props.bufferZoneInitialization(), // id tulee userista myöhemmin
-    ])
-    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-
+    await this.props.pofTreeInitialization(pofData)
+    if (this.props.store.getState().scout !== null) {
+      await Promise.all([
+        this.props.eventsInitialization(),
+        this.props.bufferZoneInitialization(), // id tulee userista myöhemmin
+      ]).then(() =>
+        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+      )
+    }
     // If touch device is used, empty bufferzone so activities that have been left to bufferzone can be added to events
     if (isTouchDevice()) {
       const bufferActivities = this.props.buffer.activities
@@ -160,7 +161,6 @@ class App extends Component {
       this.filterSelected('RANGE')()
     }
     if (this.state.startDate && !this.state.endDate) {
-      
       this.filterSelected('ONLY_START')()
     }
     if (!this.state.startDate && this.state.endDate) {
