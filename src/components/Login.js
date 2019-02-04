@@ -22,7 +22,7 @@ import {
 } from '../reducers/bufferZoneReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
 
-class Login extends Component {
+class Login extends React.Component {
   constructor(props) {
     super(props)
   }

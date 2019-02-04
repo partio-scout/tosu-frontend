@@ -35,7 +35,7 @@ export function eventStyleGetter(event, start, end, isSelected) {
   }
 }
 
-class CalendarEvent extends Component {
+export class CalendarEvent extends Component {
   state = {
     anchorEl: null,
   }

@@ -54,7 +54,7 @@ function getItemStyles(currentOffset, startPoint, mandatory) {
   }
 }
 
-class ActivityPreview extends React.Component {
+export class ActivityPreview extends React.Component {
   render() {
     const { isDragging, currentOffset, startPoint, pofActivity } = this.props
     if (!isDragging) {
