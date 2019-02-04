@@ -160,6 +160,7 @@ class App extends Component {
       this.filterSelected('RANGE')()
     }
     if (this.state.startDate && !this.state.endDate) {
+      
       this.filterSelected('ONLY_START')()
     }
     if (!this.state.startDate && this.state.endDate) {
