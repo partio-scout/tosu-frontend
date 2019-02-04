@@ -31,6 +31,7 @@ import DeleteEvent from "./DeleteEvent"
 import EditEvent from "./EditEvent"
 import {
   editEvent,
+  editEvent2,
   deleteActivityFromEvent,
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally,
@@ -60,7 +61,8 @@ class EventCard extends React.Component {
       expanded: false,
       syncToKuksa: Boolean(props.event.synced), // Initial state of sync or no sync from backend
       syncDialogOpen: false,
-      event: props.event
+      event: props.event,
+      editMode: false
     }
   }
   onChangeChildren = async activityGuid => {
@@ -78,9 +80,6 @@ class EventCard extends React.Component {
     }
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
-  editMode = false
-  editIcon = "+"
-  editButton = ""
   emptyBuffer = async () => {
     if (isTouchDevice()) {
       const bufferActivities = this.props.buffer.activities
@@ -142,10 +141,9 @@ class EventCard extends React.Component {
   stopSyncingWithKuksa = async () => {
     // TODO
   }
-  informationContainer
   render() {
     const { event, odd } = this.props
-
+    let editButton = <div />
     moment.locale("fi")
     const { title } = event
     const subtitle = this.state.expanded
@@ -282,9 +280,10 @@ class EventCard extends React.Component {
       </CardContent>
     )
 
+    /*creates a new event with modified information and sends it to eventReducer's editEvent method*/
     const changeInfo = event => {
       event.preventDefault()
-      console.log(event.target.children[0].value)
+
       const moddedEvent = {
         id: this.props.event.id,
         title: this.props.event.title,
@@ -295,36 +294,40 @@ class EventCard extends React.Component {
         type: this.props.event.type,
         information: event.target.children[0].value
       }
+      this.props.editEvent(moddedEvent)
+      this.setState({ editMode: false })
+    }
 
-      eventService.edit(moddedEvent)
-      this.forceUpdate()
-    }
-    const handleInfoChange = event => {
-      event.preventDefault()
-      console.log(event.target.value)
-    }
     const renderEdit = () => {
-      if (!this.editMode) {
-        this.editIcon = "-"
-        console.log("edit", information)
-        this.informationContainer = (
+      this.setState({ editMode: !this.state.editMode })
+    }
+
+    const informationContainer = () => {
+      if (this.state.editMode) {
+        return (
           <form onSubmit={changeInfo}>
-            <textarea
-              type="text"
-              onInput={handleInfoChange}
-              defaultValue={information}
-            />
-            <input type="submit" value="tallenna" />
+            <textarea defaultValue={information} rows="4" cols="80" />
+            <p>
+              <input type="submit" value="TALLENNA" className="information" />
+            </p>
           </form>
         )
-        this.editMode = true
-      } else {
-        this.editIcon = "+"
-        this.informationContainer = <span>{information}</span>
-        this.editMode = false
       }
+      return <span>{information}</span>
     }
-
+    if (typeof information === "string" || typeof information === undefined) {
+      editButton = (
+        <button
+          onClick={renderEdit}
+          className="information"
+          id="information-button"
+        >
+          {this.state.editMode ? "-" : "+"}
+        </button>
+      )
+    } else {
+      editButton = ""
+    }
     const expanded = (
       <CardContent>
         {syncConfirmDialog}
@@ -343,8 +346,8 @@ class EventCard extends React.Component {
           kello {event.endTime.substring(0, 5)}
         </p>
         <b>Lisätiedot </b>
-        {this.editButton}
-        {this.informationContainer}
+        {editButton}
+        <p> {informationContainer()} </p>
         <b>
           <Activities
             activities={this.props.event.activities}
@@ -355,16 +358,7 @@ class EventCard extends React.Component {
         <br style={{ clear: "both" }} />
       </CardContent>
     )
-    this.informationContainer = <span>{information}</span>
-    if (typeof information === "string") {
-      this.editButton = (
-        <button onClick={renderEdit} className="information">
-          {this.editIcon}
-        </button>
-      )
-    } else {
-      this.editButton = ""
-    }
+
     return (
       <div className={cardClassName}>
         <Card style={{ boxShadow: "none" }}>

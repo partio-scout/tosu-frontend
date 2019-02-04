@@ -15,18 +15,22 @@
   border-radius: 100%;
   box-shadow: 1px 1px 3px;
 }
-.information{
+.information {
   padding: 2px;
   padding-right: 5px;
   padding-left: 5px;
   border-radius: 5px;
-  font-family: 'Roboto', sans-serif;
-  background:  #253264;
-  color: #fff; 
-
+  font-family: "Roboto", sans-serif;
+  background: #253264;
+  color: #fff;
 }
-.feedback{
-  textAlign: center;
+#information-button {
+  width: 28px;
+  height: 28px;
+  font-weight: 900;
+}
+.feedback {
+  textalign: center;
   padding: 10px;
   position: fixed;
   left: 0;
@@ -34,12 +38,12 @@
   width: 100%;
 }
 #empty-button {
-    margin-left: 14px;
-    margin-top: 20px;
+  margin-left: 14px;
+  margin-top: 20px;
 }
 
 .customBtn {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   background: white;
   color: #444;
   width: 190px;
@@ -58,7 +62,7 @@
 }
 .toggle-sidebar {
   background-color: #253264 !important;
-  color: #FFF;
+  color: #fff;
   font-size: 0.8rem;
   margin-left: 10px;
 }
@@ -78,17 +82,17 @@
   cursor: pointer;
 }
 .appbar-button:hover {
-    background: rgba(255, 255, 255, 0.8);
-    cursor: pointer;
-  }
-  
+  background: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+}
+
 .appbar-button span {
-    margin: 5px;
-    padding: 0;
-  }
-  
+  margin: 5px;
+  padding: 0;
+}
+
 .appbar-button-text {
-    text-transform: uppercase;
-    line-height: 1.2rem;
-    font-size: 0.8rem;
-  }
+  text-transform: uppercase;
+  line-height: 1.2rem;
+  font-size: 0.8rem;
+}
