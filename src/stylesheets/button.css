@@ -20,7 +20,7 @@
   padding-right: 5px;
   padding-left: 5px;
   border-radius: 5px;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   background: #253264;
   color: #fff;
 }
@@ -43,7 +43,7 @@
 }
 
 .customBtn {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   background: white;
   color: #444;
   width: 190px;

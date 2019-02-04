@@ -1,20 +1,20 @@
-import React, { Component } from "react"
-import Popper from "@material-ui/core/Popper"
-import Paper from "@material-ui/core/Paper"
-import Icon from "@material-ui/core/Icon"
-import IconButton from "@material-ui/core/IconButton"
-import { connect } from "react-redux"
-import { Parser } from "html-to-react"
+import React, { Component } from 'react'
+import Popper from '@material-ui/core/Popper'
+import Paper from '@material-ui/core/Paper'
+import Icon from '@material-ui/core/Icon'
+import IconButton from '@material-ui/core/IconButton'
+import { connect } from 'react-redux'
+import { Parser } from 'html-to-react'
 
-import Activities from "./Activities"
-import ActivityDragAndDropTarget from "./ActivityDragAndDropTarget"
-import DeleteEvent from "./DeleteEvent"
-import EditEvent from "./EditEvent"
-import AddToPlan from "./AddToPlan"
-import { openPopper, closePopper } from "../reducers/calendarReducer"
+import Activities from './Activities'
+import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
+import DeleteEvent from './DeleteEvent'
+import EditEvent from './EditEvent'
+import AddToPlan from './AddToPlan'
+import { openPopper, closePopper } from '../reducers/calendarReducer'
 
 function createActivityMarkers(activities) {
-  let markers = [" "]
+  let markers = [' ']
   for (var i = 0; i < activities.length; i++) {
     markers.push(
       <span className="calendar-activity-marker" key={activities[i].id} />
@@ -24,8 +24,8 @@ function createActivityMarkers(activities) {
 }
 
 export function eventStyleGetter(event, start, end, isSelected) {
-  const backgroundColor = event.kuksaEvent ? "lightgrey" : "#27AAE1"
-  const color = event.kuksaEvent ? "black" : "white"
+  const backgroundColor = event.kuksaEvent ? 'lightgrey' : '#27AAE1'
+  const color = event.kuksaEvent ? 'black' : 'white'
   return {
     style: {
       backgroundColor: backgroundColor,
@@ -90,28 +90,28 @@ class CalendarEvent extends Component {
   render() {
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
-    const id = open ? "no-transition-popper" : null
+    const id = open ? 'no-transition-popper' : null
 
     const event = this.props.event
-    const startTime = event.start.toLocaleTimeString("fi-FI", {
-      hour: "numeric",
-      minute: "numeric"
+    const startTime = event.start.toLocaleTimeString('fi-FI', {
+      hour: 'numeric',
+      minute: 'numeric'
     })
-    const endTime = event.end.toLocaleTimeString("fi-FI", {
-      hour: "numeric",
-      minute: "numeric"
+    const endTime = event.end.toLocaleTimeString('fi-FI', {
+      hour: 'numeric',
+      minute: 'numeric'
     })
     const information = new Parser().parse(event.information)
 
     let popoverContentClassName // Style: Normal
     if (event.activities.length === 0) {
-      popoverContentClassName = "empty-event-card" // Style: No activities
+      popoverContentClassName = 'empty-event-card' // Style: No activities
     }
     if (event.synced) {
-      popoverContentClassName = "kuksa-synced-event-card" // Style: Synced to Kuksa
+      popoverContentClassName = 'kuksa-synced-event-card' // Style: Synced to Kuksa
     }
     if (event.kuksaEvent) {
-      popoverContentClassName = "kuksa-event-card" // Style: Kuksa event
+      popoverContentClassName = 'kuksa-event-card' // Style: Kuksa event
     }
 
     const activities = (
