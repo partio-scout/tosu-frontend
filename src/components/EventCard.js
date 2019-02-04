@@ -295,12 +295,8 @@ class EventCard extends React.Component {
         type: this.props.event.type,
         information: event.target.children[0].value
       }
-      console.log("ennen", this.state.event)
-      this.setState({ event: moddedEvent })
-      console.log("uusi", moddedEvent)
+
       eventService.edit(moddedEvent)
-      information = event.target.children[0].value
-      console.log("nyt", information)
       this.forceUpdate()
     }
     const handleInfoChange = event => {
