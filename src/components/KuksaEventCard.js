@@ -11,19 +11,13 @@ import {
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
-import { Parser } from 'html-to-react'
+import { Parser } from 'html-to-react'
 
 import AddToPlan from './AddToPlan'
 import { notify } from '../reducers/notificationReducer'
-import { addEventFromKuksa } from '../reducers/eventReducer'
 
 class KuksaEventCard extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      expanded: false,
-    }
-  }
+  state = { expanded: false }
 
   handleExpandChange = expanded => {
     this.setState({ expanded: !this.state.expanded })
@@ -37,14 +31,20 @@ class KuksaEventCard extends React.Component {
     const subtitle = this.state.expanded
       ? ''
       : `${moment(event.startDate, 'YYYY-MM-DD')
-        .locale('fi')
-        .format('ddd D. MMMM YYYY')} ${event.startTime}`
+          .locale('fi')
+          .format('ddd D. MMMM YYYY')} ${event.startTime}`
 
     const information = new Parser().parse(event.information)
 
     return (
-      <div className='event-card-wrapper'>
-        <Card style={{backgroundColor: '#D6E8F6', boxShadow: 'none', borderRadius: '4px'}}>
+      <div className="event-card-wrapper">
+        <Card
+          style={{
+            backgroundColor: '#D6E8F6',
+            boxShadow: 'none',
+            borderRadius: '4px',
+          }}
+        >
           <CardHeader
             title={
               <div>
@@ -63,15 +63,15 @@ class KuksaEventCard extends React.Component {
             }
           />
 
-          <Collapse in={this.state.expanded} timeout='auto' unmountOnExit>
+          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
             <CardContent>
               <h2>{event.title}</h2>
-              <p className='eventTimes'>
+              <p className="eventTimes">
                 <span>{event.type} alkaa:</span>{' '}
                 {moment(event.startDate).format('D.M.YYYY')} kello{' '}
                 {event.startTime}
               </p>
-              <p className='eventTimes'>
+              <p className="eventTimes">
                 <span>{event.type} päättyy:</span>{' '}
                 {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
               </p>
@@ -88,6 +88,9 @@ class KuksaEventCard extends React.Component {
   }
 }
 
-export default connect(null, {
-  notify,
-})(KuksaEventCard)
+export default connect(
+  null,
+  {
+    notify,
+  }
+)(KuksaEventCard)

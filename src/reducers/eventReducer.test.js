@@ -5,14 +5,14 @@ const initialEvents = [
     activities: [],
     eventGroupId: null,
     id: 1,
-    title: 'Testi'
+    title: 'Testi',
   },
   {
     activities: [],
     eventGroupId: null,
     id: 2,
-    title: 'Testi2'
-  }
+    title: 'Testi2',
+  },
 ]
 
 describe('event reducer', () => {
@@ -23,7 +23,7 @@ describe('event reducer', () => {
   it('INIT_EVENTS returns given events', () => {
     const expectedAction = {
       type: 'INIT_EVENTS',
-      events: initialEvents
+      events: initialEvents,
     }
 
     expect(reducer(null, expectedAction)).toEqual(initialEvents)
@@ -32,19 +32,19 @@ describe('event reducer', () => {
   it('ADD_EVENT adds new event', () => {
     const firstState = reducer(null, {
       type: 'INIT_EVENTS',
-      events: initialEvents
+      events: initialEvents,
     })
 
     const newEvent = {
       activities: [],
       eventGroupId: null,
       id: 3,
-      title: 'Testi3'
+      title: 'Testi3',
     }
 
     const expectedAction = {
       type: 'ADD_EVENT',
-      event: newEvent
+      event: newEvent,
     }
 
     const newState = reducer(firstState, expectedAction)
@@ -56,14 +56,14 @@ describe('event reducer', () => {
   it('DELETE_EVENT removes selected event', () => {
     const firstState = reducer(null, {
       type: 'INIT_EVENTS',
-      events: initialEvents
+      events: initialEvents,
     })
 
     const eventId = 2
 
     const expectedAction = {
       type: 'DELETE_EVENT',
-      eventId
+      eventId,
     }
     const newState = reducer(firstState, expectedAction)
 
@@ -79,32 +79,32 @@ describe('event reducer', () => {
         activities: [],
         eventGroupId: 1,
         id: 1,
-        title: 'Testi'
+        title: 'Testi',
       },
       {
         activities: [],
         eventGroupId: 1,
         id: 2,
-        title: 'Testi2'
+        title: 'Testi2',
       },
       {
         activities: [],
         eventGroupId: null,
         id: 2,
-        title: 'Testi3'
-      }
+        title: 'Testi3',
+      },
     ]
 
     const firstState = reducer(null, {
       type: 'INIT_EVENTS',
-      events: initialEventgroup
+      events: initialEventgroup,
     })
 
     const eventGroupId = 1
 
     const expectedAction = {
       type: 'DELETE_EVENTGROUP',
-      eventGroupId
+      eventGroupId,
     }
 
     const expectedState = [
@@ -112,8 +112,8 @@ describe('event reducer', () => {
         activities: [],
         eventGroupId: null,
         id: 2,
-        title: 'Testi3'
-      }
+        title: 'Testi3',
+      },
     ]
 
     const newState = reducer(firstState, expectedAction)
@@ -124,18 +124,18 @@ describe('event reducer', () => {
   it('UPDATE_EVENT updates event', () => {
     const firstState = reducer(null, {
       type: 'INIT_EVENTS',
-      events: initialEvents
+      events: initialEvents,
     })
 
     const modded = {
       activities: [],
       eventGroupId: null,
       id: 1,
-      title: 'Muokattu'
+      title: 'Muokattu',
     }
     const expectedAction = {
       type: 'UPDATE_EVENT',
-      modded
+      modded,
     }
 
     const newState = reducer(firstState, expectedAction)
@@ -147,14 +147,14 @@ describe('event reducer', () => {
   it('ADD_ACTIVITY_TO_EVENT adds activity to event', () => {
     const firstState = reducer(null, {
       type: 'INIT_EVENTS',
-      events: initialEvents
+      events: initialEvents,
     })
     const activity = { title: 'aktiviteetti' }
     const eventId = 1
     const expectedAction = {
       type: 'ADD_ACTIVITY_TO_EVENT',
       eventId,
-      activity
+      activity,
     }
 
     const newState = reducer(firstState, expectedAction)
@@ -170,19 +170,19 @@ describe('event reducer', () => {
         activities: [{ id: 11, title: 'poistettava', eventId: 2 }],
         eventGroupId: null,
         id: 2,
-        title: 'Testi2'
-      }
+        title: 'Testi2',
+      },
     ]
     const firstState = reducer(null, {
       type: 'INIT_EVENTS',
-      events: eventWithActivity
+      events: eventWithActivity,
     })
 
     const activityId = 11
 
     const expectedAction = {
       type: 'DELETE_ACTIVITY_FROM_EVENT',
-      activityId
+      activityId,
     }
 
     const newState = reducer(firstState, expectedAction)
@@ -192,8 +192,8 @@ describe('event reducer', () => {
         activities: [],
         eventGroupId: null,
         id: 2,
-        title: 'Testi2'
-      }
+        title: 'Testi2',
+      },
     ])
   })
 })

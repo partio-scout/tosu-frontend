@@ -9,8 +9,6 @@ import {
   CardHeader,
   IconButton,
   CardContent,
-  FormControlLabel,
-  Switch,
   Button,
   Dialog,
   DialogActions,
@@ -44,6 +42,7 @@ import {
 } from "../reducers/bufferZoneReducer"
 import eventService from "../services/events"
 
+
 // Warning icon
 const warning = (
   <div className="tooltip">
@@ -67,7 +66,7 @@ class EventCard extends React.Component {
     if (this.isLeaf(activityGuid)) {
       try {
         const res = await eventService.addActivity(this.props.event.id, {
-          guid: activityGuid
+          guid: activityGuid,
         })
 
         this.props.addActivityToEventOnlyLocally(this.props.event.id, res)
@@ -190,6 +189,7 @@ class EventCard extends React.Component {
       syncDialogDescription =
         "Tapahtuma lähetetään Kuksaan. Tapahtuman muokkaus lähettää muutokset Kuksaan ja Kuksassa tehdyt muutokset synkronoidaan suunnitelmaasi. Aktiviteettejä ei synkronoida."
       syncDialogConfirmText = "Synkronoi tapahtuma"
+
       dialogConfirmHandler = this.startSyncingWithKuksa
     }
     let information = new Parser().parse(event.information)
@@ -229,6 +229,7 @@ class EventCard extends React.Component {
 
     const touchDeviceNotExpanded = (
       <CardContent style={this.state.expanded ? {} : { padding: "3px" }}>
+
         <div className="mobile-event-card-media">
           <Activities
             activities={this.props.event.activities}
@@ -239,6 +240,7 @@ class EventCard extends React.Component {
             <div>
               <TreeSelect
                 style={{ width: "90%" }}
+
                 transitionName="rc-tree-select-dropdown-slide-up"
                 choiceTransitionName="rc-tree-select-selection__choice-zoom"
                 dropdownStyle={{
@@ -341,6 +343,7 @@ class EventCard extends React.Component {
           {moment(event.endDate)
             .locale("fi")
             .format("ddd D.M.YYYY")}{" "}
+
           kello {event.endTime.substring(0, 5)}
         </p>
         <b>Lisätiedot </b>
@@ -359,7 +362,8 @@ class EventCard extends React.Component {
 
     return (
       <div className={cardClassName}>
-        <Card style={{ boxShadow: "none" }}>
+      <Card style={{ boxShadow: "none" }}>
+
           <ActivityDragAndDropTarget
             odd={odd}
             event={true}
@@ -368,6 +372,7 @@ class EventCard extends React.Component {
           >
             <CardHeader
               style={this.state.expanded ? {} : { paddingBottom: "5px" }}
+
               title={
                 <div>
                   {title}
@@ -430,7 +435,7 @@ const mapStateToProps = state => {
     buffer: state.buffer,
     pofTree: state.pofTree,
     taskgroup: state.taskgroup,
-    status: state.statusMessage.status
+    status: state.statusMessage.status,
   }
 }
 

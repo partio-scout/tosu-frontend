@@ -22,7 +22,7 @@ export const pofTreeInitialization = pofJson => {
     // const pofJson = await pofService.getAllTree()
     dispatch({
       type: 'INIT_TREE_POF',
-      pofJson
+      pofJson,
     })
   }
 }
@@ -33,23 +33,35 @@ export const pofTreeUpdate = (buffer, events) => {
     usedBuffer = { id: 0, activities: [] }
   }
   return async dispatch => {
-    const existingActivityGuids = arrayActivityGuidsFromBufferAndEvents(usedBuffer, events)
+    const existingActivityGuids = arrayActivityGuidsFromBufferAndEvents(
+      usedBuffer,
+      events
+    )
 
     dispatch({
       type: 'SET_TREE_POF',
-      existingActivityGuids
+      existingActivityGuids,
     })
   }
 }
 
 const updateState = (state, existingActivityGuids) => {
   let updatedState = Object.assign({}, state)
-  updatedState = disableTasksInFilterIfExists(updatedState, existingActivityGuids)
-  updatedState = lockOptionalTasksIfMandatoryLeftToPickInAGroup( updatedState,existingActivityGuids)
+  updatedState = disableTasksInFilterIfExists(
+    updatedState,
+    existingActivityGuids
+  )
+  updatedState = lockOptionalTasksIfMandatoryLeftToPickInAGroup(
+    updatedState,
+    existingActivityGuids
+  )
   return updatedState
 }
 
-const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (pof, existingActivityGuids) => {
+const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (
+  pof,
+  existingActivityGuids
+) => {
   if (!pof) return {}
   if (!pof.taskgroups) return {}
   if (!pof.taskgroups.forEach) return {}
@@ -92,7 +104,6 @@ const disableTasksInFilterIfExists = (root, existingActivityGuids) => {
   if (!root.taskgroups) return {}
   if (!root.taskgroups.forEach) return {}
 
-
   try {
     root.taskgroups.forEach(group =>
       disableTasksInFilterIfExists(group, existingActivityGuids)
@@ -129,13 +140,13 @@ const fillWithNeededVariable = root => {
       task.key = task.guid
       task.value = task.guid
       // add isMandatory -> avoid hardcoded mandatory string check
-      task.isMandatory = (task.tags.pakollisuus[0].slug === 'mandatory')
+      task.isMandatory = task.tags.pakollisuus[0].slug === 'mandatory'
       task.label = task.title
       task.title = (
         <span
           name={task.title}
-          className='tree-search-title'
-          style={{ backgroundColor: (task.isMandatory ? '#2196f3' : '#E3F2FD' )}}
+          className="tree-search-title"
+          style={{ backgroundColor: task.isMandatory ? '#2196f3' : '#E3F2FD' }}
         >
           {task.title}
         </span>

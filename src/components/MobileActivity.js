@@ -2,7 +2,7 @@ import { getEmptyImage } from 'react-dnd-html5-backend'
 import { connect } from 'react-redux'
 import Dialog from '@material-ui/core/Dialog'
 import { DragSource } from 'react-dnd'
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import Avatar from '@material-ui/core/Avatar'
 import Chip from '@material-ui/core/Chip'
@@ -18,26 +18,26 @@ const styles = {
   chip: {
     margin: 4,
     backgroundColor: blue200,
-    cursor: 'move'
+    cursor: 'move',
   },
   avatar: {
     size: 28,
     color: indigo900,
     backgroundColor: blue200,
-    margin: 4
+    margin: 4,
   },
   chipMandatory: {
     margin: 4,
     width: '100%',
     backgroundColor: blue500,
-    cursor: 'move'
+    cursor: 'move',
   },
   avatarMandatory: {
     size: 28,
     color: indigo900,
     backgroundColor: blue500,
-    margin: 4
-  }
+    margin: 4,
+  },
 }
 
 const activitySource = {
@@ -47,41 +47,36 @@ const activitySource = {
       parentId: props.parentId,
       bufferzone: props.bufferzone,
       startPoint: monitor.getDifferenceFromInitialOffset(),
-      item: monitor.getItem()
+      item: monitor.getItem(),
     }
   },
   endDrag(props, monitor) {
     if (!monitor.didDrop()) {
       // return
     }
-  }
+  },
 }
 
 function collect(connector, monitor) {
   return {
     connectDragSource: connector.dragSource(),
     connectDragPreview: connector.dragPreview(),
-    isDragging: monitor.isDragging()
+    isDragging: monitor.isDragging(),
   }
 }
 
-class Activity extends Component {
+class Activity extends React.Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
-    connectDragPreview: PropTypes.func.isRequired
+    connectDragPreview: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props)
+  state = { open: false }
 
-    this.state = {
-      open: false
-    }
-  }
   componentDidMount() {
     if (this.props.connectDragPreview) {
       this.props.connectDragPreview(getEmptyImage(), {
-        captureDraggingState: true
+        captureDraggingState: true,
       })
     }
   }
@@ -105,9 +100,9 @@ class Activity extends Component {
         return connectDragSource(
           <div
             style={{
-              visibility: { visibility }
+              visibility: { visibility },
             }}
-            className='connect-drag-source'
+            className="connect-drag-source"
           >
             <Chip
               onRequestDelete={() => this.props.deleteActivity(activity)}
@@ -123,17 +118,17 @@ class Activity extends Component {
                 <img
                   style={{ width: '100%' }}
                   src={pofActivity.mandatoryIconUrl}
-                  alt='Mandatory Icon'
+                  alt="Mandatory Icon"
                 />
               </Avatar>
-              <span className='activityTitle'>{pofActivity.title}</span>
+              <span className="activityTitle">{pofActivity.title}</span>
               <Dialog
                 title={
                   <div>
                     {pofActivity.title}
 
                     <button
-                      className='dialog-close-button'
+                      className="dialog-close-button"
                       onClick={this.handleClick}
                     >
                       x
@@ -152,9 +147,9 @@ class Activity extends Component {
                 open={this.state.open}
                 onRequestClose={this.handleClick}
                 autoScrollBodyContent
-                bodyClassName='global--modal-body'
-                contentClassName='global--modal-content'
-                paperClassName='global--modal-paper'
+                bodyClassName="global--modal-body"
+                contentClassName="global--modal-content"
+                paperClassName="global--modal-paper"
               >
                 <PlanForm activity={pofActivity} savedActivity={activity} />
               </Dialog>
@@ -187,12 +182,15 @@ const DraggableActivity = DragSource(
 const mapStateToProps = state => ({
   notification: state.notification,
   buffer: state.buffer,
-  events: state.events
+  events: state.events,
 })
 
-export default connect(mapStateToProps, {
-  deleteActivityFromEvent,
-  deleteActivityFromBuffer,
-  notify,
-  pofTreeUpdate
-})(DraggableActivity)
+export default connect(
+  mapStateToProps,
+  {
+    deleteActivityFromEvent,
+    deleteActivityFromBuffer,
+    notify,
+    pofTreeUpdate,
+  }
+)(DraggableActivity)

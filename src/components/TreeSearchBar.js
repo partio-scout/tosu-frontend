@@ -13,12 +13,7 @@ import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import { createStatusMessage } from '../utils/createStatusMessage'
 
 class TreeSearchBar extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      treePlaceHolder: 'Valitse ensin tarppo'
-    }
-  }
+  state = { treePlaceHolder: 'Valitse ensin tarppo' }
 
   componentDidUpdate = () => {
     this.updateStatusMessage()
@@ -150,48 +145,63 @@ class TreeSearchBar extends React.Component {
     const treeSearchBar = () => (
       <TreeSelect
         style={{ width: '100%' }}
-        transitionName='rc-tree-select-dropdown-slide-up'
-        choiceTransitionName='rc-tree-select-selection__choice-zoom'
+        transitionName="rc-tree-select-dropdown-slide-up"
+        choiceTransitionName="rc-tree-select-selection__choice-zoom"
         dropdownStyle={{
           position: 'absolute',
           maxHeight: 400,
-          overflow: 'auto'
+          overflow: 'auto',
         }}
         placeholder={this.state.treePlaceHolder}
-        searchPlaceholder='Hae aktiviteettia'
+        searchPlaceholder="Hae aktiviteettia"
         showSearch
         allowClear
         treeLine
         getPopupContainer={() => ReactDOM.findDOMNode(this).parentNode}
         value={this.state.value}
         treeData={selectedTaskGroupPofData}
-        treeNodeFilterProp='label'
+        treeNodeFilterProp="label"
         filterTreeNode={this.filterTreeNode}
         onChange={this.onChangeChildren}
       />
     )
 
     return (
-      <div style={{ margin: 10, padding: 10, backgroundColor: '#d6e8f7', borderRadius: 2 }}>
+      <div
+        style={{
+          margin: 10,
+          padding: 10,
+          backgroundColor: '#d6e8f7',
+          borderRadius: 2,
+        }}
+      >
         <div style={{ float: 'left', marginRight: 10, marginBottom: 5 }}>
           <Select
             menuContainerStyle={{ width: '100%' }}
             style={{ width: 200 }}
-            name='form-field-name'
+            name="form-field-name"
             value={this.props.taskgroup}
-            placeholder='Valitse tarppo...'
+            placeholder="Valitse tarppo..."
             onChange={this.onChangeTaskgroup}
             options={taskGroupTree.map(rootgroup => {
-              const status = createStatusMessage(this.props.events, this.props.pofTree, rootgroup)
+              const status = createStatusMessage(
+                this.props.events,
+                this.props.pofTree,
+                rootgroup
+              )
               let labelText = rootgroup.title.props.name
 
               if (status.taskgroupDone) {
-                labelText = <span style={{ textDecoration: 'line-through' }}>{labelText}</span>
+                labelText = (
+                  <span style={{ textDecoration: 'line-through' }}>
+                    {labelText}
+                  </span>
+                )
               }
 
               return {
                 value: rootgroup.guid,
-                label: labelText
+                label: labelText,
               }
             })}
           />
@@ -209,15 +219,18 @@ const mapStateToProps = state => {
     events: state.events,
     buffer: state.buffer,
     pofTree: state.pofTree,
-    taskgroup: state.taskgroup
+    taskgroup: state.taskgroup,
   }
 }
 
-export default connect(mapStateToProps, {
-  notify,
-  postActivityToBuffer,
-  pofTreeUpdate,
-  addStatusMessage,
-  selectTaskgroup,
-  emptyTaskgroup
-})(TreeSearchBar)
+export default connect(
+  mapStateToProps,
+  {
+    notify,
+    postActivityToBuffer,
+    pofTreeUpdate,
+    addStatusMessage,
+    selectTaskgroup,
+    emptyTaskgroup,
+  }
+)(TreeSearchBar)

@@ -2,7 +2,12 @@ import activityService from '../services/activities'
 
 // These functions looked so ugly that I moved them to their own file :3
 
-const moveActivityFromEventToBuffer = async (props, activity, parentId, targetId) => {
+const moveActivityFromEventToBuffer = async (
+  props,
+  activity,
+  parentId,
+  targetId
+) => {
   const activityId = activity.id
   try {
     // Move activity locally
@@ -20,7 +25,10 @@ const moveActivityFromEventToBuffer = async (props, activity, parentId, targetId
     return res
   } catch (exception) {
     await props.deleteActivityFromBufferOnlyLocally(activityId)
-    await props.addActivityToEventOnlyLocally(parentId, { ...activity, canDrag: true })
+    await props.addActivityToEventOnlyLocally(parentId, {
+      ...activity,
+      canDrag: true,
+    })
     props.notify('Aktiviteettialue on täynnä!')
   }
   props.pofTreeUpdate(props.buffer, props.events)
@@ -47,7 +55,12 @@ const moveActivityFromBufferToEvent = async (props, activity, targetId) => {
   props.pofTreeUpdate(props.buffer, props.events)
 }
 
-const moveActivityFromEventToEvent = async (props, activity, parentId, targetId) => {
+const moveActivityFromEventToEvent = async (
+  props,
+  activity,
+  parentId,
+  targetId
+) => {
   const activityId = activity.id
   try {
     await props.deleteActivityFromEventOnlyLocally(activityId)
@@ -63,12 +76,14 @@ const moveActivityFromEventToEvent = async (props, activity, parentId, targetId)
     return res
   } catch (exception) {
     await props.deleteActivityFromEventOnlyLocally(activityId)
-    await props.addActivityToEventOnlyLocally(parentId, { ...activity, canDrag: true })
+    await props.addActivityToEventOnlyLocally(parentId, {
+      ...activity,
+      canDrag: true,
+    })
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
   props.pofTreeUpdate(props.buffer, props.events)
 }
-
 
 const DropActivity = {
   drop(props, monitor) {
@@ -85,8 +100,7 @@ const DropActivity = {
     } else if (!targetIsBufferzone && !itemInBufferzone) {
       moveActivityFromEventToEvent(props, activity, parentId, targetId)
     }
-  }
+  },
 }
-
 
 export default DropActivity

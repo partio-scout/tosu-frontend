@@ -48,24 +48,27 @@ function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
 class Calendar extends Component {
   constructor(props) {
     super(props)
-    this.props.closePopper() 
+    this.props.closePopper()
   }
 
   render() {
     const { events } = this.props
-    const eventsToShow = prepareEventsToCalendarEvents(events, this.props.shouldShowKuksaEventsAlso)
+    const eventsToShow = prepareEventsToCalendarEvents(
+      events,
+      this.props.shouldShowKuksaEventsAlso
+    )
 
     return (
       <div className={this.props.mobile ? 'mobile-calendar' : 'calendar'}>
         <BigCalendar
           localizer={localizer}
           events={eventsToShow}
-          startAccessor='start'
-          endAccessor='end'
+          startAccessor="start"
+          endAccessor="end"
           showMultiDayTimes
           views={['month', 'week', 'day']}
           components={{
-            event:  CalendarEvent,
+            event: CalendarEvent,
             toolbar: CalendarToolbar,
           }}
           eventPropGetter={eventStyleGetter}
@@ -82,6 +85,7 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, {
-  closePopper,
-})(Calendar)
+export default connect(
+  mapStateToProps,
+  { closePopper }
+)(Calendar)

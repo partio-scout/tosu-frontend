@@ -41,14 +41,14 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     suhdeYmparistoon: 0,
     majakka: 0,
     total: 0,
-    done: false
+    done: false,
   }
   let extraTask = {
     suhdeItseen: 0,
     suhdeToiseen: 0,
     suhdeYhteiskuntaan: 0,
     suhdeYmparistoon: 0,
-    total: 0
+    total: 0,
   }
 
   // Task dates
@@ -64,13 +64,13 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     suhdeYhteiskuntaan: null,
     suhdeYmparistoon: null,
     majakka: null,
-    extraTask: null
+    extraTask: null,
   }
 
   // Warnings about order of tasks
   const warnings = {
     firstTaskTooLate: false,
-    lastTaskTooSoon: false
+    lastTaskTooSoon: false,
   }
 
   // Check if taskgroup is one of the special groups
@@ -104,12 +104,13 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
         if (activity.label.match(/Johtamis- tai vastuutehtävä/)) {
           leaderTask += 1
           dates.leaderTask = activity.date
-        }else if (activity.isMandatory && activity.order !== 0) { // Chek if activity is another mandatory task (but not johtamis- tai vastuutehtävä)
+        } else if (activity.isMandatory && activity.order !== 0) {
+          // Chek if activity is another mandatory task (but not johtamis- tai vastuutehtävä)
           mandatory += 1
-          if (! (moment(activity.date) > moment(dates.firstMandatory))) {
+          if (!(moment(activity.date) > moment(dates.firstMandatory))) {
             dates.firstMandatory = activity.date
           }
-          if (! (moment(activity.date) < moment(dates.lastMandatory))) {
+          if (!(moment(activity.date) < moment(dates.lastMandatory))) {
             dates.lastMandatory = activity.date
           }
         }
@@ -141,10 +142,10 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
             nonMandatory.majakka += 1
             dates.majakka = activity.date
           } else {
-            if (! (moment(activity.date) > moment(dates.firstNonMandatory))) {
+            if (!(moment(activity.date) > moment(dates.firstNonMandatory))) {
               dates.firstNonMandatory = activity.date
             }
-            if (! (moment(activity.date) < moment(dates.lastNonMandatory))) {
+            if (!(moment(activity.date) < moment(dates.lastNonMandatory))) {
               dates.lastNonMandatory = activity.date
             }
           }
@@ -175,8 +176,12 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
       taskgroupDone = true
     }
   }
-  
-  nonMandatory.total = (nonMandatory.suhdeItseen >= 1) + (nonMandatory.suhdeToiseen >= 1) + (nonMandatory.suhdeYhteiskuntaan >= 1) + (nonMandatory.suhdeYmparistoon >= 1)
+
+  nonMandatory.total =
+    (nonMandatory.suhdeItseen >= 1) +
+    (nonMandatory.suhdeToiseen >= 1) +
+    (nonMandatory.suhdeYhteiskuntaan >= 1) +
+    (nonMandatory.suhdeYmparistoon >= 1)
   // Check if needed non-mandatory activities have been picked for taskgroup
   if (nonMandatory.total === 4) {
     nonMandatory.done = true
@@ -203,7 +208,8 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     moment(dates.firstTask) > moment(dates.extraTask) ||
     moment(dates.firstTask) > moment(dates.majakka)
   ) {
-    warnings.firstTaskTooLate = 'Suuntaus on suoritettava ennen muita aktiviteetteja'
+    warnings.firstTaskTooLate =
+      'Suuntaus on suoritettava ennen muita aktiviteetteja'
   }
 
   // Check if the last task (majakka) is the last one planned
@@ -217,7 +223,6 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     warnings.lastTaskTooSoon = 'Majakka on suoritettava viimeisenä'
   }
 
-
   // If taskgroup has warnings don't set taskgroup done even if enough activities have been planned
   if (warnings.lastTaskTooSoon || warnings.firstTaskTooLate) {
     taskgroupDone = false
@@ -230,7 +235,9 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
   dates.nonMandatory = moment(dates.lastNonMandatory).format('DD.MM.YYYY')
   dates.suhdeItseen = moment(dates.suhdeItseen).format('DD.MM.YYYY')
   dates.suhdeToiseen = moment(dates.suhdeToiseen).format('DD.MM.YYYY')
-  dates.suhdeYhteiskuntaan = moment(dates.suhdeYhteiskuntaan).format('DD.MM.YYYY')
+  dates.suhdeYhteiskuntaan = moment(dates.suhdeYhteiskuntaan).format(
+    'DD.MM.YYYY'
+  )
   dates.suhdeYmparistoon = moment(dates.suhdeYmparistoon).format('DD.MM.YYYY')
   dates.majakka = moment(dates.majakka).format('DD.MM.YYYY')
   dates.extraTask = moment(dates.extraTask).format('DD.MM.YYYY')
@@ -247,7 +254,7 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     leaderTask,
     extraTask,
     dates,
-    warnings
+    warnings,
   }
   return status
 }

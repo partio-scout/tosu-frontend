@@ -1,4 +1,7 @@
-const calendarReducer = (state = { popperOpen: false, showKuksa: false, popperEventId: -1 }, action) => {
+const calendarReducer = (
+  state = { popperOpen: false, showKuksa: false, popperEventId: -1 },
+  action
+) => {
   switch (action.type) {
     case 'OPEN_CALENDAR_POPPER':
       return { ...state, popperOpen: true, popperEventId: action.eventId }
@@ -13,23 +16,23 @@ const calendarReducer = (state = { popperOpen: false, showKuksa: false, popperEv
   }
 }
 
-export const openPopper = (eventId) => dispatch => {
+export const openPopper = eventId => dispatch => {
   dispatch({
     type: 'OPEN_CALENDAR_POPPER',
     eventId,
   })
 }
-export const closePopper = () => dispatch =>  {
+export const closePopper = () => dispatch => {
   dispatch({
     type: 'CLOSE_CALENDAR_POPPER',
   })
 }
-export const showKuksaEvents = () => dispatch =>  {
+export const showKuksaEvents = () => dispatch => {
   dispatch({
     type: 'CALENDAR_SHOW_KUKSA_EVENTS',
   })
 }
-export const hideKuksaEvents = () => dispatch =>  {
+export const hideKuksaEvents = () => dispatch => {
   dispatch({
     type: 'CALENDAR_HIDE_KUKSA_EVENTS',
   })

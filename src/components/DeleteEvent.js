@@ -4,12 +4,16 @@ import { Button, Dialog, DialogActions, DialogTitle } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { withStyles } from '@material-ui/core/styles'
 
-import { deleteEvent, deleteEventGroup, deleteSyncedEvent } from '../reducers/eventReducer'
+import {
+  deleteEvent,
+  deleteEventGroup,
+  deleteSyncedEvent,
+} from '../reducers/eventReducer'
 import { notify } from '../reducers/notificationReducer'
 
 const styles = theme => ({
   button: {
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing.unit,
   },
   rightIcon: {
     marginLeft: theme.spacing.unit,
@@ -20,12 +24,7 @@ const styles = theme => ({
 })
 
 class DeleteEvent extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      open: false
-    }
-  }
+  state = { open: false }
 
   deleteEvent = async () => {
     this.handleClose()
@@ -78,14 +77,10 @@ class DeleteEvent extends React.Component {
       actions = (
         <div>
           <Button onClick={this.handleClose}>peruuta</Button>
-          <Button
-            onClick={this.deleteEvent}
-            disabled={disabled}
-          >Poista tämä tapahtuma
+          <Button onClick={this.deleteEvent} disabled={disabled}>
+            Poista tämä tapahtuma
           </Button>
-          <Button
-            onClick={this.deleteEventGroup}
-          >
+          <Button onClick={this.deleteEventGroup}>
             Poista toistuvat tapahtumat
           </Button>
         </div>
@@ -96,7 +91,7 @@ class DeleteEvent extends React.Component {
           {event.synced && (
             <p>Tapahtuma poistetaan suunnitelmastasi, mutta ei Kuksasta.</p>
           )}
-          <Button onClick={this.handleClose} >peruuta</Button>
+          <Button onClick={this.handleClose}>peruuta</Button>
           <Button onClick={this.deleteEvent} disabled={disabled}>
             Poista tapahtuma
           </Button>
@@ -107,29 +102,27 @@ class DeleteEvent extends React.Component {
     return (
       <div>
         <Button
-          size={this.props.minimal?'small':'medium'}
+          size={this.props.minimal ? 'small' : 'medium'}
           className={classes.button}
           onClick={this.handleDelete}
-          variant='contained'
-          color='primary'
+          variant="contained"
+          color="primary"
           disabled={disabled}
         >
           Poista
           <DeleteIcon className={classes.rightIcon} />
         </Button>
 
-
         <Dialog open={this.state.open} onClose={this.handleClose}>
           <DialogTitle>Poistetaanko tapahtuma {event.title}?</DialogTitle>
-          <DialogActions>
-            {actions}
-          </DialogActions>
+          <DialogActions>{actions}</DialogActions>
         </Dialog>
       </div>
     )
   }
 }
 
-export default connect(null, { deleteEvent, notify, deleteEventGroup, deleteSyncedEvent })(
-  withStyles(styles)(DeleteEvent)
-)
+export default connect(
+  null,
+  { deleteEvent, notify, deleteEventGroup, deleteSyncedEvent }
+)(withStyles(styles)(DeleteEvent))

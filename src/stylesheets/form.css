@@ -4,11 +4,12 @@
   margin-bottom: 12px;
   font-weight: 400;
 }
+
 .event-form {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 .new-form-paper {
-    padding: 20px;
-  }
+  padding: 20px;
+}

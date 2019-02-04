@@ -1,13 +1,16 @@
 import axios from 'axios'
 import { API_ROOT } from '../api-config'
 
-const deletePlan = async (id) => {
+const deletePlan = async id => {
   const response = await axios.delete(`${API_ROOT}/plans/${id}`)
   return response.data
 }
 
 const addPlanToActivity = async (data, activityId) => {
-  const response = await axios.post(`${API_ROOT}/activities/${activityId}/plans`, data)
+  const response = await axios.post(
+    `${API_ROOT}/activities/${activityId}/plans`,
+    data
+  )
   return response.data
 }
 

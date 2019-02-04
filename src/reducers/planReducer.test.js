@@ -6,7 +6,7 @@ describe('plan reducer', () => {
 
     const expectedAction = {
       type: 'INIT_PLANS',
-      plans
+      plans,
     }
 
     expect(reducer([], expectedAction)).toEqual([plans])
@@ -15,12 +15,15 @@ describe('plan reducer', () => {
   it('SAVE_PLANS should add plan to list', () => {
     const plans = {
       id: 1,
-      plans: [{ id: 'abc', content: 'testi' }, { id: 'def', content: 'testi2' }]
+      plans: [
+        { id: 'abc', content: 'testi' },
+        { id: 'def', content: 'testi2' },
+      ],
     }
 
     const expectedAction = {
       type: 'INIT_PLANS',
-      plans
+      plans,
     }
 
     const stateFirst = reducer([], expectedAction)
@@ -33,7 +36,7 @@ describe('plan reducer', () => {
       type: 'SAVE_PLAN',
       id,
       suggestion,
-      suggestionId
+      suggestionId,
     }
 
     expect(reducer(stateFirst, expectedAction2)).toEqual([
@@ -42,9 +45,9 @@ describe('plan reducer', () => {
         plans: [
           { content: 'testi', id: 'abc' },
           { content: 'testi2', id: 'def' },
-          { content: 'testi3', id: 'ghi' }
-        ]
-      }
+          { content: 'testi3', id: 'ghi' },
+        ],
+      },
     ])
   })
 
@@ -54,13 +57,13 @@ describe('plan reducer', () => {
         id: 1,
         plans: [
           { content: 'testi', id: 'abc' },
-          { content: 'Testi2', id: 'def' }
-        ]
-      }
+          { content: 'Testi2', id: 'def' },
+        ],
+      },
     ]
     const expectedAction = {
       type: 'INIT_PLANS',
-      plans
+      plans,
     }
 
     const stateFirst = reducer([], expectedAction)
@@ -71,14 +74,14 @@ describe('plan reducer', () => {
     const expectedAction2 = {
       type: 'DELETE_PLAN',
       id,
-      activityId
+      activityId,
     }
 
     expect(reducer(stateFirst, expectedAction2)).toEqual([
       {
         id: 1,
-        plans: [{ content: 'Testi2', id: 'def' }]
-      }
+        plans: [{ content: 'Testi2', id: 'def' }],
+      },
     ])
   })
 })

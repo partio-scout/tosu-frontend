@@ -5,13 +5,16 @@ const getAllActivities = async () => {
   const response = await axios.get(`${API_ROOT}/activities/`)
   return response.data
 }
-const deleteActivity = async (id) => {
+const deleteActivity = async id => {
   const response = await axios.delete(`${API_ROOT}/activities/${id}`)
   return response.data
 }
 
-const addActivityToBufferZone = async (data) => {
-  const response = await axios.post(`${API_ROOT}/activitybuffers/activities`, data)
+const addActivityToBufferZone = async data => {
+  const response = await axios.post(
+    `${API_ROOT}/activitybuffers/activities`,
+    data
+  )
   return response.data
 }
 
@@ -27,13 +30,25 @@ const moveActivityFromBufferZoneToEvent = async (id, targetId) => {
 }
 
 const moveActivityFromEventToBufferZone = async (activityId, parentId) => {
-  const response = await axios.put(`${API_ROOT}/activities/${activityId}/tobuffer`)
+  const response = await axios.put(
+    `${API_ROOT}/activities/${activityId}/tobuffer`
+  )
   return response.data
 }
 
 const moveActivityFromEventToEvent = async (activityId, parentId, targetId) => {
-  const response = await axios.put(`${API_ROOT}/activities/${activityId}/toevent/${targetId}`)
+  const response = await axios.put(
+    `${API_ROOT}/activities/${activityId}/toevent/${targetId}`
+  )
   return response.data
 }
 
-export default { getAllActivities, deleteActivity, addActivityToBufferZone, getBufferZoneActivities, moveActivityFromBufferZoneToEvent, moveActivityFromEventToBufferZone, moveActivityFromEventToEvent }
+export default {
+  getAllActivities,
+  deleteActivity,
+  addActivityToBufferZone,
+  getBufferZoneActivities,
+  moveActivityFromBufferZoneToEvent,
+  moveActivityFromEventToBufferZone,
+  moveActivityFromEventToEvent,
+}

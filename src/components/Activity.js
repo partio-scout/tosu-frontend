@@ -1,26 +1,26 @@
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import Avatar from '@material-ui/core/Avatar'
 import Dialog from '@material-ui/core/Dialog'
 import Chip from '@material-ui/core/Chip'
 import Icon from '@material-ui/core/Icon'
-import {DragSource} from 'react-dnd'
-import React, {Component} from 'react'
+import { DragSource } from 'react-dnd'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {pofTreeUpdate} from '../reducers/pofTreeReducer'
-import {notify} from '../reducers/notificationReducer'
-import {deleteActivityFromEvent} from '../reducers/eventReducer'
-import {deleteActivityFromBuffer} from '../reducers/bufferZoneReducer'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
+import { notify } from '../reducers/notificationReducer'
+import { deleteActivityFromEvent } from '../reducers/eventReducer'
+import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
 
 const activitySource = {
   beginDrag(props, monitor) {
     return {
-      activity: {...props.activity, canDrag: false},
+      activity: { ...props.activity, canDrag: false },
       parentId: props.parentId,
       bufferzone: props.bufferzone,
       startPoint: monitor.getDifferenceFromInitialOffset(),
-      item: monitor.getItem()
+      item: monitor.getItem(),
     }
   },
   endDrag(props, monitor) {
@@ -35,14 +35,14 @@ const activitySource = {
       }
     }
     return true
-  }
+  },
 }
 
 function collect(connector, monitor) {
   return {
     connectDragSource: connector.dragSource(),
     // connectDragPreview: connector.dragPreview(),
-    isDragging: monitor.isDragging()
+    isDragging: monitor.isDragging(),
   }
 }
 
@@ -51,48 +51,52 @@ class Activity extends Component {
     connectDragSource: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      open: false
-    }
-  }
+  state = { open: false }
 
   handleClick = () => {
-    this.setState({open: !this.state.open})
+    this.setState({ open: !this.state.open })
   }
 
   render() {
-    const {activity, pofActivity, connectDragSource} = this.props
+    const { activity, pofActivity, connectDragSource } = this.props
 
     let lastGuid = 0
     if (pofActivity) {
       const lastParentIndex = pofActivity.parents.length - 1
       lastGuid = pofActivity.parents[lastParentIndex].guid
     }
-    let chipClass = (pofActivity.mandatory ? '' : 'non-') + 'mandatory-chip' + (this.props.minimal ? '-minimal' : '')
-    let avatarClass = (pofActivity.mandatory ? '' : 'non-') + 'mandatory-chip-avatar' + (this.props.minimal ? '-minimal' : '')
+    let chipClass =
+      (pofActivity.mandatory ? '' : 'non-') +
+      'mandatory-chip' +
+      (this.props.minimal ? '-minimal' : '')
+    let avatarClass =
+      (pofActivity.mandatory ? '' : 'non-') +
+      'mandatory-chip-avatar' +
+      (this.props.minimal ? '-minimal' : '')
 
     if (activity && pofActivity) {
       return connectDragSource(
         <div
-          className={this.props.minimal ? 'connect-drag-source-minimal' : 'connect-drag-source'}
-          style={{visibility: 'visible'}}
+          className={
+            this.props.minimal
+              ? 'connect-drag-source-minimal'
+              : 'connect-drag-source'
+          }
+          style={{ visibility: 'visible' }}
         >
           <Chip
             onDelete={() => this.props.deleteActivity(activity)}
             className={chipClass}
             key={activity.id}
             onClick={this.handleClick}
-            deleteIcon={<Icon color='primary'>clear</Icon>}
-            style={this.props.minimal ? {height: '25px'} : {}}
+            deleteIcon={<Icon color="primary">clear</Icon>}
+            style={this.props.minimal ? { height: '25px' } : {}}
             avatar={
               <Avatar
-                alt='Mandatory Icon'
+                alt="Mandatory Icon"
                 src={pofActivity.mandatoryIconUrl}
                 className={avatarClass}
-                style={this.props.minimal ? {height: '25px'} : {}}
+                style={this.props.minimal ? { height: '25px' } : {}}
               />
             }
             label={pofActivity.title}
@@ -103,16 +107,16 @@ class Activity extends Component {
                 {pofActivity.title}
 
                 <button
-                  className='dialog-close-button'
+                  className="dialog-close-button"
                   onClick={this.handleClick}
                 >
                   x
                 </button>
 
-                <br/>
+                <br />
 
                 {pofActivity.parents.map(parent => (
-                  <span style={{fontSize: '0.9rem'}} key={parent.guid}>
+                  <span style={{ fontSize: '0.9rem' }} key={parent.guid}>
                     {parent.title} {parent.guid === lastGuid ? null : ' - '}
                   </span>
                 ))}
@@ -121,7 +125,7 @@ class Activity extends Component {
             open={this.state.open}
             onClose={this.handleClick}
           >
-            <PlanForm activity={pofActivity} savedActivity={activity}/>
+            <PlanForm activity={pofActivity} savedActivity={activity} />
           </Dialog>
         </div>
       )
@@ -139,12 +143,15 @@ const DraggableActivity = DragSource(
 const mapStateToProps = state => ({
   notification: state.notification,
   buffer: state.buffer,
-  events: state.events
+  events: state.events,
 })
 
-export default connect(mapStateToProps, {
-  deleteActivityFromEvent,
-  deleteActivityFromBuffer,
-  notify,
-  pofTreeUpdate
-})(DraggableActivity)
+export default connect(
+  mapStateToProps,
+  {
+    deleteActivityFromEvent,
+    deleteActivityFromBuffer,
+    notify,
+    pofTreeUpdate,
+  }
+)(DraggableActivity)

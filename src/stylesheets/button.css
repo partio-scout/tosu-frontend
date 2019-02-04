@@ -2,10 +2,12 @@
   margin: 4px !important;
   color: white !important;
 }
+
 .account-name-and-button {
   float: right;
   color: white;
 }
+
 .dialog-close-button {
   background-color: #ccc;
   color: #fff;
@@ -15,6 +17,7 @@
   border-radius: 100%;
   box-shadow: 1px 1px 3px;
 }
+
 .information {
   padding: 2px;
   padding-right: 5px;
@@ -37,6 +40,7 @@
   bottom: 0;
   width: 100%;
 }
+
 #empty-button {
   margin-left: 14px;
   margin-top: 20px;
@@ -60,6 +64,7 @@
 .customBtn:hover {
   cursor: pointer;
 }
+
 .toggle-sidebar {
   background-color: #253264 !important;
   color: #fff;
@@ -81,6 +86,7 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
 .appbar-button:hover {
   background: rgba(255, 255, 255, 0.8);
   cursor: pointer;
