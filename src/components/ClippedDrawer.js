@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/core/styles'
 import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
 import StatusMessage from './StatusMessage'
+import PropTypes from 'prop-types'
 
 const styles = theme => ({
   divider: {
@@ -16,6 +17,9 @@ const styles = theme => ({
 })
 
 class ClippedDrawer extends React.Component {
+  static propTypes = {
+    classes: PropTypes.object.isRequired,
+  }
   state = { showStatusBox: true }
 
   handleOpen = () => {

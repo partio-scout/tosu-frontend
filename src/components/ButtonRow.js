@@ -9,8 +9,17 @@ import { filterChange } from '../reducers/filterReducer'
 import { viewChange } from '../reducers/viewReducer'
 import IconButton from '@material-ui/core/IconButton/IconButton'
 import Icon from '@material-ui/core/Icon/Icon'
+import PropTypes from 'prop-types'
 
 class ButtonRow extends React.Component {
+  static propTypes = {
+    viewChange: PropTypes.func.isRequired,
+    filterChange: PropTypes.func.isRequired,
+    dateRangeUpdate: PropTypes.func.isRequired,
+    view: PropTypes.string.isRequired,
+    newEvent: PropTypes.func.isRequired,
+    mobile: PropTypes.bool.isRequired,
+  }
   state = {
     startDate: moment(),
     endDate: null,
