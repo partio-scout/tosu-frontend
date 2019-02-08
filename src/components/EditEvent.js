@@ -30,8 +30,16 @@ class EditEvent extends React.Component {
   static propTypes = {
     data: PropTypes.shape({
       title: PropTypes.string.isRequired,
-      startDate: PropTypes.object.isRequired,
-    }),
+      startDate: PropTypes.string.isRequired,
+      startTime: PropTypes.string.isRequired,
+      endDate: PropTypes.string.isRequired,
+      endTime: PropTypes.string.isRequired,
+      information: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired,
+    }).isRequired,
+    notify: PropTypes.func.isRequired,
+    editEvent: PropTypes.func.isRequired,
+    bufferZoneInitialization: PropTypes.func.isRequired,
   }
   state = {
     open: false,
