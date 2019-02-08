@@ -11,10 +11,15 @@ const styles = theme => ({
   },
 })
 
-class AppBar extends React.Component {
+export class AppBar extends React.Component {
   static propTypes = {
     toggleSideBar: PropTypes.func.isRequired,
-    scout: PropTypes.object.isRequired,
+    scout: PropTypes.shape({
+      name: PropTypes.string,
+    }).isRequired,
+    classes: PropTypes.shape({
+      label: PropTypes.string.isRequired,
+    }).isRequired,
   }
   state = { sidebarVisible: true }
 

@@ -12,6 +12,7 @@ import EventForm from './EventForm'
 import { notify } from '../reducers/notificationReducer'
 import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
+import PropTypes from 'prop-types'
 
 const styles = theme => ({
   button: {
@@ -26,6 +27,12 @@ const styles = theme => ({
 })
 
 class EditEvent extends React.Component {
+  static propTypes = {
+    data: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      startDate: PropTypes.object.isRequired,
+    }),
+  }
   state = {
     open: false,
     title: this.props.data.title,
