@@ -4,7 +4,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import AccountIcon from './AccountIcon'
 import { withStyles } from '@material-ui/core/styles'
-
+import PropTypes from 'prop-types'
 const styles = theme => ({
   label: {
     color: 'white',
@@ -12,6 +12,10 @@ const styles = theme => ({
 })
 
 class AppBar extends React.Component {
+  static propTypes = {
+    toggleSideBar: PropTypes.func.isRequired,
+    scout: PropTypes.object.isRequired,
+  }
   state = { sidebarVisible: true }
 
   toggleSideBar = () => {

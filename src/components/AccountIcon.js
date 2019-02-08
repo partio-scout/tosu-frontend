@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import { scoutLogout } from '../reducers/scoutReducer'
 import { API_ROOT } from '../api-config'
+import PropTypes from 'prop-types'
 
 class AccountIcon extends React.Component {
   state = { anchorEl: null }
@@ -54,6 +55,10 @@ class AccountIcon extends React.Component {
       </span>
     )
   }
+}
+
+AccountIcon.propTypes = {
+  scoutLogout: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => {
