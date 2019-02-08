@@ -42,6 +42,7 @@ import {
   bufferZoneInitialization,
 } from '../reducers/bufferZoneReducer'
 import eventService from '../services/events'
+import PlanCard from './PlanCard'
 
 // Warning icon
 const warning = (
@@ -59,8 +60,9 @@ class EventCard extends React.Component {
       syncToKuksa: Boolean(props.event.synced), // Initial state of sync or no sync from backend
       syncDialogOpen: false,
       event: props.event,
-      editMode: false,
+      editMode: false
     }
+    console.log(this.props.event)
   }
   onChangeChildren = async activityGuid => {
     if (this.isLeaf(activityGuid)) {
@@ -193,8 +195,22 @@ class EventCard extends React.Component {
       dialogConfirmHandler = this.startSyncingWithKuksa
     }
     let information = new Parser().parse(event.information)
+
+    /*consoliin tulostuu ekan aktiviteetin ensimmäinen vinkki*/
+    if (event.activities.length !== 0 ) {
+      if (event.activities[0].plans.length !== 0) {
+        let koe = event.activities[0].plans[0].content
+        console.log("JOs on" , koe);
+      }
+    }
+
+
+
+
     const syncConfirmDialog = (
       <div>
+
+
         <Dialog
           open={this.state.syncDialogOpen}
           onClose={this.handleSyncDialogClose}
