@@ -195,18 +195,6 @@ class EventCard extends React.Component {
       dialogConfirmHandler = this.startSyncingWithKuksa
     }
     let information = new Parser().parse(event.information)
-
-    /*consoliin tulostuu ekan aktiviteetin ensimmäinen vinkki*/
-    if (event.activities.length !== 0 ) {
-      if (event.activities[0].plans.length !== 0) {
-        let koe = event.activities[0].plans[0].content
-        console.log("JOs on" , koe);
-      }
-    }
-
-
-
-
     const syncConfirmDialog = (
       <div>
 
@@ -329,6 +317,27 @@ class EventCard extends React.Component {
       }
       return <span>{information}</span>
     }
+
+    const Suggestions = () => {
+
+      var suggestionList = [];
+      if (event.activities.length !== 0 ) {
+        if (event.activities[0].plans.length !== 0) {
+          var alength = event.activities.length
+          for (var i=0; i<alength; i++) {
+            var plength = event.activities[i].plans.length
+            for (var j=0; j<plength; j++) {
+              console.log('planssin ', j, 'mones vinkki');
+              const htmlParser = new Parser()
+              const sugg = htmlParser.parse(event.activities[i].plans[j].content)
+              suggestionList.push(sugg)
+            }
+          }
+        }
+      }
+      return suggestionList
+    }
+
     if (typeof information === 'string' || typeof information === undefined) {
       editButton = (
         <button
@@ -370,6 +379,7 @@ class EventCard extends React.Component {
           />
         </b>
         <br style={{ clear: 'both' }} />
+        <p> {Suggestions()} </p>
       </CardContent>
     )
 
