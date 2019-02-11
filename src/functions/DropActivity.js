@@ -53,6 +53,7 @@ const moveActivityFromBufferToEvent = async (props, activity, targetId) => {
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
   props.pofTreeUpdate(props.buffer, props.events)
+  return { error: 'cant move activity' }
 }
 
 const moveActivityFromEventToEvent = async (
@@ -83,6 +84,7 @@ const moveActivityFromEventToEvent = async (
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
   props.pofTreeUpdate(props.buffer, props.events)
+  return { error: 'cant move activity' }
 }
 
 const DropActivity = {
