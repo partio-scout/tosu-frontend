@@ -18,7 +18,9 @@ import {
   Card,
   FormControlLabel,
   TextField,
+  Typography,
   Switch,
+  Collapse,
 } from '@material-ui/core'
 import Warning from '@material-ui/icons/Warning'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -42,7 +44,7 @@ import {
   bufferZoneInitialization,
 } from '../reducers/bufferZoneReducer'
 import eventService from '../services/events'
-import PlanCard from './PlanCard'
+import planService from '../services/plan'
 
 // Warning icon
 const warning = (
@@ -60,9 +62,8 @@ class EventCard extends React.Component {
       syncToKuksa: Boolean(props.event.synced), // Initial state of sync or no sync from backend
       syncDialogOpen: false,
       event: props.event,
-      editMode: false
+      editMode: false,
     }
-    console.log(this.props.event)
   }
   onChangeChildren = async activityGuid => {
     if (this.isLeaf(activityGuid)) {
@@ -197,8 +198,6 @@ class EventCard extends React.Component {
     let information = new Parser().parse(event.information)
     const syncConfirmDialog = (
       <div>
-
-
         <Dialog
           open={this.state.syncDialogOpen}
           onClose={this.handleSyncDialogClose}
@@ -318,25 +317,29 @@ class EventCard extends React.Component {
       return <span>{information}</span>
     }
 
-    const Suggestions = () => {
-
-      var suggestionList = [];
-      if (event.activities.length !== 0 ) {
-        if (event.activities[0].plans.length !== 0) {
-          var alength = event.activities.length
-          for (var i=0; i<alength; i++) {
-            var plength = event.activities[i].plans.length
-            for (var j=0; j<plength; j++) {
-              console.log('planssin ', j, 'mones vinkki');
-              const htmlParser = new Parser()
-              const sugg = htmlParser.parse(event.activities[i].plans[j].content)
-              suggestionList.push(sugg)
-            }
-          }
-        }
-      }
-      return suggestionList
-    }
+    const suggesionCard = plan => (
+      <Card>
+        <CardHeader title={plan.title} />
+        <CardContent>
+          <Typography component="p">{plan.content}</Typography>
+        </CardContent>
+        <CardActions>
+          <Button
+            size="small"
+            onClick={async () => {
+              try {
+                await planService.deletePlan(plan.id)
+                this.props.deletePlan(plan.id, plan.activityId)
+              } catch (exception) {
+                this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
+              }
+            }}
+          >
+            Poista
+          </Button>
+        </CardActions>
+      </Card>
+    )
 
     if (typeof information === 'string' || typeof information === undefined) {
       editButton = (
@@ -378,8 +381,10 @@ class EventCard extends React.Component {
             parentId={this.props.event.id}
           />
         </b>
-        <br style={{ clear: 'both' }} />
-        <p> {Suggestions()} </p>
+        <br style={{ clear: 'both' }} />{' '}
+        {event.activities.map(activity =>
+          activity.plans.map(plan => suggesionCard(plan))
+        )}{' '}
       </CardContent>
     )
 
