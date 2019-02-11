@@ -35,7 +35,6 @@ describe('<Appbar />', () => {
       .find({ label: 'Piilota suunnittelunäkymä' })
       .dive()
       .dive()
-    console.log(form.debug())
     expect(form.find('.toggle-sidebar')).to.have.lengthOf(1)
   })
 
@@ -59,13 +58,11 @@ describe('<Appbar />', () => {
         classes={{ label: 'wow' }}
       />
     )
-    console.log(wrapper.debug())
     const swich = wrapper
       .find({ label: 'Piilota suunnittelunäkymä' })
       .dive()
       .dive()
       .find('.toggle-sidebar')
-    console.log(swich.debug())
     swich.simulate('click', { currentTarget: wrapper })
     expect(wrapper.state('sidebarVisible')).to.be.false
   })

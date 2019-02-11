@@ -4,14 +4,14 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import IconButton from '@material-ui/core/IconButton'
 import AccountCircle from '@material-ui/icons/AccountCircle'
+import PropTypes from 'prop-types'
 import { scoutLogout } from '../reducers/scoutReducer'
 import { API_ROOT } from '../api-config'
-import PropTypes from 'prop-types'
 
 class AccountIcon extends React.Component {
   state = { anchorEl: null }
 
-  forceMyOwnLogout = async response => {
+  forceMyOwnLogout = async () => {
     await this.props.scoutLogout()
     window.location = `${API_ROOT}/scouts/logout`
   }
@@ -61,12 +61,10 @@ AccountIcon.propTypes = {
   scoutLogout: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = state => {
-  return {
-    scout: state.scout,
-    buffer: state.buffer,
-  }
-}
+const mapStateToProps = state => ({
+  scout: state.scout,
+  buffer: state.buffer,
+})
 
 export default connect(
   mapStateToProps,

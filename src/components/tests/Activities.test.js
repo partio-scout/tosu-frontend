@@ -10,6 +10,7 @@ jest.mock('../../functions/findActivity')
 activityConverter.default = jest.fn(() => {
   return {
     id: 1,
+    name: 'pofActivity',
   }
 })
 
@@ -40,6 +41,8 @@ describe('<Activities />', () => {
         deleteActivityFromEvent={mockDeleteActivityFromEvent}
         className="activity-list"
         activities={[testActivity]}
+        buffer={{}}
+        events={[]}
       />
     )
     expect(
@@ -58,6 +61,8 @@ describe('<Activities />', () => {
           deleteActivityFromEvent={mockDeleteActivityFromEvent}
           className="activity-list"
           activities={[testActivity]}
+          buffer={{}}
+          events={[]}
         />
       </Provider>
     )
