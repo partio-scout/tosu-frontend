@@ -39,9 +39,7 @@ import {
   getGoogleToken,
   removeGoogleToken,
   getScout,
-} from './services/googleToken' // TODO: rename service
-import pofService from './services/pof'
-import { loadCachedPofData } from './services/localStorage'
+} from './services/googleToken'
 // Reducers
 import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
@@ -56,16 +54,12 @@ import { viewChange } from './reducers/viewReducer'
 import { setLoading } from './reducers/loadingReducer'
 
 class App extends Component {
-  constructor() {
-    super()
-    const currentDate = moment()
-    this.state = {
-      headerVisible: false,
-      drawerVisible: true,
-      bufferZoneHeight: 0,
-      newEventVisible: false,
-      startDate: currentDate,
-    }
+  state = {
+    headerVisible: false,
+    drawerVisible: true,
+    bufferZoneHeight: 0,
+    newEventVisible: false,
+    startDate: moment(),
   }
 
   componentDidMount = async () => {
@@ -76,15 +70,11 @@ class App extends Component {
         newEventVisible: false,
       })
     } else if (window.location.pathname === '/calendar') {
-      this.props.store.dispatch(viewChange('CALENDAR'))
+      this.props.viewChange('CALENDAR')
     }
     await this.checkLoggedIn()
-    let pofData = loadCachedPofData()
-    if (pofData === undefined || pofData === {}) {
-      pofData = await pofService.getAllTree()
-    }
-    await this.props.pofTreeInitialization(pofData)
-    if (this.props.store.getState().scout !== null) {
+    await this.props.pofTreeInitialization()
+    if (this.props.scout !== null) {
       await Promise.all([
         this.props.eventsInitialization(),
         this.props.bufferZoneInitialization(), // id tulee userista myöhemmin
@@ -104,7 +94,7 @@ class App extends Component {
         console.log('Error in emptying buffer', exception)
       }
     }
-    if (this.props.store.getState().loading) {
+    if (this.props.loading) {
       this.props.setLoading(false)
     }
   }
@@ -144,7 +134,7 @@ class App extends Component {
   }
 
   selectView = value => () => {
-    this.props.store.dispatch(viewChange(value))
+    this.props.viewChange(value)
   }
 
   newEvent = () => this.setState({ newEventVisible: true })
@@ -155,9 +145,9 @@ class App extends Component {
   }
 
   render() {
-    const { view } = this.props.store.getState()
+    const view = this.props.view
     const { startDate, endDate } = this.state
-    const initialEvents = this.props.store.getState().events
+    const initialEvents = this.props.events
     const eventsToShow = () =>
       filterEvents(view, initialEvents, startDate, endDate)
     let odd = true
@@ -207,10 +197,7 @@ class App extends Component {
 
     const dndMenu = () => <AppBar toggleSideBar={this.toggleDrawer} />
     const calendar = (
-      <Calendar
-        events={this.props.store.getState().events}
-        mobile={isTouchDevice()}
-      />
+      <Calendar events={this.props.events} mobile={isTouchDevice()} />
     )
 
     return (
@@ -240,14 +227,12 @@ class App extends Component {
                       mobile={isTouchDevice()}
                     />
 
-                    {this.props.store.getState().loading ? (
+                    {this.props.loading ? (
                       <div className="loading-bar">
                         <LinearProgress />
                       </div>
                     ) : null}
-                    {this.props.store.getState().view === 'CALENDAR'
-                      ? calendar
-                      : eventsToList}
+                    {this.props.view === 'CALENDAR' ? calendar : eventsToList}
 
                     <Dialog
                       open={this.state.newEventVisible}

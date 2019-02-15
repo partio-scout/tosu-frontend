@@ -142,11 +142,11 @@ const updateState = (state, existingActivityGuids) => {
   return updatedState
 }
 
-const reducer = (state = [], action) => {
+const reducer = (state = {}, action) => {
   switch (action.type) {
     case 'INIT_TREE_POF':
       // add variables and sort that TreeSearchBar uses
-      const sortedTree = sortTreeByOrder(action.pofJson)
+      const sortedTree = sortTreeByOrder(state)
       const filledTree = fillWithNeededVariable(sortedTree)
       return filledTree
     case 'SET_TREE_POF':
@@ -158,12 +158,10 @@ const reducer = (state = [], action) => {
   }
 }
 
-export const pofTreeInitialization = pofJson => {
+export const pofTreeInitialization = () => {
   return async dispatch => {
-    // const pofJson = await pofService.getAllTree()
     dispatch({
       type: 'INIT_TREE_POF',
-      pofJson,
     })
   }
 }

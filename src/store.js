@@ -1,5 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
+import axios from 'axios'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import notificationReducer from './reducers/notificationReducer'
 import pofTreeReducer from './reducers/pofTreeReducer'
@@ -12,6 +13,7 @@ import ScoutReducer from './reducers/scoutReducer'
 import calendarReducer from './reducers/calendarReducer'
 import viewReducer from './reducers/viewReducer'
 import loadingReducer from './reducers/loadingReducer'
+import { POF_ROOT } from './api-config'
 
 const reducer = combineReducers({
   notification: notificationReducer,
@@ -27,6 +29,10 @@ const reducer = combineReducers({
   loading: loadingReducer,
 })
 
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
+const store = createStore(
+  reducer,
+  { pofTree: async () => await axios.get(`${POF_ROOT}/filledpof/tarppo`) },
+  composeWithDevTools(applyMiddleware(thunk))
+)
 
 export default store
