@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import AccountIcon from './AccountIcon'
+import AccountCircle from '@material-ui/icons/AccountCircle'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({
@@ -25,7 +26,7 @@ class AppBar extends React.Component {
       <div className="top-search" id="top-bar-header">
         <div className="account-name-and-button">
           {this.props.scout ? this.props.scout.name : '<no name>'}
-          <AccountIcon />
+          <AccountIcon accountIcon={<AccountCircle />} />
         </div>
         <div className="Header_root" id="header_root">
           <FormControlLabel

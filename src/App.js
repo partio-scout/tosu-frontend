@@ -184,9 +184,7 @@ class App extends Component {
         <div className="Login">
           <Login
             store={this.props.store}
-            token={
-              '1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com'
-            }
+            token="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com"
           />
         </div>
       )
@@ -280,7 +278,10 @@ class App extends Component {
                   </div>
                 </div>
               </div>
-              <FeedbackButton feedback_url="https://docs.google.com/forms/d/e/1FAIpQLSddXqlQaFd8054I75s4UZEPeQAh_ardxRl11YYw3b2JBk0Y-Q/viewform" />
+              <FeedbackButton
+                feedback_url="https://docs.google.com/forms/d/e/1FAIpQLSddXqlQaFd8054I75s4UZEPeQAh_ardxRl11YYw3b2JBk0Y-Q/viewform"
+                visible={!isTouchDevice()}
+              />
             </div>
           </Router>
         </div>
