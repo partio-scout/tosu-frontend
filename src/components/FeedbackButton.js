@@ -14,26 +14,32 @@ const styles = () => ({
 
 const StyledButton = withStyles(styles)(Button)
 
-export const FeedbackButton = props => (
-  <div className="feedback">
-    <a
-      style={{ textDecoration: 'none' }}
-      href={props.feedback_url}
-      target="_blank"
-    >
-      <StyledButton
-        type="button"
-        className="FeedbackButton"
-        variant="contained"
-      >
-        Anna palautetta
-      </StyledButton>
-    </a>
-  </div>
-)
+export const FeedbackButton = props => {
+  if (props.visible) {
+    return (
+      <div className="feedback">
+        <a
+          style={{ textDecoration: 'none' }}
+          href={props.feedback_url}
+          target="_blank"
+        >
+          <StyledButton
+            type="button"
+            className="FeedbackButton"
+            variant="contained"
+          >
+            Anna palautetta
+          </StyledButton>
+        </a>
+      </div>
+    )
+  }
+  return <div />
+}
 
 export default FeedbackButton
 
 FeedbackButton.propTypes = {
   feedback_url: PropTypes.string.isRequired,
+  visible: PropTypes.bool.isRequired,
 }
