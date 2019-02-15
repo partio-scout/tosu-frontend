@@ -8,6 +8,8 @@ import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import StatusMessage from './StatusMessage'
 import { createStatusMessage } from '../utils/createStatusMessage'
+import List from '@material-ui/icons/List'
+import MenuItem from '@material-ui/core/MenuItem'
 
 class MobileAppbar extends React.Component {
   state = { showStatusBox: true }
@@ -46,7 +48,11 @@ class MobileAppbar extends React.Component {
       .clientHeight
     this.props.setHeaderHeight(bufferZoneHeight)
   }
-
+  openUrl = () => {
+    window.open(
+      'https://docs.google.com/forms/d/e/1FAIpQLSddXqlQaFd8054I75s4UZEPeQAh_ardxRl11YYw3b2JBk0Y-Q/viewform'
+    )
+  }
   handleOpen = () => {
     this.setState({ showStatusBox: true })
   }
@@ -107,10 +113,12 @@ class MobileAppbar extends React.Component {
             />
           </div>
           <div className="account-name-and-button">
-            {this.props.scout
-              ? this.props.scout.name.split(' ')[0]
-              : '<no name>'}
-            <AccountIcon />
+            <AccountIcon
+              accountIcon={<List />}
+              mobileFeedback={
+                <MenuItem onClick={this.openUrl}>Anna palautetta</MenuItem>
+              }
+            />
           </div>
 
           <div style={{ clear: 'both' }} />

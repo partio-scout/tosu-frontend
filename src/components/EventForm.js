@@ -6,6 +6,9 @@ import {
   FormControlLabel,
   MenuItem,
   TextField,
+  DialogTitle,
+  IconButton,
+  Icon,
 } from '@material-ui/core/'
 import {
   TextValidator,
@@ -16,6 +19,7 @@ import { MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from '@date-io/moment'
 import ValidatedDatePicker from '../utils/ValidatedDatePicker'
 import ValidatedTimePicker from '../utils/ValidatedTimePicker'
+import AppBar from './AppBar'
 
 export default class EventForm extends React.Component {
   state = {
@@ -150,14 +154,6 @@ export default class EventForm extends React.Component {
   render() {
     const actions = (
       <div>
-        <Button
-          style={{ marginRight: 10 }}
-          variant="contained"
-          color="primary"
-          onClick={this.props.close}
-        >
-          Peruuta
-        </Button>
         <Button variant="contained" type="submit" color="primary">
           Tallenna
         </Button>
@@ -168,6 +164,17 @@ export default class EventForm extends React.Component {
 
     return (
       <div>
+        <IconButton
+          style={{
+            marginRight: 0,
+            marginTop: -100,
+            marginBottom: 0,
+            float: 'right',
+          }}
+          onClick={this.props.close}
+        >
+          <Icon color="primary">clear</Icon>
+        </IconButton>
         <ValidatorForm
           ref="form"
           onSubmit={this.send}

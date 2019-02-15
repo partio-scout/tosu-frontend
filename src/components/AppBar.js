@@ -3,15 +3,25 @@ import { connect } from 'react-redux'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import AccountIcon from './AccountIcon'
+import AccountCircle from '@material-ui/icons/AccountCircle'
 import { withStyles } from '@material-ui/core/styles'
-
+import PropTypes from 'prop-types'
 const styles = theme => ({
   label: {
     color: 'white',
   },
 })
 
-class AppBar extends React.Component {
+export class AppBar extends React.Component {
+  static propTypes = {
+    toggleSideBar: PropTypes.func.isRequired,
+    scout: PropTypes.shape({
+      name: PropTypes.string,
+    }).isRequired,
+    classes: PropTypes.shape({
+      label: PropTypes.string.isRequired,
+    }).isRequired,
+  }
   state = { sidebarVisible: true }
 
   toggleSideBar = () => {
@@ -25,7 +35,7 @@ class AppBar extends React.Component {
       <div className="top-search" id="top-bar-header">
         <div className="account-name-and-button">
           {this.props.scout ? this.props.scout.name : '<no name>'}
-          <AccountIcon />
+          <AccountIcon accountIcon={<AccountCircle />} />
         </div>
         <div className="Header_root" id="header_root">
           <FormControlLabel

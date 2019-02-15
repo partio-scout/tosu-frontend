@@ -12,6 +12,7 @@ import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
 import AddToPlan from './AddToPlan'
 import { openPopper, closePopper } from '../reducers/calendarReducer'
+import PropTypes from 'prop-types'
 
 function createActivityMarkers(activities) {
   const markers = [' ']
@@ -36,6 +37,12 @@ export function eventStyleGetter(event, start, end, isSelected) {
 }
 
 class CalendarEvent extends Component {
+  static propTypes = {
+    event: PropTypes.object.isRequired,
+    pofTree: PropTypes.object.isRequired,
+    closePopper: PropTypes.func.isRequired,
+    openPopper: PropTypes.func.isRequired,
+  }
   constructor(props) {
     super(props)
     this.state = {

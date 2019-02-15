@@ -11,9 +11,11 @@ import { deleteActivityFromEvent } from '../reducers/eventReducer'
 
 export class Activities extends React.Component {
   static propTypes = {
+    buffer: PropTypes.shape({}).isRequired,
+    events: PropTypes.arrayOf(PropTypes.object).isRequired,
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     bufferzone: PropTypes.bool.isRequired,
     parentId: PropTypes.number.isRequired,
-
     notify: PropTypes.func.isRequired,
     pofTreeUpdate: PropTypes.func.isRequired,
     deleteActivityFromBuffer: PropTypes.func.isRequired,
@@ -22,18 +24,22 @@ export class Activities extends React.Component {
 
   deleteActivity = async activity => {
     try {
-      const deleteActivity= this.props.bufferzone ? this.props.deleteActivityFromBuffer : this.props.deleteActivityFromEvent
+      const deleteActivity = this.props.bufferzone
+        ? this.props.deleteActivityFromBuffer
+        : this.props.deleteActivityFromEvent
       await deleteActivity(activity.id)
       this.props.pofTreeUpdate(this.props.buffer, this.props.events)
       this.props.notify('Aktiviteetti poistettu!', 'success')
     } catch (exception) {
-      this.props.notify('Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!')
+      this.props.notify(
+        'Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!'
+      )
     }
   }
 
   render() {
-    let rows=[]
-    if (this.props.activities){
+    let rows = []
+    if (this.props.activities) {
       rows = this.props.activities.map(activity => {
         const pofActivity = convertToSimpleActivity(
           findActivity(activity, this.props.pofTree)
@@ -55,24 +61,25 @@ export class Activities extends React.Component {
     }
     return (
       <div>
-        {rows.length > 0 && !this.props.minimal && (<p>Aktiviteetit:</p>)}
-        <div className={this.props.className}>
-          {rows}
-        </div>
+        {rows.length > 0 && !this.props.minimal && <p>Aktiviteetit:</p>}
+        <div className={this.props.className}>{rows}</div>
       </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
-    buffer: state.buffer,
-    events: state.events,
-    pofTree: state.pofTree
-  })
+  buffer: state.buffer,
+  events: state.events,
+  pofTree: state.pofTree,
+})
 
-export default connect(mapStateToProps, {
-  notify,
-  pofTreeUpdate,
-  deleteActivityFromBuffer,
-  deleteActivityFromEvent,
-})(Activities)
+export default connect(
+  mapStateToProps,
+  {
+    notify,
+    pofTreeUpdate,
+    deleteActivityFromBuffer,
+    deleteActivityFromEvent,
+  }
+)(Activities)

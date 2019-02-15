@@ -9,7 +9,6 @@ import PlanReducer from './reducers/planReducer'
 import StatusMessageReducer from './reducers/statusMessageReducer'
 import TaskgroupReducer from './reducers/taskgroupReducer'
 import ScoutReducer from './reducers/scoutReducer'
-import filterReducer from './reducers/filterReducer'
 import calendarReducer from './reducers/calendarReducer'
 import viewReducer from './reducers/viewReducer'
 import loadingReducer from './reducers/loadingReducer'
@@ -23,7 +22,6 @@ const reducer = combineReducers({
   statusMessage: StatusMessageReducer,
   taskgroup: TaskgroupReducer,
   scout: ScoutReducer,
-  filter: filterReducer,
   calendar: calendarReducer,
   view: viewReducer,
   loading: loadingReducer,

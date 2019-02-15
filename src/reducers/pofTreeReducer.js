@@ -1,82 +1,33 @@
 import React from 'react'
 import isTouchDevice from 'is-touch-device'
 
-const reducer = (state = [], action) => {
-  switch (action.type) {
-    case 'INIT_TREE_POF':
-      // add variables and sort that TreeSearchBar uses
-      const sortedTree = sortTreeByOrder(action.pofJson)
-      const filledTree = fillWithNeededVariable(sortedTree)
-      return filledTree
-    case 'SET_TREE_POF':
-      // update data by disabling existing activities &
-      // locking non-mandatory tasks if a tarppo has mandatory tasks left to pick
-      return updateState(state, action.existingActivityGuids)
-    default:
-      return state
-  }
-}
-
-export const pofTreeInitialization = pofJson => async dispatch => {
-    // const pofJson = await pofService.getAllTree()
-    dispatch({
-      type: 'INIT_TREE_POF',
-      pofJson,
-    })
-  }
-
-export const pofTreeUpdate = (buffer, events) => {
-  let usedBuffer = buffer
-  if (isTouchDevice()) {
-    usedBuffer = { id: 0, activities: [] }
-  }
-  return async dispatch => {
-    const existingActivityGuids = arrayActivityGuidsFromBufferAndEvents(
-      usedBuffer,
-      events
-    )
-
-    dispatch({
-      type: 'SET_TREE_POF',
-      existingActivityGuids,
-    })
-  }
-}
-
-const updateState = (state, existingActivityGuids) => {
-  let updatedState = Object.assign({}, state)
-  updatedState = disableTasksInFilterIfExists(
-    updatedState,
-    existingActivityGuids
-  )
-  updatedState = lockOptionalTasksIfMandatoryLeftToPickInAGroup(
-    updatedState,
-    existingActivityGuids
-  )
-  return updatedState
-}
-
-const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (
-  pof,
-  existingActivityGuids
-) => {
-  if (!pof) return {}
-  if (!pof.taskgroups) return {}
-  if (!pof.taskgroups.forEach) return {}
-  pof.taskgroups.forEach(majorTaskGroup => {
-    const mandatoryTaskGuids = majorTaskGroup.mandatory_tasks.split(',') // mandatory tasks are listed in major group
-    if (mandatoryTaskGuids[0] === '') {
-      // empty split return and array with only value as ''
-      return
-    }
-    // if existing activities do not contain all mandatory tasks -> disable all optional
-    mandatoryTaskGuids.forEach(mandatoryTaskGuid => {
-      if (existingActivityGuids.includes(mandatoryTaskGuid) === false) {
-        setChildrenTasksDisabled(majorTaskGroup)
-      }
+// helpers
+// put all picked activities from events and buffer into a string array made of their guid
+// we use that to search/filter from pofdata
+const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
+  let activities = []
+  buffer.activities.forEach(activity => {
+    activities = activities.concat(activity.guid)
+  })
+  events.forEach(event => {
+    event.activities.forEach(activity => {
+      activities = activities.concat(activity.guid)
     })
   })
-  return pof
+  return activities
+}
+
+// pof contains a specific order which is why we sort
+const orderSorter = (a, b) => b.isMandatory - a.isMandatory
+
+const sortTreeByOrder = root => {
+  if (!root) return {}
+  if (!root.taskgroups) return {}
+  if (!root.taskgroups.forEach) return {}
+
+  root.taskgroups.forEach(sortTreeByOrder)
+  root.taskgroups = root.taskgroups.sort((a, b) => a.order - b.order)
+  return root
 }
 
 // recursively go into taskgroups of taskgroups and disable all optional tasks
@@ -94,28 +45,6 @@ const setChildrenTasksDisabled = pofChild => {
       root.disabled = true
     }
   }
-}
-
-// recursively disable existing tasks and enable if removed
-const disableTasksInFilterIfExists = (root, existingActivityGuids) => {
-  if (!root) return {}
-  if (!root.taskgroups) return {}
-  if (!root.taskgroups.forEach) return {}
-
-  try {
-    root.taskgroups.forEach(group =>
-      disableTasksInFilterIfExists(group, existingActivityGuids)
-    )
-  } catch (exception) {
-    console.log('problem occurred iterating throguh taskgroups', exception)
-  }
-
-  if (root && root.children && root.children.forEach) {
-    root.children.forEach(task => {
-      task.disabled = existingActivityGuids.includes(task.value)
-    })
-  }
-  return root
 }
 
 // TreeSearchBar needs specific variables added to our pofdata
@@ -155,33 +84,106 @@ const fillWithNeededVariable = root => {
   return root
 }
 
-const sortTreeByOrder = root => {
+// recursively disable existing tasks and enable if removed
+const disableTasksInFilterIfExists = (root, existingActivityGuids) => {
   if (!root) return {}
   if (!root.taskgroups) return {}
   if (!root.taskgroups.forEach) return {}
 
-  root.taskgroups.forEach(sortTreeByOrder)
-  root.taskgroups = root.taskgroups.sort((a, b) => a.order - b.order)
+  try {
+    root.taskgroups.forEach(group =>
+      disableTasksInFilterIfExists(group, existingActivityGuids)
+    )
+  } catch (exception) {
+    console.log('problem occurred iterating throguh taskgroups', exception)
+  }
+
+  if (root && root.children && root.children.forEach) {
+    root.children.forEach(task => {
+      task.disabled = existingActivityGuids.includes(task.value)
+    })
+  }
   return root
 }
 
-// helpers
-// put all picked activities from events and buffer into a string array made of their guid
-// we use that to search/filter from pofdata
-const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
-  let activities = []
-  buffer.activities.forEach(activity => {
-    activities = activities.concat(activity.guid)
-  })
-  events.forEach(event => {
-    event.activities.forEach(activity => {
-      activities = activities.concat(activity.guid)
+const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (
+  pof,
+  existingActivityGuids
+) => {
+  if (!pof) return {}
+  if (!pof.taskgroups) return {}
+  if (!pof.taskgroups.forEach) return {}
+  pof.taskgroups.forEach(majorTaskGroup => {
+    const mandatoryTaskGuids = majorTaskGroup.mandatory_tasks.split(',') // mandatory tasks are listed in major group
+    if (mandatoryTaskGuids[0] === '') {
+      // empty split return and array with only value as ''
+      return
+    }
+    // if existing activities do not contain all mandatory tasks -> disable all optional
+    mandatoryTaskGuids.forEach(mandatoryTaskGuid => {
+      if (existingActivityGuids.includes(mandatoryTaskGuid) === false) {
+        setChildrenTasksDisabled(majorTaskGroup)
+      }
     })
   })
-  return activities
+  return pof
 }
 
-// pof contains a specific order which is why we sort
-const orderSorter = (a, b) => b.isMandatory - a.isMandatory
+const updateState = (state, existingActivityGuids) => {
+  let updatedState = Object.assign({}, state)
+  updatedState = disableTasksInFilterIfExists(
+    updatedState,
+    existingActivityGuids
+  )
+  updatedState = lockOptionalTasksIfMandatoryLeftToPickInAGroup(
+    updatedState,
+    existingActivityGuids
+  )
+  return updatedState
+}
+
+const reducer = (state = [], action) => {
+  switch (action.type) {
+    case 'INIT_TREE_POF':
+      // add variables and sort that TreeSearchBar uses
+      const sortedTree = sortTreeByOrder(action.pofJson)
+      const filledTree = fillWithNeededVariable(sortedTree)
+      return filledTree
+    case 'SET_TREE_POF':
+      // update data by disabling existing activities &
+      // locking non-mandatory tasks if a tarppo has mandatory tasks left to pick
+      return updateState(state, action.existingActivityGuids)
+    default:
+      return state
+  }
+}
+
+export const pofTreeInitialization = pofJson => {
+  return async dispatch => {
+    // const pofJson = await pofService.getAllTree()
+    dispatch({
+      type: 'INIT_TREE_POF',
+      pofJson,
+    })
+  }
+}
+
+export const pofTreeUpdate = (buffer, events) => {
+  let usedBuffer = buffer
+  if (isTouchDevice()) {
+    usedBuffer = { id: 0, activities: [] }
+  }
+  return async dispatch => {
+    const existingActivityGuids = arrayActivityGuidsFromBufferAndEvents(
+      usedBuffer,
+      events
+    )
+
+    dispatch({
+      type: 'SET_TREE_POF',
+      existingActivityGuids,
+    })
+  }
+}
 
 export default reducer

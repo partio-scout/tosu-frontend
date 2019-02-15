@@ -8,8 +8,9 @@ import store from '../../store'
 
 jest.mock('../../functions/findActivity')
 activityConverter.default = jest.fn(() => ({
-    id: 1,
-  }))
+  id: 1,
+  name: 'pofActivity',
+}))
 
 /* Lets start by mocking all of the prop functions */
 const mockNotify = jest.fn()
@@ -38,6 +39,8 @@ describe('<Activities />', () => {
         deleteActivityFromEvent={mockDeleteActivityFromEvent}
         className="activity-list"
         activities={[testActivity]}
+        buffer={{}}
+        events={[]}
       />
     )
     expect(
@@ -56,6 +59,8 @@ describe('<Activities />', () => {
           deleteActivityFromEvent={mockDeleteActivityFromEvent}
           className="activity-list"
           activities={[testActivity]}
+          buffer={{}}
+          events={[]}
         />
       </Provider>
     )

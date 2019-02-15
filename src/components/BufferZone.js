@@ -12,6 +12,7 @@ import {
   deleteActivityFromBufferOnlyLocally,
   deleteActivityFromBuffer,
 } from '../reducers/bufferZoneReducer'
+import PropTypes from 'prop-types'
 
 const styles = theme => ({
   button: {
@@ -31,6 +32,13 @@ const styles = theme => ({
 })
 
 export class BufferZone extends React.Component {
+  static propTypes = {
+    buffer: PropTypes.object.isRequired,
+    events: PropTypes.arrayOf(PropTypes.object).isRequired,
+    deleteActivityFromBuffer: PropTypes.func.isRequired,
+    pofTreeUpdate: PropTypes.func.isRequired,
+    notify: PropTypes.func.isRequired,
+  }
   clear = async () => {
     if (this.props.buffer.activities) {
       const promises = this.props.buffer.activities.map(activity =>
