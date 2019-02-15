@@ -6,8 +6,15 @@ import { notify } from '../reducers/notificationReducer'
 import { DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
 
 import { addEventFromKuksa } from '../reducers/eventReducer'
+import PropTypes from 'prop-types'
 
 class AddToPlan extends React.Component {
+  static propTypes = {
+    event: PropTypes.object.isRequired,
+    addEventFromKuksa: PropTypes.func.isRequired,
+    notify: PropTypes.func.isRequired,
+    buttonClass: PropTypes.string,
+  }
   state = { dialogOpen: false }
 
   addEventToTosu = async () => {

@@ -5,12 +5,19 @@ import { DateRangePicker } from 'react-dates'
 import Add from '@material-ui/icons/Add'
 import CalendarToday from '@material-ui/icons/CalendarToday'
 import moment from 'moment'
-import { filterChange } from '../reducers/filterReducer'
 import { viewChange } from '../reducers/viewReducer'
 import IconButton from '@material-ui/core/IconButton/IconButton'
 import Icon from '@material-ui/core/Icon/Icon'
+import PropTypes from 'prop-types'
 
 class ButtonRow extends React.Component {
+  static propTypes = {
+    viewChange: PropTypes.func.isRequired,
+    dateRangeUpdate: PropTypes.func.isRequired,
+    view: PropTypes.string.isRequired,
+    newEvent: PropTypes.func.isRequired,
+    mobile: PropTypes.bool.isRequired,
+  }
   state = {
     startDate: moment(),
     endDate: null,
@@ -20,24 +27,7 @@ class ButtonRow extends React.Component {
     this.props.viewChange(value)
   }
 
-  filterUpdate = () => {
-    if (this.state.startDate && this.state.endDate) {
-      this.filterSelected('RANGE')()
-    }
-    if (this.state.startDate && !this.state.endDate) {
-      this.filterSelected('ONLY_START')()
-    }
-    if (!this.state.startDate && this.state.endDate) {
-      this.filterSelected('ONLY_END')()
-    }
-  }
-
-  filterSelected = value => () => {
-    this.props.filterChange(value)
-  }
-
   clearRange = () => {
-    this.filterSelected('NONE')()
     this.setState({ startDate: null, endDate: null })
     this.props.dateRangeUpdate({ startDate: null, endDate: null })
   }
@@ -124,7 +114,6 @@ class ButtonRow extends React.Component {
             startDate={this.state.startDate}
             endDate={this.state.endDate}
             onDatesChange={this.dateRangeUpdate}
-            readOnly={true}
             focusedInput={this.state.focusedInput}
             onFocusChange={focusedInput => {
               this.setState({ focusedInput })
@@ -159,7 +148,6 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   {
-    filterChange,
     viewChange,
   }
 )(ButtonRow)
