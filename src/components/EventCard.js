@@ -65,8 +65,7 @@ class EventCard extends React.Component {
       syncDialogOpen: false,
       event: props.event,
       editMode: false,
-      newPlans: false,
-      plans:[]
+      newPlans: false
     }
   }
   onChangeChildren = async activityGuid => {
@@ -357,6 +356,9 @@ class EventCard extends React.Component {
                     console.log('listassa: ',newState[0][i]);
                   }
                 }
+                event.activities.plans = newerState
+                this.props.editEvent(event)
+                console.log('event.activities.plans : ', event.activities.plans);
                 this.setState({plans: newerState})
                 this.setState({newPlans: true})
 
@@ -409,10 +411,8 @@ class EventCard extends React.Component {
           />
         </b>
         <br style={{ clear: 'both' }} />{' '}
-          {this.state.newPlans ? (this.state.plans) :
-            (event.activities.map(activity =>
-              activity.plans.map(plan => <div key={plan.id}> {suggestionCard(plan)}</div>)))
-          }
+          {event.activities.map(activity =>
+              activity.plans.map(plan => <div key={plan.id}> {suggestionCard(plan)}</div>))}
         {' '}
       </CardContent>
     )
