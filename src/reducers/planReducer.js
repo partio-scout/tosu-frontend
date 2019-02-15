@@ -17,6 +17,7 @@ const reducer = (state = [], action) => {
       })
 
     case 'DELETE_PLAN':
+      console.log("reducer deleting plan")
       return state.map(item => {
         if (item.id !== action.activityId) {
           return item

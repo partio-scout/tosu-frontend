@@ -45,6 +45,7 @@ import {
 } from '../reducers/bufferZoneReducer'
 import eventService from '../services/events'
 import planService from '../services/plan'
+import { deletePlan } from '../reducers/planReducer'
 
 // Warning icon
 const warning = (
@@ -53,6 +54,7 @@ const warning = (
     <span className="tooltiptext">Tapahtumasta puuttuu aktiviteetti!</span>
   </div>
 )
+
 
 class EventCard extends React.Component {
   constructor(props) {
@@ -63,6 +65,8 @@ class EventCard extends React.Component {
       syncDialogOpen: false,
       event: props.event,
       editMode: false,
+      newPlans: false,
+      plans:[]
     }
   }
   onChangeChildren = async activityGuid => {
@@ -317,8 +321,12 @@ class EventCard extends React.Component {
       return <span>{information}</span>
     }
 
-    const suggesionCard = plan => (
-      <Card>
+    const updatePlans = async (plan) => {
+
+  }
+
+    const suggestionCard = plan => (
+      <Card className="suggestion">
         <CardHeader title={plan.title} />
         <CardContent>
           <Typography component="p">{plan.content}</Typography>
@@ -329,12 +337,31 @@ class EventCard extends React.Component {
             onClick={async () => {
               try {
                 await planService.deletePlan(plan.id)
+                console.log('plan : ',plan.id,' activity: ', plan.activityId);
                 this.props.deletePlan(plan.id, plan.activityId)
               } catch (exception) {
                 this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
+                console.log(exception)
               }
-            }}
-          >
+              console.log(this.state.plans)
+              const newState =
+                event.activities.map(activity =>
+                activity.plans.map(plan => <div key={plan.id}> {suggestionCard(plan)}</div>))
+                console.log('newState ',newState);
+                const newerState = []
+                var p = newState[0].length
+                for (var i=0; i<p; i++) {
+                  if (newState[0][i].key != plan.id) {
+                    console.log('avain: ',newState[0][i].key);
+                    newerState.push(newState[0][i])
+                    console.log('listassa: ',newState[0][i]);
+                  }
+                }
+                this.setState({plans: newerState})
+                this.setState({newPlans: true})
+
+
+          }} >
             Poista
           </Button>
         </CardActions>
@@ -382,9 +409,11 @@ class EventCard extends React.Component {
           />
         </b>
         <br style={{ clear: 'both' }} />{' '}
-        {event.activities.map(activity =>
-          activity.plans.map(plan => suggesionCard(plan))
-        )}{' '}
+          {this.state.newPlans ? (this.state.plans) :
+            (event.activities.map(activity =>
+              activity.plans.map(plan => <div key={plan.id}> {suggestionCard(plan)}</div>)))
+          }
+        {' '}
       </CardContent>
     )
 
@@ -462,6 +491,7 @@ const mapStateToProps = state => {
     pofTree: state.pofTree,
     taskgroup: state.taskgroup,
     status: state.statusMessage.status,
+    plans: state.plans,
   }
 }
 
@@ -470,6 +500,7 @@ export default connect(
   {
     notify,
     editEvent,
+    deletePlan,
     deleteActivityFromEvent,
     bufferZoneInitialization,
     addActivityToEventOnlyLocally,
