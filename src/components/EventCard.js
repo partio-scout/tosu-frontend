@@ -120,11 +120,9 @@ class EventCard extends React.Component {
     return false
   }
 
-  filterTreeNode = (input, child) => {
-    return child.props.title.props.name
+  filterTreeNode = (input, child) => child.props.title.props.name
       .toLowerCase()
       .includes(input.toLowerCase())
-  }
   handleExpandChange = expanded => {
     this.setState({ expanded: !this.state.expanded })
   }
@@ -198,7 +196,7 @@ class EventCard extends React.Component {
 
       dialogConfirmHandler = this.startSyncingWithKuksa
     }
-    let information = new Parser().parse(event.information)
+    const information = new Parser().parse(event.information)
     const syncConfirmDialog = (
       <div>
         <Dialog
@@ -284,7 +282,7 @@ class EventCard extends React.Component {
       </CardContent>
     )
 
-    /*creates a new event with modified information and sends it to eventReducer's editEvent method*/
+    /* creates a new event with modified information and sends it to eventReducer's editEvent method */
     const changeInfo = event => {
       event.preventDefault()
 
@@ -346,24 +344,15 @@ class EventCard extends React.Component {
               const newState =
                 event.activities.map(activity =>
                 activity.plans.map(plan => <div key={plan.id}> {suggestionCard(plan)}</div>))
-                console.log('newState ',newState);
-                const newerState = []
-                var p = newState[0].length
-                for (var i=0; i<p; i++) {
-                  if (newState[0][i].key != plan.id) {
-                    console.log('avain: ',newState[0][i].key);
-                    newerState.push(newState[0][i])
-                    console.log('listassa: ',newState[0][i]);
-                  }
-                }
-                event.activities.plans = newerState
+               const p = newState[0].length
+
+                event.activities.plans = newState
                 this.props.editEvent(event)
-                console.log('event.activities.plans : ', event.activities.plans);
-                this.setState({plans: newerState})
-                this.setState({newPlans: true})
 
 
-          }} >
+
+          }}
+          >
             Poista
           </Button>
         </CardActions>
@@ -411,7 +400,7 @@ class EventCard extends React.Component {
           />
         </b>
         <br style={{ clear: 'both' }} />{' '}
-          {event.activities.map(activity =>
+        {event.activities.map(activity =>
               activity.plans.map(plan => <div key={plan.id}> {suggestionCard(plan)}</div>))}
         {' '}
       </CardContent>
@@ -422,7 +411,7 @@ class EventCard extends React.Component {
         <Card style={{ boxShadow: 'none' }}>
           <ActivityDragAndDropTarget
             odd={odd}
-            event={true}
+            event
             bufferzone={false}
             parentId={this.props.event.id}
           >
@@ -484,16 +473,14 @@ class EventCard extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
+const mapStateToProps = state => ({
     events: state.events,
     buffer: state.buffer,
     pofTree: state.pofTree,
     taskgroup: state.taskgroup,
     status: state.statusMessage.status,
     plans: state.plans,
-  }
-}
+  })
 
 export default connect(
   mapStateToProps,

@@ -43,7 +43,7 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
     total: 0,
     done: false,
   }
-  let extraTask = {
+  const extraTask = {
     suhdeItseen: 0,
     suhdeToiseen: 0,
     suhdeYhteiskuntaan: 0,

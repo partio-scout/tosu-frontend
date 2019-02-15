@@ -113,11 +113,9 @@ class Toolbar extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
+const mapStateToProps = state => ({
     switchState: state.calendar.showKuksa,
-  }
-}
+  })
 
 export default connect(mapStateToProps, {
   showKuksaEvents,

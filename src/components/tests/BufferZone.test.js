@@ -34,56 +34,48 @@ const veryMockStore = {
   getState: jest.fn(() => {}),
 }
 
-const testZone = () => {
-  return (
-    <Provider store={veryMockStore}>
-      <BufferZone
-        buffer={testBuffer}
-        deleteActivityFromBuffer={mockDeleteFromBuffer}
-        pofTreeUpdate={mockPofTreeUpdate}
-        notify={mockNotify}
-        events={testEvents}
-        classes={testClasses}
-      />
-    </Provider>
+const testZone = () => (
+  <Provider store={veryMockStore}>
+    <BufferZone
+      buffer={testBuffer}
+      deleteActivityFromBuffer={mockDeleteFromBuffer}
+      pofTreeUpdate={mockPofTreeUpdate}
+      notify={mockNotify}
+      events={testEvents}
+      classes={testClasses}
+    />
+  </Provider>
   )
-}
 
-const testZoneNoBufferId = () => {
-  return (
-    <Provider store={veryMockStore}>
-      <BufferZone
-        buffer={{ activities: [] }}
-        deleteActivityFromBuffer={mockDeleteFromBuffer}
-        pofTreeUpdate={mockPofTreeUpdate}
-        notify={mockNotify}
-        events={testEvents}
-        classes={testClasses}
-      />
-    </Provider>
+const testZoneNoBufferId = () => (
+  <Provider store={veryMockStore}>
+    <BufferZone
+      buffer={{ activities: [] }}
+      deleteActivityFromBuffer={mockDeleteFromBuffer}
+      pofTreeUpdate={mockPofTreeUpdate}
+      notify={mockNotify}
+      events={testEvents}
+      classes={testClasses}
+    />
+  </Provider>
   )
-}
 
-const testZoneNoBufferActivities = () => {
-  return (
-    <Provider store={veryMockStore}>
-      <BufferZone
-        buffer={{ id: 1, activities: [] }}
-        deleteActivityFromBuffer={mockDeleteFromBuffer}
-        pofTreeUpdate={mockPofTreeUpdate}
-        notify={mockNotify}
-        events={testEvents}
-        classes={testClasses}
-      />
-    </Provider>
+const testZoneNoBufferActivities = () => (
+  <Provider store={veryMockStore}>
+    <BufferZone
+      buffer={{ id: 1, activities: [] }}
+      deleteActivityFromBuffer={mockDeleteFromBuffer}
+      pofTreeUpdate={mockPofTreeUpdate}
+      notify={mockNotify}
+      events={testEvents}
+      classes={testClasses}
+    />
+  </Provider>
   )
-}
 
-const tick = () => {
-  return new Promise(resolve => {
+const tick = () => new Promise(resolve => {
     setTimeout(resolve, 0)
   })
-}
 
 describe('<BufferZone />', () => {
   it("renders nothing if bufferzone doesn't have an id", () => {

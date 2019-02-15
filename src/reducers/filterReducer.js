@@ -7,11 +7,9 @@ const filterReducer = (state = 'ONLY_START', action) => {
   }
 }
 
-export const filterChange = filter => {
-  return {
+export const filterChange = filter => ({
     type: 'SET_FILTER',
     filter,
-  }
-}
+  })
 
 export default filterReducer

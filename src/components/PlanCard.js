@@ -12,6 +12,7 @@ import { Parser } from 'html-to-react'
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
 import { notify } from '../reducers/notificationReducer'
+import { editEvent } from '../reducers/eventReducer'
 
 class PlanCard extends React.Component {
   state = { expanded: false }
@@ -36,7 +37,7 @@ class PlanCard extends React.Component {
     }
   }
 
-  saveSuggestion = async (suggestion, activityId) => {
+  saveSuggestion = async (suggestion, activityId, parentId) => {
     const data = {
       guid: suggestion.guid,
       title: suggestion.title,
@@ -45,16 +46,37 @@ class PlanCard extends React.Component {
     try {
       const res = await planService.addPlanToActivity(data, activityId)
       this.props.savePlan(suggestion, activityId, res.id)
+      let parentEvent = this.props.events.find(e => {
+        return parentId === e.id
+      })
+      parentEvent.activities
+        .find(e => {
+          return e.id === activityId
+        })
+        .plans.push(data)
+      this.props.editEvent(parentEvent)
     } catch (exception) {
+      console.log(exception)
       this.props.notify('Toteutusvinkin tallentaminen ei onnistunut')
     }
   }
 
-  deleteSuggestion = async (id, activityId) => {
+  deleteSuggestion = async (id, activityId, parentId) => {
     try {
       await planService.deletePlan(id)
       this.props.deletePlan(id, activityId)
+      const parentEvent = this.props.events.find( e => {
+          return e.id === parentId 
+      })
+      const activity = parentEvent.activities.find( e => {
+          return e.id === activityId 
+      })
+      activity.plans = activity.plans.filter( e => {
+          return e.id !== id 
+      })
+      this.props.editEvent(parentEvent)
     } catch (exception) {
+      console.log(exception)
       this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
     }
   }
@@ -66,7 +88,7 @@ class PlanCard extends React.Component {
   }
 
   render() {
-    const { suggestion, savedActivity, plans } = this.props
+    const { suggestion, savedActivity, plans, parentId } = this.props
     // Find plans for current activity from store
     const activityPlans = plans.filter(plan => plan.id === savedActivity.id)
 
@@ -88,7 +110,7 @@ class PlanCard extends React.Component {
         <Button
           size="small"
           onClick={() =>
-            this.deleteSuggestion(selectedPlan[0].id, savedActivity.id)
+            this.deleteSuggestion(selectedPlan[0].id, savedActivity.id, parentId)
           }
         >
           Poista valituista
@@ -100,7 +122,9 @@ class PlanCard extends React.Component {
       button = () => (
         <Button
           size="small"
-          onClick={() => this.saveSuggestion(suggestion, savedActivity.id)}
+          onClick={() =>
+            this.saveSuggestion(suggestion, savedActivity.id, parentId)
+          }
         >
           Valitse
         </Button>
@@ -133,6 +157,7 @@ class PlanCard extends React.Component {
 
 const mapStateToProps = state => ({
   plans: state.plans,
+  events: state.events,
 })
 
 export default connect(
@@ -141,6 +166,7 @@ export default connect(
     initPlans,
     savePlan,
     deletePlan,
+    editEvent,
     notify,
   }
 )(PlanCard)

@@ -184,9 +184,7 @@ class App extends Component {
         <div className="Login">
           <Login
             store={this.props.store}
-            token={
-              '1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com'
-            }
+            token="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com"
           />
         </div>
       )

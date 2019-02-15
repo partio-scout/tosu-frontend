@@ -17,15 +17,13 @@ const reducer = (state = [], action) => {
   }
 }
 
-export const pofTreeInitialization = pofJson => {
-  return async dispatch => {
+export const pofTreeInitialization = pofJson => async dispatch => {
     // const pofJson = await pofService.getAllTree()
     dispatch({
       type: 'INIT_TREE_POF',
       pofJson,
     })
   }
-}
 
 export const pofTreeUpdate = (buffer, events) => {
   let usedBuffer = buffer
@@ -83,7 +81,7 @@ const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (
 
 // recursively go into taskgroups of taskgroups and disable all optional tasks
 const setChildrenTasksDisabled = pofChild => {
-  let root = pofChild
+  const root = pofChild
   if (!root) return
 
   if (root.children && root.children.forEach) {

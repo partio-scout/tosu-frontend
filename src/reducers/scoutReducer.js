@@ -26,7 +26,7 @@ export const scoutGoogleLogin = token => async dispatch => {
 
   dispatch({
     type: 'SCOUT_LOGIN',
-    scout: scout,
+    scout,
   })
 }
 
@@ -34,7 +34,7 @@ export const readScout = () => async dispatch => {
   const scout = getScout()
   dispatch({
     type: 'SCOUT_LOGIN',
-    scout: scout,
+    scout,
   })
 }
 

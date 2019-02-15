@@ -130,16 +130,14 @@ class MobileAppbar extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
+const mapStateToProps = state => ({
     events: state.events,
     buffer: state.buffer,
     pofTree: state.pofTree,
     taskgroup: state.taskgroup,
     status: state.statusMessage.status,
     scout: state.scout,
-  }
-}
+  })
 
 export default connect(
   mapStateToProps,

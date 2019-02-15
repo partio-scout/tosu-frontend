@@ -56,12 +56,10 @@ class AccountIcon extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
+const mapStateToProps = state => ({
     scout: state.scout,
     buffer: state.buffer,
-  }
-}
+  })
 
 export default connect(
   mapStateToProps,

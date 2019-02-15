@@ -7,11 +7,9 @@ import * as activityConverter from '../../functions/activityConverter'
 import store from '../../store'
 
 jest.mock('../../functions/findActivity')
-activityConverter.default = jest.fn(() => {
-  return {
+activityConverter.default = jest.fn(() => ({
     id: 1,
-  }
-})
+  }))
 
 /* Lets start by mocking all of the prop functions */
 const mockNotify = jest.fn()
@@ -32,7 +30,7 @@ describe('<Activities />', () => {
   it('renders', () => {
     const wrapper = shallow(
       <Activities
-        bufferzone={true}
+        bufferzone
         parentId={1}
         notify={mockNotify}
         pofTreeUpdate={mockPofTreeUpdate}
@@ -50,7 +48,7 @@ describe('<Activities />', () => {
     const wrapper = mount(
       <Provider store={store}>
         <Activities
-          bufferzone={true}
+          bufferzone
           parentId={1}
           notify={mockNotify}
           pofTreeUpdate={mockPofTreeUpdate}

@@ -32,7 +32,7 @@ class ClippedDrawer extends React.Component {
       <div className="drawer-root">
         <Drawer variant="permanent" className="drawer-paper">
           <TreeSearchBar />
-          <Divider variant={'middle'} className={classes.divider} />
+          <Divider variant="middle" className={classes.divider} />
           <BufferZone />
           <StatusMessage
             showStatusBox={this.state.showStatusBox}

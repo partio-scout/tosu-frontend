@@ -69,7 +69,7 @@ export class BufferZone extends React.Component {
             <Icon>clear</Icon>
           </Button>
         </ActivityDragAndDropTarget>
-        <Divider variant={'middle'} className={classes.divider} />
+        <Divider variant="middle" className={classes.divider} />
       </div>
     )
   }

@@ -124,7 +124,7 @@ class ButtonRow extends React.Component {
             startDate={this.state.startDate}
             endDate={this.state.endDate}
             onDatesChange={this.dateRangeUpdate}
-            readOnly={true}
+            readOnly
             focusedInput={this.state.focusedInput}
             onFocusChange={focusedInput => {
               this.setState({ focusedInput })
@@ -147,14 +147,12 @@ class ButtonRow extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
+const mapStateToProps = state => ({
     view: state.view,
     filter: state.filter,
     startDate: state.startDate,
     endDate: state.endDate,
-  }
-}
+  })
 
 export default connect(
   mapStateToProps,

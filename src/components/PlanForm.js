@@ -33,13 +33,14 @@ export default class PlanForm extends React.Component {
 
   render() {
     const { value } = this.state
-    const { activity, savedActivity } = this.props
+    const { activity, savedActivity, parentId } = this.props
 
     const suggestionDetails = activity.suggestions.map(suggestion => (
       <PlanCard
         key={suggestion.guid}
         suggestion={suggestion}
         savedActivity={savedActivity}
+        parentId={parentId}
       />
     ))
     return (

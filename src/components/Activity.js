@@ -58,21 +58,21 @@ class Activity extends Component {
   }
 
   render() {
-    const { activity, pofActivity, connectDragSource } = this.props
+    const { activity, pofActivity, connectDragSource, parentId } = this.props
 
     let lastGuid = 0
     if (pofActivity) {
       const lastParentIndex = pofActivity.parents.length - 1
       lastGuid = pofActivity.parents[lastParentIndex].guid
     }
-    let chipClass =
-      (pofActivity.mandatory ? '' : 'non-') +
-      'mandatory-chip' +
-      (this.props.minimal ? '-minimal' : '')
-    let avatarClass =
-      (pofActivity.mandatory ? '' : 'non-') +
-      'mandatory-chip-avatar' +
-      (this.props.minimal ? '-minimal' : '')
+    const chipClass =
+      `${pofActivity.mandatory ? '' : 'non-' 
+      }mandatory-chip${ 
+      this.props.minimal ? '-minimal' : ''}`
+    const avatarClass =
+      `${pofActivity.mandatory ? '' : 'non-' 
+      }mandatory-chip-avatar${ 
+      this.props.minimal ? '-minimal' : ''}`
 
     if (activity && pofActivity) {
       return connectDragSource(
@@ -125,7 +125,7 @@ class Activity extends Component {
             open={this.state.open}
             onClose={this.handleClick}
           >
-            <PlanForm activity={pofActivity} savedActivity={activity} />
+            <PlanForm activity={pofActivity} savedActivity={activity} parentId={parentId} />
           </Dialog>
         </div>
       )

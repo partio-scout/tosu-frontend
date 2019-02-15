@@ -95,11 +95,9 @@ export default class EventForm extends React.Component {
   }
 
   updateCheck() {
-    this.setState(oldState => {
-      return {
+    this.setState(oldState => ({
         checked: !oldState.checked,
-      }
-    })
+      }))
   }
 
   handleRepeatCount = event => {

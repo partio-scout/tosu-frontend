@@ -62,7 +62,7 @@ class NewEvent extends React.Component {
       }
     } else {
       // Send POST first to create new GroupId and then use id from response to create group of events. ß
-      let response = await this.sendEventGroupIdPostRequest()
+      const response = await this.sendEventGroupIdPostRequest()
 
       let promises = []
 

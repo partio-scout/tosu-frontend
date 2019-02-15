@@ -91,11 +91,9 @@ class EventList extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
+const mapStateToProps = state => ({
     events: state.events,
     filter: state.filter,
-  }
-}
+  })
 
 export default connect(mapStateToProps)(EventList)

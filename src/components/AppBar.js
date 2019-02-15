@@ -52,11 +52,9 @@ class AppBar extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
+const mapStateToProps = state => ({
     scout: state.scout,
-  }
-}
+  })
 
 export default connect(
   mapStateToProps,
