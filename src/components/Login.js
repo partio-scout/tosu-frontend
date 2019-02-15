@@ -21,6 +21,7 @@ import {
   deleteActivityFromBuffer,
 } from '../reducers/bufferZoneReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
+import PropTypes from 'prop-types'
 
 class Login extends React.Component {
   googleLoginSuccess = async response => {
@@ -81,6 +82,16 @@ class Login extends React.Component {
       </div>
     )
   }
+}
+
+Login.propTypes = {
+  scout: PropTypes.object,
+  store: PropTypes.object.isRequired,
+  scoutGoogleLogin: PropTypes.func.isRequired,
+  eventsInitialization: PropTypes.func.isRequired,
+  bufferZoneInitialization: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = state => ({

@@ -52,7 +52,6 @@ import {
 import { eventsInitialization } from './reducers/eventReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutGoogleLogin, readScout } from './reducers/scoutReducer'
-import { filterChange } from './reducers/filterReducer'
 import { viewChange } from './reducers/viewReducer'
 import { setLoading } from './reducers/loadingReducer'
 
@@ -117,7 +116,6 @@ class App extends Component {
       this.props.taskgroup
     )
     this.props.addStatusInfo(status)
-    this.filterUpdate()
   }
 
   setHeaderHeight = height => {
@@ -149,35 +147,19 @@ class App extends Component {
     this.props.store.dispatch(viewChange(value))
   }
 
-  filterSelected = value => () => {
-    this.props.store.dispatch(filterChange(value))
-  }
-
   newEvent = () => this.setState({ newEventVisible: true })
   handleClose = () => this.setState({ newEventVisible: false })
-
-  filterUpdate = () => {
-    if (this.state.startDate && this.state.endDate) {
-      this.filterSelected('RANGE')()
-    }
-    if (this.state.startDate && !this.state.endDate) {
-      this.filterSelected('ONLY_START')()
-    }
-    if (!this.state.startDate && this.state.endDate) {
-      this.filterSelected('ONLY_END')()
-    }
-  }
 
   dateRangeUpdate = ({ startDate, endDate }) => {
     this.setState({ startDate, endDate })
   }
 
   render() {
-    const { view, filter } = this.props.store.getState()
+    const { view } = this.props.store.getState()
     const { startDate, endDate } = this.state
     const initialEvents = this.props.store.getState().events
     const eventsToShow = () =>
-      filterEvents(view, filter, initialEvents, startDate, endDate)
+      filterEvents(view, initialEvents, startDate, endDate)
     let odd = true
     if (this.props.scout === null) {
       return (
@@ -251,7 +233,6 @@ class App extends Component {
                   <div className="content">
                     <ButtonRow
                       view={this.state.view}
-                      filter={this.state.filter}
                       newEvent={this.newEvent}
                       dateRangeUpdate={this.dateRangeUpdate}
                       mobile={isTouchDevice()}
@@ -297,7 +278,6 @@ const mapStateToProps = state => ({
   pofTree: state.pofTree,
   taskgroup: state.taskgroup,
   scout: state.scout,
-  filter: state.filter,
   view: state.view,
   loading: state.loading,
 })
@@ -320,7 +300,6 @@ export default connect(
     addStatusInfo,
     scoutGoogleLogin,
     readScout,
-    filterChange,
     viewChange,
     setLoading,
   }
