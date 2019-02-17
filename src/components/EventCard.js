@@ -316,7 +316,7 @@ class EventCard extends React.Component {
       return <span>{information}</span>
     }
     /** TODO: Make suggestioncard a component
-     * props plan, event 
+     * props plan, event
      *
      *
      */
@@ -324,7 +324,7 @@ class EventCard extends React.Component {
       <Card className="suggestion">
         <CardHeader title={plan.title} />
         <CardContent>
-          <Typography component="p">{plan.content}</Typography>
+          <Typography component="p">{Parser().parse(plan.content)}</Typography>
         </CardContent>
         <CardActions>
           <Button
@@ -332,20 +332,15 @@ class EventCard extends React.Component {
             onClick={async () => {
               try {
                 await planService.deletePlan(plan.id)
-                console.log('plan : ', plan.id, ' activity: ', plan.activityId)
                 this.props.deletePlan(plan.id, plan.activityId)
               } catch (exception) {
                 this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
-                console.log(exception)
               }
-              console.log(this.state.plans)
               const newState = event.activities.map(activity =>
                 activity.plans.map(plan => (
                   <div key={plan.id}> {suggestionCard(plan)}</div>
                 ))
               )
-              const p = newState[0].length
-
               event.activities.plans = newState
               this.props.editEvent(event)
             }}
