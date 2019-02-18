@@ -37,17 +37,15 @@ const testEvents = [testEvent, testKuksaEvent]
 const mockClosePopper = jest.fn()
 const mobile = false
 
-const testCalendarNoKuksa = () => {
-  return (
-    <Calendar
-      pofTree={testPofTree}
-      events={testEvents}
-      shouldShowKuksaEventsAlso={false}
-      closePopper={mockClosePopper}
-      mobile={false}
-    />
-  )
-}
+const testCalendarNoKuksa = () => (
+  <Calendar
+    pofTree={testPofTree}
+    events={testEvents}
+    shouldShowKuksaEventsAlso={false}
+    closePopper={mockClosePopper}
+    mobile={false}
+  />
+)
 
 describe('<Calendar />', () => {
   it('Kuksa events wont show if showKuksa is false', () => {

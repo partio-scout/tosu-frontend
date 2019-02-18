@@ -136,14 +136,12 @@ class ButtonRow extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    view: state.view,
-    filter: state.filter,
-    startDate: state.startDate,
-    endDate: state.endDate,
-  }
-}
+const mapStateToProps = state => ({
+  view: state.view,
+  filter: state.filter,
+  startDate: state.startDate,
+  endDate: state.endDate,
+})
 
 export default connect(
   mapStateToProps,

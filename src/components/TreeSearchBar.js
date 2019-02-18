@@ -68,11 +68,9 @@ class TreeSearchBar extends React.Component {
         })
       })
 
-      const promises = mandatoryActivities.map(activity => {
-        return activities.includes(activity)
+      const promises = mandatoryActivities.map(activity => activities.includes(activity)
           ? null
-          : this.props.postActivityToBuffer({ guid: activity })
-      })
+          : this.props.postActivityToBuffer({ guid: activity }))
       try {
         await Promise.all(promises)
         this.props.notify(
@@ -88,11 +86,9 @@ class TreeSearchBar extends React.Component {
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
 
-  filterTreeNode = (input, child) => {
-    return child.props.title.props.name
+  filterTreeNode = (input, child) => child.props.title.props.name
       .toLowerCase()
       .includes(input.toLowerCase())
-  }
   isLeaf = value => {
     if (!value) {
       return false
@@ -214,14 +210,12 @@ class TreeSearchBar extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
+const mapStateToProps = state => ({
     events: state.events,
     buffer: state.buffer,
     pofTree: state.pofTree,
     taskgroup: state.taskgroup,
-  }
-}
+  })
 
 export default connect(
   mapStateToProps,

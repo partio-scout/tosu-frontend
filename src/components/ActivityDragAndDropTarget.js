@@ -68,12 +68,10 @@ const DroppableActivityDragAndDropTarget = DropTarget(
   collect
 )(ActivityDragAndDropTarget)
 
-const mapStateToProps = state => {
-  return {
+const mapStateToProps = state => ({
     buffer: state.buffer,
     events: state.events,
-  }
-}
+  })
 
 export default connect(
   mapStateToProps,

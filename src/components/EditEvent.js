@@ -124,16 +124,16 @@ class EditEvent extends React.Component {
     information
   ) => {
     this.setState({
-      title: title,
-      startDate: startDate,
-      startTime: startTime,
-      endDate: endDate,
-      endTime: endTime,
-      checked: checked,
-      repeatCount: repeatCount,
-      repeatFrequency: repeatFrequency,
-      type: type,
-      information: information,
+      title,
+      startDate,
+      startTime,
+      endDate,
+      endTime,
+      checked,
+      repeatCount,
+      repeatFrequency,
+      type,
+      information,
     })
   }
 
@@ -141,7 +141,7 @@ class EditEvent extends React.Component {
     const { classes } = this.props
     const event = this.props.data
     // Never allow modifications to kuksaEvents (not synced)
-    let disabled = event.synced || event.kuksaEvent // TODO: Allow editing after Kuksa sync works both ways (remove event.synced check)
+    const disabled = event.synced || event.kuksaEvent // TODO: Allow editing after Kuksa sync works both ways (remove event.synced check)
     return (
       <div>
         <Button

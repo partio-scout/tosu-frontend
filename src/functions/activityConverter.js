@@ -42,7 +42,7 @@ const convertToBackendActivity = pofActivity => {
       activity.suggestions = []
     }
   }
-  let backendActivity = {
+  const backendActivity = {
     guid: pofActivity.guid,
     title: pofActivity.title.props.name,
     content: pofActivity.content,

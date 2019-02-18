@@ -68,13 +68,11 @@ export class Activities extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    buffer: state.buffer,
-    events: state.events,
-    pofTree: state.pofTree,
-  }
-}
+const mapStateToProps = state => ({
+  buffer: state.buffer,
+  events: state.events,
+  pofTree: state.pofTree,
+})
 
 export default connect(
   mapStateToProps,

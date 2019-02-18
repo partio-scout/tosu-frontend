@@ -18,9 +18,13 @@ import {
   Card,
   FormControlLabel,
   TextField,
+  Typography,
   Switch,
+  Collapse,
 } from '@material-ui/core'
+
 import Warning from '@material-ui/icons/Warning'
+import DeleteIcon from '@material-ui/icons/Delete'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
 import { Parser } from 'html-to-react'
@@ -42,6 +46,10 @@ import {
   bufferZoneInitialization,
 } from '../reducers/bufferZoneReducer'
 import eventService from '../services/events'
+import planService from '../services/plan'
+import { deletePlan } from '../reducers/planReducer'
+import findActivity from '../functions/findActivity'
+import convertToSimpleActivity from '../functions/activityConverter'
 
 // Warning icon
 const warning = (
@@ -60,6 +68,7 @@ class EventCard extends React.Component {
       syncDialogOpen: false,
       event: props.event,
       editMode: false,
+      newPlans: false,
     }
   }
   onChangeChildren = async activityGuid => {
@@ -114,11 +123,8 @@ class EventCard extends React.Component {
     return false
   }
 
-  filterTreeNode = (input, child) => {
-    return child.props.title.props.name
-      .toLowerCase()
-      .includes(input.toLowerCase())
-  }
+  filterTreeNode = (input, child) =>
+    child.props.title.props.name.toLowerCase().includes(input.toLowerCase())
   handleExpandChange = expanded => {
     this.setState({ expanded: !this.state.expanded })
   }
@@ -192,7 +198,7 @@ class EventCard extends React.Component {
 
       dialogConfirmHandler = this.startSyncingWithKuksa
     }
-    let information = new Parser().parse(event.information)
+    const information = new Parser().parse(event.information)
     const syncConfirmDialog = (
       <div>
         <Dialog
@@ -278,7 +284,7 @@ class EventCard extends React.Component {
       </CardContent>
     )
 
-    /*creates a new event with modified information and sends it to eventReducer's editEvent method*/
+    /* creates a new event with modified information and sends it to eventReducer's editEvent method */
     const changeInfo = event => {
       event.preventDefault()
 
@@ -313,6 +319,49 @@ class EventCard extends React.Component {
       }
       return <span>{information}</span>
     }
+
+    const getSimpleActivity = activity =>
+      convertToSimpleActivity(findActivity(activity, this.props.pofTree))
+
+    /** TODO: Make suggestioncard a component
+     * props plan, event
+     *
+     *
+     */
+    const suggestionCard = (plan, activity) => (
+      <Card
+        className="suggestion"
+        style={{ backgroundColor: '#fafafa', marginTop: '10px' }}
+      >
+        <CardHeader
+          action={
+            <IconButton
+              onClick={async () => {
+                try {
+                  await planService.deletePlan(plan.id)
+                  this.props.deletePlan(plan.id, plan.activityId)
+                  this.props.editEvent(event)
+                } catch (exception) {
+                  this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
+                }
+              }}
+            >
+              {' '}
+              <DeleteIcon />{' '}
+            </IconButton>
+          }
+          title={plan.title}
+          subheader={
+            <Typography>{getSimpleActivity(activity).title}</Typography>
+          }
+        />
+
+        <CardContent>
+          <Typography component="p">{Parser().parse(plan.content)}</Typography>
+        </CardContent>
+      </Card>
+    )
+
     if (!this.props.event.kuksaEventId) {
       editButton = (
         <button
@@ -353,7 +402,12 @@ class EventCard extends React.Component {
             parentId={this.props.event.id}
           />
         </b>
-        <br style={{ clear: 'both' }} />
+        <br style={{ clear: 'both' }} />{' '}
+        {event.activities.map(activity =>
+          activity.plans.map(plan => (
+            <div key={plan.id}> {suggestionCard(plan, activity)}</div>
+          ))
+        )}{' '}
       </CardContent>
     )
 
@@ -362,7 +416,7 @@ class EventCard extends React.Component {
         <Card style={{ boxShadow: 'none' }}>
           <ActivityDragAndDropTarget
             odd={odd}
-            event={true}
+            event
             bufferzone={false}
             parentId={this.props.event.id}
           >
@@ -424,21 +478,21 @@ class EventCard extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    events: state.events,
-    buffer: state.buffer,
-    pofTree: state.pofTree,
-    taskgroup: state.taskgroup,
-    status: state.statusMessage.status,
-  }
-}
+const mapStateToProps = state => ({
+  events: state.events,
+  buffer: state.buffer,
+  pofTree: state.pofTree,
+  taskgroup: state.taskgroup,
+  status: state.statusMessage.status,
+  plans: state.plans,
+})
 
 export default connect(
   mapStateToProps,
   {
     notify,
     editEvent,
+    deletePlan,
     deleteActivityFromEvent,
     bufferZoneInitialization,
     addActivityToEventOnlyLocally,

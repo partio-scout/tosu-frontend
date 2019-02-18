@@ -7,11 +7,9 @@ const reducer = (state = true, action) => {
   }
 }
 
-export const setLoading = bool => {
-  return {
+export const setLoading = bool => ({
     type: 'SET_LOADING',
     bool,
-  }
-}
+  })
 
 export default reducer

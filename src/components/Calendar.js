@@ -24,8 +24,8 @@ function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
     return true
   })
   return events.map(event => {
-    const startDate = event.startDate + ' ' + event.startTime
-    const endDate = event.endDate + ' ' + event.endTime
+    const startDate = `${event.startDate  } ${  event.startTime}`
+    const endDate = `${event.endDate  } ${  event.endTime}`
     return {
       title: event.title,
       start: new Date(startDate.replace(/-/g, '/')),
@@ -85,12 +85,10 @@ export class Calendar extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
+const mapStateToProps = state => ({
     pofTree: state.pofTree,
     shouldShowKuksaEventsAlso: state.calendar.showKuksa,
-  }
-}
+  })
 
 export default connect(
   mapStateToProps,

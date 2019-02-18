@@ -32,7 +32,7 @@ const sortTreeByOrder = root => {
 
 // recursively go into taskgroups of taskgroups and disable all optional tasks
 const setChildrenTasksDisabled = pofChild => {
-  let root = pofChild
+  const root = pofChild
   if (!root) return
 
   if (root.children && root.children.forEach) {
