@@ -22,7 +22,9 @@ import {
   Switch,
   Collapse,
 } from '@material-ui/core'
+
 import Warning from '@material-ui/icons/Warning'
+import DeleteIcon from '@material-ui/icons/Delete'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
 import { Parser } from 'html-to-react'
@@ -46,6 +48,8 @@ import {
 import eventService from '../services/events'
 import planService from '../services/plan'
 import { deletePlan } from '../reducers/planReducer'
+import findActivity from '../functions/findActivity'
+import convertToSimpleActivity from '../functions/activityConverter'
 
 // Warning icon
 const warning = (
@@ -315,39 +319,40 @@ class EventCard extends React.Component {
       }
       return <span>{information}</span>
     }
+    const getSimpleActivity = activity =>
+      convertToSimpleActivity(findActivity(activity, this.props.pofTree))
+
     /** TODO: Make suggestioncard a component
      * props plan, event
      *
      *
      */
-    const suggestionCard = plan => (
-      <Card className="suggestion">
-        <CardHeader title={plan.title} />
+    const suggestionCard = (plan, activity) => (
+      <Card className="suggestion" style={{ backgroundColor: '#fafafa', marginTop:"10px" }}>
+        <CardHeader
+          action={
+            <IconButton
+              onClick={async () => {
+                try {
+                  await planService.deletePlan(plan.id)
+                  this.props.deletePlan(plan.id, plan.activityId)
+                  this.props.editEvent(event)
+                } catch (exception) {
+                  this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
+                }
+              }}
+            >
+              {' '}
+              <DeleteIcon />{' '}
+            </IconButton>
+          }
+          title={plan.title}
+          subheader={<Typography>{getSimpleActivity(activity).title}</Typography>}
+        />
+
         <CardContent>
           <Typography component="p">{Parser().parse(plan.content)}</Typography>
         </CardContent>
-        <CardActions>
-          <Button
-            size="small"
-            onClick={async () => {
-              try {
-                await planService.deletePlan(plan.id)
-                this.props.deletePlan(plan.id, plan.activityId)
-              } catch (exception) {
-                this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
-              }
-              const newState = event.activities.map(activity =>
-                activity.plans.map(plan => (
-                  <div key={plan.id}> {suggestionCard(plan)}</div>
-                ))
-              )
-              event.activities.plans = newState
-              this.props.editEvent(event)
-            }}
-          >
-            Poista
-          </Button>
-        </CardActions>
       </Card>
     )
 
@@ -394,7 +399,7 @@ class EventCard extends React.Component {
         <br style={{ clear: 'both' }} />{' '}
         {event.activities.map(activity =>
           activity.plans.map(plan => (
-            <div key={plan.id}> {suggestionCard(plan)}</div>
+            <div key={plan.id}> {suggestionCard(plan, activity)}</div>
           ))
         )}{' '}
       </CardContent>
