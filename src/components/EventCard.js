@@ -319,6 +319,7 @@ class EventCard extends React.Component {
       }
       return <span>{information}</span>
     }
+
     const getSimpleActivity = activity =>
       convertToSimpleActivity(findActivity(activity, this.props.pofTree))
 
@@ -328,7 +329,10 @@ class EventCard extends React.Component {
      *
      */
     const suggestionCard = (plan, activity) => (
-      <Card className="suggestion" style={{ backgroundColor: '#fafafa', marginTop:"10px" }}>
+      <Card
+        className="suggestion"
+        style={{ backgroundColor: '#fafafa', marginTop: '10px' }}
+      >
         <CardHeader
           action={
             <IconButton
@@ -347,7 +351,9 @@ class EventCard extends React.Component {
             </IconButton>
           }
           title={plan.title}
-          subheader={<Typography>{getSimpleActivity(activity).title}</Typography>}
+          subheader={
+            <Typography>{getSimpleActivity(activity).title}</Typography>
+          }
         />
 
         <CardContent>
@@ -356,7 +362,7 @@ class EventCard extends React.Component {
       </Card>
     )
 
-    if (typeof information === 'string' || typeof information === undefined) {
+    if (!this.props.event.kuksaEventId) {
       editButton = (
         <button
           onClick={renderEdit}
