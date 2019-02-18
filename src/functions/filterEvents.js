@@ -1,8 +1,20 @@
 import eventComparer from '../utils/EventCompare'
 
-const filterEvents = (view, filter, initialEvents, start, end) => {
+const determineCase = (start, end) => {
+  if (start && end) {
+    return 'RANGE'
+  }
+  if (start && !end) {
+    return 'ONLY_START'
+  }
+  if (!start && end) {
+    return 'ONLY_END'
+  }
+}
+
+const filterEvents = (view, initialEvents, start, end) => {
   let events
-  switch (filter) {
+  switch (determineCase(start, end)) {
     case 'ONLY_START':
       events = initialEvents.filter(
         event => event.endDate >= start.format('YYYY-MM-DD')

@@ -3,18 +3,21 @@ import { connect } from 'react-redux'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import IconButton from '@material-ui/core/IconButton'
-import AccountCircle from '@material-ui/icons/AccountCircle'
+import PropTypes from 'prop-types'
 import { scoutLogout } from '../reducers/scoutReducer'
 import { API_ROOT } from '../api-config'
 
 class AccountIcon extends React.Component {
-  state = { anchorEl: null }
+  state = {
+    anchorEl: null,
+    accountIcon: this.props.accountIcon,
+    mobileFeedback: this.props.mobileFeedback,
+  }
 
-  forceMyOwnLogout = async response => {
+  forceMyOwnLogout = async () => {
     await this.props.scoutLogout()
     window.location = `${API_ROOT}/scouts/logout`
   }
-
   handleMenu = event => {
     this.setState({ anchorEl: event.currentTarget })
   }
@@ -33,7 +36,7 @@ class AccountIcon extends React.Component {
           onClick={this.handleMenu}
           color="inherit"
         >
-          <AccountCircle />
+          {this.state.accountIcon}
         </IconButton>
         <Menu
           id="menu-appbar"
@@ -49,6 +52,7 @@ class AccountIcon extends React.Component {
           open={open}
           onClose={this.handleClose}
         >
+          {this.state.mobileFeedback}
           <MenuItem onClick={this.forceMyOwnLogout}>Kirjaudu ulos</MenuItem>
         </Menu>
       </span>
@@ -56,12 +60,14 @@ class AccountIcon extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    scout: state.scout,
-    buffer: state.buffer,
-  }
+AccountIcon.propTypes = {
+  scoutLogout: PropTypes.func.isRequired,
 }
+
+const mapStateToProps = state => ({
+  scout: state.scout,
+  buffer: state.buffer,
+})
 
 export default connect(
   mapStateToProps,

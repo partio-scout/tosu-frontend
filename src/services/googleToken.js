@@ -1,3 +1,15 @@
+function getCookie(name) {
+  var value = '; ' + document.cookie
+  var parts = value.split('; ' + name + '=')
+  if (parts.length === 2)
+    return decodeURIComponent(
+      parts
+        .pop()
+        .split(';')
+        .shift()
+    )
+}
+
 export const getGoogleToken = () => {
   return window.localStorage.getItem('googleLogin')
 }
@@ -15,22 +27,10 @@ export const getScout = () => {
   return scout ? JSON.parse(scout) : null
 }
 
-export const removeScout = () => {
-  eraseCookie('scout')
-}
-
-function getCookie(name) {
-  var value = '; ' + document.cookie
-  var parts = value.split('; ' + name + '=')
-  if (parts.length === 2)
-    return decodeURIComponent(
-      parts
-        .pop()
-        .split(';')
-        .shift()
-    )
-}
-
 function eraseCookie(name) {
   document.cookie = name + '=; Max-Age=-99999999;'
+}
+
+export const removeScout = () => {
+  eraseCookie('scout')
 }

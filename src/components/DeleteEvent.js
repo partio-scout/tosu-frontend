@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Button, Dialog, DialogActions, DialogTitle } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { withStyles } from '@material-ui/core/styles'
-
+import PropTypes from 'prop-types'
 import {
   deleteEvent,
   deleteEventGroup,
@@ -24,6 +24,17 @@ const styles = theme => ({
 })
 
 class DeleteEvent extends React.Component {
+  static propTypes = {
+    data: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      synced: PropTypes.bool,
+      eventGroupId: PropTypes.number,
+      kuksaEvent: PropTypes.object,
+    }),
+    deleteSyncedEvent: PropTypes.func.isRequired,
+    deleteEvent: PropTypes.func.isRequired,
+    notify: PropTypes.func.isRequired,
+  }
   state = { open: false }
 
   deleteEvent = async () => {

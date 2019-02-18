@@ -58,12 +58,12 @@ describe('<Calendar />', () => {
       .instance().props.events
     expect(
       events.find(event => {
-        return event.id == testEvent.id
+        return event.id === testEvent.id
       })
     ).to.not.equal(undefined)
     expect(
       events.find(event => {
-        return event.id == testKuksaEvent.id
+        return event.id === testKuksaEvent.id
       })
     ).to.equal(undefined)
   })
