@@ -313,7 +313,7 @@ class EventCard extends React.Component {
       }
       return <span>{information}</span>
     }
-    if (typeof information === 'string' || typeof information === undefined) {
+    if (!this.props.event.kuksaEventId) {
       editButton = (
         <button
           onClick={renderEdit}
