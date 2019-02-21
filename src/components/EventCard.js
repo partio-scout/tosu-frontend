@@ -63,10 +63,7 @@ class EventCard extends React.Component {
       expanded: false,
       syncToKuksa: Boolean(props.event.synced), // Initial state of sync or no sync from backend
       syncDialogOpen: false,
-      event: props.event,
       editMode: false,
-      pofTree: props.pofTree,
-      newPlans: false,
     }
   }
   onChangeChildren = async activityGuid => {
@@ -483,7 +480,9 @@ EventCard.propTypes = {
   events: PropTypes.arrayOf(PropTypes.object).isRequired,
   notify: PropTypes.func.isRequired,
   odd: PropTypes.bool.isRequired,
-  pofTree: PropTypes.object.isRequired,
+  pofTree: PropTypes.shape({
+    taskgroups: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
   setNotification: PropTypes.func.isRequired,
   deletePlan: PropTypes.func.isRequired,
