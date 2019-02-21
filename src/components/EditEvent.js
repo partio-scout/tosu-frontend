@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
@@ -12,7 +13,6 @@ import EventForm from './EventForm'
 import { notify } from '../reducers/notificationReducer'
 import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
-import PropTypes from 'prop-types'
 
 const styles = theme => ({
   button: {
@@ -29,6 +29,7 @@ const styles = theme => ({
 class EditEvent extends React.Component {
   static propTypes = {
     data: PropTypes.shape({
+      type: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
       startDate: PropTypes.string.isRequired,
       startTime: PropTypes.string.isRequired,
@@ -39,6 +40,8 @@ class EditEvent extends React.Component {
     }).isRequired,
     notify: PropTypes.func.isRequired,
     editEvent: PropTypes.func.isRequired,
+    classes: PropTypes.shape({}).isRequired,
+    minimal: PropTypes.bool.isRequired,
     bufferZoneInitialization: PropTypes.func.isRequired,
   }
   state = {
@@ -54,9 +57,9 @@ class EditEvent extends React.Component {
       `${this.props.data.endDate} ${this.props.data.endTime}`,
       'YYYY-MM-DD HH:mm'
     ).toDate(),
-    checked: false,
-    repeatCount: 1,
-    repeatFrequency: 0,
+    // checked: false,
+    // repeatCount: 1,
+    // repeatFrequency: 0,
     type: this.props.data.type,
     information: this.props.data.information,
   }
@@ -130,8 +133,8 @@ class EditEvent extends React.Component {
       endDate,
       endTime,
       checked,
-      repeatCount,
-      repeatFrequency,
+      // repeatCount,
+      // repeatFrequency,
       type,
       information,
     })
