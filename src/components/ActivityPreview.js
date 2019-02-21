@@ -2,6 +2,7 @@ import React from 'react'
 import DragLayer from 'react-dnd/lib/DragLayer'
 import Chip from '@material-ui/core/Chip/Chip'
 import Avatar from '@material-ui/core/Avatar'
+import PropTypes from 'prop-types'
 
 const styles = {
   chip: {
@@ -83,6 +84,13 @@ export class ActivityPreview extends React.Component {
       />
     )
   }
+}
+
+ActivityPreview.propTypes = {
+  isDragging: PropTypes.bool.isRequired,
+  currentOffset: PropTypes.number.isRequired,
+  startPoint: PropTypes.number.isRequired,
+  pofActivity: PropTypes.shape({}).isRequired,
 }
 
 export default DragLayer(collect)(ActivityPreview)
