@@ -68,6 +68,14 @@ export class Activities extends React.Component {
   }
 }
 
+Activities.propTypes = {
+  minimal: PropTypes.bool.isRequired,
+  className: PropTypes.string.isRequired,
+  pofTree: PropTypes.shape({
+    children: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+}
+
 const mapStateToProps = state => ({
   buffer: state.buffer,
   events: state.events,
