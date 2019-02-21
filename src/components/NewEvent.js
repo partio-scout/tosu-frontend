@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import isTouchDevice from 'is-touch-device'
@@ -86,7 +87,7 @@ class NewEvent extends React.Component {
           endTime: moment(this.state.endTime).format('HH:mm'),
           type: this.state.type,
           information: this.state.information,
-          eventGroupId: response.id
+          eventGroupId: response.id,
         }
 
         promises = promises.concat(this.sendEventPostRequest(data))
@@ -111,7 +112,7 @@ class NewEvent extends React.Component {
       repeatCount: '',
       repeatFrequency: '',
       type: '',
-      information: ''
+      information: '',
     })
   }
 
@@ -135,9 +136,7 @@ class NewEvent extends React.Component {
       }
     } catch (exception) {
       console.error('Error in event POST:', exception)
-      this.props.notify(
-        'Tapahtumaa ei voitu luoda!'
-      )
+      this.props.notify('Tapahtumaa ei voitu luoda!')
     }
   }
 
@@ -163,14 +162,14 @@ class NewEvent extends React.Component {
       repeatCount,
       repeatFrequency,
       type,
-      information
+      information,
     })
   }
 
   render() {
     if (isTouchDevice()) {
       return (
-        <div className='event-form'>
+        <div className="event-form">
           <EventForm
             submitFunction={this.handleCloseAndSend.bind(this)}
             close={this.handleClose.bind(this)}
@@ -181,8 +180,8 @@ class NewEvent extends React.Component {
       )
     }
     return (
-      <div className='event-form'>
-        <Paper className='new-form-paper'>
+      <div className="event-form">
+        <Paper className="new-form-paper">
           <EventForm
             submitFunction={this.handleCloseAndSend.bind(this)}
             close={this.handleClose.bind(this)}
@@ -196,5 +195,14 @@ class NewEvent extends React.Component {
   }
 }
 
-const connected = connect(null, { addEvent, notify })(NewEvent)
+NewEvent.propTypes = {
+  closeMe: PropTypes.func.isRequired,
+  addEvent: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
+}
+
+const connected = connect(
+  null,
+  { addEvent, notify }
+)(NewEvent)
 export default withRouter(connected)
