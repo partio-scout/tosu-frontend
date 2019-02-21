@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 // React big calendar: https://onursimsek94.github.io/react-big-calendar/examples/index.html
 import BigCalendar from 'react-big-calendar-like-google'
@@ -10,7 +11,6 @@ import CalendarToolbar from './CalendarToolbar'
 import CalendarEvent from './CalendarEvent'
 import { eventStyleGetter } from './CalendarEvent'
 import { closePopper } from '../reducers/calendarReducer'
-import PropTypes from 'prop-types'
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -24,8 +24,8 @@ function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
     return true
   })
   return events.map(event => {
-    const startDate = `${event.startDate  } ${  event.startTime}`
-    const endDate = `${event.endDate  } ${  event.endTime}`
+    const startDate = `${event.startDate} ${event.startTime}`
+    const endDate = `${event.endDate} ${event.endTime}`
     return {
       title: event.title,
       start: new Date(startDate.replace(/-/g, '/')),
@@ -86,9 +86,9 @@ export class Calendar extends Component {
 }
 
 const mapStateToProps = state => ({
-    pofTree: state.pofTree,
-    shouldShowKuksaEventsAlso: state.calendar.showKuksa,
-  })
+  pofTree: state.pofTree,
+  shouldShowKuksaEventsAlso: state.calendar.showKuksa,
+})
 
 export default connect(
   mapStateToProps,
