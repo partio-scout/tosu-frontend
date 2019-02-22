@@ -50,7 +50,7 @@ import planService from '../services/plan'
 import { deletePlan } from '../reducers/planReducer'
 import findActivity from '../functions/findActivity'
 import convertToSimpleActivity from '../functions/activityConverter'
-
+import SuggestionCard from '../components/SuggestionCard'
 // Warning icon
 const warning = (
   <div className="tooltip">
@@ -331,49 +331,6 @@ class EventCard extends React.Component {
       }
       return <p>{information}</p>
     }
-
-    const getSimpleActivity = activity =>
-      convertToSimpleActivity(findActivity(activity, this.props.pofTree))
-
-    /** TODO: Make suggestioncard a component
-     * props plan, event
-     *
-     *
-     */
-    const suggestionCard = (plan, activity) => (
-      <Card
-        className="suggestion"
-        style={{ backgroundColor: '#fafafa', marginTop: '10px' }}
-      >
-        <CardHeader
-          action={
-            <IconButton
-              onClick={async () => {
-                try {
-                  await planService.deletePlan(plan.id)
-                  this.props.deletePlan(plan.id, plan.activityId)
-                  this.props.editEvent(event)
-                } catch (exception) {
-                  this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
-                }
-              }}
-            >
-              {' '}
-              <DeleteIcon />{' '}
-            </IconButton>
-          }
-          title={plan.title}
-          subheader={
-            <Typography>{getSimpleActivity(activity).title}</Typography>
-          }
-        />
-
-        <CardContent>
-          <Typography component="p">{Parser().parse(plan.content)}</Typography>
-        </CardContent>
-      </Card>
-    )
-
     if (!this.props.event.kuksaEventId) {
       editButton = (
         <button
@@ -421,12 +378,11 @@ class EventCard extends React.Component {
         <br style={{ clear: 'both' }} />{' '}
         {event.activities.map(activity =>
           activity.plans.map(plan => (
-            <div key={plan.id}> {suggestionCard(plan, activity)}</div>
+            <div key={plan.id}> <SuggestionCard plan={plan} activity={activity} event={this.props.event} /> </div>
           ))
         )}{' '}
       </CardContent>
     )
-
     return (
       <div className={cardClassName}>
         <Card style={{ boxShadow: 'none' }}>
