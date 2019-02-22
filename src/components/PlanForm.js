@@ -15,7 +15,9 @@ function TabContainer(props) {
     </Typography>
   )
 }
-
+TabContainer.propTypes = {
+  children: PropTypes.arrayOf(PropTypes.object).isRequired,
+}
 export default class PlanForm extends React.Component {
   static propTypes = {
     children: PropTypes.arrayOf(PropTypes.object).isRequired,
