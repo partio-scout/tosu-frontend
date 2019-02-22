@@ -44,24 +44,32 @@ class EditEvent extends React.Component {
     minimal: PropTypes.bool.isRequired,
     bufferZoneInitialization: PropTypes.func.isRequired,
   }
-  state = {
-    open: false,
-    title: this.props.data.title,
-    startDate: new Date(this.props.data.startDate),
-    startTime: moment(
-      `${this.props.data.startDate} ${this.props.data.startTime}`,
-      'YYYY-MM-DD HH:mm'
-    ).toDate(),
-    endDate: new Date(this.props.data.endDate),
-    endTime: moment(
-      `${this.props.data.endDate} ${this.props.data.endTime}`,
-      'YYYY-MM-DD HH:mm'
-    ).toDate(),
-    // checked: false,
-    // repeatCount: 1,
-    // repeatFrequency: 0,
-    type: this.props.data.type,
-    information: this.props.data.information,
+  constructor(props) {
+    super(props)
+    this.state = {
+      open: false,
+      title: props.data.title,
+      startDate: new Date(props.data.startDate),
+      startTime: moment(
+        `${props.data.startDate} ${props.data.startTime}`,
+        'YYYY-MM-DD HH:mm'
+      ).toDate(),
+      endDate: new Date(props.data.endDate),
+      endTime: moment(
+        `${props.data.endDate} ${props.data.endTime}`,
+        'YYYY-MM-DD HH:mm'
+      ).toDate(),
+      checked: false,
+      repeatCount: 1,
+      repeatFrequency: 0,
+      type: props.data.type,
+      information: props.data.information,
+    }
+  }
+  componentWillReceiveProps(props) {
+    if (this.state.information !== props.data.information) {
+      this.setState({ information: props.data.information })
+    }
   }
 
   handleOpen = () => {
