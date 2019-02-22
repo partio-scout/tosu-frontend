@@ -13,7 +13,5 @@ export const loadCachedPofData = () => {
 export const savePofData = pofData => {
   try {
     window.localStorage.setItem('pofData', JSON.stringify(pofData))
-  } catch (err) {
-    //
-  }
+  } catch (err) {}
 }
