@@ -33,6 +33,7 @@ import Activities from './Activities'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
+
 import {
   editEvent,
   deleteActivityFromEvent,
@@ -56,7 +57,7 @@ import convertToSimpleActivity from '../functions/activityConverter'
 const warning = (
   <div className="tooltip">
     <Warning className="warning" />
-    <span className="tooltiptext">Tapahtumasta puuttuu aktiviteetti!</span>
+    <span className="tooltiptext"> Tapahtumasta puuttuu aktiviteetti!</span>
   </div>
 )
 
@@ -317,7 +318,6 @@ class EventCard extends React.Component {
                 value="TALLENNA"
                 align="top"
                 className="information"
-                id="information-button"
               />
               {editButton}
             </span>
@@ -373,11 +373,7 @@ class EventCard extends React.Component {
 
     if (!this.props.event.kuksaEventId) {
       editButton = (
-        <button
-          onClick={renderEdit}
-          className="information"
-          id="information-button"
-        >
+        <button onClick={renderEdit} className="information">
           {this.state.editMode ? 'PERUUTA' : 'MUOKKAA'}
         </button>
       )
@@ -404,6 +400,9 @@ class EventCard extends React.Component {
         {this.state.editMode ? null : (
           <div>
             <b>Lisätiedot </b>
+            <ReactTooltip id="modify" type="info">
+              <span>Muokkaa tapahtumaa</span>
+            </ReactTooltip>
             {editButton}
           </div>
         )}
