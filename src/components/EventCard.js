@@ -295,7 +295,7 @@ class EventCard extends React.Component {
         startTime: this.props.event.startTime,
         endTime: this.props.event.endTime,
         type: this.props.event.type,
-        information: event.target.children[0].value,
+        information: event.target.children[2].value,
       }
       this.props.editEvent(moddedEvent)
       this.setState({ editMode: false })
@@ -318,10 +318,10 @@ class EventCard extends React.Component {
                 className="information"
                 id="information-button"
               />
+              {editButton}
             </span>
-            <p>
-              <textarea defaultValue={information} rows="4" cols="80" />
-            </p>
+            <br />
+            <textarea defaultValue={information} rows="4" cols="80" />
           </form>
         )
       }
