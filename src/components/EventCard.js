@@ -16,7 +16,11 @@ import {
   DialogContentText,
   DialogTitle,
   Card,
+  FormControlLabel,
+  TextField,
   Typography,
+  Switch,
+  Collapse,
 } from '@material-ui/core'
 
 import PropTypes from 'prop-types'
@@ -63,7 +67,9 @@ class EventCard extends React.Component {
       expanded: false,
       syncToKuksa: Boolean(props.event.synced), // Initial state of sync or no sync from backend
       syncDialogOpen: false,
+      event: props.event,
       editMode: false,
+      newPlans: false,
     }
   }
   onChangeChildren = async activityGuid => {
@@ -120,6 +126,9 @@ class EventCard extends React.Component {
 
   filterTreeNode = (input, child) =>
     child.props.title.props.name.toLowerCase().includes(input.toLowerCase())
+  handleExpandChange = expanded => {
+    this.setState({ expanded: !this.state.expanded })
+  }
 
   handleSyncSwitchClick = async () => {
     this.setState({ syncDialogOpen: true })
@@ -211,6 +220,18 @@ class EventCard extends React.Component {
           </DialogActions>
         </Dialog>
       </div>
+    )
+    const syncToKuksaSwitch = (
+      <FormControlLabel
+        control={
+          <Switch
+            checked={this.state.syncToKuksa}
+            onClick={this.handleSyncSwitchClick}
+            color="primary"
+          />
+        }
+        label="Synkronoi Kuksaan"
+      />
     )
 
     const touchDeviceNotExpanded = (
