@@ -26,12 +26,14 @@
   margin-bottom: 7px;
   border-radius: 5px;
   font-family: 'Roboto', sans-serif;
-  background: #253264;
+  background-color: #253264;
   color: #fff;
-}
-#information-button {
   font-weight: 900;
   border: none;
+  cursor: pointer;
+}
+.information:hover {
+  background-color: #121b3d;
 }
 .feedback {
   textalign: center;
