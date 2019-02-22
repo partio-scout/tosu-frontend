@@ -287,7 +287,6 @@ class EventCard extends React.Component {
     /* creates a new event with modified information and sends it to eventReducer's editEvent method */
     const changeInfo = event => {
       event.preventDefault()
-
       const moddedEvent = {
         id: this.props.event.id,
         title: this.props.event.title,
@@ -310,14 +309,23 @@ class EventCard extends React.Component {
       if (this.state.editMode) {
         return (
           <form onSubmit={changeInfo}>
-            <textarea defaultValue={information} rows="4" cols="80" />
+            <span>
+              <b>Lisätiedot </b>
+              <input
+                type="submit"
+                value="TALLENNA"
+                align="top"
+                className="information"
+                id="information-button"
+              />
+            </span>
             <p>
-              <input type="submit" value="TALLENNA" className="information" />
+              <textarea defaultValue={information} rows="4" cols="80" />
             </p>
           </form>
         )
       }
-      return <span>{information}</span>
+      return <p>{information}</p>
     }
 
     const getSimpleActivity = activity =>
@@ -369,7 +377,7 @@ class EventCard extends React.Component {
           className="information"
           id="information-button"
         >
-          {this.state.editMode ? '-' : '+'}
+          {this.state.editMode ? 'PERUUTA' : 'MUOKKAA'}
         </button>
       )
     } else {
@@ -392,9 +400,13 @@ class EventCard extends React.Component {
             .format('ddd D.M.YYYY')}{' '}
           kello {event.endTime.substring(0, 5)}
         </p>
-        <b>Lisätiedot </b>
-        {editButton}
-        <p> {informationContainer()} </p>
+        {this.state.editMode ? null : (
+          <div>
+            <b>Lisätiedot </b>
+            {editButton}
+          </div>
+        )}
+        <div> {informationContainer()} </div>
         <b>
           <Activities
             activities={this.props.event.activities}
