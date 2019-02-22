@@ -1,7 +1,6 @@
 import React from 'react'
 import moment from 'moment'
 import PropTypes from 'prop-types'
-import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import isTouchDevice from 'is-touch-device'
 import Paper from '@material-ui/core/Paper'
@@ -201,8 +200,7 @@ NewEvent.propTypes = {
   notify: PropTypes.func.isRequired,
 }
 
-const connected = connect(
+export default connect(
   null,
   { addEvent, notify }
 )(NewEvent)
-export default withRouter(connected)
