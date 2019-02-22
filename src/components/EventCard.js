@@ -158,7 +158,7 @@ class EventCard extends React.Component {
       startTime: this.props.event.startTime,
       endTime: this.props.event.endTime,
       type: this.props.event.type,
-      information: event.target.children[0].value,
+      information: event.target.children[2].value,
     }
     this.props.bufferZoneInitialization(0)
     this.props.editEvent(moddedEvent)
@@ -313,14 +313,23 @@ class EventCard extends React.Component {
       if (this.state.editMode) {
         return (
           <form onSubmit={this.changeInfo}>
+            <span>
+              <b>Lisätiedot </b>
+              <input
+                type="submit"
+                value="TALLENNA"
+                align="top"
+                className="information"
+                id="information-button"
+              />
+              {editButton}
+            </span>
+            <br />
             <textarea defaultValue={information} rows="4" cols="80" />
-            <div>
-              <input type="submit" value="TALLENNA" className="information" />
-            </div>
           </form>
         )
       }
-      return <span>{information}</span>
+      return <p>{information}</p>
     }
 
     const getSimpleActivity = activity =>
@@ -372,7 +381,7 @@ class EventCard extends React.Component {
           className="information"
           id="information-button"
         >
-          {this.state.editMode ? '-' : '+'}
+          {this.state.editMode ? 'PERUUTA' : 'MUOKKAA'}
         </button>
       )
     } else {
@@ -395,8 +404,12 @@ class EventCard extends React.Component {
             .format('ddd D.M.YYYY')}{' '}
           kello {event.endTime.substring(0, 5)}
         </div>
-        <b>Lisätiedot </b>
-        {editButton}
+        {this.state.editMode ? null : (
+          <div>
+            <b>Lisätiedot </b>
+            {editButton}
+          </div>
+        )}
         <div> {informationContainer()} </div>
         <b>
           <Activities
