@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import isTouchDevice from 'is-touch-device'
 import Paper from '@material-ui/core/Paper'
@@ -191,6 +192,12 @@ class NewEvent extends React.Component {
       </div>
     )
   }
+}
+
+NewEvent.propTypes = {
+  closeMe: PropTypes.func.isRequired,
+  addEvent: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
 }
 
 export default connect(

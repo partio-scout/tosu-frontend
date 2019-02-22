@@ -17,6 +17,7 @@ import 'react-sticky-header/styles.css'
 import './react_dates_overrides.css'
 import './stylesheets/index.css'
 import theme from './theme'
+import PropTypes from 'prop-types'
 // Components
 import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
@@ -268,6 +269,33 @@ const mapStateToProps = state => ({
 })
 
 const AppDnD = DragDropContext(HTML5Backend)(App)
+
+App.propTypes = {
+  addStatusInfo: PropTypes.func.isRequired,
+  buffer: PropTypes.shape({
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  bufferZoneInitialization: PropTypes.func.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
+  eventsInitialization: PropTypes.func.isRequired,
+  pofTreeInitialization: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  readScout: PropTypes.func.isRequired,
+  scout: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+  pofTree: PropTypes.shape({
+    children: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  scoutGoogleLogin: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
+  store: PropTypes.shape({
+    getState: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
+  }).isRequired,
+  taskgroup: PropTypes.objectOf.isRequired,
+}
 
 export default connect(
   mapStateToProps,

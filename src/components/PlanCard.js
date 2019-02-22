@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardActions from '@material-ui/core/CardActions'
@@ -65,14 +66,14 @@ class PlanCard extends React.Component {
     try {
       await planService.deletePlan(id)
       this.props.deletePlan(id, activityId)
-      const parentEvent = this.props.events.find( e => {
-          return e.id === parentId 
+      const parentEvent = this.props.events.find(e => {
+        return e.id === parentId
       })
-      const activity = parentEvent.activities.find( e => {
-          return e.id === activityId 
+      const activity = parentEvent.activities.find(e => {
+        return e.id === activityId
       })
-      activity.plans = activity.plans.filter( e => {
-          return e.id !== id 
+      activity.plans = activity.plans.filter(e => {
+        return e.id !== id
       })
       this.props.editEvent(parentEvent)
     } catch (exception) {
@@ -110,7 +111,11 @@ class PlanCard extends React.Component {
         <Button
           size="small"
           onClick={() =>
-            this.deleteSuggestion(selectedPlan[0].id, savedActivity.id, parentId)
+            this.deleteSuggestion(
+              selectedPlan[0].id,
+              savedActivity.id,
+              parentId
+            )
           }
         >
           Poista valituista
@@ -159,6 +164,19 @@ const mapStateToProps = state => ({
   plans: state.plans,
   events: state.events,
 })
+
+PlanCard.propTypes = {
+  savedActivity: PropTypes.shape({}).isRequired,
+  initPlans: PropTypes.func.isRequired,
+  savePlan: PropTypes.func.isRequired,
+  deletePlan: PropTypes.func.isRequired,
+  plans: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  notify: PropTypes.func.isRequired,
+  parentId: PropTypes.number.isRequired,
+  suggestion: PropTypes.shape({}).isRequired,
+  editEvent: PropTypes.func.isRequired,
+}
 
 export default connect(
   mapStateToProps,
