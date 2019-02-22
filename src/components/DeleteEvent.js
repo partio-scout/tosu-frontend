@@ -30,10 +30,13 @@ class DeleteEvent extends React.Component {
       synced: PropTypes.bool,
       eventGroupId: PropTypes.number,
       kuksaEvent: PropTypes.object,
-    }),
+    }).isRequired,
     deleteSyncedEvent: PropTypes.func.isRequired,
     deleteEvent: PropTypes.func.isRequired,
+    deleteEventGroup: PropTypes.func.isRequired,
     notify: PropTypes.func.isRequired,
+    minimal: PropTypes.bool.isRequired,
+    classes: PropTypes.shape({}).isRequired,
   }
   state = { open: false }
 

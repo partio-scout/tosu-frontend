@@ -23,6 +23,8 @@ import {
   Collapse,
 } from '@material-ui/core'
 
+import PropTypes from 'prop-types'
+import ReactTooltip from 'react-tooltip'
 import Warning from '@material-ui/icons/Warning'
 import DeleteIcon from '@material-ui/icons/Delete'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -32,6 +34,7 @@ import Activities from './Activities'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
+
 import {
   editEvent,
   deleteActivityFromEvent,
@@ -55,7 +58,7 @@ import SuggestionCard from '../components/SuggestionCard'
 const warning = (
   <div className="tooltip">
     <Warning className="warning" />
-    <span className="tooltiptext">Tapahtumasta puuttuu aktiviteetti!</span>
+    <span className="tooltiptext"> Tapahtumasta puuttuu aktiviteetti!</span>
   </div>
 )
 
@@ -320,7 +323,6 @@ class EventCard extends React.Component {
                 value="TALLENNA"
                 align="top"
                 className="information"
-                id="information-button"
               />
               {editButton}
             </span>
@@ -333,11 +335,7 @@ class EventCard extends React.Component {
     }
     if (!this.props.event.kuksaEventId) {
       editButton = (
-        <button
-          onClick={this.renderEdit}
-          className="information"
-          id="information-button"
-        >
+        <button onClick={this.renderEdit} className="information">
           {this.state.editMode ? 'PERUUTA' : 'MUOKKAA'}
         </button>
       )
@@ -364,6 +362,9 @@ class EventCard extends React.Component {
         {this.state.editMode ? null : (
           <div>
             <b>Lisätiedot </b>
+            <ReactTooltip id="modify" type="info">
+              <span>Muokkaa tapahtumaa</span>
+            </ReactTooltip>
             {editButton}
           </div>
         )}
@@ -378,7 +379,14 @@ class EventCard extends React.Component {
         <br style={{ clear: 'both' }} />{' '}
         {event.activities.map(activity =>
           activity.plans.map(plan => (
-            <div key={plan.id}> <SuggestionCard plan={plan} activity={activity} event={this.props.event} /> </div>
+            <div key={plan.id}>
+              {' '}
+              <SuggestionCard
+                plan={plan}
+                activity={activity}
+                event={this.props.event}
+              />{' '}
+            </div>
           ))
         )}{' '}
       </CardContent>
@@ -448,6 +456,39 @@ class EventCard extends React.Component {
       </div>
     )
   }
+}
+
+EventCard.propTypes = {
+  addActivityToEventOnlyLocally: PropTypes.func.isRequired,
+  buffer: PropTypes.shape({
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
+  editEvent: PropTypes.func.isRequired,
+  event: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    type: PropTypes.object.isRequired,
+    startDate: PropTypes.string.isRequired,
+    startTime: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
+    endTime: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    kuksaEventId: PropTypes.number.isRequired,
+    synced: PropTypes.bool.isRequired,
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  notify: PropTypes.func.isRequired,
+  odd: PropTypes.bool.isRequired,
+  pofTree: PropTypes.shape({
+    taskgroups: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  setNotification: PropTypes.func.isRequired,
+  deletePlan: PropTypes.func.isRequired,
+  taskgroup: PropTypes.shape({
+    value: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
 const mapStateToProps = state => ({
