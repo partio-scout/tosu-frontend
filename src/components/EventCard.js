@@ -66,10 +66,11 @@ class EventCard extends React.Component {
       expanded: false,
       syncToKuksa: Boolean(props.event.synced), // Initial state of sync or no sync from backend
       syncDialogOpen: false,
-      event: props.event,
       editMode: false,
       newPlans: false,
     }
+    this.changeInfo = this.changeInfo.bind(this)
+    this.renderEdit = this.renderEdit.bind(this)
   }
   onChangeChildren = async activityGuid => {
     if (this.isLeaf(activityGuid)) {
@@ -144,6 +145,30 @@ class EventCard extends React.Component {
   stopSyncingWithKuksa = async () => {
     // TODO
   }
+
+  /* creates a new event with modified information and sends it to eventReducer's editEvent method */
+  changeInfo = async event => {
+    event.preventDefault()
+
+    const moddedEvent = {
+      id: this.props.event.id,
+      title: this.props.event.title,
+      startDate: this.props.event.startDate,
+      endDate: this.props.event.endDate,
+      startTime: this.props.event.startTime,
+      endTime: this.props.event.endTime,
+      type: this.props.event.type,
+      information: event.target.children[0].value,
+    }
+    this.props.bufferZoneInitialization(0)
+    this.props.editEvent(moddedEvent)
+    this.setState({ editMode: false })
+  }
+
+  renderEdit = () => {
+    this.setState({ editMode: !this.state.editMode })
+  }
+
   render() {
     const { event, odd } = this.props
     let editButton = <div />
@@ -284,36 +309,14 @@ class EventCard extends React.Component {
       </CardContent>
     )
 
-    /* creates a new event with modified information and sends it to eventReducer's editEvent method */
-    const changeInfo = event => {
-      event.preventDefault()
-
-      const moddedEvent = {
-        id: this.props.event.id,
-        title: this.props.event.title,
-        startDate: this.props.event.startDate,
-        endDate: this.props.event.endDate,
-        startTime: this.props.event.startTime,
-        endTime: this.props.event.endTime,
-        type: this.props.event.type,
-        information: event.target.children[0].value,
-      }
-      this.props.editEvent(moddedEvent)
-      this.setState({ editMode: false })
-    }
-
-    const renderEdit = () => {
-      this.setState({ editMode: !this.state.editMode })
-    }
-
     const informationContainer = () => {
       if (this.state.editMode) {
         return (
-          <form onSubmit={changeInfo}>
+          <form onSubmit={this.changeInfo}>
             <textarea defaultValue={information} rows="4" cols="80" />
-            <p>
+            <div>
               <input type="submit" value="TALLENNA" className="information" />
-            </p>
+            </div>
           </form>
         )
       }
@@ -365,7 +368,7 @@ class EventCard extends React.Component {
     if (!this.props.event.kuksaEventId) {
       editButton = (
         <button
-          onClick={renderEdit}
+          onClick={this.renderEdit}
           className="information"
           id="information-button"
         >
@@ -378,23 +381,23 @@ class EventCard extends React.Component {
     const expanded = (
       <CardContent>
         {syncConfirmDialog}
-        <p className="eventTimes">
+        <div className="eventTimes">
           <span>{event.type} alkaa:</span>{' '}
           {moment(event.startDate)
             .locale('fi')
             .format('ddd D.M.YYYY')}{' '}
           kello {event.startTime.substring(0, 5)}
-        </p>
-        <p className="eventTimes">
+        </div>
+        <div className="eventTimes">
           <span>{event.type} päättyy:</span>{' '}
           {moment(event.endDate)
             .locale('fi')
             .format('ddd D.M.YYYY')}{' '}
           kello {event.endTime.substring(0, 5)}
-        </p>
+        </div>
         <b>Lisätiedot </b>
         {editButton}
-        <p> {informationContainer()} </p>
+        <div> {informationContainer()} </div>
         <b>
           <Activities
             activities={this.props.event.activities}
@@ -460,13 +463,13 @@ class EventCard extends React.Component {
             >
               <EditEvent
                 buttonClass="buttonRight"
-                data={event}
+                data={this.props.event}
                 setNotification={this.props.setNotification}
                 minimal={!this.state.expanded}
               />
               <DeleteEvent
                 buttonClass="buttonRight"
-                data={event}
+                data={this.props.event}
                 setNotification={this.props.setNotification}
                 minimal={!this.state.expanded}
               />
