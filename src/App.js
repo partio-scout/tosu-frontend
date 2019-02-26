@@ -10,7 +10,7 @@ import { Dialog, DialogTitle, LinearProgress } from '@material-ui/core'
 import moment from 'moment'
 import 'react-dates/initialize'
 import { MuiThemeProvider } from '@material-ui/core/styles'
-
+import { normalize } from 'normalizr'
 // CSS
 import 'react-dates/lib/css/_datepicker.css'
 import 'react-sticky-header/styles.css'
@@ -54,7 +54,7 @@ import { viewChange } from './reducers/viewReducer'
 import { setLoading } from './reducers/loadingReducer'
 
 import { POF_ROOT } from './api-config'
-
+import pofTreeSchema from './pofTreeSchema'
 class App extends Component {
   state = {
     headerVisible: false,
@@ -83,7 +83,11 @@ class App extends Component {
     let pofData = loadCachedPofData()
     if (pofData === undefined || pofData === {}) {
       pofData = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
+      
     }
+    console.log(pofData.data)
+    let normalizedPof = normalize(pofData.data, pofTreeSchema)
+    console.log(normalizedPof)
     await this.props.pofTreeInitialization(pofData)
     if (this.props.scout !== null) {
       await Promise.all([
