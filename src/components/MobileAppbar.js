@@ -141,6 +141,7 @@ class MobileAppbar extends React.Component {
 const mapStateToProps = state => ({
   events: state.events,
   buffer: state.buffer,
+  pofTree: state.pofTree,
   taskgroup: state.taskgroup,
   status: state.statusMessage.status,
   scout: state.scout,
@@ -149,6 +150,9 @@ const mapStateToProps = state => ({
 MobileAppbar.propTypes = {
   addStatusMessage: PropTypes.func.isRequired,
   emptyTaskgroup: PropTypes.func.isRequired,
+  pofTree: PropTypes.shape({
+    taskgroups: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
   selectTaskgroup: PropTypes.func.isRequired,
   setHeaderHeight: PropTypes.func.isRequired,
   headerVisible: PropTypes.bool.isRequired,
