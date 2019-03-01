@@ -1,5 +1,6 @@
 // Vendor
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import React from 'react'
 import { GoogleLogin } from 'react-google-login'
 import FontAwesome from 'react-fontawesome'
@@ -21,9 +22,9 @@ import {
   deleteActivityFromBuffer,
 } from '../reducers/bufferZoneReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
-import PropTypes from 'prop-types'
 
 class Login extends React.Component {
+  /** Acknowledges a succesful login and sets credentials for user */
   googleLoginSuccess = async response => {
     if (this.props.scout === null) {
       this.props.store.dispatch(setLoading(true))
@@ -40,7 +41,7 @@ class Login extends React.Component {
       this.props.store.dispatch(setLoading(false))
     }
   }
-
+  /** Returns an error message if login is unsuccesful */
   googleLoginFail = async response => {
     notify('Google-kirjautuminen epäonnistui. Yritä uudestaan.')
   }

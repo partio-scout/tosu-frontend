@@ -52,7 +52,6 @@ import { deletePlan } from '../reducers/planReducer'
 import findActivity from '../functions/findActivity'
 import convertToSimpleActivity from '../functions/activityConverter'
 
-/** Warning icon */
 const warning = (
   <div className="tooltip">
     <Warning className="warning" />

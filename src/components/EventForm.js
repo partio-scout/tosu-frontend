@@ -71,10 +71,10 @@ export default class EventForm extends React.Component {
   handleNewEventFormChange = event => {
     this.setState({ [event.target.name]: event.target.value })
   }
-
+  /** Converts moment-object to Date */
   handleStartDate = date => {
     this.setState({
-      startDate: date.toDate(), // Convert moment-object to Date
+      startDate: date.toDate(),
       endDate: date.toDate(),
     })
   }
@@ -100,8 +100,8 @@ export default class EventForm extends React.Component {
 
   updateCheck() {
     this.setState(oldState => ({
-        checked: !oldState.checked,
-      }))
+      checked: !oldState.checked,
+    }))
   }
 
   handleRepeatCount = event => {
