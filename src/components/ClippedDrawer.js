@@ -30,7 +30,7 @@ class ClippedDrawer extends React.Component {
     this.setState({ showStatusBox: false })
   }
 
-  render(props) {
+  render() {
     const { classes } = this.props
     return (
       <div className="drawer-root">

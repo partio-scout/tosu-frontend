@@ -20,7 +20,8 @@ import { notify } from '../reducers/notificationReducer'
 class KuksaEventCard extends React.Component {
   state = { expanded: false }
 
-  handleExpandChange = expanded => {
+  /** Toggles between expanded and not expanded */
+  handleExpandChange = () => {
     this.setState({ expanded: !this.state.expanded })
   }
 

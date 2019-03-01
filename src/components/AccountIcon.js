@@ -13,15 +13,16 @@ class AccountIcon extends React.Component {
     accountIcon: this.props.accountIcon,
     mobileFeedback: this.props.mobileFeedback,
   }
-
+  /** Logs out the current user and redirects to the login page */
   forceMyOwnLogout = async () => {
     await this.props.scoutLogout()
     window.location = `${API_ROOT}/scouts/logout`
   }
+  /** Opens the user menu */
   handleMenu = event => {
     this.setState({ anchorEl: event.currentTarget })
   }
-
+  /** Closes the user menu */
   handleClose = () => {
     this.setState({ anchorEl: null })
   }

@@ -37,7 +37,7 @@ const activitySource = {
     return true
   },
 }
-
+/** Collects the draggable element */
 function collect(connector, monitor) {
   return {
     connectDragSource: connector.dragSource(),
@@ -58,6 +58,7 @@ class Activity extends Component {
 
   state = { open: false }
 
+  /** Opens the activity */
   handleClick = () => {
     this.setState({ open: !this.state.open })
   }
