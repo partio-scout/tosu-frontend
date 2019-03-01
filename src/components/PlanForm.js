@@ -4,7 +4,7 @@ import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import PlanCard from './PlanCard'
 
-// Use Typography v2: https://material-ui.com/style/typography/#strategies
+/** Use Typography v2: https://material-ui.com/style/typography/#strategies */
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
 
 function TabContainer(props) {

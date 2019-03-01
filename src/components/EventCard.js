@@ -52,7 +52,7 @@ import { deletePlan } from '../reducers/planReducer'
 import findActivity from '../functions/findActivity'
 import convertToSimpleActivity from '../functions/activityConverter'
 
-// Warning icon
+/** Warning icon */
 const warning = (
   <div className="tooltip">
     <Warning className="warning" />
@@ -72,6 +72,9 @@ class EventCard extends React.Component {
       newPlans: false,
     }
   }
+  /** Adds the activity to local storage and updates the guid. Also updates the pofTree.
+   *  @param activityGuid the global identifier of the activity
+   */
   onChangeChildren = async activityGuid => {
     if (this.isLeaf(activityGuid)) {
       try {
@@ -87,6 +90,7 @@ class EventCard extends React.Component {
     }
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
+  /** Deletes all activities from the local buffer and updates the pofTree */
   emptyBuffer = async () => {
     if (isTouchDevice()) {
       const bufferActivities = this.props.buffer.activities
@@ -102,7 +106,7 @@ class EventCard extends React.Component {
 
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
-
+  /** Checks whether a given value is part of a pofTree  */
   isLeaf = value => {
     if (!value) {
       return false
@@ -285,7 +289,9 @@ class EventCard extends React.Component {
       </CardContent>
     )
 
-    /* creates a new event with modified information and sends it to eventReducer's editEvent method */
+    /** Creates a new event with modified information and sends it to eventReducer's editEvent method
+     * @param event Click event that has to be forwarded to this function so it can be prevented
+     */
     const changeInfo = event => {
       event.preventDefault()
       const moddedEvent = {
@@ -301,11 +307,12 @@ class EventCard extends React.Component {
       this.props.editEvent(moddedEvent)
       this.setState({ editMode: false })
     }
-
+    /** Enables/disables edit mode, used in editButton */
     const renderEdit = () => {
       this.setState({ editMode: !this.state.editMode })
     }
 
+    /** Returns a component with a form to input new information if editMode is true, otherwise returns the information in text form */
     const informationContainer = () => {
       if (this.state.editMode) {
         return (
@@ -399,9 +406,6 @@ class EventCard extends React.Component {
         {this.state.editMode ? null : (
           <div>
             <b>Lisätiedot </b>
-            <ReactTooltip id="modify" type="info">
-              <span>Muokkaa tapahtumaa</span>
-            </ReactTooltip>
             {editButton}
           </div>
         )}

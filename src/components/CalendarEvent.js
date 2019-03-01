@@ -14,6 +14,7 @@ import AddToPlan from './AddToPlan'
 import { openPopper, closePopper } from '../reducers/calendarReducer'
 import PropTypes from 'prop-types'
 
+/** Intializes the activitynmarkers for rendering */
 function createActivityMarkers(activities) {
   const markers = [' ']
   for (let i = 0; i < activities.length; i++) {
@@ -23,7 +24,7 @@ function createActivityMarkers(activities) {
   }
   return markers
 }
-
+/** Function to handle the styles of the event */
 export function eventStyleGetter(event, start, end, isSelected) {
   const backgroundColor = event.kuksaEvent ? 'lightgrey' : '#27AAE1'
   const color = event.kuksaEvent ? 'black' : 'white'
@@ -61,6 +62,7 @@ class CalendarEvent extends Component {
     this.setState(state => ({ anchorEl: target }))
     this.props.openPopper(this.props.event.id)
   }
+  /** Opens/closes the popper */
   handleClick = event => {
     const { currentTarget } = event
     if (!this.props.popperOpen) {
@@ -205,10 +207,10 @@ class CalendarEvent extends Component {
 }
 
 const mapStateToProps = state => ({
-    pofTree: state.pofTree,
-    popperOpen: state.calendar.popperOpen,
-    popperEventId: state.calendar.popperEventId,
-  })
+  pofTree: state.pofTree,
+  popperOpen: state.calendar.popperOpen,
+  popperEventId: state.calendar.popperEventId,
+})
 
 export default connect(
   mapStateToProps,

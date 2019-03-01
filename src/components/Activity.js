@@ -37,7 +37,7 @@ const activitySource = {
     return true
   },
 }
-
+/** Collects the draggable element */
 function collect(connector, monitor) {
   return {
     connectDragSource: connector.dragSource(),
@@ -53,6 +53,7 @@ class Activity extends Component {
 
   state = { open: false }
 
+  /** Opens the activity */
   handleClick = () => {
     this.setState({ open: !this.state.open })
   }
@@ -65,14 +66,12 @@ class Activity extends Component {
       const lastParentIndex = pofActivity.parents.length - 1
       lastGuid = pofActivity.parents[lastParentIndex].guid
     }
-    const chipClass =
-      `${pofActivity.mandatory ? '' : 'non-' 
-      }mandatory-chip${ 
-      this.props.minimal ? '-minimal' : ''}`
-    const avatarClass =
-      `${pofActivity.mandatory ? '' : 'non-' 
-      }mandatory-chip-avatar${ 
-      this.props.minimal ? '-minimal' : ''}`
+    const chipClass = `${pofActivity.mandatory ? '' : 'non-'}mandatory-chip${
+      this.props.minimal ? '-minimal' : ''
+    }`
+    const avatarClass = `${
+      pofActivity.mandatory ? '' : 'non-'
+    }mandatory-chip-avatar${this.props.minimal ? '-minimal' : ''}`
 
     if (activity && pofActivity) {
       return connectDragSource(
@@ -125,7 +124,11 @@ class Activity extends Component {
             open={this.state.open}
             onClose={this.handleClick}
           >
-            <PlanForm activity={pofActivity} savedActivity={activity} parentId={parentId} />
+            <PlanForm
+              activity={pofActivity}
+              savedActivity={activity}
+              parentId={parentId}
+            />
           </Dialog>
         </div>
       )

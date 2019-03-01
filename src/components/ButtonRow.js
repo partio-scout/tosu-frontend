@@ -22,16 +22,16 @@ class ButtonRow extends React.Component {
     startDate: moment(),
     endDate: null,
   }
-
+  /** Changes the view to tab Omat/Kuksa/Kalenteri/Uusi tapahtuma  */
   selectView = value => () => {
     this.props.viewChange(value)
   }
-
+  /** Clears the calendar daterange so that it shows all events */
   clearRange = () => {
     this.setState({ startDate: null, endDate: null })
     this.props.dateRangeUpdate({ startDate: null, endDate: null })
   }
-
+  /** Sets the calendar daterange with a new start and end value */
   dateRangeUpdate = ({ startDate, endDate }) => {
     this.setState({ startDate, endDate })
     this.props.dateRangeUpdate({ startDate, endDate })

@@ -16,6 +16,7 @@ import PropTypes from 'prop-types'
 // to the correct localizer.
 const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
 
+/** Maps the events that fit a certain date range and renders them to the app */
 function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
   events = events.filter(event => {
     if (event.kuksaEvent) {
@@ -24,8 +25,8 @@ function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
     return true
   })
   return events.map(event => {
-    const startDate = `${event.startDate  } ${  event.startTime}`
-    const endDate = `${event.endDate  } ${  event.endTime}`
+    const startDate = `${event.startDate} ${event.startTime}`
+    const endDate = `${event.endDate} ${event.endTime}`
     return {
       title: event.title,
       start: new Date(startDate.replace(/-/g, '/')),
@@ -86,9 +87,9 @@ export class Calendar extends Component {
 }
 
 const mapStateToProps = state => ({
-    pofTree: state.pofTree,
-    shouldShowKuksaEventsAlso: state.calendar.showKuksa,
-  })
+  pofTree: state.pofTree,
+  shouldShowKuksaEventsAlso: state.calendar.showKuksa,
+})
 
 export default connect(
   mapStateToProps,
