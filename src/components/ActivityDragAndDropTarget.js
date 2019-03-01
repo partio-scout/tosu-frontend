@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import ItemTypes from '../ItemTypes'
 import DropActivity from '../functions/DropActivity'
 import { notify } from '../reducers/notificationReducer'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   postActivityToBufferOnlyLocally,
   deleteActivityFromBufferOnlyLocally,
@@ -43,7 +42,6 @@ class ActivityDragAndDropTarget extends React.Component {
     addActivityToEventOnlyLocally: PropTypes.func.isRequired,
     deleteActivityFromBufferOnlyLocally: PropTypes.func.isRequired,
     postActivityToBufferOnlyLocally: PropTypes.func.isRequired,
-    pofTreeUpdate: PropTypes.func.isRequired,
     deleteActivityFromBuffer: PropTypes.func.isRequired,
     deleteActivityFromEvent: PropTypes.func.isRequired,
   }
@@ -69,9 +67,9 @@ const DroppableActivityDragAndDropTarget = DropTarget(
 )(ActivityDragAndDropTarget)
 
 const mapStateToProps = state => ({
-    buffer: state.buffer,
-    events: state.events,
-  })
+  buffer: state.buffer,
+  events: state.events,
+})
 
 export default connect(
   mapStateToProps,
@@ -81,7 +79,6 @@ export default connect(
     addActivityToEventOnlyLocally,
     deleteActivityFromBufferOnlyLocally,
     postActivityToBufferOnlyLocally,
-    pofTreeUpdate,
     deleteActivityFromBuffer,
     deleteActivityFromEvent,
   }

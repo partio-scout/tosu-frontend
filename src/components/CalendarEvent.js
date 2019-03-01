@@ -43,13 +43,10 @@ class CalendarEvent extends Component {
     closePopper: PropTypes.func.isRequired,
     openPopper: PropTypes.func.isRequired,
   }
-  constructor(props) {
-    super(props)
-    this.state = {
-      event: props.event,
-      pofTree: props.pofTree,
-      anchorEl: null,
-    }
+  state = {
+    event: this.props.event,
+    pofTree: this.props.pofTree,
+    anchorEl: null,
   }
 
   closePopper = () => {
@@ -205,10 +202,10 @@ class CalendarEvent extends Component {
 }
 
 const mapStateToProps = state => ({
-    pofTree: state.pofTree,
-    popperOpen: state.calendar.popperOpen,
-    popperEventId: state.calendar.popperEventId,
-  })
+  pofTree: state.pofTree,
+  popperOpen: state.calendar.popperOpen,
+  popperEventId: state.calendar.popperEventId,
+})
 
 export default connect(
   mapStateToProps,

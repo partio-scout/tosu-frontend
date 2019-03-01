@@ -6,7 +6,6 @@ import Icon from '@material-ui/core/Icon'
 import { DragSource } from 'react-dnd'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { notify } from '../reducers/notificationReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
@@ -65,14 +64,12 @@ class Activity extends Component {
       const lastParentIndex = pofActivity.parents.length - 1
       lastGuid = pofActivity.parents[lastParentIndex].guid
     }
-    const chipClass =
-      `${pofActivity.mandatory ? '' : 'non-' 
-      }mandatory-chip${ 
-      this.props.minimal ? '-minimal' : ''}`
-    const avatarClass =
-      `${pofActivity.mandatory ? '' : 'non-' 
-      }mandatory-chip-avatar${ 
-      this.props.minimal ? '-minimal' : ''}`
+    const chipClass = `${pofActivity.mandatory ? '' : 'non-'}mandatory-chip${
+      this.props.minimal ? '-minimal' : ''
+    }`
+    const avatarClass = `${
+      pofActivity.mandatory ? '' : 'non-'
+    }mandatory-chip-avatar${this.props.minimal ? '-minimal' : ''}`
 
     if (activity && pofActivity) {
       return connectDragSource(
@@ -125,7 +122,11 @@ class Activity extends Component {
             open={this.state.open}
             onClose={this.handleClick}
           >
-            <PlanForm activity={pofActivity} savedActivity={activity} parentId={parentId} />
+            <PlanForm
+              activity={pofActivity}
+              savedActivity={activity}
+              parentId={parentId}
+            />
           </Dialog>
         </div>
       )
@@ -152,6 +153,5 @@ export default connect(
     deleteActivityFromEvent,
     deleteActivityFromBuffer,
     notify,
-    pofTreeUpdate,
   }
 )(DraggableActivity)

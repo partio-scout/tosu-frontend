@@ -86,7 +86,6 @@ export class BufferZone extends React.Component {
 const mapStateToProps = state => ({
   buffer: state.buffer,
   events: state.events,
-  pofTree: state.pofTree,
 })
 
 export default connect(

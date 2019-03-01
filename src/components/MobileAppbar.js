@@ -5,7 +5,6 @@ import AccountIcon from './AccountIcon'
 import { notify } from '../reducers/notificationReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import StatusMessage from './StatusMessage'
 import { createStatusMessage } from '../utils/createStatusMessage'
 import List from '@material-ui/icons/List'
@@ -139,13 +138,13 @@ class MobileAppbar extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    events: state.events,
-    buffer: state.buffer,
-    pofTree: state.pofTree,
-    taskgroup: state.taskgroup,
-    status: state.statusMessage.status,
-    scout: state.scout,
-  })
+  events: state.events,
+  buffer: state.buffer,
+  pofTree: state.pofTree,
+  taskgroup: state.taskgroup,
+  status: state.statusMessage.status,
+  scout: state.scout,
+})
 
 export default connect(
   mapStateToProps,
@@ -153,7 +152,6 @@ export default connect(
     notify,
     addStatusMessage,
     selectTaskgroup,
-    pofTreeUpdate,
     emptyTaskgroup,
   }
 )(MobileAppbar)

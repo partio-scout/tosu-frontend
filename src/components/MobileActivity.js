@@ -6,7 +6,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Avatar from '@material-ui/core/Avatar'
 import Chip from '@material-ui/core/Chip'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { notify } from '../reducers/notificationReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
@@ -191,6 +190,5 @@ export default connect(
     deleteActivityFromEvent,
     deleteActivityFromBuffer,
     notify,
-    pofTreeUpdate,
   }
 )(DraggableActivity)
