@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Select from 'react-select'
+import PropTypes from 'prop-types'
 import 'react-select/dist/react-select.css'
 import TreeSelect /* , { TreeNode, SHOW_PARENT } */ from 'rc-tree-select'
 import 'rc-tree-select/assets/index.css'
@@ -68,9 +69,11 @@ class TreeSearchBar extends React.Component {
         })
       })
 
-      const promises = mandatoryActivities.map(activity => activities.includes(activity)
+      const promises = mandatoryActivities.map(activity =>
+        activities.includes(activity)
           ? null
-          : this.props.postActivityToBuffer({ guid: activity }))
+          : this.props.postActivityToBuffer({ guid: activity })
+      )
       try {
         await Promise.all(promises)
         this.props.notify(
@@ -86,9 +89,8 @@ class TreeSearchBar extends React.Component {
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
 
-  filterTreeNode = (input, child) => child.props.title.props.name
-      .toLowerCase()
-      .includes(input.toLowerCase())
+  filterTreeNode = (input, child) =>
+    child.props.title.props.name.toLowerCase().includes(input.toLowerCase())
   isLeaf = value => {
     if (!value) {
       return false
@@ -210,12 +212,29 @@ class TreeSearchBar extends React.Component {
   }
 }
 
+TreeSearchBar.propTypes = {
+  addStatusMessage: PropTypes.func.isRequired,
+  buffer: PropTypes.shape({
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  emptyTaskgroup: PropTypes.func.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  notify: PropTypes.func.isRequired,
+  pofTree: PropTypes.object.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  postActivityToBuffer: PropTypes.func.isRequired,
+  selectTaskgroup: PropTypes.func.isRequired,
+  taskgroup: PropTypes.shape({
+    value: PropTypes.number.isRequired,
+  }).isRequired,
+}
+
 const mapStateToProps = state => ({
-    events: state.events,
-    buffer: state.buffer,
-    pofTree: state.pofTree,
-    taskgroup: state.taskgroup,
-  })
+  events: state.events,
+  buffer: state.buffer,
+  pofTree: state.pofTree,
+  taskgroup: state.taskgroup,
+})
 
 export default connect(
   mapStateToProps,

@@ -69,6 +69,10 @@ class Activity extends React.Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
     connectDragPreview: PropTypes.func.isRequired,
+    activity: PropTypes.shape({}).isRequired,
+    pofActivity: PropTypes.shape({}).isRequired,
+    isDragging: PropTypes.bool.isRequired,
+    deleteActivity: PropTypes.func.isRequired,
   }
 
   state = { open: false }

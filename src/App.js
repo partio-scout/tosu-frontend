@@ -1,12 +1,11 @@
 // Vendor
 
 import { connect } from 'react-redux'
+import axios from 'axios'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import isTouchDevice from 'is-touch-device'
-import MultiBackend from 'react-dnd-multi-backend'
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Dialog, DialogTitle, LinearProgress } from '@material-ui/core'
 import moment from 'moment'
 import 'react-dates/initialize'
@@ -18,13 +17,13 @@ import 'react-sticky-header/styles.css'
 import './react_dates_overrides.css'
 import './stylesheets/index.css'
 import theme from './theme'
+import PropTypes from 'prop-types'
 // Components
 import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
 import MobileAppbar from './components/MobileAppbar'
 import ClippedDrawer from './components/ClippedDrawer'
 import NotificationFooter from './components/NotificationFooter'
-import UserInfo from './components/UserInfo'
 import EventCard from './components/EventCard'
 import KuksaEventCard from './components/KuksaEventCard'
 import Calendar from './components/Calendar'
@@ -39,8 +38,7 @@ import {
   getGoogleToken,
   removeGoogleToken,
   getScout,
-} from './services/googleToken' // TODO: rename service
-import pofService from './services/pof'
+} from './services/googleToken'
 import { loadCachedPofData } from './services/localStorage'
 // Reducers
 import { notify } from './reducers/notificationReducer'
@@ -55,36 +53,39 @@ import { scoutGoogleLogin, readScout } from './reducers/scoutReducer'
 import { viewChange } from './reducers/viewReducer'
 import { setLoading } from './reducers/loadingReducer'
 
+import { POF_ROOT } from './api-config'
+
 class App extends Component {
-  constructor() {
-    super()
-    const currentDate = moment()
-    this.state = {
-      headerVisible: false,
-      drawerVisible: true,
-      bufferZoneHeight: 0,
-      newEventVisible: false,
-      startDate: currentDate,
-    }
+  state = {
+    headerVisible: false,
+    drawerVisible: true,
+    bufferZoneHeight: 0,
+    newEventVisible: false,
+    startDate: moment(),
   }
 
   componentDidMount = async () => {
-    if (window.location.pathname === '/new-event') {
-      this.setState({
-        headerVisible: false,
-        bufferZoneHeight: 0,
-        newEventVisible: false,
-      })
-    } else if (window.location.pathname === '/calendar') {
-      this.props.store.dispatch(viewChange('CALENDAR'))
+    switch (window.location.pathname) {
+      case '/new-event':
+        this.setState({
+          headerVisible: false,
+          bufferZoneHeight: 0,
+          newEventVisible: false,
+        })
+        break
+      case '/calendar':
+        this.props.viewChange('CALENDAR')
+        break
+      default:
+        break
     }
     await this.checkLoggedIn()
     let pofData = loadCachedPofData()
     if (pofData === undefined || pofData === {}) {
-      pofData = await pofService.getAllTree()
+      pofData = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
     }
     await this.props.pofTreeInitialization(pofData)
-    if (this.props.store.getState().scout !== null) {
+    if (this.props.scout !== null) {
       await Promise.all([
         this.props.eventsInitialization(),
         this.props.bufferZoneInitialization(), // id tulee userista myöhemmin
@@ -104,7 +105,7 @@ class App extends Component {
         console.log('Error in emptying buffer', exception)
       }
     }
-    if (this.props.store.getState().loading) {
+    if (this.props.loading) {
       this.props.setLoading(false)
     }
   }
@@ -144,7 +145,7 @@ class App extends Component {
   }
 
   selectView = value => () => {
-    this.props.store.dispatch(viewChange(value))
+    this.props.viewChange(value)
   }
 
   newEvent = () => this.setState({ newEventVisible: true })
@@ -155,19 +156,16 @@ class App extends Component {
   }
 
   render() {
-    const { view } = this.props.store.getState()
+    const view = this.props.view
     const { startDate, endDate } = this.state
-    const initialEvents = this.props.store.getState().events
+    const initialEvents = this.props.events
     const eventsToShow = () =>
       filterEvents(view, initialEvents, startDate, endDate)
     let odd = true
     if (this.props.scout === null) {
       return (
         <div className="Login">
-          <Login
-            store={this.props.store}
-            token="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com"
-          />
+          <Login token="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com" />
         </div>
       )
     }
@@ -205,66 +203,54 @@ class App extends Component {
 
     const dndMenu = () => <AppBar toggleSideBar={this.toggleDrawer} />
     const calendar = (
-      <Calendar
-        events={this.props.store.getState().events}
-        mobile={isTouchDevice()}
-      />
+      <Calendar events={this.props.events} mobile={isTouchDevice()} />
     )
 
     return (
       <MuiThemeProvider theme={theme}>
-        <div className="App">
-          <Router>
-            <div>
-              <div> {isTouchDevice() ? mobileMenu() : dndMenu()} </div>
-              <div className="flexbox">
-                {isTouchDevice() ? null : (
-                  <div
-                    className={
-                      this.state.drawerVisible
-                        ? 'visible-drawer'
-                        : 'hidden-drawer'
-                    }
-                  >
-                    <ClippedDrawer />
-                  </div>
-                )}
-                <div id="container" style={{ paddingTop: 0 }}>
-                  <div className="content">
-                    <ButtonRow
-                      view={this.state.view}
-                      newEvent={this.newEvent}
-                      dateRangeUpdate={this.dateRangeUpdate}
-                      mobile={isTouchDevice()}
-                    />
-
-                    {this.props.store.getState().loading ? (
-                      <div className="loading-bar">
-                        <LinearProgress />
-                      </div>
-                    ) : null}
-                    {this.props.store.getState().view === 'CALENDAR'
-                      ? calendar
-                      : eventsToList}
-
-                    <Dialog
-                      open={this.state.newEventVisible}
-                      onClose={this.handleClose}
-                    >
-                      <DialogTitle>Luo uusi tapahtuma</DialogTitle>
-                      <NewEvent closeMe={this.handleClose} />
-                    </Dialog>
-                    <Route path="/user-info" render={() => <UserInfo />} />
-                    <NotificationFooter />
-                  </div>
-                </div>
+        <div>
+          <div> {isTouchDevice() ? mobileMenu() : dndMenu()} </div>
+          <div className="flexbox">
+            {isTouchDevice() ? null : (
+              <div
+                className={
+                  this.state.drawerVisible ? 'visible-drawer' : 'hidden-drawer'
+                }
+              >
+                <ClippedDrawer />
               </div>
-              <FeedbackButton
-                feedback_url="https://docs.google.com/forms/d/e/1FAIpQLSddXqlQaFd8054I75s4UZEPeQAh_ardxRl11YYw3b2JBk0Y-Q/viewform"
-                visible={!isTouchDevice()}
-              />
+            )}
+            <div id="container" style={{ paddingTop: 0 }}>
+              <div className="content">
+                <ButtonRow
+                  view={this.state.view}
+                  newEvent={this.newEvent}
+                  dateRangeUpdate={this.dateRangeUpdate}
+                  mobile={isTouchDevice()}
+                />
+
+                {this.props.loading ? (
+                  <div className="loading-bar">
+                    <LinearProgress />
+                  </div>
+                ) : null}
+                {this.props.view === 'CALENDAR' ? calendar : eventsToList}
+
+                <Dialog
+                  open={this.state.newEventVisible}
+                  onClose={this.handleClose}
+                >
+                  <DialogTitle>Luo uusi tapahtuma</DialogTitle>
+                  <NewEvent closeMe={this.handleClose} />
+                </Dialog>
+                <NotificationFooter />
+              </div>
             </div>
-          </Router>
+          </div>
+          <FeedbackButton
+            feedback_url="https://docs.google.com/forms/d/e/1FAIpQLSddXqlQaFd8054I75s4UZEPeQAh_ardxRl11YYw3b2JBk0Y-Q/viewform"
+            visible={!isTouchDevice()}
+          />
         </div>
       </MuiThemeProvider>
     )
@@ -282,11 +268,34 @@ const mapStateToProps = state => ({
   loading: state.loading,
 })
 
-const HTML5toTouch = {
-  backends: [{ backend: HTML5Backend }, { backend: HTML5Backend }],
-}
+const AppDnD = DragDropContext(HTML5Backend)(App)
 
-const AppDnD = DragDropContext(MultiBackend(HTML5toTouch))(App)
+App.propTypes = {
+  addStatusInfo: PropTypes.func.isRequired,
+  buffer: PropTypes.shape({
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  bufferZoneInitialization: PropTypes.func.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
+  eventsInitialization: PropTypes.func.isRequired,
+  pofTreeInitialization: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  readScout: PropTypes.func.isRequired,
+  scout: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }).isRequired,
+  pofTree: PropTypes.shape({
+    children: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  scoutGoogleLogin: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
+  store: PropTypes.shape({
+    getState: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
+  }).isRequired,
+  taskgroup: PropTypes.objectOf.isRequired,
+}
 
 export default connect(
   mapStateToProps,

@@ -1,12 +1,12 @@
 import React from 'react'
 import moment from 'moment'
+import PropTypes from 'prop-types'
 import {
   Button,
   Checkbox,
   FormControlLabel,
   MenuItem,
   TextField,
-  DialogTitle,
   IconButton,
   Icon,
 } from '@material-ui/core/'
@@ -19,7 +19,6 @@ import { MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from '@date-io/moment'
 import ValidatedDatePicker from '../utils/ValidatedDatePicker'
 import ValidatedTimePicker from '../utils/ValidatedTimePicker'
-import AppBar from './AppBar'
 
 export default class EventForm extends React.Component {
   state = {
@@ -330,4 +329,20 @@ export default class EventForm extends React.Component {
       </div>
     )
   }
+}
+
+EventForm.propTypes = {
+  data: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    startDate: PropTypes.string.isRequired,
+    startTime: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
+    endTime: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    information: PropTypes.string.isRequired,
+  }).isRequired,
+  update: PropTypes.func.isRequired,
+  close: PropTypes.func.isRequired,
+  allowRepeatedEvent: PropTypes.bool.isRequired,
+  submitFunction: PropTypes.func.isRequired,
 }
