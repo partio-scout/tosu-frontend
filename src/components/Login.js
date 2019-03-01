@@ -2,7 +2,6 @@
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import React from 'react'
-import PropTypes from 'prop-types'
 import { GoogleLogin } from 'react-google-login'
 import FontAwesome from 'react-fontawesome'
 import { Button } from '@material-ui/core'
