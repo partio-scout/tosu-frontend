@@ -20,6 +20,11 @@ export class Activities extends React.Component {
     pofTreeUpdate: PropTypes.func.isRequired,
     deleteActivityFromBuffer: PropTypes.func.isRequired,
     deleteActivityFromEvent: PropTypes.func.isRequired,
+    minimal: PropTypes.bool.isRequired,
+    className: PropTypes.string.isRequired,
+    pofTree: PropTypes.shape({
+      children: PropTypes.arrayOf(PropTypes.object).isRequired,
+    }).isRequired,
   }
 
   deleteActivity = async activity => {

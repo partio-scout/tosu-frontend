@@ -1,6 +1,7 @@
 // Vendor
 import { connect } from 'react-redux'
 import React from 'react'
+import PropTypes from 'prop-types'
 import { GoogleLogin } from 'react-google-login'
 import FontAwesome from 'react-fontawesome'
 import { Button } from '@material-ui/core'
@@ -18,7 +19,6 @@ import {
   deleteActivityFromBuffer,
 } from '../reducers/bufferZoneReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
-import PropTypes from 'prop-types'
 
 class Login extends React.Component {
   googleLoginSuccess = async response => {
@@ -79,7 +79,7 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  scout: PropTypes.object,
+  scout: PropTypes.string.isRequired,
   scoutGoogleLogin: PropTypes.func.isRequired,
   eventsInitialization: PropTypes.func.isRequired,
   bufferZoneInitialization: PropTypes.func.isRequired,

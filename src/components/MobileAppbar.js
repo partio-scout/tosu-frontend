@@ -1,5 +1,8 @@
 import React from 'react'
 import Select from 'react-select'
+import PropTypes from 'prop-types'
+import List from '@material-ui/icons/List'
+import MenuItem from '@material-ui/core/MenuItem'
 import { connect } from 'react-redux'
 import AccountIcon from './AccountIcon'
 import { notify } from '../reducers/notificationReducer'
@@ -7,8 +10,6 @@ import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import StatusMessage from './StatusMessage'
 import { createStatusMessage } from '../utils/createStatusMessage'
-import List from '@material-ui/icons/List'
-import MenuItem from '@material-ui/core/MenuItem'
 
 class MobileAppbar extends React.Component {
   state = { showStatusBox: true }
@@ -140,11 +141,22 @@ class MobileAppbar extends React.Component {
 const mapStateToProps = state => ({
   events: state.events,
   buffer: state.buffer,
-  pofTree: state.pofTree,
   taskgroup: state.taskgroup,
   status: state.statusMessage.status,
   scout: state.scout,
 })
+
+MobileAppbar.propTypes = {
+  addStatusMessage: PropTypes.func.isRequired,
+  emptyTaskgroup: PropTypes.func.isRequired,
+  selectTaskgroup: PropTypes.func.isRequired,
+  setHeaderHeight: PropTypes.func.isRequired,
+  headerVisible: PropTypes.bool.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  taskgroup: PropTypes.shape({
+    value: PropTypes.number.isRequired,
+  }).isRequired,
+}
 
 export default connect(
   mapStateToProps,

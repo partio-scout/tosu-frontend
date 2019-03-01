@@ -2,12 +2,7 @@ import activityService from '../services/activities'
 
 // These functions looked so ugly that I moved them to their own file :3
 
-const moveActivityFromEventToBuffer = async (
-  props,
-  activity,
-  parentId,
-  targetId
-) => {
+const moveActivityFromEventToBuffer = async (props, activity, parentId) => {
   const activityId = activity.id
   try {
     // Move activity locally

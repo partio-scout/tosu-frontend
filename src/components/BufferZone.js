@@ -1,8 +1,9 @@
 import { connect } from 'react-redux'
 import React from 'react'
+import Divider from '@material-ui/core/Divider/Divider'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
-import Divider from '@material-ui/core/Divider/Divider'
+import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import Activities from './Activities'
@@ -12,7 +13,6 @@ import {
   deleteActivityFromBufferOnlyLocally,
   deleteActivityFromBuffer,
 } from '../reducers/bufferZoneReducer'
-import PropTypes from 'prop-types'
 
 const styles = theme => ({
   button: {
@@ -33,11 +33,15 @@ const styles = theme => ({
 
 export class BufferZone extends React.Component {
   static propTypes = {
-    buffer: PropTypes.object.isRequired,
+    buffer: PropTypes.shape({
+      activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+      id: PropTypes.number.isRequired,
+    }).isRequired,
     events: PropTypes.arrayOf(PropTypes.object).isRequired,
     deleteActivityFromBuffer: PropTypes.func.isRequired,
     pofTreeUpdate: PropTypes.func.isRequired,
     notify: PropTypes.func.isRequired,
+    classes: PropTypes.shape({}).isRequired,
   }
   clear = async () => {
     if (this.props.buffer.activities) {

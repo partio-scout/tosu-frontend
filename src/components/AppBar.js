@@ -1,11 +1,12 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Switch from '@material-ui/core/Switch'
-import AccountIcon from './AccountIcon'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import { withStyles } from '@material-ui/core/styles'
+import { connect } from 'react-redux'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import PropTypes from 'prop-types'
+import Switch from '@material-ui/core/Switch'
+import AccountIcon from './AccountIcon'
+
 const styles = theme => ({
   label: {
     color: 'white',
@@ -63,8 +64,8 @@ export class AppBar extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    scout: state.scout,
-  })
+  scout: state.scout,
+})
 
 export default connect(
   mapStateToProps,
