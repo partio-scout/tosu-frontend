@@ -8,13 +8,6 @@ import store from './store'
 import { savePofData } from './services/localStorage'
 import { POF_ROOT } from './api-config'
 
-const getPofData = async () => {
-  const pofData = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
-  await store.subscribe(() => {
-    savePofData(pofData)
-  })
-}
-
 axios.defaults.withCredentials = true
 
 const render = () => {
@@ -26,6 +19,4 @@ const render = () => {
   )
 }
 
-getPofData()
 render()
-store.subscribe(render)
