@@ -16,7 +16,9 @@ const done = <Done className="done" key="done" />
 // Small done icon for sub-taskgroups (suhteet)
 const smallDone = <Done className="small-done" key="done" />
 
-// Warning icon
+/**  Warning icon that returns a tooltiptext with a message
+ * @param message Message that shows in the tooltip
+ */
 const warning = message => (
   <div className="tooltip" key="warning">
     <Warning className="warning" />
@@ -49,7 +51,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
     </div>
   )
 
-  // Information in status box for all Tarppos
+  /** Information in status box for all Tarppos */
   const basicPlanInformation = () => (
     <div style={{ fontSize: '0.8rem', lineHeight: '1.4rem' }}>
       <div style={{ marginBottom: 0 }}>
@@ -167,7 +169,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
     </div>
   )
 
-  // Information in status box when taskgroup is extra tasks (paussit)
+  /** Information in status box when taskgroup is extra tasks (paussit) */
   const extraPlanInformation = () => (
     <div style={{ fontSize: '0.8rem', lineHeight: '1.6rem' }}>
       <p style={{ marginBottom: 0 }}>
@@ -223,7 +225,10 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   )
 }
 
-// Icon for statusbox if statusbox is hidden
+/** Icon for statusbox if statusbox is hidden
+ * @param handleOpen function that handels opening of the container
+ */
+
 const InfoButton = ({ handleOpen }) => (
   <ActionHelp className="action-help" onClick={() => handleOpen()} />
 )

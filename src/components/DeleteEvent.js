@@ -40,6 +40,7 @@ class DeleteEvent extends React.Component {
   }
   state = { open: false }
 
+  /** Deletes a given event and creates a notification acknowledging it. Also closes the dialog box */
   deleteEvent = async () => {
     this.handleClose()
     try {
@@ -54,7 +55,7 @@ class DeleteEvent extends React.Component {
       this.props.notify('Tapahtuman poistamisessa tuli virhe. Yritä uudestaan!')
     }
   }
-
+  /** Deletes a given eventgroup and creates a notification acknowledging it. Also closes the dialog box */
   deleteEventGroup = async () => {
     this.handleClose()
     try {
@@ -80,7 +81,7 @@ class DeleteEvent extends React.Component {
     this.setState({ open: false })
   }
 
-  render(props) {
+  render() {
     const { classes } = this.props
     const event = this.props.data
     const disabled = event.kuksaEvent // Never allow modifications to kuksaEvents (not synced)

@@ -72,7 +72,7 @@ class Toolbar extends React.Component {
     return ''
   }
 
-  render(props) {
+  render() {
     const { messages, label, switchState, classes } = this.props
     return (
       <div style={{ marginBottom: 10 }}>

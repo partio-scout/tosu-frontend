@@ -14,6 +14,7 @@ import EditEvent from './EditEvent'
 import AddToPlan from './AddToPlan'
 import { openPopper, closePopper } from '../reducers/calendarReducer'
 
+/** Intializes the activitynmarkers for rendering */
 function createActivityMarkers(activities) {
   const markers = [' ']
   for (let i = 0; i < activities.length; i += 1) {
@@ -23,7 +24,7 @@ function createActivityMarkers(activities) {
   }
   return markers
 }
-
+/** Function to handle the styles of the event */
 export function eventStyleGetter(event, start, end, isSelected) {
   const backgroundColor = event.kuksaEvent ? 'lightgrey' : '#27AAE1'
   const color = event.kuksaEvent ? 'black' : 'white'
@@ -70,6 +71,8 @@ class CalendarEvent extends Component {
       this.closePopper()
     }
   }
+
+  /** Opens/closes the popper */
 
   handleClick = event => {
     const { currentTarget } = event

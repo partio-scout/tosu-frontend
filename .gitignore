@@ -139,7 +139,7 @@ typings/
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
-
+.Rhistory
 ### Windows ###
 # Windows thumbnail cache files
 Thumbs.db
@@ -168,3 +168,4 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/node,linux,macos,windows,visualstudiocode
 
 **/nbprojects
+**/out

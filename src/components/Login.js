@@ -1,7 +1,7 @@
 // Vendor
 import { connect } from 'react-redux'
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import { GoogleLogin } from 'react-google-login'
 import FontAwesome from 'react-fontawesome'
 import { Button } from '@material-ui/core'
@@ -21,6 +21,7 @@ import {
 import { eventsInitialization } from '../reducers/eventReducer'
 
 class Login extends React.Component {
+  /** Acknowledges a succesful login and sets credentials for user */
   googleLoginSuccess = async response => {
     if (this.props.scout === null) {
       this.props.setLoading(true)
@@ -34,7 +35,7 @@ class Login extends React.Component {
       this.props.setLoading(false)
     }
   }
-
+  /** Returns an error message if login is unsuccesful */
   googleLoginFail = async response => {
     notify('Google-kirjautuminen epäonnistui. Yritä uudestaan.')
   }

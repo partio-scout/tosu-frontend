@@ -1,5 +1,6 @@
 let found = null
 
+/** Recursively finds a given activity from the pofTree */
 const findInTreePof = (activity, root) => {
   if (root === undefined || found !== null) {
     return
@@ -18,7 +19,7 @@ const findInTreePof = (activity, root) => {
     found = root
   }
 }
-
+/** Recursively finds a given activity from the pofTree or returns null if activity is not defined */
 const findActivity = (activity, pofTree) => {
   found = null
   if (activity === undefined || pofTree === undefined) {

@@ -25,12 +25,13 @@ export class AppBar extends React.Component {
   }
   state = { sidebarVisible: true }
 
+  /** Opens the Tarppo sidebar */
   toggleSideBar = () => {
     this.setState({ sidebarVisible: !this.state.sidebarVisible })
     this.props.toggleSideBar()
   }
 
-  render(props) {
+  render() {
     const { classes } = this.props
     return (
       <div className="top-search" id="top-bar-header">

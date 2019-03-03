@@ -10,8 +10,9 @@ const determineCase = (start, end) => {
   if (!start && end) {
     return 'ONLY_END'
   }
+  return 'NONE'
 }
-
+/** Filters the events based on date range and type */
 const filterEvents = (view, initialEvents, start, end) => {
   let events
   switch (determineCase(start, end)) {

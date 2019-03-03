@@ -1,11 +1,10 @@
 import React from 'react'
 import Tabs from '@material-ui/core/Tabs'
-import PropTypes from 'prop-types'
 import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import PlanCard from './PlanCard'
 
-// Use Typography v2: https://material-ui.com/style/typography/#strategies
+/** Use Typography v2: https://material-ui.com/style/typography/#strategies */
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
 
 function TabContainer(props) {
@@ -15,16 +14,8 @@ function TabContainer(props) {
     </Typography>
   )
 }
-TabContainer.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.object).isRequired,
-}
+
 export default class PlanForm extends React.Component {
-  static propTypes = {
-    children: PropTypes.arrayOf(PropTypes.object).isRequired,
-    activity: PropTypes.shape({}).isRequired,
-    savedActivity: PropTypes.shape({}).isRequired,
-    parentId: PropTypes.number.isRequired,
-  }
   state = { value: 0 }
 
   handleChange = (event, value) => {

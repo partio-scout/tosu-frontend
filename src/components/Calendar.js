@@ -16,6 +16,7 @@ import { closePopper } from '../reducers/calendarReducer'
 // to the correct localizer.
 const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
 
+/** Maps the events that fit a certain date range and renders them to the app */
 function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
   events = events.filter(event => {
     if (event.kuksaEvent) {
