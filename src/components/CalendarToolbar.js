@@ -72,7 +72,7 @@ class Toolbar extends React.Component {
     return ''
   }
 
-  render(props) {
+  render() {
     const { messages, label, switchState, classes } = this.props
     return (
       <div style={{ marginBottom: 10 }}>
@@ -122,10 +122,12 @@ const mapStateToProps = state => ({
   switchState: state.calendar.showKuksa,
 })
 
+const mapDispatchToProps = {
+  showKuksaEvents,
+  hideKuksaEvents,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    showKuksaEvents,
-    hideKuksaEvents,
-  }
+  mapDispatchToProps
 )(withStyles(styles)(Toolbar))

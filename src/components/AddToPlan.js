@@ -15,6 +15,7 @@ class AddToPlan extends React.Component {
     notify: PropTypes.func.isRequired,
     buttonClass: PropTypes.string.isRequired,
   }
+
   state = { dialogOpen: false }
 
   addEventToTosu = async () => {
@@ -22,7 +23,7 @@ class AddToPlan extends React.Component {
     // The event has event.kuksaEventId -> backend will know it's a synced event.
     try {
       delete this.props.event.id
-      await this.props.addEventFromKuksa(this.props.event)
+      this.props.addEventFromKuksa(this.props.event)
       this.props.notify('Tapahtuma lisätty suunnitelmaan!', 'success')
     } catch (exception) {
       console.error('Error in adding event to tosu:', exception)
@@ -69,10 +70,12 @@ class AddToPlan extends React.Component {
   }
 }
 
+const mapDispatchToProps = {
+  notify,
+  addEventFromKuksa,
+}
+
 export default connect(
   null,
-  {
-    notify,
-    addEventFromKuksa,
-  }
+  mapDispatchToProps
 )(AddToPlan)

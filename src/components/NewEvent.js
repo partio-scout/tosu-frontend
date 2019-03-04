@@ -127,7 +127,7 @@ class NewEvent extends React.Component {
 
   sendEventPostRequest = async eventData => {
     try {
-      await this.props.addEvent(eventData)
+      this.props.addEvent(eventData)
       if (eventData.eventGroupId === undefined) {
         this.props.notify('Uusi tapahtuma luotu!', 'success')
       } else {
@@ -200,7 +200,12 @@ NewEvent.propTypes = {
   notify: PropTypes.func.isRequired,
 }
 
+const mapDispatchToProps = {
+  addEvent,
+  notify,
+}
+
 export default connect(
   null,
-  { addEvent, notify }
+  mapDispatchToProps
 )(NewEvent)

@@ -178,13 +178,15 @@ PlanCard.propTypes = {
   editEvent: PropTypes.func.isRequired,
 }
 
+const mapDispatchToProps = {
+  initPlans,
+  savePlan,
+  deletePlan,
+  editEvent,
+  notify,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    initPlans,
-    savePlan,
-    deletePlan,
-    editEvent,
-    notify,
-  }
+  mapDispatchToProps
 )(PlanCard)

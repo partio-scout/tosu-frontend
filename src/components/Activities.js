@@ -79,12 +79,14 @@ const mapStateToProps = state => ({
   pofTree: state.pofTree,
 })
 
+const mapDispatchToProps = {
+  notify,
+  pofTreeUpdate,
+  deleteActivityFromBuffer,
+  deleteActivityFromEvent,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    pofTreeUpdate,
-    deleteActivityFromBuffer,
-    deleteActivityFromEvent,
-  }
+  mapDispatchToProps
 )(Activities)

@@ -93,9 +93,11 @@ KuksaEventCard.propTypes = {
   event: PropTypes.shape({}).isRequired,
 }
 
+const mapDispatchToProps = {
+  notify,
+}
+
 export default connect(
   null,
-  {
-    notify,
-  }
+  mapDispatchToProps
 )(KuksaEventCard)

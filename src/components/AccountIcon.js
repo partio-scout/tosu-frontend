@@ -15,7 +15,7 @@ class AccountIcon extends React.Component {
   }
 
   forceMyOwnLogout = async () => {
-    await this.props.scoutLogout()
+    this.props.scoutLogout()
     window.location = `${API_ROOT}/scouts/logout`
   }
   handleMenu = event => {
@@ -71,9 +71,11 @@ const mapStateToProps = state => ({
   buffer: state.buffer,
 })
 
+const mapDispatchToProps = {
+  scoutLogout,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    scoutLogout,
-  }
+  mapDispatchToProps
 )(AccountIcon)

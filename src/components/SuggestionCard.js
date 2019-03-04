@@ -88,7 +88,13 @@ const mapStateToProps = state => ({
   plans: state.plans,
 })
 
+const mapDispatchToProps = {
+  notify,
+  editEvent,
+  deletePlan,
+}
+
 export default connect(
   mapStateToProps,
-  { notify, editEvent, deletePlan }
+  mapDispatchToProps
 )(SuggestionCard)

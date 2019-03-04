@@ -53,6 +53,7 @@ export class Calendar extends Component {
     mobile: PropTypes.bool.isRequired,
     shouldShowKuksaEventsAlso: PropTypes.bool.isRequired,
   }
+
   constructor(props) {
     super(props)
     this.props.closePopper()
@@ -90,7 +91,9 @@ const mapStateToProps = state => ({
   shouldShowKuksaEventsAlso: state.calendar.showKuksa,
 })
 
+const mapDispatchToProps = { closePopper }
+
 export default connect(
   mapStateToProps,
-  { closePopper }
+  mapDispatchToProps
 )(Calendar)

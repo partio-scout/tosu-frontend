@@ -30,43 +30,41 @@ const reducer = (state = { id: 0, activities: [] }, action) => {
 }
 
 export const bufferZoneInitialization = () => async dispatch => {
-  const buffer = await activityService.getBufferZoneActivities()
-  dispatch({
-    type: 'INIT_BUFFER',
-    buffer,
-  })
+  activityService.getBufferZoneActivities().then(buffer =>
+    dispatch({
+      type: 'INIT_BUFFER',
+      buffer,
+    })
+  )
 }
 
 export const postActivityToBuffer = activity => async dispatch => {
-  const responseActivity = await activityService.addActivityToBufferZone(
-    activity
+  activityService.addActivityToBufferZone(activity).then(responseActivity =>
+    dispatch({
+      type: 'ADD_TO_BUFFER',
+      activity: responseActivity,
+    })
   )
-  dispatch({
-    type: 'ADD_TO_BUFFER',
-    activity: responseActivity,
-  })
 }
 
 export const deleteActivityFromBuffer = activityId => async dispatch => {
-  await activityService.deleteActivity(activityId)
+  activityService.deleteActivity(activityId)
   dispatch({
     type: 'DELETE_FROM_BUFFER',
     activityId,
   })
 }
 
-export const deleteActivityFromBufferOnlyLocally = activityId => async dispatch => {
+export const deleteActivityFromBufferOnlyLocally = activityId => async dispatch =>
   dispatch({
     type: 'DELETE_FROM_BUFFER',
     activityId,
   })
-}
 
-export const postActivityToBufferOnlyLocally = activity => async dispatch => {
+export const postActivityToBufferOnlyLocally = activity => async dispatch =>
   dispatch({
     type: 'ADD_TO_BUFFER',
     activity,
   })
-}
 
 export default reducer

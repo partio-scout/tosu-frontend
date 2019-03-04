@@ -9,10 +9,7 @@ import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import Activities from './Activities'
 import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import {
-  deleteActivityFromBufferOnlyLocally,
-  deleteActivityFromBuffer,
-} from '../reducers/bufferZoneReducer'
+import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 
 const styles = theme => ({
   button: {
@@ -43,6 +40,7 @@ export class BufferZone extends React.Component {
     notify: PropTypes.func.isRequired,
     classes: PropTypes.shape({}).isRequired,
   }
+
   clear = async () => {
     if (this.props.buffer.activities) {
       const promises = this.props.buffer.activities.map(activity =>
@@ -93,12 +91,13 @@ const mapStateToProps = state => ({
   pofTree: state.pofTree,
 })
 
+const mapDispatchToProps = {
+  notify,
+  pofTreeUpdate,
+  deleteActivityFromBuffer,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    pofTreeUpdate,
-    deleteActivityFromBufferOnlyLocally,
-    deleteActivityFromBuffer,
-  }
+  mapDispatchToProps
 )(withStyles(styles)(BufferZone))

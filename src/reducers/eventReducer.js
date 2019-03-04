@@ -47,9 +47,9 @@ const reducer = (state = [], action) => {
         .filter(event => event.id.toString() !== action.modded.id.toString())
         .concat(action.modded)
     case 'UPDATE_INFO':
-        return state
-          .filter(event => event.id.toString() !== action.modded.id.toString())
-          .concat(action.modded)
+      return state
+        .filter(event => event.id.toString() !== action.modded.id.toString())
+        .concat(action.modded)
 
     case 'ADD_ACTIVITY_TO_EVENT':
       return addToEvent(state, action)
@@ -63,119 +63,121 @@ const reducer = (state = [], action) => {
 }
 
 export const eventsInitialization = userId => async dispatch => {
-  const events = await eventService.getAll(userId)
-  dispatch({
-    type: 'INIT_EVENTS',
-    events,
+  eventService.getAll(userId).then(events =>
+    dispatch({
+      type: 'INIT_EVENTS',
+      events,
+    })
+  )
+}
+
+export const deleteEvent = eventId => dispatch => {
+  eventService.deleteEvent(eventId).then(() =>
+    dispatch({
+      type: 'DELETE_EVENT',
+      eventId,
+    })
+  )
+}
+
+export const deleteSyncedEvent = event => dispatch => {
+  eventService.deleteEvent(event.id).then(() => {
+    dispatch({
+      type: 'DELETE_EVENT',
+      eventId: event.id,
+    })
+
+    // Add the event back to the list of Kuksa events (to show on the 'Kuksa' page)
+    event.id = `kuksa${event.kuksaEventId}`
+    event.kuksaEvent = true
+    event.activities = []
+    dispatch({
+      type: 'ADD_EVENT',
+      event,
+    })
   })
 }
 
-export const deleteEvent = eventId => async dispatch => {
-  await eventService.deleteEvent(eventId)
-  dispatch({
-    type: 'DELETE_EVENT',
-    eventId,
+export const deleteEventGroup = eventGroupId => dispatch => {
+  eventGroupService.deleteEventGroup(eventGroupId).then(() =>
+    dispatch({
+      type: 'DELETE_EVENTGROUP',
+      eventGroupId,
+    })
+  )
+}
+
+export const addEvent = event => dispatch => {
+  eventService.create(event).then(created => {
+    created.activities = []
+    dispatch({
+      type: 'ADD_EVENT',
+      event: created,
+    })
   })
 }
 
-export const deleteSyncedEvent = event => async dispatch => {
-  await eventService.deleteEvent(event.id)
-  dispatch({
-    type: 'DELETE_EVENT',
-    eventId: event.id,
-  })
-  // Add the event back to the list of Kuksa events (to show on the 'Kuksa' page)
-  event.id = `kuksa${  event.kuksaEventId}`
-  event.kuksaEvent = true
-  event.activities = []
-  dispatch({
-    type: 'ADD_EVENT',
-    event,
-  })
-}
-
-export const deleteEventGroup = eventGroupId => async dispatch => {
-  await eventGroupService.deleteEventGroup(eventGroupId)
-  dispatch({
-    type: 'DELETE_EVENTGROUP',
-    eventGroupId,
+export const addEventFromKuksa = event => dispatch => {
+  eventService.create(event).then(created => {
+    created.activities = []
+    dispatch({
+      type: 'ADD_EVENT',
+      event: created,
+    })
+    // Delete the Kuksa event to not show the same event on multiple pages
+    dispatch({
+      type: 'DELETE_EVENT',
+      id: `kuksa${event.kuksaEventId}`,
+    })
   })
 }
 
-export const addEvent = event => async dispatch => {
-  const created = await eventService.create(event)
-  created.activities = []
-  dispatch({
-    type: 'ADD_EVENT',
-    event: created,
-  })
+export const editEvent = event => dispatch => {
+  eventService.edit(event).then(modded =>
+    dispatch({
+      type: 'UPDATE_EVENT',
+      modded,
+    })
+  )
 }
 
-export const addEventFromKuksa = event => async dispatch => {
-  const created = await eventService.create(event)
-  created.activities = []
-  dispatch({
-    type: 'ADD_EVENT',
-    event: created,
-  })
-  // Delete the Kuksa event to not shot the same event on multiple pages
-  dispatch({
-    type: 'DELETE_EVENT',
-    id: `kuksa${  event.kuksaEventId}`,
-  })
+export const editInfo = info => dispatch => {
+  eventService.editInfo(info).then(modded =>
+    dispatch({
+      type: 'UPDATE_INFO',
+      modded,
+    })
+  )
 }
 
-export const editEvent = event => async dispatch => {
-  const modded = await eventService.edit(event)
-  dispatch({
-    type: 'UPDATE_EVENT',
-    modded,
-  })
+export const addActivityToEvent = (eventId, activity) => dispatch => {
+  eventService.addActivity(eventId, activity).then(postedActivity =>
+    dispatch({
+      type: 'ADD_ACTIVITY_TO_EVENT',
+      eventId,
+      activity: postedActivity,
+    })
+  )
 }
 
-export const editInfo = info => async dispatch => {
-  const modded = await eventService.editInfo(info)
-  dispatch({
-    type: 'UPDATE_INFO',
-    modded
-  })
+export const deleteActivityFromEvent = activityId => dispatch => {
+  activityService.deleteActivity(activityId).then(() =>
+    dispatch({
+      type: 'DELETE_ACTIVITY_FROM_EVENT',
+      activityId,
+    })
+  )
 }
 
-export const addActivityToEvent = (eventId, activity) => async dispatch => {
-  const postedActivity = await eventService.addActivity(eventId, activity)
-
-  dispatch({
-    type: 'ADD_ACTIVITY_TO_EVENT',
-    eventId,
-    activity: postedActivity,
-  })
-}
-
-export const deleteActivityFromEvent = activityId => async dispatch => {
-  await activityService.deleteActivity(activityId)
-
-  dispatch({
-    type: 'DELETE_ACTIVITY_FROM_EVENT',
-    activityId,
-  })
-}
-
-export const addActivityToEventOnlyLocally = (
+export const addActivityToEventOnlyLocally = (eventId, activity) => ({
+  type: 'ADD_ACTIVITY_TO_EVENT',
   eventId,
-  activity
-) => async dispatch => {
-  dispatch({
-    type: 'ADD_ACTIVITY_TO_EVENT',
-    eventId,
-    activity,
-  })
-}
+  activity,
+})
 
-export const deleteActivityFromEventOnlyLocally = activityId => async dispatch => {
-  dispatch({
-    type: 'DELETE_ACTIVITY_FROM_EVENT',
-    activityId,
-  })
-}
+export const deleteActivityFromEventOnlyLocally = activityId => ({
+  type: 'DELETE_ACTIVITY_FROM_EVENT',
+  activityId,
+})
 
 export default reducer

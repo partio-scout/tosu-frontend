@@ -16,26 +16,21 @@ const calendarReducer = (
   }
 }
 
-export const openPopper = eventId => dispatch => {
-  dispatch({
-    type: 'OPEN_CALENDAR_POPPER',
-    eventId,
-  })
-}
-export const closePopper = () => dispatch => {
-  dispatch({
-    type: 'CLOSE_CALENDAR_POPPER',
-  })
-}
-export const showKuksaEvents = () => dispatch => {
-  dispatch({
-    type: 'CALENDAR_SHOW_KUKSA_EVENTS',
-  })
-}
-export const hideKuksaEvents = () => dispatch => {
-  dispatch({
-    type: 'CALENDAR_HIDE_KUKSA_EVENTS',
-  })
-}
+export const openPopper = eventId => ({
+  type: 'OPEN_CALENDAR_POPPER',
+  eventId,
+})
+
+export const closePopper = () => ({
+  type: 'CLOSE_CALENDAR_POPPER',
+})
+
+export const showKuksaEvents = () => ({
+  type: 'CALENDAR_SHOW_KUKSA_EVENTS',
+})
+
+export const hideKuksaEvents = () => ({
+  type: 'CALENDAR_HIDE_KUKSA_EVENTS',
+})
 
 export default calendarReducer

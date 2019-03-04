@@ -261,7 +261,4 @@ const mapStateToProps = state => ({
   taskgroup: state.taskgroup,
 })
 
-export default connect(
-  mapStateToProps,
-  {}
-)(StatusMessage)
+export default connect(mapStateToProps)(StatusMessage)
