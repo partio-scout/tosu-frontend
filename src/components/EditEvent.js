@@ -137,7 +137,7 @@ class EditEvent extends React.Component {
     })
   }
 
-  render(props) {
+  render() {
     const { classes } = this.props
     const event = this.props.data
     // Never allow modifications to kuksaEvents (not synced)
