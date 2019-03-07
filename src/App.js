@@ -41,7 +41,6 @@ import {
 } from './services/googleToken'
 import { loadCachedPofData } from './services/localStorage'
 // Reducers
-import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import {
   bufferZoneInitialization,
@@ -54,7 +53,7 @@ import { viewChange } from './reducers/viewReducer'
 import { setLoading } from './reducers/loadingReducer'
 
 import { POF_ROOT } from './api-config'
-import {pofTreeSchema, eventSchema} from './pofTreeSchema'
+import { pofTreeSchema, eventSchema } from './pofTreeSchema'
 
 class App extends Component {
   state = {
@@ -84,20 +83,20 @@ class App extends Component {
     let pofData = loadCachedPofData()
     if (pofData === undefined || pofData === {}) {
       pofData = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
-      
     }
     console.log(pofData.data)
     let normalizedPof = normalize(pofData.data, pofTreeSchema)
     console.log(normalizedPof)
     await this.props.pofTreeInitialization(normalizedPof)
     if (this.props.scout !== null) {
-      await Promise.all([
+      Promise.all([
         this.props.eventsInitialization(),
         this.props.bufferZoneInitialization(), // id tulee userista myöhemmin
-      ]).then(() =>
+      ]).then(() => {
         this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-      )
+      })
     }
+
     // If touch device is used, empty bufferzone so activities that have been left to bufferzone can be added to events
     if (isTouchDevice()) {
       const bufferActivities = this.props.buffer.activities
@@ -141,7 +140,7 @@ class App extends Component {
     }
     // PartioID login
     if (getScout() !== null) {
-      await this.props.readScout() // Reads scout from a cookie. (Has only name)
+      this.props.readScout() // Reads scout from a cookie. (Has only name)
     }
   }
 
@@ -263,19 +262,6 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  notification: state.notification,
-  buffer: state.buffer,
-  events: state.events,
-  pofTree: state.pofTree,
-  taskgroup: state.taskgroup,
-  scout: state.scout,
-  view: state.view,
-  loading: state.loading,
-})
-
-const AppDnD = DragDropContext(HTML5Backend)(App)
-
 App.propTypes = {
   addStatusInfo: PropTypes.func.isRequired,
   buffer: PropTypes.shape({
@@ -298,24 +284,37 @@ App.propTypes = {
   setLoading: PropTypes.func.isRequired,
   store: PropTypes.shape({
     getState: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired,
   }).isRequired,
   taskgroup: PropTypes.objectOf.isRequired,
 }
 
+const mapStateToProps = state => ({
+  notification: state.notification,
+  buffer: state.buffer,
+  events: state.events,
+  pofTree: state.pofTree,
+  taskgroup: state.taskgroup,
+  scout: state.scout,
+  view: state.view,
+  loading: state.loading,
+})
+
+const mapDispatchToProps = {
+  pofTreeInitialization,
+  pofTreeUpdate,
+  eventsInitialization,
+  bufferZoneInitialization,
+  deleteActivityFromBuffer,
+  addStatusInfo,
+  scoutGoogleLogin,
+  readScout,
+  viewChange,
+  setLoading,
+}
+
+const AppDnD = DragDropContext(HTML5Backend)(App)
+
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    pofTreeInitialization,
-    pofTreeUpdate,
-    eventsInitialization,
-    bufferZoneInitialization,
-    deleteActivityFromBuffer,
-    addStatusInfo,
-    scoutGoogleLogin,
-    readScout,
-    viewChange,
-    setLoading,
-  }
+  mapDispatchToProps
 )(AppDnD)

@@ -25,6 +25,7 @@ export default class PlanForm extends React.Component {
     savedActivity: PropTypes.shape({}).isRequired,
     parentId: PropTypes.number.isRequired,
   }
+
   state = { value: 0 }
 
   handleChange = (event, value) => {

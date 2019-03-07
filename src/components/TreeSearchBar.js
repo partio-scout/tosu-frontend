@@ -27,7 +27,7 @@ class TreeSearchBar extends React.Component {
   onChangeChildren = async activityGuid => {
     if (this.isLeaf(activityGuid)) {
       try {
-        await this.props.postActivityToBuffer({ guid: activityGuid })
+        this.props.postActivityToBuffer({ guid: activityGuid })
         this.props.notify('Aktiviteetti on lisätty!', 'success')
       } catch (exception) {
         this.props.notify('Aktiviteettialue on täynnä!!')
@@ -261,14 +261,16 @@ const mapStateToProps = state => ({
   taskgroup: state.taskgroup,
 })
 
+const mapDispatchToProps = {
+  notify,
+  postActivityToBuffer,
+  pofTreeUpdate,
+  addStatusMessage,
+  selectTaskgroup,
+  emptyTaskgroup,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    postActivityToBuffer,
-    pofTreeUpdate,
-    addStatusMessage,
-    selectTaskgroup,
-    emptyTaskgroup,
-  }
+  mapDispatchToProps
 )(TreeSearchBar)

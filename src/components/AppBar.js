@@ -23,6 +23,7 @@ export class AppBar extends React.Component {
       label: PropTypes.string.isRequired,
     }).isRequired,
   }
+
   state = { sidebarVisible: true }
 
   toggleSideBar = () => {
@@ -30,7 +31,7 @@ export class AppBar extends React.Component {
     this.props.toggleSideBar()
   }
 
-  render(props) {
+  render() {
     const { classes } = this.props
     return (
       <div className="top-search" id="top-bar-header">
@@ -67,7 +68,4 @@ const mapStateToProps = state => ({
   scout: state.scout,
 })
 
-export default connect(
-  mapStateToProps,
-  {}
-)(withStyles(styles)(AppBar))
+export default connect(mapStateToProps)(withStyles(styles)(AppBar))

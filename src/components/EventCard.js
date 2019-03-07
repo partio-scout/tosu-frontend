@@ -16,17 +16,11 @@ import {
   DialogContentText,
   DialogTitle,
   Card,
-  FormControlLabel,
-  TextField,
-  Typography,
-  Switch,
-  Collapse,
 } from '@material-ui/core'
 
 import PropTypes from 'prop-types'
 import ReactTooltip from 'react-tooltip'
 import Warning from '@material-ui/icons/Warning'
-import DeleteIcon from '@material-ui/icons/Delete'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
 import { Parser } from 'html-to-react'
@@ -49,10 +43,7 @@ import {
   bufferZoneInitialization,
 } from '../reducers/bufferZoneReducer'
 import eventService from '../services/events'
-import planService from '../services/plan'
 import { deletePlan } from '../reducers/planReducer'
-import findActivity from '../functions/findActivity'
-import convertToSimpleActivity from '../functions/activityConverter'
 import SuggestionCard from '../components/SuggestionCard'
 // Warning icon
 const warning = (
@@ -163,7 +154,7 @@ class EventCard extends React.Component {
       type: this.props.event.type,
       information: event.target.children[2].value,
     }
-    this.props.bufferZoneInitialization(0)
+    this.props.bufferZoneInitialization()
     this.props.editEvent(moddedEvent)
     this.setState({ editMode: false })
   }
@@ -247,18 +238,6 @@ class EventCard extends React.Component {
           </DialogActions>
         </Dialog>
       </div>
-    )
-    const syncToKuksaSwitch = (
-      <FormControlLabel
-        control={
-          <Switch
-            checked={this.state.syncToKuksa}
-            onClick={this.handleSyncSwitchClick}
-            color="primary"
-          />
-        }
-        label="Synkronoi Kuksaan"
-      />
     )
 
     const touchDeviceNotExpanded = (
@@ -500,18 +479,20 @@ const mapStateToProps = state => ({
   plans: state.plans,
 })
 
+const mapDispatchToProps = {
+  notify,
+  editEvent,
+  deletePlan,
+  deleteActivityFromEvent,
+  bufferZoneInitialization,
+  addActivityToEventOnlyLocally,
+  deleteActivityFromEventOnlyLocally,
+  postActivityToBufferOnlyLocally,
+  deleteActivityFromBufferOnlyLocally,
+  pofTreeUpdate,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    editEvent,
-    deletePlan,
-    deleteActivityFromEvent,
-    bufferZoneInitialization,
-    addActivityToEventOnlyLocally,
-    deleteActivityFromEventOnlyLocally,
-    postActivityToBufferOnlyLocally,
-    deleteActivityFromBufferOnlyLocally,
-    pofTreeUpdate,
-  }
+  mapDispatchToProps
 )(EventCard)

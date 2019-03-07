@@ -44,6 +44,7 @@ class EditEvent extends React.Component {
     minimal: PropTypes.bool.isRequired,
     bufferZoneInitialization: PropTypes.func.isRequired,
   }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -93,7 +94,7 @@ class EditEvent extends React.Component {
     }
     try {
       this.props.editEvent(moddedEvent)
-      this.props.bufferZoneInitialization(0)
+      this.props.bufferZoneInitialization()
       // await eventService.edit(data);
       this.setState({ open: false })
       this.props.notify('Tapahtuman muokkaus onnistui!', 'success')
@@ -148,7 +149,7 @@ class EditEvent extends React.Component {
     })
   }
 
-  render(props) {
+  render() {
     const { classes } = this.props
     const event = this.props.data
     // Never allow modifications to kuksaEvents (not synced)
@@ -186,7 +187,13 @@ class EditEvent extends React.Component {
   }
 }
 
+const mapDispatchToProps = {
+  editEvent,
+  bufferZoneInitialization,
+  notify,
+}
+
 export default connect(
   null,
-  { editEvent, bufferZoneInitialization, notify }
+  mapDispatchToProps
 )(withStyles(styles)(EditEvent))

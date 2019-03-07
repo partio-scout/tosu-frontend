@@ -19,6 +19,7 @@ class ButtonRow extends React.Component {
     mobile: PropTypes.bool.isRequired,
     filter: PropTypes.bool.isRequired,
   }
+
   state = {
     startDate: moment(),
     endDate: null,
@@ -144,9 +145,11 @@ const mapStateToProps = state => ({
   endDate: state.endDate,
 })
 
+const mapDispatchToProps = {
+  viewChange,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    viewChange,
-  }
+  mapDispatchToProps
 )(ButtonRow)

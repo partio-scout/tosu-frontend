@@ -189,12 +189,14 @@ const mapStateToProps = state => ({
   events: state.events,
 })
 
+const mapDispatchToProps = {
+  deleteActivityFromEvent,
+  deleteActivityFromBuffer,
+  notify,
+  pofTreeUpdate,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    deleteActivityFromEvent,
-    deleteActivityFromBuffer,
-    notify,
-    pofTreeUpdate,
-  }
+  mapDispatchToProps
 )(DraggableActivity)

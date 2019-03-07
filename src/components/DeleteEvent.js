@@ -38,15 +38,16 @@ class DeleteEvent extends React.Component {
     minimal: PropTypes.bool.isRequired,
     classes: PropTypes.shape({}).isRequired,
   }
+
   state = { open: false }
 
   deleteEvent = async () => {
     this.handleClose()
     try {
       if (this.props.data.synced) {
-        await this.props.deleteSyncedEvent(this.props.data)
+        this.props.deleteSyncedEvent(this.props.data)
       } else {
-        await this.props.deleteEvent(this.props.data.id)
+        this.props.deleteEvent(this.props.data.id)
       }
       this.props.notify('Tapahtuma poistettu!', 'success')
     } catch (exception) {
@@ -58,7 +59,7 @@ class DeleteEvent extends React.Component {
   deleteEventGroup = async () => {
     this.handleClose()
     try {
-      await this.props.deleteEventGroup(this.props.data.eventGroupId)
+      this.props.deleteEventGroup(this.props.data.eventGroupId)
       this.props.notify('Toistuva tapahtuma poistettu!', 'success')
     } catch (exception) {
       console.error('Error in deleting event:', exception)
@@ -80,7 +81,7 @@ class DeleteEvent extends React.Component {
     this.setState({ open: false })
   }
 
-  render(props) {
+  render() {
     const { classes } = this.props
     const event = this.props.data
     const disabled = event.kuksaEvent // Never allow modifications to kuksaEvents (not synced)
@@ -136,7 +137,14 @@ class DeleteEvent extends React.Component {
   }
 }
 
+const mapDispatchToProps = {
+  deleteEvent,
+  notify,
+  deleteEventGroup,
+  deleteSyncedEvent,
+}
+
 export default connect(
   null,
-  { deleteEvent, notify, deleteEventGroup, deleteSyncedEvent }
+  mapDispatchToProps
 )(withStyles(styles)(DeleteEvent))

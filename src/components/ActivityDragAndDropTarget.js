@@ -62,16 +62,18 @@ const mapStateToProps = state => ({
   events: state.events,
 })
 
+const mapDispatchToProps = {
+  notify,
+  deleteActivityFromEventOnlyLocally,
+  addActivityToEventOnlyLocally,
+  deleteActivityFromBufferOnlyLocally,
+  postActivityToBufferOnlyLocally,
+  pofTreeUpdate,
+  deleteActivityFromBuffer,
+  deleteActivityFromEvent,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    deleteActivityFromEventOnlyLocally,
-    addActivityToEventOnlyLocally,
-    deleteActivityFromBufferOnlyLocally,
-    postActivityToBufferOnlyLocally,
-    pofTreeUpdate,
-    deleteActivityFromBuffer,
-    deleteActivityFromEvent,
-  }
+  mapDispatchToProps
 )(DroppableActivityDragAndDropTarget)

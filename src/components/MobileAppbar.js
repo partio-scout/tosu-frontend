@@ -163,13 +163,15 @@ MobileAppbar.propTypes = {
   }).isRequired,
 }
 
+const mapDispatchToProps = {
+  notify,
+  addStatusMessage,
+  selectTaskgroup,
+  pofTreeUpdate,
+  emptyTaskgroup,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    addStatusMessage,
-    selectTaskgroup,
-    pofTreeUpdate,
-    emptyTaskgroup,
-  }
+  mapDispatchToProps
 )(MobileAppbar)

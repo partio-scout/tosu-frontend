@@ -10,7 +10,7 @@ import isTouchDevice from 'is-touch-device'
 import { setGoogleToken } from '../services/googleToken' // TODO: rename service
 import { API_ROOT } from '../api-config'
 // Reducers
-import { scoutGoogleLogin, readScout } from '../reducers/scoutReducer'
+import { scoutGoogleLogin } from '../reducers/scoutReducer'
 import { setLoading } from '../reducers/loadingReducer'
 import { notify } from '../reducers/notificationReducer'
 import {
@@ -96,17 +96,18 @@ const mapStateToProps = state => ({
   events: state.events,
 })
 
+const mapDispatchToProps = {
+  notify,
+  pofTreeInitialization,
+  pofTreeUpdate,
+  eventsInitialization,
+  bufferZoneInitialization,
+  deleteActivityFromBuffer,
+  scoutGoogleLogin,
+  setLoading,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    pofTreeInitialization,
-    pofTreeUpdate,
-    eventsInitialization,
-    bufferZoneInitialization,
-    deleteActivityFromBuffer,
-    scoutGoogleLogin,
-    readScout,
-    setLoading,
-  }
+  mapDispatchToProps
 )(Login)

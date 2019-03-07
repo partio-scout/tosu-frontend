@@ -48,6 +48,7 @@ class CalendarEvent extends Component {
     popperOpen: PropTypes.bool.isRequired,
     setNotification: PropTypes.func.isRequired,
   }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -217,10 +218,12 @@ const mapStateToProps = state => ({
   popperEventId: state.calendar.popperEventId,
 })
 
+const mapDispatchToProps = {
+  openPopper,
+  closePopper,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    openPopper,
-    closePopper,
-  }
+  mapDispatchToProps
 )(CalendarEvent)
