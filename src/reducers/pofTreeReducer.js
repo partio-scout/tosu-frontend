@@ -21,99 +21,75 @@ const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
 const orderSorter = (a, b) => b.isMandatory - a.isMandatory
 
 const sortTreeByOrder = root => {
-  if (!root) return {}
-  if (!root.taskgroups) return {}
-  if (!root.taskgroups.forEach) return {}
-
-  root.taskgroups.forEach(sortTreeByOrder)
-  root.taskgroups = root.taskgroups.sort((a, b) => a.order - b.order)
+  // root.taskgroups = root.taskgroups.sort((a, b) => a.order - b.order)
   return root
 }
 
 // recursively go into taskgroups of taskgroups and disable all optional tasks
-const setChildrenTasksDisabled = pofChild => {
-  const root = pofChild
-  if (!root) return
-
-  if (root.children && root.children.forEach) {
-    // groups have children, tasks do not ->recursion into groups
-    root.children.forEach(setChildrenTasksDisabled)
-  }
-  if (!root.tasks) {
-    // it's a task
-    if (root.tags.pakollisuus[0].slug !== 'mandatory') {
-      root.disabled = true
-    }
-  }
+const setChildrenTasksDisabled = root => {
+    const activityKeys = Object.keys(root.entities.activities)
+    activityKeys.forEach(key => {
+        const activity = root.entities.activities[key]
+        if (activity.tags.pakollisuus[0].slug !== 'mandatory') {
+            activity.disabled = true
+        }
+    })
+    return root
 }
 
 // TreeSearchBar needs specific variables added to our pofdata
 // which is done here recursively
 const fillWithNeededVariable = root => {
-  if (!root) return {}
-  if (!root.taskgroups) return {}
-  if (!root.taskgroups.forEach) return {}
-
-  root.taskgroups.forEach(fillWithNeededVariable)
-
-  root.key = root.guid
-  root.label = root.title
-  root.title = <span name={root.title}>{root.title}</span>
-  root.value = root.guid
-  root.children = [].concat(root.taskgroups)
-
-  if (root && root.tasks && root.tasks.sort) {
-    root.tasks.forEach(task => {
-      task.key = task.guid
-      task.value = task.guid
-      // add isMandatory -> avoid hardcoded mandatory string check
-      task.isMandatory = task.tags.pakollisuus[0].slug === 'mandatory'
-      task.label = task.title
-      task.title = (
-        <span
-          name={task.title}
-          className="tree-search-title"
-          style={{ backgroundColor: task.isMandatory ? '#2196f3' : '#E3F2FD' }}
-        >
-          {task.title}
-        </span>
-      )
-    })
-    root.children = root.children.concat(root.tasks.sort(orderSorter))
-  }
+  console.log(root)
+  const pofTreeKey = Object.keys(root.entities.poftree)[0]
+  const taskGroupKeys = Object.keys(root.entities.tarppo)
+  taskGroupKeys.forEach(key => {
+    const obj = root.entities.tarppo[key]
+    obj.key = obj.guid
+    obj.label = obj.title
+    obj.title = <span name={obj.title}>{obj.title}</span>
+    obj.value = obj.guid
+    obj.children = [].concat(obj.taskgroups)
+  })
+  const activityKeys = Object.keys(root.entities.activities)
+  activityKeys.forEach(key => {
+    const task = root.entities.activities[key]
+    task.key = task.guid
+    task.value = task.guid
+    // add isMandatory -> avoid hardcoded mandatory string check
+    task.isMandatory = task.tags.pakollisuus[0].slug === 'mandatory'
+    task.label = task.title
+    task.title = (
+      <span
+        name={task.title}
+        className="tree-search-title"
+        style={{ backgroundColor: task.isMandatory ? '#2196f3' : '#E3F2FD' }}
+      >
+        {task.title}
+      </span>
+    )
+  })
   return root
 }
 
 // recursively disable existing tasks and enable if removed
 const disableTasksInFilterIfExists = (root, existingActivityGuids) => {
-  if (!root) return {}
-  if (!root.taskgroups) return {}
-  if (!root.taskgroups.forEach) return {}
-
-  try {
-    root.taskgroups.forEach(group =>
-      disableTasksInFilterIfExists(group, existingActivityGuids)
-    )
-  } catch (exception) {
-    console.log('problem occurred iterating throguh taskgroups', exception)
-  }
-
-  if (root && root.children && root.children.forEach) {
-    root.children.forEach(task => {
+  const activityKeys = Object.keys(root.entities.activities)
+  activityKeys.forEach(key => {
+      const task = root.entities.activities[key]
       task.disabled = existingActivityGuids.includes(task.value)
     })
-  }
   return root
 }
 
 const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (
-  pof,
+  root,
   existingActivityGuids
 ) => {
-  if (!pof) return {}
-  if (!pof.taskgroups) return {}
-  if (!pof.taskgroups.forEach) return {}
-  pof.taskgroups.forEach(majorTaskGroup => {
+  if (!root) return
+  const taskgroupKeys = Object.keys(root.entities.tarppo)
+  taskgroupKeys.forEach(key => {
+    const majorTaskGroup = root.entities.tarppo[key]
     const mandatoryTaskGuids = majorTaskGroup.mandatory_tasks.split(',') // mandatory tasks are listed in major group
     if (mandatoryTaskGuids[0] === '') {
       // empty split return and array with only value as ''
@@ -122,15 +98,16 @@ const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (
     // if existing activities do not contain all mandatory tasks -> disable all optional
     mandatoryTaskGuids.forEach(mandatoryTaskGuid => {
       if (existingActivityGuids.includes(mandatoryTaskGuid) === false) {
-        setChildrenTasksDisabled(majorTaskGroup)
+        setChildrenTasksDisabled(root)
       }
     })
   })
-  return pof
+  return root
 }
 
 const updateState = (state, existingActivityGuids) => {
   let updatedState = Object.assign({}, state)
+  console.log(updatedState)
   updatedState = disableTasksInFilterIfExists(
     updatedState,
     existingActivityGuids
@@ -146,7 +123,9 @@ const reducer = (state = {}, action) => {
   switch (action.type) {
     case 'INIT_TREE_POF':
       // add variables and sort that TreeSearchBar uses
-      const sortedTree = sortTreeByOrder(action.pofJson.data)
+      console.log(action)
+      const sortedTree = sortTreeByOrder(action.pofJson)
+      console.log(sortedTree)
       const filledTree = fillWithNeededVariable(sortedTree)
       return filledTree
     case 'SET_TREE_POF':

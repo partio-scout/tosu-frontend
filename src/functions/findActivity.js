@@ -25,8 +25,7 @@ const findActivity = (activity, pofTree) => {
     console.log('null input')
     return null
   }
-  findInTreePof(activity, pofTree)
-  return found
+  return pofTree.entities.activities[activity.guid]
 }
 
 export default findActivity

@@ -54,7 +54,8 @@ import { viewChange } from './reducers/viewReducer'
 import { setLoading } from './reducers/loadingReducer'
 
 import { POF_ROOT } from './api-config'
-import pofTreeSchema from './pofTreeSchema'
+import {pofTreeSchema, eventSchema} from './pofTreeSchema'
+
 class App extends Component {
   state = {
     headerVisible: false,
@@ -88,7 +89,7 @@ class App extends Component {
     console.log(pofData.data)
     let normalizedPof = normalize(pofData.data, pofTreeSchema)
     console.log(normalizedPof)
-    await this.props.pofTreeInitialization(pofData)
+    await this.props.pofTreeInitialization(normalizedPof)
     if (this.props.scout !== null) {
       await Promise.all([
         this.props.eventsInitialization(),
@@ -163,6 +164,7 @@ class App extends Component {
     const view = this.props.view
     const { startDate, endDate } = this.state
     const initialEvents = this.props.events
+    console.log(normalize(initialEvents, eventSchema))
     const eventsToShow = () =>
       filterEvents(view, initialEvents, startDate, endDate)
     let odd = true
