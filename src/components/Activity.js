@@ -64,7 +64,6 @@ class Activity extends Component {
 
   render() {
     const { activity, pofActivity, connectDragSource, parentId } = this.props
-
     let lastGuid = 0
     if (pofActivity) {
       const lastParentIndex = pofActivity.parents.length - 1

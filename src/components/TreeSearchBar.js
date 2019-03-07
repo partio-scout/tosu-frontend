@@ -12,6 +12,11 @@ import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import { createStatusMessage } from '../utils/createStatusMessage'
+import {
+  getTask,
+  getTaskGroup,
+  getRootGroup,
+} from '../functions/denormalizations'
 
 class TreeSearchBar extends React.Component {
   state = { treePlaceHolder: 'Valitse ensin tarppo' }
@@ -41,20 +46,10 @@ class TreeSearchBar extends React.Component {
       this.setState({ treePlaceHolder: 'Valitse ensin tarppo' })
       this.props.addStatusMessage('Valitse ensin tarppo!')
       this.props.emptyTaskgroup()
-
       return
     }
-    const selectedGroup = this.props.pofTree.entities.tarppo[
-      taskgroup.value.guid
-    ]
-    selectedGroup.tasks = selectedGroup.tasks.map(activity => {
-      const tempActi = this.props.pofTree.entities.activities[activity]
-      if( tempActi) {
-      tempActi.suggestions_details = tempActi.suggestions_details.map(key => {
-        return this.props.pofTree.entities.suggestions[key]
-      }) }
-      return tempActi
-    })
+    const selectedGroup = getTaskGroup(taskgroup.value.guid, this.props.pofTree)
+    console.log(selectedGroup)
     this.props.selectTaskgroup(selectedGroup)
 
     this.updateStatusMessage()
@@ -101,21 +96,7 @@ class TreeSearchBar extends React.Component {
     if (!value) {
       return false
     }
-    let queues = [...this.props.pofTree.taskgroups]
-    while (queues.length) {
-      // BFS
-      const item = queues.shift()
-      if (item.value.toString() === value.toString()) {
-        if (!item.children) {
-          return true
-        }
-        return false
-      }
-      if (item.children) {
-        queues = queues.concat(item.children)
-      }
-    }
-    return false
+    return this.props.pofTree.entities.activities[value] !== undefined
   }
 
   updateStatusMessage = () => {
@@ -134,34 +115,22 @@ class TreeSearchBar extends React.Component {
   render() {
     try {
       const poftreeGuid = Object.keys(this.props.pofTree.entities.poftree)[0]
-      const pofdata = this.props.pofTree.entities.poftree[
-        poftreeGuid
-      ]
-      const taskGroupTreeKeys = pofdata.taskgroups
-      const taskGroupTree = taskGroupTreeKeys
-        .map(key => {
-          return this.props.pofTree.entities.tarppo[key]
-        })
-        .map(taskGroup => {
-          const tasks = taskGroup.tasks.map(key => {
-            return this.props.pofTree.entities.activities[key]
-          })
-          const newGroup = Object.assign({}, taskGroup)
-          newGroup.tasks = tasks
-          return newGroup
-        })
-
+      const taskGroupTree = getRootGroup(this.props.pofTree)
       let selectedTaskGroupPofData = []
       if (this.props.taskgroup !== undefined && this.props.taskgroup !== null) {
-        const groupfound = this.props.pofTree.entities.tarppo[
-          this.props.taskgroup.guid
-        ]
-        groupfound.tasks = groupfound.tasks.map(key => ( this.props.pofTree.entities.activities[key]))
-        selectedTaskGroupPofData = selectedTaskGroupPofData.concat(
-          groupfound.tasks
+        const groupfound = getTaskGroup(
+          this.props.taskgroup.guid,
+          this.props.pofTree
         )
         console.log(groupfound)
+        selectedTaskGroupPofData = selectedTaskGroupPofData.concat(
+          groupfound.tasks)
+        
+        selectedTaskGroupPofData = selectedTaskGroupPofData.concat(
+          groupfound.taskgroups
+        )
       }
+      console.log(selectedTaskGroupPofData)
       const treeSearchBar = () => (
         <TreeSelect
           style={{ width: '100%' }}

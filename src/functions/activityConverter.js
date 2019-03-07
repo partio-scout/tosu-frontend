@@ -2,7 +2,6 @@ const convertToBackendActivity = pofActivity => {
   if (pofActivity === undefined || pofActivity === null) {
     return pofActivity
   }
-
   const johtamistaito = (activity, pofActivity) => {
     try {
       activity.johtamistaito = pofActivity.tags.johtamistaito.map(
@@ -39,6 +38,7 @@ const convertToBackendActivity = pofActivity => {
         return suggs
       })
     } catch (exception) {
+      console.log("failed conversion")
       activity.suggestions = []
     }
   }

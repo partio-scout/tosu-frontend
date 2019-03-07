@@ -80,13 +80,13 @@ class App extends Component {
         break
     }
     await this.checkLoggedIn()
-    let pofData = loadCachedPofData()
+    //let pofData = loadCachedPofData()
+    let pofData
     if (pofData === undefined || pofData === {}) {
-      pofData = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
+      const pofRequest = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
+      pofData = pofRequest.data
     }
-    console.log(pofData.data)
-    let normalizedPof = normalize(pofData.data, pofTreeSchema)
-    console.log(normalizedPof)
+    let normalizedPof = normalize(pofData, pofTreeSchema)
     await this.props.pofTreeInitialization(normalizedPof)
     if (this.props.scout !== null) {
       Promise.all([
@@ -163,7 +163,6 @@ class App extends Component {
     const view = this.props.view
     const { startDate, endDate } = this.state
     const initialEvents = this.props.events
-    console.log(normalize(initialEvents, eventSchema))
     const eventsToShow = () =>
       filterEvents(view, initialEvents, startDate, endDate)
     let odd = true

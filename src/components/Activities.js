@@ -8,6 +8,8 @@ import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
+import {getTask} from '../functions/denormalizations'
+
 
 export class Activities extends React.Component {
   static propTypes = {
@@ -47,7 +49,7 @@ export class Activities extends React.Component {
     if (this.props.activities) {
       rows = this.props.activities.map(activity => {
         const pofActivity = convertToSimpleActivity(
-          findActivity(activity, this.props.pofTree)
+          getTask(activity.guid, this.props.pofTree)
         )
         return pofActivity === null ? (
           undefined
