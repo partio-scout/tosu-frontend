@@ -122,7 +122,6 @@ class TreeSearchBar extends React.Component {
           this.props.taskgroup.guid,
           this.props.pofTree
         )
-        console.log(groupfound)
         selectedTaskGroupPofData = selectedTaskGroupPofData.concat(
           groupfound.tasks)
         
@@ -130,7 +129,6 @@ class TreeSearchBar extends React.Component {
           groupfound.taskgroups
         )
       }
-      console.log(selectedTaskGroupPofData)
       const treeSearchBar = () => (
         <TreeSelect
           style={{ width: '100%' }}

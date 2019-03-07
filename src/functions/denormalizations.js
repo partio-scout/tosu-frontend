@@ -20,7 +20,6 @@ export function getTaskGroup(guid, pofData) {
         taskGroup.taskgroups = taskGroup.taskgroups.map(key => (getTaskGroup(key, pofData)))
         taskGroup.children = taskGroup.taskgroups
     }
-    console.log(taskGroup)
     return taskGroup
   } catch (err) {
     console.log(err)
