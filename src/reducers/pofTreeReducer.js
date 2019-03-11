@@ -2,8 +2,10 @@ import React from 'react'
 import isTouchDevice from 'is-touch-device'
 
 // helpers
-// put all picked activities from events and buffer into a string array made of their guid
-// we use that to search/filter from pofdata
+/*
+ * put all picked activities from events and buffer into a string array made of their guid
+ * we use that to search/filter from pofdata
+ */
 const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
   let activities = []
   buffer.activities.forEach(activity => {
@@ -17,24 +19,30 @@ const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
   return activities
 }
 
-// recursively go into taskgroups of taskgroups and disable all optional tasks
+/**
+ * disable all optional tasks in tarppo(taskgroup) and its subordinate tarppos(taskgroup)
+ * @param {string} GUID - GUID for taskgroup
+ * @param {object} root - pofdata
+ */
 const setChildrenTasksDisabled = (GUID, root) => {
-    const taskgroup = root.entities.tarppo[GUID]
-    const activityKeys = taskgroup.tasks
-    activityKeys.forEach(key => {
-        const activity = root.entities.activities[key]
-        if (activity.tags.pakollisuus[0].slug !== 'mandatory') {
-            activity.disabled = true
-        }
-    })
-    taskgroup.taskgroups.forEach(key => setChildrenTasksDisabled(key, root))
-    return root
+  const taskgroup = root.entities.tarppo[GUID]
+  const activityKeys = taskgroup.tasks
+  activityKeys.forEach(key => {
+    const activity = root.entities.activities[key]
+    if (activity.tags.pakollisuus[0].slug !== 'mandatory') {
+      activity.disabled = true
+    }
+  })
+  taskgroup.taskgroups.forEach(key => setChildrenTasksDisabled(key, root))
+  return root
 }
 
-// TreeSearchBar needs specific variables added to our pofdata
-// which is done here recursively
+/**
+ * Add variables used by TreeSearch component to the pofData
+ * @param {object} pofData
+ *
+ */
 const fillWithNeededVariable = root => {
-  const pofTreeKey = Object.keys(root.entities.poftree)[0]
   const taskGroupKeys = Object.keys(root.entities.tarppo)
   taskGroupKeys.forEach(key => {
     const obj = root.entities.tarppo[key]
@@ -65,20 +73,36 @@ const fillWithNeededVariable = root => {
   return root
 }
 
-// recursively disable existing tasks and enable if removed
+/**
+ * disable all tasks that are in use
+ * @param {object} root - pofData
+ * @param {string[]} existingActivityGuids - GUID:s of the activities in use
+ * @return {object} pofData - with the correct activities disabled
+ */
 const disableTasksInFilterIfExists = (root, existingActivityGuids) => {
-  existingActivityGuids.forEach( key => {
-     const task = root.entities.activities[key]
-      task.disabled = true
-    })
+  const activityKeys = Object.keys(root.entities.activities)
+  activityKeys.forEach(key => {
+    const activity = root.entities.activities[key]
+    activity.disabled = false
+  })
+  existingActivityGuids.forEach(key => {
+    const task = root.entities.activities[key]
+    task.disabled = true
+  })
   return root
 }
 
+/**
+ * disable optional tasks in tarppo and its child tarppos if all mandatory tasks are not selected
+ *  @param {object} root - pofData
+ *  @param {string[]} existingActivityGuids - GUID:s of the activities in use
+ *  @return pofData
+ */
 const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (
   root,
   existingActivityGuids
 ) => {
-  if (!root) return
+  if (!root) return root
   const taskgroupKeys = Object.keys(root.entities.tarppo)
   taskgroupKeys.forEach(key => {
     const majorTaskGroup = root.entities.tarppo[key]
@@ -97,13 +121,14 @@ const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (
   return root
 }
 
+/**
+ * Disable used tasks and lock optional tasks if mandatory tasks
+ * are not picked
+ * @param state
+ * @param {string[]} existingActivityGuids - GUID:s of activities in use
+ */
 const updateState = (state, existingActivityGuids) => {
   let updatedState = Object.assign({}, state)
-  const activityKeys = Object.keys(updatedState.entities.activities)
-  activityKeys.forEach(key => {
-    const activity = updatedState.entities.activities[key]
-    activity.disabled = false
-  })
   updatedState = disableTasksInFilterIfExists(
     updatedState,
     existingActivityGuids
@@ -117,16 +142,17 @@ const updateState = (state, existingActivityGuids) => {
 
 const reducer = (state = {}, action) => {
   switch (action.type) {
-    case 'INIT_TREE_POF':
+    case 'INIT_TREE_POF': {
       // add variables and sort that TreeSearchBar uses
       const filledTree = fillWithNeededVariable(action.pofJson)
       return filledTree
-    case 'SET_TREE_POF':
-      // update data by disabling existing activities &
-      // locking non-mandatory tasks if a tarppo has mandatory tasks left to pick
+    }
+    case 'SET_TREE_POF': {
       return updateState(state, action.existingActivityGuids)
-    default:
+    }
+    default: {
       return state
+    }
   }
 }
 

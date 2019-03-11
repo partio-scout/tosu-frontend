@@ -50,15 +50,11 @@ class TreeSearchBar extends React.Component {
     }
     const selectedGroup = getTaskGroup(taskgroup.value.guid, this.props.pofTree)
     this.props.selectTaskgroup(selectedGroup)
-
     this.updateStatusMessage()
-
     this.setState({ treePlaceHolder: 'Lisää aktiviteetti' })
-
     const mandatoryActivities = selectedGroup.mandatory_tasks.split(',')
     if (mandatoryActivities[0] !== '') {
       // empty split return and array with only value as ''
-
       let activities = []
       this.props.buffer.activities.forEach(activity => {
         activities = activities.concat(activity.guid)
@@ -68,7 +64,6 @@ class TreeSearchBar extends React.Component {
           activities = activities.concat(activity.guid)
         })
       })
-
       const promises = mandatoryActivities.map(activity =>
         activities.includes(activity)
           ? null
@@ -112,93 +107,90 @@ class TreeSearchBar extends React.Component {
   }
 
   render() {
-    try {
-      const taskGroupTree = getRootGroup(this.props.pofTree)
-      let selectedTaskGroupPofData = []
-      if (this.props.taskgroup !== undefined && this.props.taskgroup !== null) {
-        const groupfound = getTaskGroup(
-          this.props.taskgroup.guid,
-          this.props.pofTree
-        )
-        selectedTaskGroupPofData = selectedTaskGroupPofData.concat(
-          groupfound.tasks)
-        
-        selectedTaskGroupPofData = selectedTaskGroupPofData.concat(
-          groupfound.taskgroups
-        )
-      }
-      const treeSearchBar = () => (
-        <TreeSelect
-          style={{ width: '100%' }}
-          transitionName="rc-tree-select-dropdown-slide-up"
-          choiceTransitionName="rc-tree-select-selection__choice-zoom"
-          dropdownStyle={{
-            position: 'absolute',
-            maxHeight: 400,
-            overflow: 'auto',
-          }}
-          placeholder={this.state.treePlaceHolder}
-          searchPlaceholder="Hae aktiviteettia"
-          showSearch
-          allowClear
-          treeLine
-          getPopupContainer={() => ReactDOM.findDOMNode(this).parentNode}
-          value={this.state.value}
-          treeData={selectedTaskGroupPofData}
-          treeNodeFilterProp="label"
-          filterTreeNode={this.filterTreeNode}
-          onChange={this.onChangeChildren}
-        />
+    if (!this.props.pofTree) return <div />
+    const taskGroupTree = getRootGroup(this.props.pofTree)
+    let selectedTaskGroupPofData = []
+    if (this.props.taskgroup !== undefined && this.props.taskgroup !== null) {
+      const groupfound = getTaskGroup(
+        this.props.taskgroup.guid,
+        this.props.pofTree
       )
-      return (
-        <div
-          style={{
-            margin: 10,
-            padding: 10,
-            backgroundColor: '#d6e8f7',
-            borderRadius: 2,
-          }}
-        >
-          <div style={{ float: 'left', marginRight: 10, marginBottom: 5 }}>
-            <Select
-              menuContainerStyle={{ width: '100%' }}
-              style={{ width: 200 }}
-              name="form-field-name"
-              value={this.props.taskgroup}
-              placeholder="Valitse tarppo..."
-              onChange={this.onChangeTaskgroup}
-              options={taskGroupTree.map(rootgroup => {
-                const status = createStatusMessage(
-                  this.props.events,
-                  this.props.pofTree,
-                  rootgroup
-                )
-                let labelText = rootgroup.title
-
-                if (status.taskgroupDone) {
-                  labelText = (
-                    <span style={{ textDecoration: 'line-through' }}>
-                      {labelText}
-                    </span>
-                  )
-                }
-
-                return {
-                  value: rootgroup,
-                  label: labelText,
-                }
-              })}
-            />
-          </div>
-          <div style={{ width: '80%' }}>
-            {this.props.taskgroup ? treeSearchBar() : null}
-          </div>
-        </div>
+      selectedTaskGroupPofData = selectedTaskGroupPofData.concat(
+        groupfound.tasks
       )
-    } catch (err) {
-      console.log(err)
-      return null
+
+      selectedTaskGroupPofData = selectedTaskGroupPofData.concat(
+        groupfound.taskgroups
+      )
     }
+    const treeSearchBar = () => (
+      <TreeSelect
+        style={{ width: '100%' }}
+        transitionName="rc-tree-select-dropdown-slide-up"
+        choiceTransitionName="rc-tree-select-selection__choice-zoom"
+        dropdownStyle={{
+          position: 'absolute',
+          maxHeight: 400,
+          overflow: 'auto',
+        }}
+        placeholder={this.state.treePlaceHolder}
+        searchPlaceholder="Hae aktiviteettia"
+        showSearch
+        allowClear
+        treeLine
+        getPopupContainer={() => ReactDOM.findDOMNode(this).parentNode}
+        value={this.state.value}
+        treeData={selectedTaskGroupPofData}
+        treeNodeFilterProp="label"
+        filterTreeNode={this.filterTreeNode}
+        onChange={this.onChangeChildren}
+      />
+    )
+    return (
+      <div
+        style={{
+          margin: 10,
+          padding: 10,
+          backgroundColor: '#d6e8f7',
+          borderRadius: 2,
+        }}
+      >
+        <div style={{ float: 'left', marginRight: 10, marginBottom: 5 }}>
+          <Select
+            menuContainerStyle={{ width: '100%' }}
+            style={{ width: 200 }}
+            name="form-field-name"
+            value={this.props.taskgroup}
+            placeholder="Valitse tarppo..."
+            onChange={this.onChangeTaskgroup}
+            options={taskGroupTree.map(rootgroup => {
+              const status = createStatusMessage(
+                this.props.events,
+                this.props.pofTree,
+                rootgroup
+              )
+              let labelText = rootgroup.title
+
+              if (status.taskgroupDone) {
+                labelText = (
+                  <span style={{ textDecoration: 'line-through' }}>
+                    {labelText}
+                  </span>
+                )
+              }
+
+              return {
+                value: rootgroup,
+                label: labelText,
+              }
+            })}
+          />
+        </div>
+        <div style={{ width: '80%' }}>
+          {this.props.taskgroup ? treeSearchBar() : null}
+        </div>
+      </div>
+    )
   }
 }
 
@@ -216,6 +208,7 @@ TreeSearchBar.propTypes = {
   selectTaskgroup: PropTypes.func.isRequired,
   taskgroup: PropTypes.shape({
     value: PropTypes.number.isRequired,
+    guid: PropTypes.string.isRequired,
   }).isRequired,
 }
 

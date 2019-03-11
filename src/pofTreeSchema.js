@@ -1,6 +1,6 @@
 import { normalize, schema } from 'normalizr'
 
-const suggestion = new schema.Entity('suggestions',{}, {idAttribute: 'guid'})
+const suggestion = new schema.Entity('suggestions', {}, { idAttribute: 'guid' })
 
 const activity = new schema.Entity(
   'activities',
@@ -10,9 +10,13 @@ const activity = new schema.Entity(
   { idAttribute: 'guid' }
 )
 
-const event = new schema.Entity('events', {
-  activities: [activity],
-},{idAttribute: 'id'})
+const event = new schema.Entity(
+  'events',
+  {
+    activities: [activity],
+  },
+  { idAttribute: 'id' }
+)
 
 export const eventSchema = new schema.Array(event)
 
@@ -24,10 +28,14 @@ const tarppo = new schema.Entity(
   { idAttribute: 'guid' }
 )
 
-tarppo.define({ taskgroups: [tarppo] }) 
+tarppo.define({ taskgroups: [tarppo] })
 
-export const pofTreeSchema = new schema.Entity('poftree', {
-  taskgroups: [tarppo],
-}, {idAttribute: 'guid'})
+export const pofTreeSchema = new schema.Entity(
+  'poftree',
+  {
+    taskgroups: [tarppo],
+  },
+  { idAttribute: 'guid' }
+)
 
 export default pofTreeSchema
