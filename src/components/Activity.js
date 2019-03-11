@@ -6,7 +6,6 @@ import Icon from '@material-ui/core/Icon'
 import { DragSource } from 'react-dnd'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { notify } from '../reducers/notificationReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
@@ -160,6 +159,5 @@ export default connect(
     deleteActivityFromEvent,
     deleteActivityFromBuffer,
     notify,
-    pofTreeUpdate,
   }
 )(DraggableActivity)

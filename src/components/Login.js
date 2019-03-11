@@ -13,10 +13,7 @@ import { API_ROOT } from '../api-config'
 import { scoutGoogleLogin, readScout } from '../reducers/scoutReducer'
 import { setLoading } from '../reducers/loadingReducer'
 import { notify } from '../reducers/notificationReducer'
-import {
-  pofTreeInitialization,
-  pofTreeUpdate,
-} from '../reducers/pofTreeReducer'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   bufferZoneInitialization,
   deleteActivityFromBuffer,
@@ -101,7 +98,6 @@ export default connect(
   mapStateToProps,
   {
     notify,
-    pofTreeInitialization,
     pofTreeUpdate,
     eventsInitialization,
     bufferZoneInitialization,
