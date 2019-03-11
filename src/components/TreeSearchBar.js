@@ -49,7 +49,6 @@ class TreeSearchBar extends React.Component {
       return
     }
     const selectedGroup = getTaskGroup(taskgroup.value.guid, this.props.pofTree)
-    console.log(selectedGroup)
     this.props.selectTaskgroup(selectedGroup)
 
     this.updateStatusMessage()
@@ -114,7 +113,6 @@ class TreeSearchBar extends React.Component {
 
   render() {
     try {
-      const poftreeGuid = Object.keys(this.props.pofTree.entities.poftree)[0]
       const taskGroupTree = getRootGroup(this.props.pofTree)
       let selectedTaskGroupPofData = []
       if (this.props.taskgroup !== undefined && this.props.taskgroup !== null) {
