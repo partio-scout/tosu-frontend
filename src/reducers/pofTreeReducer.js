@@ -1,6 +1,6 @@
 import React from 'react'
 import isTouchDevice from 'is-touch-device'
-
+import {eventList} from './eventReducer'
 // helpers
 /*
  * put all picked activities from events and buffer into a string array made of their guid
@@ -165,7 +165,7 @@ export const pofTreeUpdate = (buffer, events) => ({
   type: 'SET_TREE_POF',
   existingActivityGuids: arrayActivityGuidsFromBufferAndEvents(
     isTouchDevice() ? { id: 0, activities: [] } : buffer,
-    events
+    eventList(events)
   ),
 })
 

@@ -46,7 +46,7 @@ import {
   bufferZoneInitialization,
   deleteActivityFromBuffer,
 } from './reducers/bufferZoneReducer'
-import { eventsInitialization } from './reducers/eventReducer'
+import { eventsInitialization, eventList } from './reducers/eventReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutGoogleLogin, readScout } from './reducers/scoutReducer'
 import { viewChange } from './reducers/viewReducer'
@@ -93,7 +93,7 @@ class App extends Component {
         this.props.eventsInitialization(),
         this.props.bufferZoneInitialization(), // id tulee userista myöhemmin
       ]).then(() => {
-        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+        this.props.pofTreeUpdate(this.props.buffer, eventList(this.props.events))
       })
     }
 
@@ -162,9 +162,9 @@ class App extends Component {
   render() {
     const view = this.props.view
     const { startDate, endDate } = this.state
-    const initialEvents = this.props.events
+    const initialEvents = () => eventList(this.props.events)
     const eventsToShow = () =>
-      filterEvents(view, initialEvents, startDate, endDate)
+      filterEvents(view, initialEvents(), startDate, endDate)
     let odd = true
     if (this.props.scout === null) {
       return (
@@ -189,7 +189,7 @@ class App extends Component {
             isTouchDevice() ? 'mobile-event-list event-list' : 'event-list'
           }
         >
-          {eventsToShow().map(event => {
+          {filterEvents(view, eventList(this.props.events), startDate, endDate).map(event => {
             odd = !odd
             return (
               <li className="event-list-item" key={event.id ? event.id : 0}>

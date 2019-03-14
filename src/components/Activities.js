@@ -34,7 +34,7 @@ export class Activities extends React.Component {
       const deleteActivity = this.props.bufferzone
         ? this.props.deleteActivityFromBuffer
         : this.props.deleteActivityFromEvent
-      await deleteActivity(activity.id)
+      await deleteActivity(activity.id, activity.eventId)
       this.props.pofTreeUpdate(this.props.buffer, this.props.events)
       this.props.notify('Aktiviteetti poistettu!', 'success')
     } catch (exception) {

@@ -10,10 +10,11 @@ const activity = new schema.Entity(
   { idAttribute: 'guid' }
 )
 
+const eventActivity = new schema.Entity('activities', {}, { idAttribute: 'id' })
 const event = new schema.Entity(
   'events',
   {
-    activities: [activity],
+    activities: [eventActivity],
   },
   { idAttribute: 'id' }
 )
@@ -35,7 +36,6 @@ export const pofTreeSchema = new schema.Entity(
   {
     taskgroups: [tarppo],
   },
-  { idAttribute: 'guid' }
-)
+  { idAttribute: 'guid' })
 
 export default pofTreeSchema

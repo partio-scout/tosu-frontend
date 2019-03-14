@@ -47,15 +47,12 @@ class PlanCard extends React.Component {
     try {
       const res = await planService.addPlanToActivity(data, activityId)
       this.props.savePlan(suggestion, activityId, res.id)
-      let parentEvent = this.props.events.find(e => {
-        return parentId === e.id
-      })
-      parentEvent.activities
-        .find(e => {
-          return e.id === activityId
-        })
+      let parentEvent = this.props.events.events[parentId]
+      console.log(parentEvent)
+      const parentActivity = this.props.events.activities[activityId]
+      this.props.events.activities[activityId]
         .plans.push(data)
-      this.props.editEvent(parentEvent)
+      console.log(parentActivity)
     } catch (exception) {
       console.log(exception)
       this.props.notify('Toteutusvinkin tallentaminen ei onnistunut')
@@ -65,17 +62,13 @@ class PlanCard extends React.Component {
   deleteSuggestion = async (id, activityId, parentId) => {
     try {
       await planService.deletePlan(id)
+      const parentEvent = this.props.events.events[parentId]
       this.props.deletePlan(id, activityId)
-      const parentEvent = this.props.events.find(e => {
-        return e.id === parentId
-      })
-      const activity = parentEvent.activities.find(e => {
-        return e.id === activityId
-      })
+      const activity = this.props.events.activities[activityId]
       activity.plans = activity.plans.filter(e => {
         return e.id !== id
       })
-      this.props.editEvent(parentEvent)
+      console.log(parentEvent)
     } catch (exception) {
       console.log(exception)
       this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
@@ -89,7 +82,6 @@ class PlanCard extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     const { suggestion, savedActivity, plans, parentId } = this.props
     // Find plans for current activity from store
     const activityPlans = plans.filter(plan => plan.id === savedActivity.id)

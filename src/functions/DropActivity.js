@@ -7,7 +7,7 @@ const moveActivityFromEventToBuffer = async (props, activity, parentId) => {
   try {
     // Move activity locally
     props.postActivityToBufferOnlyLocally(activity)
-    props.deleteActivityFromEventOnlyLocally(activityId)
+    props.deleteActivityFromEventOnlyLocally(activityId, parentId)
     const res = await activityService.moveActivityFromEventToBufferZone(
       activityId,
       parentId
@@ -24,6 +24,7 @@ const moveActivityFromEventToBuffer = async (props, activity, parentId) => {
       ...activity,
       canDrag: true,
     })
+    console.log(exception)
     props.notify('Aktiviteettialue on täynnä!')
   }
   props.pofTreeUpdate(props.buffer, props.events)
@@ -32,18 +33,20 @@ const moveActivityFromEventToBuffer = async (props, activity, parentId) => {
 const moveActivityFromBufferToEvent = async (props, activity, targetId) => {
   const activityId = activity.id
   try {
+    console.log(activity)
     props.addActivityToEventOnlyLocally(targetId, activity)
     props.deleteActivityFromBufferOnlyLocally(activityId)
     const res = await activityService.moveActivityFromBufferZoneToEvent(
       activityId,
       targetId
     )
-    props.deleteActivityFromEventOnlyLocally(activityId)
+    props.deleteActivityFromEventOnlyLocally(activityId, targetId)
     props.addActivityToEventOnlyLocally(targetId, res)
+    console.log(res)
     props.notify('Aktiviteetti siirretty!', 'success')
     return res
   } catch (exception) {
-    props.deleteActivityFromEventOnlyLocally(activityId)
+    props.deleteActivityFromEventOnlyLocally(activityId, activity.eventId)
     props.postActivityToBufferOnlyLocally({ ...activity, canDrag: true })
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
@@ -59,19 +62,19 @@ const moveActivityFromEventToEvent = async (
 ) => {
   const activityId = activity.id
   try {
-    props.deleteActivityFromEventOnlyLocally(activityId)
+    props.deleteActivityFromEventOnlyLocally(activityId, activity.eventId)
     props.addActivityToEventOnlyLocally(targetId, activity)
     const res = await activityService.moveActivityFromEventToEvent(
       activityId,
       parentId,
       targetId
     )
-    props.deleteActivityFromEventOnlyLocally(activityId)
+    props.deleteActivityFromEventOnlyLocally(activityId, activity.eventId)
     props.addActivityToEventOnlyLocally(targetId, res)
     props.notify('Aktiviteetti siirretty!', 'success')
     return res
   } catch (exception) {
-    props.deleteActivityFromEventOnlyLocally(activityId)
+    props.deleteActivityFromEventOnlyLocally(activityId, activity.eventId)
     props.addActivityToEventOnlyLocally(parentId, {
       ...activity,
       canDrag: true,

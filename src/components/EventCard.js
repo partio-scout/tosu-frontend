@@ -45,6 +45,8 @@ import {
 import eventService from '../services/events'
 import { deletePlan } from '../reducers/planReducer'
 import SuggestionCard from '../components/SuggestionCard'
+import {getTask} from '../functions/denormalizations'
+
 // Warning icon
 const warning = (
   <div className="tooltip">
@@ -143,7 +145,7 @@ class EventCard extends React.Component {
   /* creates a new event with modified information and sends it to eventReducer's editEvent method */
   changeInfo = async event => {
     event.preventDefault()
-
+    console.log(this.props.event)
     const moddedEvent = {
       id: this.props.event.id,
       title: this.props.event.title,
@@ -153,7 +155,9 @@ class EventCard extends React.Component {
       endTime: this.props.event.endTime,
       type: this.props.event.type,
       information: event.target.children[2].value,
+      activities: this.props.event.activities
     }
+    console.log(moddedEvent)
     this.props.bufferZoneInitialization()
     this.props.editEvent(moddedEvent)
     this.setState({ editMode: false })
@@ -165,6 +169,7 @@ class EventCard extends React.Component {
 
   render() {
     const { event, odd } = this.props
+    console.log(event)
     let editButton = <div />
     moment.locale('fi')
     const { title } = event
@@ -323,7 +328,6 @@ class EventCard extends React.Component {
     }
     const expanded = (
       <CardContent>
-        {syncConfirmDialog}
         <div className="eventTimes">
           <span>{event.type} alkaa:</span>{' '}
           {moment(event.startDate)
@@ -356,8 +360,8 @@ class EventCard extends React.Component {
           />
         </b>
         <br style={{ clear: 'both' }} />{' '}
-        {event.activities.map(activity =>
-          activity.plans.map(plan => (
+        {event.activities.map(activity => {
+          return activity.plans.map(plan => (
             <div key={plan.id}>
               {' '}
               <SuggestionCard
@@ -367,6 +371,7 @@ class EventCard extends React.Component {
               />{' '}
             </div>
           ))
+        }
         )}{' '}
       </CardContent>
     )

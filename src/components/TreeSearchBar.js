@@ -17,6 +17,7 @@ import {
   getTaskGroup,
   getRootGroup,
 } from '../functions/denormalizations'
+import { eventList } from '../reducers/eventReducer'
 
 class TreeSearchBar extends React.Component {
   state = { treePlaceHolder: 'Valitse ensin tarppo' }
@@ -59,7 +60,7 @@ class TreeSearchBar extends React.Component {
       this.props.buffer.activities.forEach(activity => {
         activities = activities.concat(activity.guid)
       })
-      this.props.events.forEach(event => {
+      eventList(this.props.events).forEach(event => {
         event.activities.forEach(activity => {
           activities = activities.concat(activity.guid)
         })
@@ -109,6 +110,7 @@ class TreeSearchBar extends React.Component {
   render() {
     if (!this.props.pofTree) return <div />
     const taskGroupTree = getRootGroup(this.props.pofTree)
+    if( !taskGroupTree ) return <div />
     let selectedTaskGroupPofData = []
     if (this.props.taskgroup !== undefined && this.props.taskgroup !== null) {
       const groupfound = getTaskGroup(
@@ -123,6 +125,7 @@ class TreeSearchBar extends React.Component {
         groupfound.taskgroups
       )
     }
+    console.log(this.props.events)
     const treeSearchBar = () => (
       <TreeSelect
         style={{ width: '100%' }}

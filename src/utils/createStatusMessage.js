@@ -1,14 +1,16 @@
 import moment from 'moment'
-import findActivity from '../functions/findActivity'
+import { getTask } from '../functions/denormalizations'
+import { eventList } from '../reducers/eventReducer'
 
 const arrayActivityGuidsFromBufferAndEvents = (events, pofTree) => {
   let activities = []
 
   // Get all activities that are in one of the events
-  events.forEach(event => {
+  eventList(events).forEach(event => {
+    if( event.activities.includes(undefined) ) console.log(event)
     event.activities.forEach(activity => {
       // Get information about activity from pofdata
-      const found = findActivity(activity, pofTree)
+      const found = getTask(activity.guid, pofTree)
 
       // Save the date of the event when activity is planned
       const savedActivity = Object.assign(
