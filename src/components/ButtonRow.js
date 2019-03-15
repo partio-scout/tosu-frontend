@@ -23,7 +23,7 @@ class ButtonRow extends React.Component {
     startDate: moment(),
     endDate: null,
   }
-  /** Changes the view to tab Omat/Kuksa/Kalenteri/Uusi tapahtuma  */
+  /** Changes the view to tab Omat/Kuksa/Kalenteri/Uusi tapahtuma */
   selectView = value => () => {
     this.props.viewChange(value)
   }
