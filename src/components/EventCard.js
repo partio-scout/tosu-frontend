@@ -23,6 +23,8 @@ import {
   Collapse,
 } from '@material-ui/core'
 
+import PropTypes from 'prop-types'
+import ReactTooltip from 'react-tooltip'
 import Warning from '@material-ui/icons/Warning'
 import DeleteIcon from '@material-ui/icons/Delete'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -52,6 +54,8 @@ import { deletePlan } from '../reducers/planReducer'
 import findActivity from '../functions/findActivity'
 import convertToSimpleActivity from '../functions/activityConverter'
 
+import SuggestionCard from '../components/SuggestionCard'
+
 const warning = (
   <div className="tooltip">
     <Warning className="warning" />
@@ -66,10 +70,11 @@ class EventCard extends React.Component {
       expanded: false,
       syncToKuksa: Boolean(props.event.synced), // Initial state of sync or no sync from backend
       syncDialogOpen: false,
-      event: props.event,
       editMode: false,
       newPlans: false,
     }
+    this.changeInfo = this.changeInfo.bind(this)
+    this.renderEdit = this.renderEdit.bind(this)
   }
   /** Adds the activity to local storage and updates the guid. Also updates the pofTree.
    *  @param activityGuid the global identifier of the activity
@@ -147,6 +152,30 @@ class EventCard extends React.Component {
   stopSyncingWithKuksa = async () => {
     // TODO
   }
+
+  /* creates a new event with modified information and sends it to eventReducer's editEvent method */
+  changeInfo = async event => {
+    event.preventDefault()
+
+    const moddedEvent = {
+      id: this.props.event.id,
+      title: this.props.event.title,
+      startDate: this.props.event.startDate,
+      endDate: this.props.event.endDate,
+      startTime: this.props.event.startTime,
+      endTime: this.props.event.endTime,
+      type: this.props.event.type,
+      information: event.target.children[2].value,
+    }
+    this.props.bufferZoneInitialization(0)
+    this.props.editEvent(moddedEvent)
+    this.setState({ editMode: false })
+  }
+
+  renderEdit = () => {
+    this.setState({ editMode: !this.state.editMode })
+  }
+
   render() {
     const { event, odd } = this.props
     let editButton = <div />
@@ -311,10 +340,11 @@ class EventCard extends React.Component {
     }
 
     /** Returns a component with a form to input new information if editMode is true, otherwise returns the information in text form */
+
     const informationContainer = () => {
       if (this.state.editMode) {
         return (
-          <form onSubmit={changeInfo}>
+          <form onSubmit={this.changeInfo}>
             <span>
               <b>Lisätiedot </b>
               <input
@@ -332,52 +362,9 @@ class EventCard extends React.Component {
       }
       return <p>{information}</p>
     }
-
-    const getSimpleActivity = activity =>
-      convertToSimpleActivity(findActivity(activity, this.props.pofTree))
-
-    /** TODO: Make suggestioncard a component
-     * props plan, event
-     *
-     *
-     */
-    const suggestionCard = (plan, activity) => (
-      <Card
-        className="suggestion"
-        style={{ backgroundColor: '#fafafa', marginTop: '10px' }}
-      >
-        <CardHeader
-          action={
-            <IconButton
-              onClick={async () => {
-                try {
-                  await planService.deletePlan(plan.id)
-                  this.props.deletePlan(plan.id, plan.activityId)
-                  this.props.editEvent(event)
-                } catch (exception) {
-                  this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
-                }
-              }}
-            >
-              {' '}
-              <DeleteIcon />{' '}
-            </IconButton>
-          }
-          title={plan.title}
-          subheader={
-            <Typography>{getSimpleActivity(activity).title}</Typography>
-          }
-        />
-
-        <CardContent>
-          <Typography component="p">{Parser().parse(plan.content)}</Typography>
-        </CardContent>
-      </Card>
-    )
-
     if (!this.props.event.kuksaEventId) {
       editButton = (
-        <button onClick={renderEdit} className="information">
+        <button onClick={this.renderEdit} className="information">
           {this.state.editMode ? 'PERUUTA' : 'MUOKKAA'}
         </button>
       )
@@ -387,20 +374,20 @@ class EventCard extends React.Component {
     const expanded = (
       <CardContent>
         {syncConfirmDialog}
-        <p className="eventTimes">
+        <div className="eventTimes">
           <span>{event.type} alkaa:</span>{' '}
           {moment(event.startDate)
             .locale('fi')
             .format('ddd D.M.YYYY')}{' '}
           kello {event.startTime.substring(0, 5)}
-        </p>
-        <p className="eventTimes">
+        </div>
+        <div className="eventTimes">
           <span>{event.type} päättyy:</span>{' '}
           {moment(event.endDate)
             .locale('fi')
             .format('ddd D.M.YYYY')}{' '}
           kello {event.endTime.substring(0, 5)}
-        </p>
+        </div>
         {this.state.editMode ? null : (
           <div>
             <b>Lisätiedot </b>
@@ -418,12 +405,18 @@ class EventCard extends React.Component {
         <br style={{ clear: 'both' }} />{' '}
         {event.activities.map(activity =>
           activity.plans.map(plan => (
-            <div key={plan.id}> {suggestionCard(plan, activity)}</div>
+            <div key={plan.id}>
+              {' '}
+              <SuggestionCard
+                plan={plan}
+                activity={activity}
+                event={this.props.event}
+              />{' '}
+            </div>
           ))
         )}{' '}
       </CardContent>
     )
-
     return (
       <div className={cardClassName}>
         <Card style={{ boxShadow: 'none' }}>
@@ -473,13 +466,13 @@ class EventCard extends React.Component {
             >
               <EditEvent
                 buttonClass="buttonRight"
-                data={event}
+                data={this.props.event}
                 setNotification={this.props.setNotification}
                 minimal={!this.state.expanded}
               />
               <DeleteEvent
                 buttonClass="buttonRight"
-                data={event}
+                data={this.props.event}
                 setNotification={this.props.setNotification}
                 minimal={!this.state.expanded}
               />
@@ -489,6 +482,39 @@ class EventCard extends React.Component {
       </div>
     )
   }
+}
+
+EventCard.propTypes = {
+  addActivityToEventOnlyLocally: PropTypes.func.isRequired,
+  buffer: PropTypes.shape({
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
+  editEvent: PropTypes.func.isRequired,
+  event: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    type: PropTypes.object.isRequired,
+    startDate: PropTypes.string.isRequired,
+    startTime: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
+    endTime: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    kuksaEventId: PropTypes.number.isRequired,
+    synced: PropTypes.bool.isRequired,
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  notify: PropTypes.func.isRequired,
+  odd: PropTypes.bool.isRequired,
+  pofTree: PropTypes.shape({
+    taskgroups: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  setNotification: PropTypes.func.isRequired,
+  deletePlan: PropTypes.func.isRequired,
+  taskgroup: PropTypes.shape({
+    value: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
 const mapStateToProps = state => ({

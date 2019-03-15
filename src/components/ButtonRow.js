@@ -1,14 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton/IconButton'
+import Icon from '@material-ui/core/Icon/Icon'
+import PropTypes from 'prop-types'
 import { DateRangePicker } from 'react-dates'
 import Add from '@material-ui/icons/Add'
 import CalendarToday from '@material-ui/icons/CalendarToday'
 import moment from 'moment'
 import { viewChange } from '../reducers/viewReducer'
-import IconButton from '@material-ui/core/IconButton/IconButton'
-import Icon from '@material-ui/core/Icon/Icon'
-import PropTypes from 'prop-types'
 
 class ButtonRow extends React.Component {
   static propTypes = {
@@ -17,6 +17,7 @@ class ButtonRow extends React.Component {
     view: PropTypes.string.isRequired,
     newEvent: PropTypes.func.isRequired,
     mobile: PropTypes.bool.isRequired,
+    filter: PropTypes.bool.isRequired,
   }
   state = {
     startDate: moment(),

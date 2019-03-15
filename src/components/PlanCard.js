@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardActions from '@material-ui/core/CardActions'
@@ -163,6 +164,19 @@ const mapStateToProps = state => ({
   plans: state.plans,
   events: state.events,
 })
+
+PlanCard.propTypes = {
+  savedActivity: PropTypes.shape({}).isRequired,
+  initPlans: PropTypes.func.isRequired,
+  savePlan: PropTypes.func.isRequired,
+  deletePlan: PropTypes.func.isRequired,
+  plans: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  notify: PropTypes.func.isRequired,
+  parentId: PropTypes.number.isRequired,
+  suggestion: PropTypes.shape({}).isRequired,
+  editEvent: PropTypes.func.isRequired,
+}
 
 export default connect(
   mapStateToProps,

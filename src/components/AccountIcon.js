@@ -63,6 +63,8 @@ class AccountIcon extends React.Component {
 
 AccountIcon.propTypes = {
   scoutLogout: PropTypes.func.isRequired,
+  mobileFeedback: PropTypes.func.isRequired,
+  accountIcon: PropTypes.shape({}).isRequired,
 }
 
 const mapStateToProps = state => ({

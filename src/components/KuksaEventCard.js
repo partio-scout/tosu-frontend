@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import 'rc-tree-select/assets/index.css'
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
   Card,
   CardActions,
@@ -87,6 +88,10 @@ class KuksaEventCard extends React.Component {
       </div>
     )
   }
+}
+
+KuksaEventCard.propTypes = {
+  event: PropTypes.shape({}).isRequired,
 }
 
 export default connect(

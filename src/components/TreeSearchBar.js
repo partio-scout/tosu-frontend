@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Select from 'react-select'
+import PropTypes from 'prop-types'
 import 'react-select/dist/react-select.css'
 import TreeSelect /* , { TreeNode, SHOW_PARENT } */ from 'rc-tree-select'
 import 'rc-tree-select/assets/index.css'
@@ -209,6 +210,23 @@ class TreeSearchBar extends React.Component {
       </div>
     )
   }
+}
+
+TreeSearchBar.propTypes = {
+  addStatusMessage: PropTypes.func.isRequired,
+  buffer: PropTypes.shape({
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  emptyTaskgroup: PropTypes.func.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  notify: PropTypes.func.isRequired,
+  pofTree: PropTypes.object.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  postActivityToBuffer: PropTypes.func.isRequired,
+  selectTaskgroup: PropTypes.func.isRequired,
+  taskgroup: PropTypes.shape({
+    value: PropTypes.number.isRequired,
+  }).isRequired,
 }
 
 const mapStateToProps = state => ({

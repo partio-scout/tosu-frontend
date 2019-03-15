@@ -32,11 +32,13 @@ class Toolbar extends React.Component {
     view: PropTypes.string.isRequired,
     views: PropTypes.arrayOf(PropTypes.string).isRequired,
     label: PropTypes.node.isRequired,
-    messages: PropTypes.object,
+    messages: PropTypes.shape({}).isRequired,
     onNavigate: PropTypes.func.isRequired,
     onViewChange: PropTypes.func.isRequired,
-    switchState: PropTypes.bool,
-    classes: PropTypes.object.isRequired,
+    switchState: PropTypes.bool.isRequired,
+    classes: PropTypes.shape({}).isRequired,
+    hideKuksaEvents: PropTypes.bool.isRequired,
+    showKuksaEvents: PropTypes.bool.isRequired,
   }
   /** Toggles whether kuksa events are shown */
   onSwitchChange = () => {

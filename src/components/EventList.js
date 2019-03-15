@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import {
@@ -15,7 +16,6 @@ class EventList extends React.Component {
   state = {
     shouldShowAllKuksaEvents: false,
     loading: true,
-    kuksaEventstoAdd: [],
   }
 
   render() {
@@ -88,6 +88,11 @@ class EventList extends React.Component {
 
     return <div>{eventsToList}</div>
   }
+}
+
+EventList.propTypes = {
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  filter: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = state => ({

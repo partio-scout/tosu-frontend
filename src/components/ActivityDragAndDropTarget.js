@@ -28,24 +28,13 @@ function collect(connector, monitor) {
 
 class ActivityDragAndDropTarget extends React.Component {
   static propTypes = {
+    odd: PropTypes.bool.isRequired,
     isOver: PropTypes.bool.isRequired,
     canDrop: PropTypes.bool.isRequired,
+    event: PropTypes.bool.isRequired,
+    className: PropTypes.string.isRequired,
     connectDropTarget: PropTypes.func.isRequired,
-
-    // these props are used in DropActivity.js
-    // (yes, very confusing)
-    // TODO: find a better solution
-    bufferzone: PropTypes.bool.isRequired,
-    parentId: PropTypes.number.isRequired,
-
-    notify: PropTypes.func.isRequired,
-    deleteActivityFromEventOnlyLocally: PropTypes.func.isRequired,
-    addActivityToEventOnlyLocally: PropTypes.func.isRequired,
-    deleteActivityFromBufferOnlyLocally: PropTypes.func.isRequired,
-    postActivityToBufferOnlyLocally: PropTypes.func.isRequired,
-    pofTreeUpdate: PropTypes.func.isRequired,
-    deleteActivityFromBuffer: PropTypes.func.isRequired,
-    deleteActivityFromEvent: PropTypes.func.isRequired,
+    children: PropTypes.arrayOf(PropTypes.object).isRequired,
   }
 
   render() {
