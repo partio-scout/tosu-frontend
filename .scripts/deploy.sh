@@ -10,7 +10,7 @@ ssh ubuntu@$IP <<EOF
         git clone https://github.com/partio-scout/tosu-frontend.git
         cd tosu-frontend
         npm install
-        npm run-script build
+        npm run build
         rm -rf /var/www/html
         cp -a ~/tosu-frontend/build/. /var/www/html/
         cd ..
