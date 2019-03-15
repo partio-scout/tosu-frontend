@@ -13,6 +13,7 @@ import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
 
+/** Methods that handle the dragging of an activity */
 const activitySource = {
   beginDrag(props, monitor) {
     return {

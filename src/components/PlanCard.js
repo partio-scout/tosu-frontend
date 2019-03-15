@@ -28,7 +28,7 @@ class PlanCard extends React.Component {
     this.setState({ expanded: !this.state.expanded })
   }
 
-  // Check if suggestions are already saved in store and if not save them
+  /** Check if suggestions are already saved in store and if not save them */
   updateSuggestions = () => {
     const { savedActivity, plans } = this.props
 
@@ -60,19 +60,19 @@ class PlanCard extends React.Component {
       this.props.notify('Toteutusvinkin tallentaminen ei onnistunut')
     }
   }
-
+  /** Deletes a suggestion from the backend and from frontend  */
   deleteSuggestion = async (id, activityId, parentId) => {
     try {
       await planService.deletePlan(id)
       this.props.deletePlan(id, activityId)
-      const parentEvent = this.props.events.find( e => {
-          return e.id === parentId 
+      const parentEvent = this.props.events.find(e => {
+        return e.id === parentId
       })
-      const activity = parentEvent.activities.find( e => {
-          return e.id === activityId 
+      const activity = parentEvent.activities.find(e => {
+        return e.id === activityId
       })
-      activity.plans = activity.plans.filter( e => {
-          return e.id !== id 
+      activity.plans = activity.plans.filter(e => {
+        return e.id !== id
       })
       this.props.editEvent(parentEvent)
     } catch (exception) {
@@ -110,7 +110,11 @@ class PlanCard extends React.Component {
         <Button
           size="small"
           onClick={() =>
-            this.deleteSuggestion(selectedPlan[0].id, savedActivity.id, parentId)
+            this.deleteSuggestion(
+              selectedPlan[0].id,
+              savedActivity.id,
+              parentId
+            )
           }
         >
           Poista valituista

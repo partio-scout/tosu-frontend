@@ -12,11 +12,13 @@ import { eventStyleGetter } from './CalendarEvent'
 import { closePopper } from '../reducers/calendarReducer'
 import PropTypes from 'prop-types'
 
-// Setup the localizer by providing the moment (or globalize) Object
-// to the correct localizer.
-const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
+/**  Setup the localizer by providing the moment (or globalize) Object
+to the correct localizer or globalizeLocalizer */
+const localizer = BigCalendar.momentLocalizer(moment)
 
-/** Maps the events that fit a certain date range and renders them to the app */
+/** Maps the events that fit a certain date range and renders them to the app
+ * @param originalData Used when it's better to use the original event for API calls
+ */
 function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
   events = events.filter(event => {
     if (event.kuksaEvent) {
@@ -42,7 +44,7 @@ function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
       information: event.information,
       synced: event.synced,
       kuksaEvent: event.kuksaEvent,
-      originalData: event, // Used when it's better to use the original event for API calls
+      originalData: event,
     }
   })
 }

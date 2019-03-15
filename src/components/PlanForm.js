@@ -21,13 +21,10 @@ export default class PlanForm extends React.Component {
   handleChange = (event, value) => {
     this.setState({ value })
   }
-
+  /** Creates a new div element, set the HTML content with the providen and retrieves the text property of the element. Provides cross-browser support. */
   stripHtml = html => {
-    // Create a new div element
     const temporalDivElement = document.createElement('div')
-    // Set the HTML content with the providen
     temporalDivElement.innerHTML = html
-    // Retrieve the text property of the element (cross-browser support)
     return temporalDivElement.textContent || temporalDivElement.innerText || ''
   }
 

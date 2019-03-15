@@ -105,14 +105,13 @@ class EventCard extends React.Component {
 
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
-  /** Checks whether a given value is part of a pofTree  */
+  /** Checks whether a given value is part of a pofTree using breath-first-search */
   isLeaf = value => {
     if (!value) {
       return false
     }
     let queues = [...this.props.pofTree.taskgroups]
     while (queues.length) {
-      // BFS
       const item = queues.shift()
       if (item.value.toString() === value.toString()) {
         if (!item.children) {
@@ -158,13 +157,13 @@ class EventCard extends React.Component {
       : `${moment(event.startDate, 'YYYY-MM-DD')
           .locale('fi')
           .format('ddd D.M.YYYY')} ${event.startTime.substring(0, 5)}`
-    let cardClassName = 'event-card-wrapper' // Style: Normal
+    let cardClassName = 'event-card-wrapper'
     if (this.props.event.activities.length === 0) {
-      cardClassName = 'empty-event-card' // Style: No activities
+      cardClassName = 'empty-event-card'
     }
     // Prioritize kuksa sync color over emptiness warning color (warning icon still visible)
     if (this.props.event.synced) {
-      cardClassName = 'kuksa-synced-event-card' // Style: Synced to Kuksa
+      cardClassName = 'kuksa-synced-event-card'
     }
 
     const taskGroupTree = this.props.pofTree.taskgroups

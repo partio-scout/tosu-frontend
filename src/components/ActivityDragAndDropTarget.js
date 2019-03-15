@@ -16,7 +16,7 @@ import {
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally,
 } from '../reducers/eventReducer'
-
+/** Collects an element and allows it to be dropped to a container. */
 function collect(connector, monitor) {
   return {
     connectDropTarget: connector.dropTarget(),
@@ -69,9 +69,9 @@ const DroppableActivityDragAndDropTarget = DropTarget(
 )(ActivityDragAndDropTarget)
 
 const mapStateToProps = state => ({
-    buffer: state.buffer,
-    events: state.events,
-  })
+  buffer: state.buffer,
+  events: state.events,
+})
 
 export default connect(
   mapStateToProps,

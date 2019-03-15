@@ -24,6 +24,10 @@ const styles = theme => ({
 })
 
 class DeleteEvent extends React.Component {
+  /**  PropTypes for DeleteEvent.
+   * If eventGroupId exists, it's a recurring event, so we need to enable deleting those.
+   * DeleteEvent never allows modifications to kuksaEvents (not synced).
+   */
   static propTypes = {
     data: PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -81,10 +85,8 @@ class DeleteEvent extends React.Component {
   render() {
     const { classes } = this.props
     const event = this.props.data
-    const disabled = event.kuksaEvent // Never allow modifications to kuksaEvents (not synced)
-    // This is the popup that appears if you click 'poista' on an event
+    const disabled = event.kuksaEvent
     let actions = []
-    // IfeventGroupId exists, it's a recurring event, so we need to enable deleting those
     if (event.eventGroupId) {
       actions = (
         <div>
