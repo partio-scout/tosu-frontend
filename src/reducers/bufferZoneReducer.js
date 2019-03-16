@@ -21,6 +21,7 @@ const reducer = (state = { id: 0, activities: [] }, action) => {
     case 'INIT_BUFFER':
       return action.buffer
     case 'ADD_TO_BUFFER':
+      console.log("ADD TO BUFFER")
       return addToBuffer(action, state)
     case 'DELETE_FROM_BUFFER':
       return deleteFromBuffer(action, state)
@@ -30,7 +31,7 @@ const reducer = (state = { id: 0, activities: [] }, action) => {
 }
 
 export const bufferZoneInitialization = () => async dispatch => {
-  activityService.getBufferZoneActivities().then(buffer =>
+  await activityService.getBufferZoneActivities().then(buffer =>
     dispatch({
       type: 'INIT_BUFFER',
       buffer,
@@ -39,7 +40,7 @@ export const bufferZoneInitialization = () => async dispatch => {
 }
 
 export const postActivityToBuffer = activity => async dispatch => {
-  activityService.addActivityToBufferZone(activity).then(responseActivity =>
+  await activityService.addActivityToBufferZone(activity).then(responseActivity =>
     dispatch({
       type: 'ADD_TO_BUFFER',
       activity: responseActivity,
@@ -48,7 +49,7 @@ export const postActivityToBuffer = activity => async dispatch => {
 }
 
 export const deleteActivityFromBuffer = activityId => async dispatch => {
-  activityService.deleteActivity(activityId)
+  await activityService.deleteActivity(activityId)
   dispatch({
     type: 'DELETE_FROM_BUFFER',
     activityId,

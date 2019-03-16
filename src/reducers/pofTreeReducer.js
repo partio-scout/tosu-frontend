@@ -22,7 +22,7 @@ const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
 /**
  * disable all optional tasks in tarppo(taskgroup) and its subordinate tarppos(taskgroup)
  * @param {string} GUID - GUID for taskgroup
- * @param {object} root - pofdata
+ * @param {object} root - DEEP copy of pofdata
  */
 const setChildrenTasksDisabled = (GUID, root) => {
   const taskgroup = root.entities.tarppo[GUID]
@@ -39,7 +39,7 @@ const setChildrenTasksDisabled = (GUID, root) => {
 
 /**
  * Add variables used by TreeSearch component to the pofData
- * @param {object} pofData
+ * @param {object} root - DEEP copy of pofData
  *
  */
 const fillWithNeededVariable = root => {
@@ -121,6 +121,22 @@ const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (
   return root
 }
 
+
+const deepStateCopy = (state) => {
+    const stateCopy = {...state}
+    stateCopy.entities = {...state.entities}
+    stateCopy.entities.activities = {...state.entities.activities}
+    Object.keys(state.entities.activities).forEach(key => {
+        stateCopy.entities.activities[key] = {...state.entities.activities[key] }
+    })
+    stateCopy.entities.tarppo = {...state.entities.tarppo}
+    Object.keys(state.entities.tarppo).forEach(key => {
+        stateCopy.entities.tarppo[key] = {...state.entities.tarppo[key]}
+    })
+    console.log(stateCopy)
+    return stateCopy
+}
+
 /**
  * Disable used tasks and lock optional tasks if mandatory tasks
  * are not picked
@@ -128,7 +144,8 @@ const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (
  * @param {string[]} existingActivityGuids - GUID:s of activities in use
  */
 const updateState = (state, existingActivityGuids) => {
-  let updatedState = Object.assign({}, state)
+  console.log("POFTREE UPDATE")
+  let updatedState = deepStateCopy(state)
   updatedState = disableTasksInFilterIfExists(
     updatedState,
     existingActivityGuids

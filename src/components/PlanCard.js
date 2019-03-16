@@ -13,7 +13,7 @@ import { Parser } from 'html-to-react'
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
 import { notify } from '../reducers/notificationReducer'
-import { editEvent } from '../reducers/eventReducer'
+import { editEvent, addActivityToEventOnlyLocally, deleteActivityFromEventOnlyLocally} from '../reducers/eventReducer'
 
 class PlanCard extends React.Component {
   state = { expanded: false }
@@ -47,12 +47,14 @@ class PlanCard extends React.Component {
     try {
       const res = await planService.addPlanToActivity(data, activityId)
       this.props.savePlan(suggestion, activityId, res.id)
-      let parentEvent = this.props.events.events[parentId]
+      let parentEvent = {...this.props.events.events[parentId]}
       console.log(parentEvent)
-      const parentActivity = this.props.events.activities[activityId]
-      this.props.events.activities[activityId]
-        .plans.push(data)
-      console.log(parentActivity)
+      const parentActivity = {...this.props.events.activities[activityId]}
+      // TODO NOT LIKE THIS VERY BAD MUTATION
+      parentActivity.plans.push(data)
+      this.props.deleteActivityFromEventOnlyLocally(parentActivity, parentEvent.id)
+      this.props.addActivityToEventOnlyLocally(parentActivity, parentEvent.id)
+    this.props.editEvent(parentEvent)
     } catch (exception) {
       console.log(exception)
       this.props.notify('Toteutusvinkin tallentaminen ei onnistunut')
@@ -64,11 +66,12 @@ class PlanCard extends React.Component {
       await planService.deletePlan(id)
       const parentEvent = this.props.events.events[parentId]
       this.props.deletePlan(id, activityId)
-      const activity = this.props.events.activities[activityId]
+      const activity = {...this.props.events.activities[activityId]}
       activity.plans = activity.plans.filter(e => {
         return e.id !== id
       })
-      console.log(parentEvent)
+      this.props.deleteActivityFromEventOnlyLocally(activity.id, parentEvent.id)
+      this.props.addActivityToEventOnlyLocally(parentEvent.id, activity)
     } catch (exception) {
       console.log(exception)
       this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
@@ -177,6 +180,8 @@ const mapDispatchToProps = {
   deletePlan,
   editEvent,
   notify,
+  deleteActivityFromEventOnlyLocally,
+  addActivityToEventOnlyLocally,
 }
 
 export default connect(

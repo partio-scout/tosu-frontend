@@ -33,13 +33,13 @@ class TreeSearchBar extends React.Component {
   onChangeChildren = async activityGuid => {
     if (this.isLeaf(activityGuid)) {
       try {
-        this.props.postActivityToBuffer({ guid: activityGuid })
+        await this.props.postActivityToBuffer({ guid: activityGuid })
+        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
         this.props.notify('Aktiviteetti on lisätty!', 'success')
       } catch (exception) {
         this.props.notify('Aktiviteettialue on täynnä!!')
       }
     }
-    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
 
   onChangeTaskgroup = async taskgroup => {
@@ -76,12 +76,15 @@ class TreeSearchBar extends React.Component {
           'Pakolliset aktiviteetit lisätty tai olemassa!',
           'success'
         )
+        console.log("HOLA")
+        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
       } catch (exception) {
         this.props.notify(
           'Kaikki pakolliset aktiviiteetit eivät mahtuneet alueelle tai ovat jo lisätty!'
         )
       }
     }
+    console.log("hello")
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
 

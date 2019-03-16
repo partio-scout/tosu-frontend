@@ -145,7 +145,6 @@ class EventCard extends React.Component {
   /* creates a new event with modified information and sends it to eventReducer's editEvent method */
   changeInfo = async event => {
     event.preventDefault()
-    console.log(this.props.event)
     const moddedEvent = {
       id: this.props.event.id,
       title: this.props.event.title,
@@ -157,7 +156,6 @@ class EventCard extends React.Component {
       information: event.target.children[2].value,
       activities: this.props.event.activities
     }
-    console.log(moddedEvent)
     this.props.bufferZoneInitialization()
     this.props.editEvent(moddedEvent)
     this.setState({ editMode: false })
@@ -169,7 +167,6 @@ class EventCard extends React.Component {
 
   render() {
     const { event, odd } = this.props
-    console.log(event)
     let editButton = <div />
     moment.locale('fi')
     const { title } = event
