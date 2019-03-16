@@ -58,19 +58,15 @@ class CalendarEvent extends Component {
     }
   }
 
-<<<<<<< HEAD
   /**  Method that sets up the props for the component. It is possible that when event is removed (or added) on calendar view, the event
   of a CalendarEvent component changes (Calendar probably uses he same component to draw the event with same index in the event list)
   In that case the we need to update the state. If popup was open, close it... */
-=======
->>>>>>> 65c93213d6c12a63bd230480b3d0d34cd2073fc6
   componentWillReceiveProps(nextProps) {
     if (nextProps.event.id !== this.props.event.id) {
       if (this.state.anchorEl) {
         this.closePopper()
       }
       this.setState({
-<<<<<<< HEAD
         event: nextProps.event,
         pofTree: nextProps.pofTree,
         anchorEl: null,
@@ -86,19 +82,6 @@ class CalendarEvent extends Component {
   closePopper = () => {
     this.setState(state => ({ anchorEl: null }))
     this.props.closePopper()
-=======
-        // event: nextProps.event,
-        // pofTree: nextProps.pofTree,
-        anchorEl: null,
-      })
-    }
->>>>>>> 65c93213d6c12a63bd230480b3d0d34cd2073fc6
-  }
-
-  componentWillUnmount() {
-    if (this.state.anchorEl) {
-      this.closePopper()
-    }
   }
 
   /** Opens/closes the popper */
@@ -112,25 +95,6 @@ class CalendarEvent extends Component {
     }
   }
 
-<<<<<<< HEAD
-=======
-  openPopper = target => {
-    this.setState(state => ({ anchorEl: target }))
-    this.props.openPopper(this.props.event.id)
-  }
-
-  closePopper = () => {
-    this.setState(state => ({ anchorEl: null }))
-    this.props.closePopper()
-  }
-
-  // It is possible that when event is removed (or added) on calendar view, the event
-  // of a CalendarEvent component changes (Calendar probably uses
-  // the same component to draw the event with same index in the event list)
-  // In that case the we need to update the state
-  // If popup was open, close it...
-
->>>>>>> 65c93213d6c12a63bd230480b3d0d34cd2073fc6
   render() {
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
