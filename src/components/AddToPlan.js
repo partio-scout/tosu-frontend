@@ -17,10 +17,9 @@ class AddToPlan extends React.Component {
   }
   state = { dialogOpen: false }
 
-  /** Adds a Kuksa event to local plan */
+  /** Adds a Kuksa event to local plan. The event has event.kuksaEventId -> backend will know it's a synced event. */
   addEventToTosu = async () => {
     this.handleButtonDialogClose()
-    // The event has event.kuksaEventId -> backend will know it's a synced event.
     try {
       delete this.props.event.id
       await this.props.addEventFromKuksa(this.props.event)
