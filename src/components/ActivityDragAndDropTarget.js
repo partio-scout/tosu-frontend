@@ -15,6 +15,7 @@ import {
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally,
 } from '../reducers/eventReducer'
+import PropTypesSchema from './PropTypesSchema'
 
 function collect(connector, monitor) {
   return {
@@ -26,16 +27,6 @@ function collect(connector, monitor) {
 }
 
 class ActivityDragAndDropTarget extends React.Component {
-  static propTypes = {
-    odd: PropTypes.bool.isRequired,
-    isOver: PropTypes.bool.isRequired,
-    canDrop: PropTypes.bool.isRequired,
-    event: PropTypes.bool.isRequired,
-    className: PropTypes.string.isRequired,
-    connectDropTarget: PropTypes.func.isRequired,
-    children: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }
-
   render() {
     const { isOver, canDrop, connectDropTarget, odd, event } = this.props
     const baseColor = event ? (odd ? '#EFEEEE' : '#D6E8F7') : '#FFF'
@@ -60,6 +51,12 @@ const mapStateToProps = state => ({
   buffer: state.buffer,
   events: state.events,
 })
+
+ActivityDragAndDropTarget.propTypes = {
+  ...PropTypesSchema,
+}
+
+ActivityDragAndDropTarget.defaultProps = {}
 
 export default connect(
   mapStateToProps,
