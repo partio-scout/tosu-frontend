@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 // React big calendar: https://onursimsek94.github.io/react-big-calendar/examples/index.html
 import BigCalendar from 'react-big-calendar-like-google'
@@ -11,6 +10,7 @@ import CalendarToolbar from './CalendarToolbar'
 import CalendarEvent from './CalendarEvent'
 import { eventStyleGetter } from './CalendarEvent'
 import { closePopper } from '../reducers/calendarReducer'
+import PropTypesSchema from './PropTypesSchema'
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -48,12 +48,6 @@ function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
 }
 
 export class Calendar extends Component {
-  static propTypes = {
-    closePopper: PropTypes.func.isRequired,
-    events: PropTypes.arrayOf(PropTypes.object).isRequired,
-    mobile: PropTypes.bool.isRequired,
-    shouldShowKuksaEventsAlso: PropTypes.bool.isRequired,
-  }
   constructor(props) {
     super(props)
     this.props.closePopper()
@@ -89,6 +83,12 @@ export class Calendar extends Component {
 const mapStateToProps = state => ({
   shouldShowKuksaEventsAlso: state.calendar.showKuksa,
 })
+
+Calendar.propTypes = {
+  ...PropTypesSchema,
+}
+
+Calendar.defaultProps = {}
 
 export default connect(
   mapStateToProps,
