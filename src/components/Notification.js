@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import FontAwesome from 'react-fontawesome'
-import PropTypes from 'prop-types'
+import PropTypesSchema from './PropTypesSchema'
 
 const Notification = props => {
   if (props.notification === null) {
@@ -28,10 +28,9 @@ const mapStateToProps = state => ({
 })
 
 Notification.propTypes = {
-  notification: PropTypes.shape({
-    text: PropTypes.string.isRequired,
-    textType: PropTypes.string.isRequired,
-  }).isRequired,
+  ...PropTypesSchema,
 }
+
+Notification.defaultProps = {}
 
 export default connect(mapStateToProps)(Notification)
