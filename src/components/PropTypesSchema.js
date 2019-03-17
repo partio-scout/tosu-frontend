@@ -32,6 +32,7 @@ const PropTypesSchema = {
       activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     }).isRequired,
     scout: PropTypes.shape({
+      id: PropTypes.number,
       name: PropTypes.string,
     }).isRequired,
     classes: PropTypes.shape({
