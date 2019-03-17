@@ -47,13 +47,17 @@ import {
   deleteActivityFromBuffer,
 } from './reducers/bufferZoneReducer'
 import { eventsInitialization, eventList } from './reducers/eventReducer'
+import { activityInitialization } from './reducers/activityReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutGoogleLogin, readScout } from './reducers/scoutReducer'
 import { viewChange } from './reducers/viewReducer'
 import { setLoading } from './reducers/loadingReducer'
+import eventService from './services/events'
+import activityService from './services/activities'
 
 import { POF_ROOT } from './api-config'
 import { pofTreeSchema, eventSchema } from './pofTreeSchema'
+import initialization from './functions/initApplicationState'
 
 class App extends Component {
   state = {
@@ -62,6 +66,25 @@ class App extends Component {
     bufferZoneHeight: 0,
     newEventVisible: false,
     startDate: moment(),
+  }
+
+  initialization = async () => {
+    const pofRequest = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
+    const pofData = pofRequest.data
+    const normalizedPof = normalize(pofData, pofTreeSchema)
+    this.props.pofTreeInitialization(normalizedPof)
+    const eventDataRaw = await eventService.getAll(this.props.scout.id)
+    const eventData = normalize(eventDataRaw, eventSchema).entities
+    if(!eventData.activities) eventData.activities = {}
+    const buffer = await activityService.getBufferZoneActivities(
+      this.props.scout.id
+    )
+    this.props.activityInitialization(
+      Object.keys(eventData.activities).map(key => eventData.activities[key]),
+      buffer.activities
+    )
+    this.props.eventsInitialization(eventData.events)
+    this.props.bufferZoneInitialization(buffer)
   }
 
   componentDidMount = async () => {
@@ -83,18 +106,15 @@ class App extends Component {
     //let pofData = loadCachedPofData()
     let pofData
     if (pofData === undefined || pofData === {}) {
+      console.log(this.props.scout)
       const pofRequest = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
       pofData = pofRequest.data
     }
     let normalizedPof = normalize(pofData, pofTreeSchema)
     await this.props.pofTreeInitialization(normalizedPof)
     if (this.props.scout !== null) {
-      Promise.all([
-        this.props.eventsInitialization(),
-        this.props.bufferZoneInitialization(), // id tulee userista myöhemmin
-      ]).then(() => {
-        this.props.pofTreeUpdate(this.props.buffer, eventList(this.props.events))
-      })
+      await this.initialization()
+      this.props.pofTreeUpdate(this.props.activities)
     }
 
     // If touch device is used, empty bufferzone so activities that have been left to bufferzone can be added to events
@@ -118,7 +138,8 @@ class App extends Component {
     const status = createStatusMessage(
       this.props.events,
       this.props.pofTree,
-      this.props.taskgroup
+      this.props.taskgroup,
+      this.props.activities,
     )
     this.props.addStatusInfo(status)
   }
@@ -162,7 +183,15 @@ class App extends Component {
   render() {
     const view = this.props.view
     const { startDate, endDate } = this.state
-    const initialEvents = () => eventList(this.props.events)
+    const initialEvents = () => {
+      const events = eventList(this.props.events)
+      events.forEach(event => {
+        event.activities = event.activities.map(
+          key => this.props.activities[key]
+        )
+      })
+      return events
+    }
     const eventsToShow = () =>
       filterEvents(view, initialEvents(), startDate, endDate)
     let odd = true
@@ -189,7 +218,12 @@ class App extends Component {
             isTouchDevice() ? 'mobile-event-list event-list' : 'event-list'
           }
         >
-          {filterEvents(view, eventList(this.props.events), startDate, endDate).map(event => {
+          {filterEvents(
+            view,
+            eventList(this.props.events),
+            startDate,
+            endDate
+          ).map(event => {
             odd = !odd
             return (
               <li className="event-list-item" key={event.id ? event.id : 0}>
@@ -296,12 +330,14 @@ const mapStateToProps = state => ({
   scout: state.scout,
   view: state.view,
   loading: state.loading,
+  activities: state.activities,
 })
 
 const mapDispatchToProps = {
   pofTreeInitialization,
   pofTreeUpdate,
   eventsInitialization,
+  activityInitialization,
   bufferZoneInitialization,
   deleteActivityFromBuffer,
   addStatusInfo,

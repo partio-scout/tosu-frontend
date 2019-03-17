@@ -22,18 +22,19 @@ import {
   deleteActivityFromBuffer,
 } from '../reducers/bufferZoneReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
+import { activityInitialization } from '../reducers/activityReducer'
+
+
+import initialization from '../functions/initApplicationState'
 
 class Login extends React.Component {
   googleLoginSuccess = async response => {
     if (this.props.scout === null) {
       this.props.setLoading(true)
       await this.props.scoutGoogleLogin(response.tokenId)
-      setGoogleToken(response.tokenId)
-      await Promise.all([
-        this.props.eventsInitialization(),
-        this.props.bufferZoneInitialization(),
-      ])
-      this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+      await setGoogleToken(response.tokenId)
+      await initialization(this.props)
+      this.props.pofTreeUpdate(this.props.activities)
       this.props.setLoading(false)
     }
   }
@@ -94,6 +95,7 @@ const mapStateToProps = state => ({
   scout: state.scout,
   buffer: state.buffer,
   events: state.events,
+  activities: state.activities
 })
 
 const mapDispatchToProps = {
@@ -101,6 +103,7 @@ const mapDispatchToProps = {
   pofTreeInitialization,
   pofTreeUpdate,
   eventsInitialization,
+  activityInitialization,
   bufferZoneInitialization,
   deleteActivityFromBuffer,
   scoutGoogleLogin,

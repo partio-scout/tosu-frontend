@@ -1,16 +1,12 @@
 import axios from 'axios'
 import { API_ROOT } from '../api-config'
 import { normalize } from 'normalizr'
-import { eventSchema } from '../pofTreeSchema' 
-
 
 const baseUrl = `${API_ROOT}/events`
 
 const getAll = async userid => {
   const response = await axios.get(baseUrl)
-  const normalizedData = normalize(response.data, eventSchema)
-  console.log(normalizedData)
-  return normalizedData.entities
+  return response.data
 }
 
 const create = async data => {

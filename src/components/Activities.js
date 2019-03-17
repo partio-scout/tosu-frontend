@@ -9,7 +9,7 @@ import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import {getTask} from '../functions/denormalizations'
-
+import { deleteActivity } from '../reducers/activityReducer'
 
 export class Activities extends React.Component {
   static propTypes = {
@@ -31,11 +31,12 @@ export class Activities extends React.Component {
 
   deleteActivity = async activity => {
     try {
-      const deleteActivity = this.props.bufferzone
+      const deleteActivityFromParent = this.props.bufferzone
         ? this.props.deleteActivityFromBuffer
         : this.props.deleteActivityFromEvent
-      await deleteActivity(activity.id, activity.eventId)
-      this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+      deleteActivityFromParent(activity.id, activity.eventId)
+      this.props.deleteActivity(activity)
+      this.props.pofTreeUpdate(this.props.stateActivities)
       this.props.notify('Aktiviteetti poistettu!', 'success')
     } catch (exception) {
       this.props.notify(
@@ -79,6 +80,7 @@ const mapStateToProps = state => ({
   buffer: state.buffer,
   events: state.events,
   pofTree: state.pofTree,
+  stateActivities: state.activities,
 })
 
 const mapDispatchToProps = {
@@ -86,6 +88,7 @@ const mapDispatchToProps = {
   pofTreeUpdate,
   deleteActivityFromBuffer,
   deleteActivityFromEvent,
+  deleteActivity,
 }
 
 export default connect(

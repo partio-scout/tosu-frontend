@@ -5,13 +5,10 @@ import activityService from '../services/activities'
 const addToEvent = (state, action) => {
   try {
     const newState = { ...state }
-    const event = { ...state.events[action.eventId] }
+    const event = { ...state[action.eventId] }
     event.activities = Array.from(event.activities)
     event.activities.push(action.activity.id)
-    newState.activities = { ...state.activities }
-    newState.activities[action.activity.id] = action.activity
-    newState.events = { ...state.events }
-    newState.events[action.eventId] = event
+    newState[action.eventId] = event
     return newState
   } catch (err) {
     return state
@@ -21,12 +18,11 @@ const addToEvent = (state, action) => {
 const deleteFromEvent = (state, action) => {
   try {
     const newState = { ...state }
-    newState.events = { ...state.events }
-    const deleteFrom = { ...newState.events[action.eventId] }
+    const deleteFrom = { ...newState[action.eventId] }
     deleteFrom.activities = deleteFrom.activities.filter(
       key => key !== action.activityId
     )
-    newState.events[action.eventId] = deleteFrom
+    newState[action.eventId] = deleteFrom
     return newState
   } catch (err) {
     return state
@@ -37,42 +33,42 @@ const updateEvent = (state, action) => {
   const modEvent = Object.assign({}, action.modded)
   modEvent.activities = action.modded.activities.map(a => a.id)
   const newState = { ...state }
-  newState.events = { ...state.events }
-  newState.events[modEvent.id] = modEvent
+  newState[modEvent.id] = modEvent
   return newState
 }
 
 const addEventHelper = (state, action) => {
   const newState = { ...state }
-  newState.events = { ...state.events }
-  newState.events[action.event.id] = { ...action.event }
+  newState[action.event.id] = { ...action.event }
   return newState
 }
 
 const deleteEventHelper = (state, action) => {
   const newState = { ...state }
-  newState.events = { ...state.events }
-  delete newState.events[action.eventId]
+  delete newState[action.eventId]
   return newState
 }
 
-const reducer = (state = { events: {}, activities: {} }, action) => {
+const deleteEventGroupHelper = (state, action) => {
+  const newState = { ...state }
+  Object.keys(newState)
+    .filter(key => newState[key].eventGroupId === action.eventGroupId)
+    .forEach(key => {
+      delete newState[key]
+    })
+  return newState
+}
+
+const reducer = (state = {}, action) => {
   switch (action.type) {
     case 'INIT_EVENTS':
-      if (!action.events.activities) {
-        action.events.activities = {}
-      }
       return action.events
     case 'ADD_EVENT':
       return addEventHelper(state, action)
     case 'DELETE_EVENT':
       return deleteEventHelper(state, action)
     case 'DELETE_EVENTGROUP':
-      return state.filter(
-        event =>
-          event.eventGroupId === null ||
-          event.eventGroupId !== action.eventGroupId
-      )
+      return deleteEventGroupHelper(state, action)
     case 'UPDATE_EVENT':
       return updateEvent(state, action)
     case 'ADD_ACTIVITY_TO_EVENT':
@@ -80,19 +76,16 @@ const reducer = (state = { events: {}, activities: {} }, action) => {
 
     case 'DELETE_ACTIVITY_FROM_EVENT':
       return deleteFromEvent(state, action)
-
     default:
       return state
   }
 }
 
-export const eventsInitialization = userId => async dispatch => {
-  eventService.getAll(userId).then(events =>
-    dispatch({
-      type: 'INIT_EVENTS',
-      events,
-    })
-  )
+export const eventsInitialization = events => async dispatch => {
+  dispatch({
+    type: 'INIT_EVENTS',
+    events,
+  })
 }
 
 export const deleteEvent = eventId => dispatch => {
@@ -176,13 +169,11 @@ export const addActivityToEvent = (eventId, activity) => dispatch => {
 }
 
 export const deleteActivityFromEvent = (activityId, eventId) => dispatch => {
-  activityService.deleteActivity(activityId).then(() =>
     dispatch({
       type: 'DELETE_ACTIVITY_FROM_EVENT',
       activityId,
       eventId,
     })
-  )
 }
 
 export const addActivityToEventOnlyLocally = (eventId, activity) => ({
@@ -197,14 +188,16 @@ export const deleteActivityFromEventOnlyLocally = (activityId, eventId) => ({
   eventId,
 })
 
+export const updateActivityInEvents = activity => dispatch => {
+  dispatch({ type: 'UPDATE_ACTIVITY', activity })
+}
+
 export const eventList = state => {
-  if (!state.events) return []
-  const eventKeys = Object.keys(state.events)
+  if (!state) return []
+  const eventKeys = Object.keys(state)
   return eventKeys.map(key => {
-    const event = Object.assign({}, state.events[key])
-    event.activities = event.activities.map(a => {
-      return Object.assign({}, state.activities[a])
-    })
+    const event = Object.assign({}, state[key])
+    event.activities = Array.from(event.activities)
     return event
   })
 }

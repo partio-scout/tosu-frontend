@@ -1,7 +1,7 @@
 import activityService from '../services/activities'
 
 const addToBuffer = (action, state) => {
-  const newActivities = state.activities.concat(action.activity)
+  const newActivities = state.activities.concat(action.activity.id)
   const newBuffer = Object.assign({}, state)
   newBuffer.activities = newActivities
   return newBuffer
@@ -9,19 +9,24 @@ const addToBuffer = (action, state) => {
 
 const deleteFromBuffer = (action, state) => {
   const leActivities = state.activities.filter(
-    activity => activity.id.toString() !== action.activityId.toString()
+    activity => activity !== action.activityId
   )
   const leBuffer = Object.assign({}, state)
   leBuffer.activities = leActivities
   return leBuffer
 }
 
+const initBuffer = (action, state) => {
+    const newState = {...state}
+    newState.activities = action.buffer.activities.map(activity => activity.id)
+    return newState
+}
+
 const reducer = (state = { id: 0, activities: [] }, action) => {
   switch (action.type) {
     case 'INIT_BUFFER':
-      return action.buffer
+      return initBuffer(action, state)
     case 'ADD_TO_BUFFER':
-      console.log("ADD TO BUFFER")
       return addToBuffer(action, state)
     case 'DELETE_FROM_BUFFER':
       return deleteFromBuffer(action, state)
@@ -30,22 +35,18 @@ const reducer = (state = { id: 0, activities: [] }, action) => {
   }
 }
 
-export const bufferZoneInitialization = () => async dispatch => {
-  await activityService.getBufferZoneActivities().then(buffer =>
+export const bufferZoneInitialization = (buffer) => dispatch => {
     dispatch({
       type: 'INIT_BUFFER',
       buffer,
     })
-  )
 }
 
-export const postActivityToBuffer = activity => async dispatch => {
-  await activityService.addActivityToBufferZone(activity).then(responseActivity =>
+export const postActivityToBuffer = activity => dispatch => {
     dispatch({
       type: 'ADD_TO_BUFFER',
-      activity: responseActivity,
+      activity,
     })
-  )
 }
 
 export const deleteActivityFromBuffer = activityId => async dispatch => {

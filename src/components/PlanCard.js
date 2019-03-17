@@ -13,7 +13,12 @@ import { Parser } from 'html-to-react'
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
 import { notify } from '../reducers/notificationReducer'
-import { editEvent, addActivityToEventOnlyLocally, deleteActivityFromEventOnlyLocally} from '../reducers/eventReducer'
+import {
+  editEvent,
+  addActivityToEventOnlyLocally,
+  deleteActivityFromEventOnlyLocally,
+} from '../reducers/eventReducer'
+import { updateActivity } from '../reducers/activityReducer'
 
 class PlanCard extends React.Component {
   state = { expanded: false }
@@ -24,7 +29,6 @@ class PlanCard extends React.Component {
   componentDidUpdate = () => {
     this.updateSuggestions()
   }
-
   handleExpandChange = expanded => {
     this.setState({ expanded: !this.state.expanded })
   }
@@ -46,15 +50,14 @@ class PlanCard extends React.Component {
     }
     try {
       const res = await planService.addPlanToActivity(data, activityId)
+      data.id = res.id
       this.props.savePlan(suggestion, activityId, res.id)
-      let parentEvent = {...this.props.events.events[parentId]}
+      let parentEvent = { ...this.props.events[parentId] }
       console.log(parentEvent)
-      const parentActivity = {...this.props.events.activities[activityId]}
-      // TODO NOT LIKE THIS VERY BAD MUTATION
+      const parentActivity = { ...this.props.activities[activityId] }
+      parentActivity.plans = Array.from(parentActivity.plans)
       parentActivity.plans.push(data)
-      this.props.deleteActivityFromEventOnlyLocally(parentActivity, parentEvent.id)
-      this.props.addActivityToEventOnlyLocally(parentActivity, parentEvent.id)
-    this.props.editEvent(parentEvent)
+      this.props.updateActivity(parentActivity)
     } catch (exception) {
       console.log(exception)
       this.props.notify('Toteutusvinkin tallentaminen ei onnistunut')
@@ -64,14 +67,14 @@ class PlanCard extends React.Component {
   deleteSuggestion = async (id, activityId, parentId) => {
     try {
       await planService.deletePlan(id)
-      const parentEvent = this.props.events.events[parentId]
+      const parentEvent = this.props.events[parentId]
       this.props.deletePlan(id, activityId)
-      const activity = {...this.props.events.activities[activityId]}
+      const activity = { ...this.props.activities[activityId] }
       activity.plans = activity.plans.filter(e => {
         return e.id !== id
       })
-      this.props.deleteActivityFromEventOnlyLocally(activity.id, parentEvent.id)
-      this.props.addActivityToEventOnlyLocally(parentEvent.id, activity)
+      console.log(activity)
+      this.props.updateActivity(activity)
     } catch (exception) {
       console.log(exception)
       this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
@@ -159,6 +162,7 @@ class PlanCard extends React.Component {
 const mapStateToProps = state => ({
   plans: state.plans,
   events: state.events,
+  activities: state.activities,
 })
 
 PlanCard.propTypes = {
@@ -182,6 +186,7 @@ const mapDispatchToProps = {
   notify,
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally,
+  updateActivity
 }
 
 export default connect(

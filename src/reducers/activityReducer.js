@@ -20,6 +20,23 @@ const reducer = (state = {}, action) => {
   }
 }
 
+export const activityInitialization = (
+  eventActivities,
+  bufferActivities
+) => async dispatch => {
+  const initialState = {}
+  eventActivities.forEach(activity => {
+    initialState[activity.id] = activity
+  })
+  bufferActivities.forEach(activity => {
+    initialState[activity.id] = activity
+  })
+  dispatch({
+    type: 'INIT_ACTIVITIES',
+    activities: initialState,
+  })
+}
+
 export const addActivity = activity => dispatch => {
   dispatch({
     type: 'ALTER_ACTIVITY',
@@ -34,12 +51,14 @@ export const updateActivity = activity => dispatch => {
   })
 }
 export const deleteActivity = activity => dispatch => {
-  activityService.deleteActivity(activity.id).then(() =>
-    dispatch({
-      type: 'DELETE_ACTIVITY',
-      activity,
-    })
-  )
+  activityService.deleteActivity(activity.id)
+  dispatch({
+    type: 'DELETE_ACTIVITY',
+    activity,
+  })
 }
+
+export const getActivityList = state =>
+  Object.keys(state).map(key => state[key])
 
 export default reducer

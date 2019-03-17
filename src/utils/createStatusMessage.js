@@ -1,14 +1,16 @@
 import moment from 'moment'
 import { getTask } from '../functions/denormalizations'
 import { eventList } from '../reducers/eventReducer'
+import { getActivityList } from '../reducers/activityReducer'
 
-const arrayActivityGuidsFromBufferAndEvents = (events, pofTree) => {
+
+const arrayActivityGuidsFromBufferAndEvents = (events, stateActivities, pofTree) => {
   let activities = []
 
   // Get all activities that are in one of the events
-  eventList(events).forEach(event => {
-    if( event.activities.includes(undefined) ) console.log(event)
-    event.activities.forEach(activity => {
+    eventList(events).forEach(event => {
+    event.activities.forEach(key => {
+      const activity = stateActivities[key]
       // Get information about activity from pofdata
       const found = getTask(activity.guid, pofTree)
 
@@ -261,9 +263,10 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
   return status
 }
 
-const createStatusMessage = (events, pofTree, taskgroup) => {
+const createStatusMessage = (events, pofTree, taskgroup, activities) => {
   const selectedActivities = arrayActivityGuidsFromBufferAndEvents(
     events,
+    activities,
     pofTree
   )
 

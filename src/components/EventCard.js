@@ -45,8 +45,8 @@ import {
 import eventService from '../services/events'
 import { deletePlan } from '../reducers/planReducer'
 import SuggestionCard from '../components/SuggestionCard'
-import {getTask} from '../functions/denormalizations'
-
+import { getTask } from '../functions/denormalizations'
+import {getActivityList } from '../reducers/activityReducer'
 // Warning icon
 const warning = (
   <div className="tooltip">
@@ -81,7 +81,7 @@ class EventCard extends React.Component {
         this.props.notify('Aktiviteetin lisäämisessä tapahtui virhe!')
       }
     }
-    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+    this.props.pofTreeUpdate(this.props.activities)
   }
   emptyBuffer = async () => {
     if (isTouchDevice()) {
@@ -96,7 +96,7 @@ class EventCard extends React.Component {
       }
     }
 
-    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+    this.props.pofTreeUpdate(this.props.activities)
   }
 
   isLeaf = value => {
@@ -154,9 +154,8 @@ class EventCard extends React.Component {
       endTime: this.props.event.endTime,
       type: this.props.event.type,
       information: event.target.children[2].value,
-      activities: this.props.event.activities
+      activities: this.props.event.activities,
     }
-    this.props.bufferZoneInitialization()
     this.props.editEvent(moddedEvent)
     this.setState({ editMode: false })
   }
@@ -246,7 +245,7 @@ class EventCard extends React.Component {
       <CardContent style={this.state.expanded ? {} : { padding: '3px' }}>
         <div className="mobile-event-card-media">
           <Activities
-            activities={this.props.event.activities}
+            activities={this.props.event.activities.map(key => this.props.activities[key])}
             bufferzone={false}
             parentId={this.props.event.id}
           />
@@ -284,7 +283,7 @@ class EventCard extends React.Component {
       <CardContent style={this.state.expanded ? {} : { padding: '3px 10px' }}>
         <div className="activity-header">
           <Activities
-            activities={this.props.event.activities}
+            activities={this.props.event.activities.map(key => this.props.activities[key])}
             bufferzone={false}
             parentId={this.props.event.id}
             minimal
@@ -351,13 +350,14 @@ class EventCard extends React.Component {
         <div> {informationContainer()} </div>
         <b>
           <Activities
-            activities={this.props.event.activities}
+            activities={this.props.event.activities.map(key => this.props.activities[key])}
             bufferzone={false}
             parentId={this.props.event.id}
           />
         </b>
         <br style={{ clear: 'both' }} />{' '}
-        {event.activities.map(activity => {
+        {event.activities.map(key => {
+          const activity = this.props.activities[key]
           return activity.plans.map(plan => (
             <div key={plan.id}>
               {' '}
@@ -368,8 +368,7 @@ class EventCard extends React.Component {
               />{' '}
             </div>
           ))
-        }
-        )}{' '}
+        })}{' '}
       </CardContent>
     )
     return (
@@ -479,6 +478,7 @@ const mapStateToProps = state => ({
   taskgroup: state.taskgroup,
   status: state.statusMessage.status,
   plans: state.plans,
+  activities: state.activities,
 })
 
 const mapDispatchToProps = {

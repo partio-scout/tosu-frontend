@@ -1,22 +1,14 @@
 import React from 'react'
 import isTouchDevice from 'is-touch-device'
 import {eventList} from './eventReducer'
+import { getActivityList } from './activityReducer'
 // helpers
 /*
  * put all picked activities from events and buffer into a string array made of their guid
  * we use that to search/filter from pofdata
  */
-const arrayActivityGuidsFromBufferAndEvents = (buffer, events) => {
-  let activities = []
-  buffer.activities.forEach(activity => {
-    activities = activities.concat(activity.guid)
-  })
-  events.forEach(event => {
-    event.activities.forEach(activity => {
-      activities = activities.concat(activity.guid)
-    })
-  })
-  return activities
+const arrayActivityGuidsFromBufferAndEvents = (activities) => {
+  return getActivityList(activities).map(activity => activity.guid)
 }
 
 /**
@@ -133,7 +125,6 @@ const deepStateCopy = (state) => {
     Object.keys(state.entities.tarppo).forEach(key => {
         stateCopy.entities.tarppo[key] = {...state.entities.tarppo[key]}
     })
-    console.log(stateCopy)
     return stateCopy
 }
 
@@ -165,7 +156,7 @@ const reducer = (state = {}, action) => {
       return filledTree
     }
     case 'SET_TREE_POF': {
-      return updateState(state, action.existingActivityGuids)
+      return updateState(state, action.activities)
     }
     default: {
       return state
@@ -178,12 +169,9 @@ export const pofTreeInitialization = pofJson => ({
   pofJson,
 })
 
-export const pofTreeUpdate = (buffer, events) => ({
+export const pofTreeUpdate = (activities) => ({
   type: 'SET_TREE_POF',
-  existingActivityGuids: arrayActivityGuidsFromBufferAndEvents(
-    isTouchDevice() ? { id: 0, activities: [] } : buffer,
-    eventList(events)
-  ),
+  activities: arrayActivityGuidsFromBufferAndEvents(activities),
 })
 
 export default reducer

@@ -18,6 +18,8 @@ import {
   getRootGroup,
 } from '../functions/denormalizations'
 import { eventList } from '../reducers/eventReducer'
+import { addActivity } from '../reducers/activityReducer'
+import { addActivityToRelevantReducers } from '../functions/activityFunctions'
 
 class TreeSearchBar extends React.Component {
   state = { treePlaceHolder: 'Valitse ensin tarppo' }
@@ -33,8 +35,9 @@ class TreeSearchBar extends React.Component {
   onChangeChildren = async activityGuid => {
     if (this.isLeaf(activityGuid)) {
       try {
-        await this.props.postActivityToBuffer({ guid: activityGuid })
-        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+        
+        await addActivityToRelevantReducers(this.props, { guid: activityGuid })
+        this.props.pofTreeUpdate(this.props.activities)
         this.props.notify('Aktiviteetti on lisätty!', 'success')
       } catch (exception) {
         this.props.notify('Aktiviteettialue on täynnä!!')
@@ -68,24 +71,23 @@ class TreeSearchBar extends React.Component {
       const promises = mandatoryActivities.map(activity =>
         activities.includes(activity)
           ? null
-          : this.props.postActivityToBuffer({ guid: activity })
+          : addActivityToRelevantReducers(this.props, { guid: activity })
       )
       try {
         await Promise.all(promises)
+        
         this.props.notify(
           'Pakolliset aktiviteetit lisätty tai olemassa!',
           'success'
         )
-        console.log("HOLA")
-        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+        this.props.pofTreeUpdate(this.props.activities)
       } catch (exception) {
         this.props.notify(
           'Kaikki pakolliset aktiviiteetit eivät mahtuneet alueelle tai ovat jo lisätty!'
         )
       }
     }
-    console.log("hello")
-    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+    this.props.pofTreeUpdate(this.props.activities)
   }
 
   filterTreeNode = (input, child) =>
@@ -113,7 +115,7 @@ class TreeSearchBar extends React.Component {
   render() {
     if (!this.props.pofTree) return <div />
     const taskGroupTree = getRootGroup(this.props.pofTree)
-    if( !taskGroupTree ) return <div />
+    if (!taskGroupTree) return <div />
     let selectedTaskGroupPofData = []
     if (this.props.taskgroup !== undefined && this.props.taskgroup !== null) {
       const groupfound = getTaskGroup(
@@ -128,7 +130,6 @@ class TreeSearchBar extends React.Component {
         groupfound.taskgroups
       )
     }
-    console.log(this.props.events)
     const treeSearchBar = () => (
       <TreeSelect
         style={{ width: '100%' }}
@@ -173,7 +174,8 @@ class TreeSearchBar extends React.Component {
               const status = createStatusMessage(
                 this.props.events,
                 this.props.pofTree,
-                rootgroup
+                rootgroup,
+                this.props.activities,
               )
               let labelText = rootgroup.title
 
@@ -223,11 +225,13 @@ const mapStateToProps = state => ({
   buffer: state.buffer,
   pofTree: state.pofTree,
   taskgroup: state.taskgroup,
+  activities: state.activities,
 })
 
 const mapDispatchToProps = {
   notify,
   postActivityToBuffer,
+  addActivity,
   pofTreeUpdate,
   addStatusMessage,
   selectTaskgroup,

@@ -48,7 +48,7 @@ export class BufferZone extends React.Component {
       )
       try {
         await Promise.all(promises)
-        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+        this.props.pofTreeUpdate(this.activities)
         this.props.notify('Aktiviteetit poistettu!', 'success')
       } catch (exception) {
         this.props.notify('Kaikkia aktiviteetteja ei voitu poistaa!')
@@ -59,7 +59,8 @@ export class BufferZone extends React.Component {
   render() {
     const { classes } = this.props
     if (!this.props.buffer.id) {
-      return <div />
+      console.log("buffer does not have id")
+      // return <div />
     }
     if (this.props.buffer.activities.length === 0) {
       return <div />
@@ -69,7 +70,9 @@ export class BufferZone extends React.Component {
         <ActivityDragAndDropTarget bufferzone parentId={this.props.buffer.id}>
           <div id="bufferzone">
             <Activities
-              activities={this.props.buffer.activities}
+              activities={this.props.buffer.activities.map(
+                id => this.props.activities[id]
+              )}
               bufferzone
               parentId={this.props.buffer.id}
             />
@@ -89,6 +92,7 @@ const mapStateToProps = state => ({
   buffer: state.buffer,
   events: state.events,
   pofTree: state.pofTree,
+  activities: state.activities,
 })
 
 const mapDispatchToProps = {
