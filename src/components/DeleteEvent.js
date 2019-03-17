@@ -3,13 +3,13 @@ import { connect } from 'react-redux'
 import { Button, Dialog, DialogActions, DialogTitle } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { withStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types'
 import {
   deleteEvent,
   deleteEventGroup,
   deleteSyncedEvent,
 } from '../reducers/eventReducer'
 import { notify } from '../reducers/notificationReducer'
+import PropTypesSchema from './PropTypesSchema'
 
 const styles = theme => ({
   button: {
@@ -24,20 +24,6 @@ const styles = theme => ({
 })
 
 class DeleteEvent extends React.Component {
-  static propTypes = {
-    data: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      synced: PropTypes.bool,
-      eventGroupId: PropTypes.number,
-      kuksaEvent: PropTypes.object,
-    }).isRequired,
-    deleteSyncedEvent: PropTypes.func.isRequired,
-    deleteEvent: PropTypes.func.isRequired,
-    deleteEventGroup: PropTypes.func.isRequired,
-    notify: PropTypes.func.isRequired,
-    minimal: PropTypes.bool.isRequired,
-    classes: PropTypes.shape({}).isRequired,
-  }
   state = { open: false }
 
   /** Deletes a given event and creates a notification acknowledging it. Also closes the dialog box */
@@ -136,6 +122,12 @@ class DeleteEvent extends React.Component {
     )
   }
 }
+
+DeleteEvent.propTypes = {
+  ...PropTypesSchema,
+}
+
+DeleteEvent.defaultProps = {}
 
 export default connect(
   null,
