@@ -128,6 +128,7 @@ const PropTypesSchema = {
     // CalendarEvent.js
     openPopper: PropTypes.func.isRequired,
     popperOpen: PropTypes.bool.isRequired,
+    // CalendarToolbar.js
     views: PropTypes.arrayOf(PropTypes.string).isRequired,
     label: PropTypes.node.isRequired,
     messages: PropTypes.shape({}).isRequired,
