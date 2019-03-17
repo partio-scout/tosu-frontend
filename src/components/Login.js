@@ -85,7 +85,7 @@ Login.propTypes = {
 }
 
 Login.defaultProps = {
-  scout: PropTypes.shape({ id: '' }),
+  //scout: PropTypes.shape({ id: '' }),
 }
 const mapStateToProps = state => ({
   scout: state.scout,
