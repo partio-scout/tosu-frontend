@@ -12,10 +12,6 @@ import CalendarEvent from './CalendarEvent'
 import { eventStyleGetter } from './CalendarEvent'
 import { closePopper } from '../reducers/calendarReducer'
 
-/**
- * Setup the localizer by providing the moment (or globalize) Object
- * to the correct localizer or globalizeLocalizer
- */
 const localizer = BigCalendar.momentLocalizer(moment)
 
 /**
