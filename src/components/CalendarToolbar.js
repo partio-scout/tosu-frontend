@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
 import { Switch, FormControlLabel } from '@material-ui/core'
@@ -10,6 +9,7 @@ import ChevronRight from '@material-ui/icons/ChevronRight'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import { withStyles } from '@material-ui/core/styles'
 import { showKuksaEvents, hideKuksaEvents } from '../reducers/calendarReducer'
+import PropTypesSchema from './PropTypesSchema'
 
 const navigate = {
   PREVIOUS: 'PREV',
@@ -28,19 +28,6 @@ const styles = theme => ({
 })
 
 class Toolbar extends React.Component {
-  static propTypes = {
-    view: PropTypes.string.isRequired,
-    views: PropTypes.arrayOf(PropTypes.string).isRequired,
-    label: PropTypes.node.isRequired,
-    messages: PropTypes.shape({}).isRequired,
-    onNavigate: PropTypes.func.isRequired,
-    onViewChange: PropTypes.func.isRequired,
-    switchState: PropTypes.bool.isRequired,
-    classes: PropTypes.shape({}).isRequired,
-    hideKuksaEvents: PropTypes.bool.isRequired,
-    showKuksaEvents: PropTypes.bool.isRequired,
-  }
-
   onSwitchChange = () => {
     if (this.props.switchState) {
       this.props.hideKuksaEvents()
@@ -117,6 +104,12 @@ class Toolbar extends React.Component {
     )
   }
 }
+
+Toolbar.propTypes = {
+  ...PropTypesSchema,
+}
+
+Toolbar.defaultProps = {}
 
 const mapStateToProps = state => ({
   switchState: state.calendar.showKuksa,
