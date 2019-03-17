@@ -5,10 +5,10 @@ import ActionHelp from '@material-ui/icons/Help'
 import Done from '@material-ui/icons/Done'
 import Warning from '@material-ui/icons/Warning'
 import Clear from '@material-ui/icons/Clear'
-import PropTypes from 'prop-types'
 
 import 'react-select/dist/react-select.css'
 import 'rc-tree-select/assets/index.css'
+import PropTypesSchema from './PropTypesSchema'
 
 // Done icon
 const done = <Done className="done" key="done" />
@@ -250,14 +250,10 @@ class StatusMessage extends React.Component {
 }
 
 StatusMessage.propTypes = {
-  handleClose: PropTypes.func.isRequired,
-  handleOpen: PropTypes.bool.isRequired,
-  statusMessage: PropTypes.objectOf.isRequired,
-  showStatusBox: PropTypes.bool.isRequired,
-  taskgroup: PropTypes.shape({
-    value: PropTypes.number.isRequired,
-  }).isRequired,
+  ...PropTypesSchema,
 }
+
+StatusMessage.defaultProps = {}
 
 const mapStateToProps = state => ({
   handleClose: state.handleClose,
