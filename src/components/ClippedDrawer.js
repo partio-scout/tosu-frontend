@@ -21,11 +21,15 @@ class ClippedDrawer extends React.Component {
     classes: PropTypes.shape({}).isRequired,
   }
   state = { showStatusBox: true }
-
+  /**
+   * Renders statusbox visible
+   */
   handleOpen = () => {
     this.setState({ showStatusBox: true })
   }
-
+  /**
+   * Hides statusbox
+   */
   handleClose = () => {
     this.setState({ showStatusBox: false })
   }

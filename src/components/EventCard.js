@@ -76,7 +76,8 @@ class EventCard extends React.Component {
     this.changeInfo = this.changeInfo.bind(this)
     this.renderEdit = this.renderEdit.bind(this)
   }
-  /** Adds the activity to local storage and updates the guid. Also updates the pofTree.
+  /**
+   *  Adds the activity to local storage and updates the guid. Also updates the pofTree.
    *  @param activityGuid the global identifier of the activity
    */
   onChangeChildren = async activityGuid => {
@@ -94,7 +95,9 @@ class EventCard extends React.Component {
     }
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
-  /** Deletes all activities from the local buffer and updates the pofTree */
+  /**
+   *  Deletes all activities from the local buffer and updates the pofTree
+   */
   emptyBuffer = async () => {
     if (isTouchDevice()) {
       const bufferActivities = this.props.buffer.activities

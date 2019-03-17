@@ -41,6 +41,11 @@ const styles = {
 }
 
 const activitySource = {
+  /**
+   * Begins dragging of element
+   * @param connector  allows user to assign one of the predefined roles (a drag source, a drag preview, or a drop target) to the DOM nodes in the render function. Imported from react-dnd
+   * @param monitor allows user to update the props of the components in response to the drag and drop state changes. Imported from react-dnd
+   */
   beginDrag(props, monitor) {
     return {
       id: props.activity.id,
@@ -56,7 +61,10 @@ const activitySource = {
     }
   },
 }
-
+/** Collects the element to be dragged
+ * @param connector  allows user to assign one of the predefined roles (a drag source, a drag preview, or a drop target) to the DOM nodes in the render function. Imported from react-dnd
+ * @param monitor allows user to update the props of the components in response to the drag and drop state changes. Imported from react-dnd
+ */
 function collect(connector, monitor) {
   return {
     connectDragSource: connector.dragSource(),

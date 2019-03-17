@@ -114,7 +114,9 @@ class NewEvent extends React.Component {
       information: '',
     })
   }
-
+  /**
+   * Creates a new eventgroup
+   */
   sendEventGroupIdPostRequest = async () => {
     try {
       const eventGroup = await eventgroupService.create()
@@ -124,7 +126,10 @@ class NewEvent extends React.Component {
       return null
     }
   }
-
+  /**
+   * Creates a new event and sends it to server. Also creates notification acknowledgeing the creation
+   * @param eventData the new event
+   */
   sendEventPostRequest = async eventData => {
     try {
       await this.props.addEvent(eventData)

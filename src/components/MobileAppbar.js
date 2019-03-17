@@ -23,7 +23,10 @@ class MobileAppbar extends React.Component {
     this.getHeight()
     this.updateStatusMessage()
   }
-  /** Can toggle what is shown in the sidebar when in mobile view. Disabled by default.  */
+  /**
+   * Can toggle what is shown in the sidebar when in mobile view. Disabled by default.
+   * @param taskgroup method needs to check if taskgroup is determined
+   */
   onChangeTaskgroup = async taskgroup => {
     if (taskgroup === null) {
       this.setState({ treePlaceHolder: 'Valitse ensin tarppo' })

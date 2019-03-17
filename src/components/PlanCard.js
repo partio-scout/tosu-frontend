@@ -29,7 +29,9 @@ class PlanCard extends React.Component {
     this.setState({ expanded: !this.state.expanded })
   }
 
-  /** Check if suggestions are already saved in store and if not save them */
+  /**
+   * Check if suggestions are already saved in store and if not save them
+   */
   updateSuggestions = () => {
     const { savedActivity, plans } = this.props
 
@@ -37,7 +39,12 @@ class PlanCard extends React.Component {
       this.props.initPlans({ id: savedActivity.id, plans: savedActivity.plans })
     }
   }
-
+  /**
+   * Saves the suggestions
+   * @param suggestion suggestion to be saved
+   * @param activityId activity that is linked to the suggestion
+   * @param parentId eventId of event that has the activity
+   */
   saveSuggestion = async (suggestion, activityId, parentId) => {
     const data = {
       guid: suggestion.guid,
@@ -61,7 +68,12 @@ class PlanCard extends React.Component {
       this.props.notify('Toteutusvinkin tallentaminen ei onnistunut')
     }
   }
-  /** Deletes a suggestion from the backend and from frontend  */
+  /**
+   * Deletes a suggestion from the backend and from frontend
+   * @param id id of suggestion that will be deleted
+   * @param activityId id of activity that the suggestion is linked to
+   * @param parentId eventId of event that has the activity
+   */
   deleteSuggestion = async (id, activityId, parentId) => {
     try {
       await planService.deletePlan(id)
@@ -81,7 +93,11 @@ class PlanCard extends React.Component {
       this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
     }
   }
-
+  /**
+   * Parses the suggestion to string form
+   * @param suggestion suggestion in html form
+   * @returns content in string form
+   */
   parseSuggestionContent = suggestion => {
     const htmlParser = new Parser()
     const parsedContent = htmlParser.parse(suggestion.content)

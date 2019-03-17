@@ -58,9 +58,12 @@ class CalendarEvent extends Component {
     }
   }
 
-  /**  Method that sets up the props for the component. It is possible that when event is removed (or added) on calendar view, the event
-  of a CalendarEvent component changes (Calendar probably uses he same component to draw the event with same index in the event list)
-  In that case the we need to update the state. If popup was open, close it... */
+  /**
+   * Method that sets up the props for the component. It is possible that when event is removed (or added) on calendar view, the event
+   * of a CalendarEvent component changes (Calendar probably uses he same component to draw the event with same index in the event list)
+   * In that case the we need to update the state. If popup was open, close it.
+   * @param nextProps same as props
+   */
   componentWillReceiveProps(nextProps) {
     if (nextProps.event.id !== this.props.event.id) {
       if (this.state.anchorEl) {
@@ -84,7 +87,10 @@ class CalendarEvent extends Component {
     this.props.closePopper()
   }
 
-  /** Opens/closes the popper */
+  /**
+   * Opens/closes the popper
+   * @param event click event
+   */
 
   handleClick = event => {
     const { currentTarget } = event
