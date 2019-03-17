@@ -113,7 +113,10 @@ class EventCard extends React.Component {
 
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
-  /** Checks whether a given value is part of a pofTree using breath-first-search */
+  /**
+   * Checks whether a given value is part of a pofTree using breath-first-search
+   * @param value value that is searched
+   */
   isLeaf = value => {
     if (!value) {
       return false

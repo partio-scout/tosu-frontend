@@ -21,6 +21,7 @@ export default class PlanForm extends React.Component {
   handleChange = (event, value) => {
     this.setState({ value })
   }
+
   /**
    *  Creates a new div element, set the HTML content with the providen and retrieves the text property of the element. Provides cross-browser support.
    * @param html html code that is stripped
