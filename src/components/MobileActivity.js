@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import Dialog from '@material-ui/core/Dialog'
 import { DragSource } from 'react-dnd'
 import React from 'react'
-import PropTypes from 'prop-types'
 import Avatar from '@material-ui/core/Avatar'
 import Chip from '@material-ui/core/Chip'
 import { notify } from '../reducers/notificationReducer'
@@ -12,6 +11,7 @@ import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
 import ActivityPreview from './ActivityPreview'
+import PropTypesSchema from './PropTypesSchema'
 
 const styles = {
   chip: {
@@ -65,15 +65,6 @@ function collect(connector, monitor) {
 }
 
 class Activity extends React.Component {
-  static propTypes = {
-    connectDragSource: PropTypes.func.isRequired,
-    connectDragPreview: PropTypes.func.isRequired,
-    activity: PropTypes.shape({}).isRequired,
-    pofActivity: PropTypes.shape({}).isRequired,
-    isDragging: PropTypes.bool.isRequired,
-    deleteActivity: PropTypes.func.isRequired,
-  }
-
   state = { open: false }
 
   componentDidMount() {
@@ -181,6 +172,12 @@ const DraggableActivity = DragSource(
   activitySource,
   collect
 )(Activity)
+
+Activity.propTypes = {
+  ...PropTypesSchema,
+}
+
+Activity.defaultProps = {}
 
 const mapStateToProps = state => ({
   notification: state.notification,
