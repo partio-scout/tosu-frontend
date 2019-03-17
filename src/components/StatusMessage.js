@@ -220,7 +220,7 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
         }}
       />
       */}
-      <Typography inline>{statusMessage.text}</Typography>
+      <Typography>{statusMessage.text}</Typography>
       <Typography>
         {statusMessage.status && statusMessage.status.nonMandatory
           ? statusbox()
