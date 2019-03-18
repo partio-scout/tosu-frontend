@@ -32,9 +32,9 @@ const PropTypesSchema = {
       activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     }).isRequired,
     scout: PropTypes.shape({
-      id: PropTypes.number,
-      name: PropTypes.string,
-    }),
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+    }).isRequired,
     classes: PropTypes.shape({
       label: PropTypes.string.isRequired,
     }).isRequired,
@@ -72,6 +72,7 @@ const PropTypesSchema = {
     selectTaskgroup: PropTypes.func.isRequired,
     savedActivity: PropTypes.shape({}).isRequired,
     deletePlan: PropTypes.func.isRequired,
+    scoutGoogleLogin: PropTypes.func.isRequired,
 
     // PlanForm.js
     // none
@@ -104,7 +105,6 @@ const PropTypesSchema = {
     handleOpen: PropTypes.func.isRequired,
     statusMessage: PropTypes.shape({}).isRequired,
     // Login.js
-    scoutGoogleLogin: PropTypes.func.isRequired,
     eventsInitialization: PropTypes.func.isRequired,
     token: PropTypes.string.isRequired,
     // AccountIcon.js
@@ -164,6 +164,15 @@ const PropTypesSchema = {
     // FeedbackButton.js
     feedback_url: PropTypes.string.isRequired,
     visible: PropTypes.bool.isRequired,
+    // App.js
+    addStatusInfo: PropTypes.func.isRequired,
+    pofTreeInitialization: PropTypes.func.isRequired,
+    readScout: PropTypes.func.isRequired,
+    setLoading: PropTypes.func.isRequired,
+    store: PropTypes.shape({
+      getState: PropTypes.func.isRequired,
+      dispatch: PropTypes.func.isRequired,
+    }).isRequired,
   }),
 }
 
