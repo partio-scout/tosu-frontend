@@ -31,7 +31,7 @@ const testEvents = []
 const mockDeleteFromBuffer = jest.fn()
 const mockPofTreeUpdate = jest.fn((a, b) => {})
 const mockNotify = jest.fn()
-
+const mockDeleteActivity = jest.fn()
 const veryMockStore = {
   subscribe: jest.fn(),
   dispatch: jest.fn(),
@@ -48,6 +48,7 @@ const testZone = () => (
       events={testEvents}
       classes={testClasses}
       activities={testActivities}
+      deleteActivity={mockDeleteActivity}
     />
   </Provider>
   )
@@ -57,6 +58,7 @@ const testZoneNoBufferId = () => (
     <BufferZone
       buffer={{ activities: [] }}
       deleteActivityFromBuffer={mockDeleteFromBuffer}
+      deleteActivity={mockDeleteActivity}
       pofTreeUpdate={mockPofTreeUpdate}
       notify={mockNotify}
       events={testEvents}
@@ -70,6 +72,7 @@ const testZoneNoBufferActivities = () => (
     <BufferZone
       buffer={{ id: 1, activities: [] }}
       deleteActivityFromBuffer={mockDeleteFromBuffer}
+      deleteActivity={mockDeleteActivity}
       pofTreeUpdate={mockPofTreeUpdate}
       notify={mockNotify}
       events={testEvents}

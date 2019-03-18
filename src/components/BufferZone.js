@@ -50,7 +50,6 @@ export class BufferZone extends React.Component {
    */
   clear = async () => {
     if (this.props.buffer.activities) {
-      console.log(this.props.buffer)
       let promises = this.props.buffer.activities.map(activity =>
         this.props.deleteActivityFromBuffer(activity)
       )
