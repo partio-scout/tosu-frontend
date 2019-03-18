@@ -1,13 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import ActionHelp from '@material-ui/icons/Help'
 import Done from '@material-ui/icons/Done'
 import Warning from '@material-ui/icons/Warning'
-import Clear from '@material-ui/icons/Clear'
 import PropTypes from 'prop-types'
 import 'react-select/dist/react-select.css'
 import 'rc-tree-select/assets/index.css'
-import { Paper, Typography, IconButton } from '@material-ui/core'
+import { Paper, Typography } from '@material-ui/core'
 
 // Done icon
 const done = <Done className="done" key="done" />
@@ -26,7 +24,7 @@ const warning = message => (
   </div>
 )
 
-const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
+const Instruction = ({ statusMessage, taskgroup }) => {
   // Information in status box when taskgroup is first or last and contains only mandatory tasks
   const specialPlanInformation = () => (
     <div style={{ fontSize: '0.8rem', lineHeight: '1.6rem' }}>
@@ -51,7 +49,9 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
     </div>
   )
 
-  /** Information in status box for all Tarppos */
+  /**
+   * Information in status box for all Tarppos
+   */
   const basicPlanInformation = () => (
     <div style={{ fontSize: '0.8rem', lineHeight: '1.4rem' }}>
       <div style={{ marginBottom: 0 }}>
@@ -169,7 +169,9 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
     </div>
   )
 
-  /** Information in status box when taskgroup is extra tasks (paussit) */
+  /**
+   * Information in status box when taskgroup is extra tasks (paussit)
+   */
   const extraPlanInformation = () => (
     <div style={{ fontSize: '0.8rem', lineHeight: '1.6rem' }}>
       <p style={{ marginBottom: 0 }}>
@@ -210,16 +212,15 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
         : null}
     </div>
   )
+
   return (
-    <Paper style={{ margin: '14px', padding: '14px' }}>
-      {/*
-      <Clear
-        style={{ cursor: 'pointer' }}
-        onClick={() => {
-          console.log('clicked!')
-        }}
-      />
-      */}
+    <Paper
+      style={{
+        margin: '14px',
+        padding: '14px',
+        marginBottom: '8rem',
+      }}
+    >
       <Typography>{statusMessage.text}</Typography>
       <Typography>
         {statusMessage.status && statusMessage.status.nonMandatory
@@ -230,30 +231,17 @@ const Instruction = ({ handleClose, statusMessage, taskgroup }) => {
   )
 }
 
-/** Icon for statusbox if statusbox is hidden
- * @param handleOpen function that handels opening of the container
- */
-
-const InfoButton = ({ handleOpen }) => (
-  <ActionHelp className="action-help" onClick={() => handleOpen()} />
-)
-
 class StatusMessage extends React.Component {
   render() {
-    const element = this.props.showStatusBox ? (
+    return (
       <Instruction
-        handleClose={this.props.handleClose}
         statusMessage={this.props.statusMessage}
         taskgroup={this.props.taskgroup}
         style={{ marginTop: 30 }}
       />
-    ) : (
-      <InfoButton handleOpen={this.props.handleOpen} />
     )
-    return element
   }
 }
-
 StatusMessage.propTypes = {
   handleClose: PropTypes.func.isRequired,
   handleOpen: PropTypes.bool.isRequired,
