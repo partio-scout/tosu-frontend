@@ -13,9 +13,7 @@ const moveActivityFromEventToBuffer = async (props, activity, parentId) => {
       parentId
     )
     // Replace the moved activity (res )
-    props.deleteActivityFromBufferOnlyLocally(activityId)
-    props.postActivityToBufferOnlyLocally(res)
-
+    props.updateActivity(res)
     props.notify('Aktiviteetti siirretty!', 'success')
     return res
   } catch (exception) {
@@ -27,20 +25,18 @@ const moveActivityFromEventToBuffer = async (props, activity, parentId) => {
     console.log(exception)
     props.notify('Aktiviteettialue on täynnä!')
   }
-  props.pofTreeUpdate(props.buffer, props.events)
+  props.pofTreeUpdate(props.activities)
 }
 
 const moveActivityFromBufferToEvent = async (props, activity, targetId) => {
   const activityId = activity.id
   try {
-    console.log(activity)
     props.addActivityToEventOnlyLocally(targetId, activity)
     props.deleteActivityFromBufferOnlyLocally(activityId)
     const res = await activityService.moveActivityFromBufferZoneToEvent(
       activityId,
       targetId
     )
-    console.log(res)
     props.updateActivity(res)
     props.notify('Aktiviteetti siirretty!', 'success')
     return res
@@ -68,8 +64,7 @@ const moveActivityFromEventToEvent = async (
       parentId,
       targetId
     )
-    props.deleteActivityFromEventOnlyLocally(activityId, activity.eventId)
-    props.addActivityToEventOnlyLocally(targetId, res)
+    props.updateActivity(res)
     props.notify('Aktiviteetti siirretty!', 'success')
     return res
   } catch (exception) {
@@ -80,7 +75,7 @@ const moveActivityFromEventToEvent = async (
     })
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
-  props.pofTreeUpdate(props.buffer, props.events)
+  props.pofTreeUpdate(props.activities)
   return { error: 'cant move activity' }
 }
 

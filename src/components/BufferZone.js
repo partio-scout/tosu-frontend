@@ -10,6 +10,7 @@ import Activities from './Activities'
 import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
+import { deleteActivity } from '../reducers/activityReducer'
 
 const styles = theme => ({
   button: {
@@ -43,12 +44,16 @@ export class BufferZone extends React.Component {
 
   clear = async () => {
     if (this.props.buffer.activities) {
-      const promises = this.props.buffer.activities.map(activity =>
+      console.log(this.props.buffer)
+      let promises = this.props.buffer.activities.map(activity => 
         this.props.deleteActivityFromBuffer(activity)
       )
+      promises = promises.concat(this.props.buffer.activities.map( activity =>
+          this.props.deleteActivity(activity)
+      ))
       try {
         await Promise.all(promises)
-        this.props.pofTreeUpdate(this.activities)
+        this.props.pofTreeUpdate(this.props.activities)
         this.props.notify('Aktiviteetit poistettu!', 'success')
       } catch (exception) {
         console.log(exception)
@@ -60,8 +65,7 @@ export class BufferZone extends React.Component {
   render() {
     const { classes } = this.props
     if (!this.props.buffer.id) {
-      console.log("buffer does not have id")
-      // return <div />
+      return <div />
     }
     if (this.props.buffer.activities.length === 0) {
       return <div />
@@ -100,6 +104,7 @@ const mapDispatchToProps = {
   notify,
   pofTreeUpdate,
   deleteActivityFromBuffer,
+  deleteActivity,
 }
 
 export default connect(

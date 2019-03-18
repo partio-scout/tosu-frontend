@@ -35,10 +35,11 @@ export class Activities extends React.Component {
         ? this.props.deleteActivityFromBuffer
         : this.props.deleteActivityFromEvent
       await deleteActivityFromParent(activity.id, activity.eventId)
-      // await this.props.deleteActivity(activity)
+      this.props.deleteActivity(activity.id)
       this.props.pofTreeUpdate(this.props.stateActivities)
       this.props.notify('Aktiviteetti poistettu!', 'success')
     } catch (exception) {
+      console.log(exception)
       this.props.notify(
         'Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!'
       )

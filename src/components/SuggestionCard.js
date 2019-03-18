@@ -11,11 +11,12 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import { Parser } from 'html-to-react'
 import PropTypes from 'prop-types'
 import { deletePlan } from '../reducers/planReducer'
-import { editEvent, updateActivityInEvents } from '../reducers/eventReducer'
+import { editEvent} from '../reducers/eventReducer'
 import planService from '../services/plan'
 import convertToSimpleActivity from '../functions/activityConverter.js'
 import findActivity from '../functions/findActivity'
 import { notify } from '../reducers/notificationReducer'
+import { updateActivity } from '../reducers/activityReducer'
 
 class SuggestionCard extends React.Component {
   static propTypes = {
@@ -49,10 +50,11 @@ class SuggestionCard extends React.Component {
     e.preventDefault()
     try {
       await planService.deletePlan(plan.id)
-      deletePlan(plan.id, plan.activityId)
+      this.props.deletePlan(plan.id, plan.activityId)
       const updatedActivity = {...activity}
       updatedActivity.plans = activity.plans.filter( p => (p.id !== plan.id))
-      updateActivityInEvents(updatedActivity)
+      console.log(updatedActivity)
+      this.props.updateActivity(updatedActivity)
     } catch (exception) {
       notify('Toteutusvinkin poistaminen ei onnistunut')
     }
@@ -102,7 +104,7 @@ const mapDispatchToProps = {
   notify,
   editEvent,
   deletePlan,
-  updateActivityInEvents,
+  updateActivity,
 }
 
 export default connect(

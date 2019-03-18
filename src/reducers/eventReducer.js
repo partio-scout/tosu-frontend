@@ -23,7 +23,6 @@ const deleteFromEvent = (state, action) => {
       key => key !== action.activityId
     )
     newState[action.eventId] = deleteFrom
-    console.log(newState)
     return newState
   } catch (err) {
     return state

@@ -12,7 +12,7 @@ const reducer = (state = {}, action) => {
       return newState
     }
     case 'DELETE_ACTIVITY': {
-      delete newState[action.activity.id]
+      delete newState[action.activityId]
       return newState
     }
     default:
@@ -50,11 +50,11 @@ export const updateActivity = activity => dispatch => {
     activity,
   })
 }
-export const deleteActivity = activity => dispatch => {
-  activityService.deleteActivity(activity.id)
+export const deleteActivity = activityId => dispatch => {
+  activityService.deleteActivity(activityId)
   dispatch({
     type: 'DELETE_ACTIVITY',
-    activity,
+    activityId,
   })
 }
 

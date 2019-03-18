@@ -60,17 +60,21 @@ class TreeSearchBar extends React.Component {
     if (mandatoryActivities[0] !== '') {
       // empty split return and array with only value as ''
       let activities = []
-      this.props.buffer.activities.forEach(activity => {
+      this.props.buffer.activities.forEach(id => {
+        const activity = this.props.activities[id]
         activities = activities.concat(activity.guid)
       })
       eventList(this.props.events).forEach(event => {
-        event.activities.forEach(activity => {
+        event.activities.forEach(key => {
+          const activity = this.props.activities[key]
           activities = activities.concat(activity.guid)
         })
       })
+      console.log(activities)
+      console.log(mandatoryActivities)
       const promises = mandatoryActivities.map(activity =>
         activities.includes(activity)
-          ? null
+          ? console.log("REE")
           : addActivityToRelevantReducers(this.props, { guid: activity })
       )
       try {

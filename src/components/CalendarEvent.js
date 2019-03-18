@@ -132,7 +132,7 @@ class CalendarEvent extends Component {
     const activities = (
       <div>
         <Activities
-          activities={this.props.event.activities}
+          activities={this.props.event.activities.map(key => this.props.activities[key])}
           bufferzone={false}
           parentId={this.props.event.id}
           className="calendar-event-activity-wrapper"
@@ -216,6 +216,7 @@ const mapStateToProps = state => ({
   pofTree: state.pofTree,
   popperOpen: state.calendar.popperOpen,
   popperEventId: state.calendar.popperEventId,
+  activities: state.activities
 })
 
 const mapDispatchToProps = {

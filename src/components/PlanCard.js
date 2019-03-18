@@ -52,8 +52,6 @@ class PlanCard extends React.Component {
       const res = await planService.addPlanToActivity(data, activityId)
       data.id = res.id
       this.props.savePlan(suggestion, activityId, res.id)
-      let parentEvent = { ...this.props.events[parentId] }
-      console.log(parentEvent)
       const parentActivity = { ...this.props.activities[activityId] }
       parentActivity.plans = Array.from(parentActivity.plans)
       parentActivity.plans.push(data)
@@ -67,13 +65,11 @@ class PlanCard extends React.Component {
   deleteSuggestion = async (id, activityId, parentId) => {
     try {
       await planService.deletePlan(id)
-      const parentEvent = this.props.events[parentId]
       this.props.deletePlan(id, activityId)
       const activity = { ...this.props.activities[activityId] }
       activity.plans = activity.plans.filter(e => {
         return e.id !== id
       })
-      console.log(activity)
       this.props.updateActivity(activity)
     } catch (exception) {
       console.log(exception)
@@ -91,12 +87,11 @@ class PlanCard extends React.Component {
     const { suggestion, savedActivity, plans, parentId } = this.props
     // Find plans for current activity from store
     const activityPlans = plans.filter(plan => plan.id === savedActivity.id)
-
     let selectedPlan = []
 
     // Check if current suggestion is selected or not
     if (activityPlans.length !== 0) {
-      selectedPlan = activityPlans[0].plans.filter(
+      selectedPlan = savedActivity.plans.filter(
         plan => plan.guid === suggestion.guid
       )
     }

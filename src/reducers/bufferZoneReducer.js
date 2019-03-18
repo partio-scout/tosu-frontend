@@ -49,8 +49,7 @@ export const postActivityToBuffer = activity => dispatch => {
     })
 }
 
-export const deleteActivityFromBuffer = activityId => async dispatch => {
-  await activityService.deleteActivity(activityId)
+export const deleteActivityFromBuffer = activityId => dispatch => {
   dispatch({
     type: 'DELETE_FROM_BUFFER',
     activityId,
