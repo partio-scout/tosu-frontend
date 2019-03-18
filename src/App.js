@@ -39,7 +39,8 @@ import {
   removeGoogleToken,
   getScout,
 } from './services/googleToken'
-import { loadCachedPofData } from './services/localStorage'
+import { loadCachedPofData, savePofData } from './services/localStorage'
+
 // Reducers
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import {
@@ -105,13 +106,11 @@ class App extends Component {
     }
     await this.checkLoggedIn()
     //let pofData = loadCachedPofData()
-    let pofData
-    if (pofData === undefined || pofData === {}) {
-      console.log(this.props.scout)
-      const pofRequest = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
-      pofData = pofRequest.data
-    }
+    let pofData = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
+    pofData = pofData.data
+    console.log(pofData)
     let normalizedPof = normalize(pofData, pofTreeSchema)
+    console.log(normalizedPof)
     await this.props.pofTreeInitialization(normalizedPof)
     if (this.props.scout !== null) {
       await this.initialization()

@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import ItemTypes from '../ItemTypes'
 import DropActivity from '../functions/DropActivity'
 import { notify } from '../reducers/notificationReducer'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   postActivityToBufferOnlyLocally,
   deleteActivityFromBufferOnlyLocally,
@@ -19,7 +18,15 @@ import {
 import {
     updateActivity,
 } from '../reducers/activityReducer'
+import {pofTreeUpdate} from '../reducers/pofTreeReducer'
 
+
+/**
+ * Collects an element and allows it to be dropped to a container.
+ * @param connector  allows user to assign one of the predefined roles (a drag source, a drag preview, or a drop target) to the DOM nodes in the render function. Imported from react-dnd
+ * @param monitor allows user to update the props of the components in response to the drag and drop state changes. Imported from react-dnd
+ * @returns state of dragging
+ */
 function collect(connector, monitor) {
   return {
     connectDropTarget: connector.dropTarget(),
@@ -75,7 +82,7 @@ const mapDispatchToProps = {
   pofTreeUpdate,
   deleteActivityFromBuffer,
   deleteActivityFromEvent,
-  updateActivity, 
+  updateActivity,
 }
 
 export default connect(

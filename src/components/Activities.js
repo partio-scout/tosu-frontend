@@ -28,7 +28,10 @@ export class Activities extends React.Component {
       children: PropTypes.arrayOf(PropTypes.object).isRequired,
     }).isRequired,
   }
-
+  /**
+   * Deletes a given activity and updates the pofTree
+   * @param activity activity that is deleted
+   */
   deleteActivity = async activity => {
     try {
       const deleteActivityFromParent = this.props.bufferzone

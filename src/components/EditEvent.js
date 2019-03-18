@@ -80,7 +80,9 @@ class EditEvent extends React.Component {
   handleClose = () => {
     this.setState({ open: false })
   }
-
+  /**
+   * Closes the eventform and sends the changes to eventreducer
+   */
   handleCloseAndSend = async () => {
     const moddedEvent = {
       id: this.props.data.id,

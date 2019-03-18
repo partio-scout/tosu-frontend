@@ -63,7 +63,6 @@ class NewEvent extends React.Component {
     } else {
       // Send POST first to create new GroupId and then use id from response to create group of events. ß
       const response = await this.sendEventGroupIdPostRequest()
-
       let promises = []
 
       for (let i = 0; i < this.state.repeatCount; i += 1) {
@@ -114,7 +113,10 @@ class NewEvent extends React.Component {
       information: '',
     })
   }
-
+  /**
+   * Creates a new eventgroup
+   * @returns eventGroup from the http response
+   */
   sendEventGroupIdPostRequest = async () => {
     try {
       const eventGroup = await eventgroupService.create()
@@ -124,7 +126,10 @@ class NewEvent extends React.Component {
       return null
     }
   }
-
+  /**
+   * Creates a new event and sends it to server. Also creates notification acknowledgeing the creation
+   * @param eventData the new event
+   */
   sendEventPostRequest = async eventData => {
     try {
       this.props.addEvent(eventData)

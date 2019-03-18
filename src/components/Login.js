@@ -1,7 +1,7 @@
 // Vendor
 import { connect } from 'react-redux'
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 import { GoogleLogin } from 'react-google-login'
 import FontAwesome from 'react-fontawesome'
 import { Button } from '@material-ui/core'
@@ -13,21 +13,23 @@ import { API_ROOT } from '../api-config'
 import { scoutGoogleLogin } from '../reducers/scoutReducer'
 import { setLoading } from '../reducers/loadingReducer'
 import { notify } from '../reducers/notificationReducer'
-import {
-  pofTreeInitialization,
-  pofTreeUpdate,
-} from '../reducers/pofTreeReducer'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   bufferZoneInitialization,
   deleteActivityFromBuffer,
 } from '../reducers/bufferZoneReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
 import { activityInitialization } from '../reducers/activityReducer'
+import {pofTreeInitialization} from '../reducers/pofTreeReducer'
 
 
 import initialization from '../functions/initApplicationState'
 
 class Login extends React.Component {
+  /**
+   * Acknowledges a succesful login and sets credentials for user
+   * @param response response from server
+   */
   googleLoginSuccess = async response => {
     if (this.props.scout === null) {
       this.props.setLoading(true)
@@ -38,8 +40,10 @@ class Login extends React.Component {
       this.props.setLoading(false)
     }
   }
-
-  googleLoginFail = async response => {
+  /**
+   * Returns an error message if login is unsuccesful
+   */
+  googleLoginFail = async () => {
     notify('Google-kirjautuminen epäonnistui. Yritä uudestaan.')
   }
 

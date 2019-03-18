@@ -68,6 +68,10 @@ class EventCard extends React.Component {
     this.changeInfo = this.changeInfo.bind(this)
     this.renderEdit = this.renderEdit.bind(this)
   }
+  /**
+   *  Adds the activity to local storage and updates the guid. Also updates the pofTree.
+   *  @param activityGuid the global identifier of the activity
+   */
   onChangeChildren = async activityGuid => {
     if (this.isLeaf(activityGuid)) {
       try {
@@ -83,6 +87,9 @@ class EventCard extends React.Component {
     }
     this.props.pofTreeUpdate(this.props.activities)
   }
+  /**
+   *  Deletes all activities from the local buffer and updates the pofTree
+   */
   emptyBuffer = async () => {
     if (isTouchDevice()) {
       const bufferActivities = this.props.buffer.activities
@@ -98,14 +105,16 @@ class EventCard extends React.Component {
 
     this.props.pofTreeUpdate(this.props.activities)
   }
-
+  /**
+   * Checks whether a given value is part of a pofTree using breath-first-search
+   * @param value value that is searched
+   */
   isLeaf = value => {
     if (!value) {
       return false
     }
     let queues = [...this.props.pofTree.taskgroups]
     while (queues.length) {
-      // BFS
       const item = queues.shift()
       if (item.value.toString() === value.toString()) {
         if (!item.children) {
@@ -122,7 +131,7 @@ class EventCard extends React.Component {
 
   filterTreeNode = (input, child) =>
     child.props.title.props.name.toLowerCase().includes(input.toLowerCase())
-  handleExpandChange = expanded => {
+  handleExpandChange = () => {
     this.setState({ expanded: !this.state.expanded })
   }
 
@@ -174,13 +183,13 @@ class EventCard extends React.Component {
       : `${moment(event.startDate, 'YYYY-MM-DD')
           .locale('fi')
           .format('ddd D.M.YYYY')} ${event.startTime.substring(0, 5)}`
-    let cardClassName = 'event-card-wrapper' // Style: Normal
+    let cardClassName = 'event-card-wrapper'
     if (this.props.event.activities.length === 0) {
-      cardClassName = 'empty-event-card' // Style: No activities
+      cardClassName = 'empty-event-card'
     }
     // Prioritize kuksa sync color over emptiness warning color (warning icon still visible)
     if (this.props.event.synced) {
-      cardClassName = 'kuksa-synced-event-card' // Style: Synced to Kuksa
+      cardClassName = 'kuksa-synced-event-card'
     }
 
     const taskGroupTree = this.props.pofTree.taskgroups
@@ -292,6 +301,31 @@ class EventCard extends React.Component {
       </CardContent>
     )
 
+    /** Creates a new event with modified information and sends it to eventReducer's editEvent method
+     * @param event Click event that has to be forwarded to this function so it can be prevented
+     */
+    const changeInfo = event => {
+      event.preventDefault()
+      const moddedEvent = {
+        id: this.props.event.id,
+        title: this.props.event.title,
+        startDate: this.props.event.startDate,
+        endDate: this.props.event.endDate,
+        startTime: this.props.event.startTime,
+        endTime: this.props.event.endTime,
+        type: this.props.event.type,
+        information: event.target.children[2].value,
+      }
+      this.props.editEvent(moddedEvent)
+      this.setState({ editMode: false })
+    }
+    /** Enables/disables edit mode, used in editButton */
+    const renderEdit = () => {
+      this.setState({ editMode: !this.state.editMode })
+    }
+
+    /** Returns a component with a form to input new information if editMode is true, otherwise returns the information in text form */
+
     const informationContainer = () => {
       if (this.state.editMode) {
         return (
@@ -341,9 +375,6 @@ class EventCard extends React.Component {
         {this.state.editMode ? null : (
           <div>
             <b>Lisätiedot </b>
-            <ReactTooltip id="modify" type="info">
-              <span>Muokkaa tapahtumaa</span>
-            </ReactTooltip>
             {editButton}
           </div>
         )}

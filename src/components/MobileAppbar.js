@@ -8,9 +8,9 @@ import AccountIcon from './AccountIcon'
 import { notify } from '../reducers/notificationReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import StatusMessage from './StatusMessage'
 import { createStatusMessage } from '../utils/createStatusMessage'
+import {pofTreeUpdate} from '../reducers/pofTreeReducer'
 
 class MobileAppbar extends React.Component {
   state = { showStatusBox: true }
@@ -23,7 +23,10 @@ class MobileAppbar extends React.Component {
     this.getHeight()
     this.updateStatusMessage()
   }
-
+  /**
+   * Can toggle what is shown in the sidebar when in mobile view. Disabled by default.
+   * @param taskgroup method needs to check if taskgroup is determined
+   */
   onChangeTaskgroup = async taskgroup => {
     if (taskgroup === null) {
       this.setState({ treePlaceHolder: 'Valitse ensin tarppo' })

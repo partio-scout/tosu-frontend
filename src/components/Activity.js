@@ -6,13 +6,16 @@ import Icon from '@material-ui/core/Icon'
 import { DragSource } from 'react-dnd'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { notify } from '../reducers/notificationReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
+import {pofTreeUpdate } from '../reducers/pofTreeReducer'
 
+/**
+ * Methods that handle the dragging of an activity
+ */
 const activitySource = {
   beginDrag(props, monitor) {
     return {
@@ -37,7 +40,11 @@ const activitySource = {
     return true
   },
 }
-
+/**
+ * Collects the draggable element
+ * @param connector  allows user to assign one of the predefined roles (a drag source, a drag preview, or a drop target) to the DOM nodes in the render function. Imported from react-dnd
+ * @param monitor allows user to update the props of the components in response to the drag and drop state changes. Imported from react-dnd
+ */
 function collect(connector, monitor) {
   return {
     connectDragSource: connector.dragSource(),
@@ -58,6 +65,9 @@ class Activity extends Component {
 
   state = { open: false }
 
+  /**
+   *  Opens the activity
+   */
   handleClick = () => {
     this.setState({ open: !this.state.open })
   }

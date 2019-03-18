@@ -14,6 +14,9 @@ const styles = () => ({
 
 const StyledButton = withStyles(styles)(Button)
 
+/**
+ *  Renders a feedbackbutton if the app is not in mobile state
+ */
 export const FeedbackButton = props => {
   if (props.visible) {
     return (
@@ -21,7 +24,8 @@ export const FeedbackButton = props => {
         <a
           style={{ textDecoration: 'none' }}
           href={props.feedback_url}
-          target="_blank"
+          rel="noopener noreferer"
+          target="blank"
         >
           <StyledButton
             type="button"

@@ -21,11 +21,13 @@ class EventList extends React.Component {
   render() {
     const { events, filter } = this.props
     const shouldShowAllKuksaEvents = this.state.shouldShowAllKuksaEvents
-
+    /**
+     * Determines which events are shown. If filter is set to FUTURE, show all events with end date equal
+     * or greater than today otherwise show events with end date less than today
+     * @returns events that are filtered with given filters
+     */
     const eventsToShow = () => {
       const currentDate = moment().format('YYYY-MM-DD')
-      // If filter is set to FUTURE, show all events with end date equal or greater than today
-      // otherwise show events with end date less than today
       switch (filter) {
         case 'FUTURE':
           return events

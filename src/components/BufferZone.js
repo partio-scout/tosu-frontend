@@ -12,6 +12,10 @@ import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import { deleteActivity } from '../reducers/activityReducer'
 
+/**
+ * Determines the style used in the element
+ * @param theme props that contains the styles
+ */
 const styles = theme => ({
   button: {
     marginRight: theme.spacing.unit,
@@ -41,11 +45,13 @@ export class BufferZone extends React.Component {
     notify: PropTypes.func.isRequired,
     classes: PropTypes.shape({}).isRequired,
   }
-
+  /**
+   * Clears the activities from the buffer
+   */
   clear = async () => {
     if (this.props.buffer.activities) {
       console.log(this.props.buffer)
-      let promises = this.props.buffer.activities.map(activity => 
+      let promises = this.props.buffer.activities.map(activity =>
         this.props.deleteActivityFromBuffer(activity)
       )
       promises = promises.concat(this.props.buffer.activities.map( activity =>
