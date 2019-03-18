@@ -84,6 +84,10 @@ class CalendarEvent extends Component {
     }
   }
 
+  openPopper = target => {
+    this.setState(state => ({ anchorEl: target }))
+    this.props.openPopper(this.props.event.id)
+  }
   closePopper = () => {
     this.setState(state => ({ anchorEl: null }))
     this.props.closePopper()
