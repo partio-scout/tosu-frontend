@@ -10,7 +10,12 @@ const arrayActivityGuidsFromBufferAndEvents = (events, stateActivities, pofTree)
   // Get all activities that are in one of the events
     eventList(events).forEach(event => {
     event.activities.forEach(key => {
+      if( !key) console.log(event)
       const activity = stateActivities[key]
+      if(!activity) {
+        console.log(event)
+        console.log(key)
+      }
       // Get information about activity from pofdata
       const found = getTask(activity.guid, pofTree)
 

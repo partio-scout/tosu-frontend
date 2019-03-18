@@ -16,6 +16,9 @@ import {
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally,
 } from '../reducers/eventReducer'
+import {
+    updateActivity,
+} from '../reducers/activityReducer'
 
 function collect(connector, monitor) {
   return {
@@ -60,6 +63,7 @@ const DroppableActivityDragAndDropTarget = DropTarget(
 const mapStateToProps = state => ({
   buffer: state.buffer,
   events: state.events,
+  activities: state.activities,
 })
 
 const mapDispatchToProps = {
@@ -71,6 +75,7 @@ const mapDispatchToProps = {
   pofTreeUpdate,
   deleteActivityFromBuffer,
   deleteActivityFromEvent,
+  updateActivity, 
 }
 
 export default connect(

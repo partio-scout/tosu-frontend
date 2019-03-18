@@ -23,6 +23,7 @@ const deleteFromEvent = (state, action) => {
       key => key !== action.activityId
     )
     newState[action.eventId] = deleteFrom
+    console.log(newState)
     return newState
   } catch (err) {
     return state
@@ -196,8 +197,7 @@ export const eventList = state => {
   if (!state) return []
   const eventKeys = Object.keys(state)
   return eventKeys.map(key => {
-    const event = Object.assign({}, state[key])
-    event.activities = Array.from(event.activities)
+    const event = state[key]
     return event
   })
 }

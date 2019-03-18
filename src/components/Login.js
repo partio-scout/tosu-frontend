@@ -7,7 +7,7 @@ import FontAwesome from 'react-fontawesome'
 import { Button } from '@material-ui/core'
 import isTouchDevice from 'is-touch-device'
 // Services
-import { setGoogleToken } from '../services/googleToken' // TODO: rename service
+import { setGoogleToken, getScout } from '../services/googleToken' // TODO: rename service
 import { API_ROOT } from '../api-config'
 // Reducers
 import { scoutGoogleLogin } from '../reducers/scoutReducer'
@@ -33,7 +33,7 @@ class Login extends React.Component {
       this.props.setLoading(true)
       await this.props.scoutGoogleLogin(response.tokenId)
       await setGoogleToken(response.tokenId)
-      await initialization(this.props)
+      await this.props.initialization(this.props)
       this.props.pofTreeUpdate(this.props.activities)
       this.props.setLoading(false)
     }

@@ -17,7 +17,7 @@ const deleteFromBuffer = (action, state) => {
 }
 
 const initBuffer = (action, state) => {
-    const newState = {...state}
+    const newState = {...action.buffer}
     newState.activities = action.buffer.activities.map(activity => activity.id)
     return newState
 }

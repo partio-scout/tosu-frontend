@@ -11,19 +11,21 @@ import CalendarToolbar from './CalendarToolbar'
 import CalendarEvent from './CalendarEvent'
 import { eventStyleGetter } from './CalendarEvent'
 import { closePopper } from '../reducers/calendarReducer'
+import { eventList } from '../reducers/eventReducer'
+
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
 const localizer = BigCalendar.momentLocalizer(moment) // or globalizeLocalizer
 
 function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
-  events = events.filter(event => {
+  const preparedEvents = eventList(events).filter(event => {
     if (event.kuksaEvent) {
       return shouldShowKuksaEventsAlso
     }
     return true
   })
-  return events.map(event => {
+  return preparedEvents.map(event => {
     const startDate = `${event.startDate} ${event.startTime}`
     const endDate = `${event.endDate} ${event.endTime}`
     return {

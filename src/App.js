@@ -84,6 +84,7 @@ class App extends Component {
       buffer.activities
     )
     this.props.eventsInitialization(eventData.events)
+    console.log(buffer)
     this.props.bufferZoneInitialization(buffer)
   }
 
@@ -198,7 +199,7 @@ class App extends Component {
     if (this.props.scout === null) {
       return (
         <div className="Login">
-          <Login token="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com" />
+          <Login token="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com" initialization={this.initialization} />
         </div>
       )
     }

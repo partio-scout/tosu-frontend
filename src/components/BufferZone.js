@@ -44,13 +44,14 @@ export class BufferZone extends React.Component {
   clear = async () => {
     if (this.props.buffer.activities) {
       const promises = this.props.buffer.activities.map(activity =>
-        this.props.deleteActivityFromBuffer(activity.id)
+        this.props.deleteActivityFromBuffer(activity)
       )
       try {
         await Promise.all(promises)
         this.props.pofTreeUpdate(this.activities)
         this.props.notify('Aktiviteetit poistettu!', 'success')
       } catch (exception) {
+        console.log(exception)
         this.props.notify('Kaikkia aktiviteetteja ei voitu poistaa!')
       }
     }
