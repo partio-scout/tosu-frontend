@@ -30,6 +30,7 @@ import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
 import FeedbackButton from './components/FeedbackButton'
 import Login from './components/Login'
+import PropTypesSchema from './components/PropTypesSchema'
 // Utils
 import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
@@ -272,30 +273,11 @@ const mapStateToProps = state => ({
 const AppDnD = DragDropContext(HTML5Backend)(App)
 
 App.propTypes = {
-  addStatusInfo: PropTypes.func.isRequired,
-  buffer: PropTypes.shape({
-    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }).isRequired,
-  bufferZoneInitialization: PropTypes.func.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  deleteActivityFromBuffer: PropTypes.func.isRequired,
-  eventsInitialization: PropTypes.func.isRequired,
-  pofTreeInitialization: PropTypes.func.isRequired,
-  pofTreeUpdate: PropTypes.func.isRequired,
-  readScout: PropTypes.func.isRequired,
-  scout: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-  }).isRequired,
-  pofTree: PropTypes.shape({
-    children: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }).isRequired,
-  scoutGoogleLogin: PropTypes.func.isRequired,
-  setLoading: PropTypes.func.isRequired,
-  store: PropTypes.shape({
-    getState: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired,
-  }).isRequired,
-  taskgroup: PropTypes.objectOf.isRequired,
+  ...PropTypesSchema,
+}
+
+App.defaultProps = {
+  scout: PropTypes.shape({ id: '' }),
 }
 
 export default connect(
