@@ -39,7 +39,8 @@ import {
   removeGoogleToken,
   getScout,
 } from './services/googleToken'
-import { loadCachedPofData } from './services/localStorage'
+import { loadCachedPofData, savePofData } from './services/localStorage'
+
 // Reducers
 import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
@@ -80,11 +81,11 @@ class App extends Component {
         break
     }
     await this.checkLoggedIn()
-    let pofData = loadCachedPofData()
-    if (pofData === undefined || pofData === {}) {
-      pofData = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
-    }
+    // Load pofData, cache it and put it in Redux Store
+    const pofData = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
+    savePofData(pofData)
     await this.props.pofTreeInitialization(pofData)
+
     if (this.props.scout !== null) {
       await Promise.all([
         this.props.eventsInitialization(),

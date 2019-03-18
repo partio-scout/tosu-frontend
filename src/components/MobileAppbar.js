@@ -8,7 +8,6 @@ import AccountIcon from './AccountIcon'
 import { notify } from '../reducers/notificationReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import StatusMessage from './StatusMessage'
 import { createStatusMessage } from '../utils/createStatusMessage'
 
@@ -172,7 +171,6 @@ export default connect(
     notify,
     addStatusMessage,
     selectTaskgroup,
-    pofTreeUpdate,
     emptyTaskgroup,
   }
 )(MobileAppbar)

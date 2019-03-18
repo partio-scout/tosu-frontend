@@ -56,13 +56,8 @@ class CalendarEvent extends Component {
     popperOpen: PropTypes.bool.isRequired,
     setNotification: PropTypes.func.isRequired,
   }
-  constructor(props) {
-    super(props)
-    this.state = {
-      // event: props.event,
-      // pofTree: props.pofTree,
-      anchorEl: null,
-    }
+  state = {
+    anchorEl: null,
   }
 
   /**

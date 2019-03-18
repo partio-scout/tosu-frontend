@@ -91,7 +91,6 @@ export class Calendar extends Component {
 }
 
 const mapStateToProps = state => ({
-  pofTree: state.pofTree,
   shouldShowKuksaEventsAlso: state.calendar.showKuksa,
 })
 

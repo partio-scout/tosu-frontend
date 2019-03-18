@@ -7,11 +7,11 @@ Scouts' activity planning app.
 ## Getting Started
 
 These instructions will help you setup working environment for development and testing purposes.  
-See [deployment]() on how to deploy to production.
+See [deployment](https://github.com/partio-scout/tosu-frontend#deployment) on how to deploy to production.
 
 ### Prerequisites
 
-1. [node.js ](https://nodejs.org/en/)
+1. [node.js](https://nodejs.org/en/)
 2. [tosu-backend](https://github.com/partio-scout/tosu-backend-node#how-to-use)
 
 ### Installing
@@ -36,11 +36,18 @@ The app currently has automatic deployment from Travis CI to the [staging server
 
 ### Manual deployment
 
-1. Get ssh access to the deployment server.
-2. Connect to remote server.
+1. Get the unencrypted ssh key `tosu_node.pem`
+2. SSH to the server instance:
+
+```sh
+$ chmod 600 tosu_node.pem
+$ ssh-add tosu_node.pem
+$ ssh ubuntu@suunnittelu.beta.partio-ohjelma.fi
+```
+
 3. Execute the following:
 
-```bash
+```sh
 git clone https://github.com/partio-scout/tosu-frontend.git
 cd tosu-frontend
 npm install

@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import ItemTypes from '../ItemTypes'
 import DropActivity from '../functions/DropActivity'
 import { notify } from '../reducers/notificationReducer'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   postActivityToBufferOnlyLocally,
   deleteActivityFromBufferOnlyLocally,
@@ -75,7 +74,6 @@ export default connect(
     addActivityToEventOnlyLocally,
     deleteActivityFromBufferOnlyLocally,
     postActivityToBufferOnlyLocally,
-    pofTreeUpdate,
     deleteActivityFromBuffer,
     deleteActivityFromEvent,
   }
