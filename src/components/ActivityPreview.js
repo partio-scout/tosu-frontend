@@ -28,7 +28,6 @@ const styles = {
 }
 /**
  * Collects the draggable element
- * @param connector  allows user to assign one of the predefined roles (a drag source, a drag preview, or a drop target) to the DOM nodes in the render function. Imported from react-dnd
  * @param monitor allows user to update the props of the components in response to the drag and drop state changes. Imported from react-dnd
  * @returns current configuration
  */

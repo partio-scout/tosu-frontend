@@ -44,7 +44,7 @@ class Login extends React.Component {
   /**
    * Returns an error message if login is unsuccesful
    */
-  googleLoginFail = async response => {
+  googleLoginFail = async () => {
     notify('Google-kirjautuminen epäonnistui. Yritä uudestaan.')
   }
 

@@ -8,7 +8,7 @@ import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
 import StatusMessage from './StatusMessage'
 
-const styles = theme => ({
+const styles = () => ({
   divider: {
     height: 4,
     backgroundColor: '#243265',

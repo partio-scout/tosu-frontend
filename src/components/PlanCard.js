@@ -25,7 +25,7 @@ class PlanCard extends React.Component {
     this.updateSuggestions()
   }
 
-  handleExpandChange = expanded => {
+  handleExpandChange = () => {
     this.setState({ expanded: !this.state.expanded })
   }
 

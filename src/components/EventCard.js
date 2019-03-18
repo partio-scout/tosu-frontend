@@ -139,7 +139,7 @@ class EventCard extends React.Component {
 
   filterTreeNode = (input, child) =>
     child.props.title.props.name.toLowerCase().includes(input.toLowerCase())
-  handleExpandChange = expanded => {
+  handleExpandChange = () => {
     this.setState({ expanded: !this.state.expanded })
   }
 
