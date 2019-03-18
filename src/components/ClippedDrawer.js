@@ -8,7 +8,7 @@ import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
 import StatusMessage from './StatusMessage'
 
-const styles = theme => ({
+const styles = () => ({
   divider: {
     height: 4,
     backgroundColor: '#243265',
@@ -21,11 +21,15 @@ class ClippedDrawer extends React.Component {
     classes: PropTypes.shape({}).isRequired,
   }
   state = { showStatusBox: true }
-
+  /**
+   * Renders statusbox visible
+   */
   handleOpen = () => {
     this.setState({ showStatusBox: true })
   }
-
+  /**
+   * Hides statusbox
+   */
   handleClose = () => {
     this.setState({ showStatusBox: false })
   }

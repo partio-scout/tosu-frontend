@@ -76,7 +76,8 @@ class EventCard extends React.Component {
     this.changeInfo = this.changeInfo.bind(this)
     this.renderEdit = this.renderEdit.bind(this)
   }
-  /** Adds the activity to local storage and updates the guid. Also updates the pofTree.
+  /**
+   *  Adds the activity to local storage and updates the guid. Also updates the pofTree.
    *  @param activityGuid the global identifier of the activity
    */
   onChangeChildren = async activityGuid => {
@@ -94,7 +95,9 @@ class EventCard extends React.Component {
     }
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
-  /** Deletes all activities from the local buffer and updates the pofTree */
+  /**
+   *  Deletes all activities from the local buffer and updates the pofTree
+   */
   emptyBuffer = async () => {
     if (isTouchDevice()) {
       const bufferActivities = this.props.buffer.activities
@@ -110,14 +113,16 @@ class EventCard extends React.Component {
 
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
-  /** Checks whether a given value is part of a pofTree  */
+  /**
+   * Checks whether a given value is part of a pofTree using breath-first-search
+   * @param value value that is searched
+   */
   isLeaf = value => {
     if (!value) {
       return false
     }
     let queues = [...this.props.pofTree.taskgroups]
     while (queues.length) {
-      // BFS
       const item = queues.shift()
       if (item.value.toString() === value.toString()) {
         if (!item.children) {
@@ -134,7 +139,7 @@ class EventCard extends React.Component {
 
   filterTreeNode = (input, child) =>
     child.props.title.props.name.toLowerCase().includes(input.toLowerCase())
-  handleExpandChange = expanded => {
+  handleExpandChange = () => {
     this.setState({ expanded: !this.state.expanded })
   }
 
@@ -187,13 +192,13 @@ class EventCard extends React.Component {
       : `${moment(event.startDate, 'YYYY-MM-DD')
           .locale('fi')
           .format('ddd D.M.YYYY')} ${event.startTime.substring(0, 5)}`
-    let cardClassName = 'event-card-wrapper' // Style: Normal
+    let cardClassName = 'event-card-wrapper'
     if (this.props.event.activities.length === 0) {
-      cardClassName = 'empty-event-card' // Style: No activities
+      cardClassName = 'empty-event-card'
     }
     // Prioritize kuksa sync color over emptiness warning color (warning icon still visible)
     if (this.props.event.synced) {
-      cardClassName = 'kuksa-synced-event-card' // Style: Synced to Kuksa
+      cardClassName = 'kuksa-synced-event-card'
     }
 
     const taskGroupTree = this.props.pofTree.taskgroups

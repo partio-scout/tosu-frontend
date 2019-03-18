@@ -21,7 +21,10 @@ import {
 import { eventsInitialization } from '../reducers/eventReducer'
 
 class Login extends React.Component {
-  /** Acknowledges a succesful login and sets credentials for user */
+  /**
+   * Acknowledges a succesful login and sets credentials for user
+   * @param response response from server
+   */
   googleLoginSuccess = async response => {
     if (this.props.scout === null) {
       this.props.setLoading(true)
@@ -35,8 +38,10 @@ class Login extends React.Component {
       this.props.setLoading(false)
     }
   }
-  /** Returns an error message if login is unsuccesful */
-  googleLoginFail = async response => {
+  /**
+   * Returns an error message if login is unsuccesful
+   */
+  googleLoginFail = async () => {
     notify('Google-kirjautuminen epäonnistui. Yritä uudestaan.')
   }
 

@@ -17,10 +17,11 @@ class AddToPlan extends React.Component {
   }
   state = { dialogOpen: false }
 
-  /** Adds a Kuksa event to local plan */
+  /**
+   * Adds a Kuksa event to local plan. The event has event.kuksaEventId -> backend will know it's a synced event.
+   */
   addEventToTosu = async () => {
     this.handleButtonDialogClose()
-    // The event has event.kuksaEventId -> backend will know it's a synced event.
     try {
       delete this.props.event.id
       await this.props.addEventFromKuksa(this.props.event)
@@ -30,11 +31,15 @@ class AddToPlan extends React.Component {
       this.props.notify('Tapahtuman lisäämisessä tuli virhe. Yritä uudestaan!')
     }
   }
-  /** Opens the dialog box */
+  /**
+   * Opens the dialog box
+   */
   handleButtonDialogOpen = () => {
     this.setState({ dialogOpen: true })
   }
-  /** Closes the dialog box */
+  /**
+   * Closes the dialog box
+   */
   handleButtonDialogClose = () => {
     this.setState({ dialogOpen: false })
   }

@@ -40,7 +40,9 @@ class Toolbar extends React.Component {
     hideKuksaEvents: PropTypes.bool.isRequired,
     showKuksaEvents: PropTypes.bool.isRequired,
   }
-
+  /**
+   * Toggles whether kuksa events are shown
+   */
   onSwitchChange = () => {
     if (this.props.switchState) {
       this.props.hideKuksaEvents()
@@ -53,11 +55,14 @@ class Toolbar extends React.Component {
     this.props.onNavigate(action)
   }
 
-  view = (event, index, view) => {
+  view = event => {
     this.props.onViewChange(event.target.value)
   }
-
-  viewNamesGroup(messages) {
+  /**
+   *  A selection menu that can change whether the events are shown in a month, week or day view.
+   * @returns menu selector for calendar
+   */
+  viewNamesGroup() {
     const viewNames = this.props.views
 
     if (viewNames.length > 1) {

@@ -24,6 +24,11 @@ const warning = message => (
   </div>
 )
 
+/**
+ * Shows instructions in the sidebar
+ * @param statusMessage message that is displayed
+ * @param taskgroup taskgroup the element belongs to
+ */
 const Instruction = ({ statusMessage, taskgroup }) => {
   // Information in status box when taskgroup is first or last and contains only mandatory tasks
   const specialPlanInformation = () => (
@@ -242,6 +247,7 @@ class StatusMessage extends React.Component {
     )
   }
 }
+
 StatusMessage.propTypes = {
   handleClose: PropTypes.func.isRequired,
   handleOpen: PropTypes.bool.isRequired,

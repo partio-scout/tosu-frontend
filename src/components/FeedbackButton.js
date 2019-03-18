@@ -14,7 +14,9 @@ const styles = () => ({
 
 const StyledButton = withStyles(styles)(Button)
 
-/** Renders a feedbackbutton if the app is not in mobile state */
+/**
+ *  Renders a feedbackbutton if the app is not in mobile state
+ */
 export const FeedbackButton = props => {
   if (props.visible) {
     return (

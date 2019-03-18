@@ -25,7 +25,9 @@ export class AppBar extends React.Component {
   }
   state = { sidebarVisible: true }
 
-  /** Opens the Tarppo sidebar */
+  /**
+   * Opens the Tarppo sidebar
+   */
   toggleSideBar = () => {
     this.setState({ sidebarVisible: !this.state.sidebarVisible })
     this.props.toggleSideBar()
