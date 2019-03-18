@@ -1,8 +1,17 @@
+/**
+ * Methods that convert activities to backend elements
+ * @param pofActivity activity that converted to a form that can be send to backend. Pof stands for PartioOhjelmaFi
+ * @returns a object that can be send to the backend
+ */
 const convertToBackendActivity = pofActivity => {
   if (pofActivity === undefined || pofActivity === null) {
     return pofActivity
   }
-
+  /**
+   * Method that maps the leadership skills of the activity
+   * @param activity activity that will get the mapped data
+   * @param pofActivity activity where the data is mapped from
+   */
   const johtamistaito = (activity, pofActivity) => {
     try {
       activity.johtamistaito = pofActivity.tags.johtamistaito.map(
@@ -12,6 +21,11 @@ const convertToBackendActivity = pofActivity => {
       activity.johtamistaito = []
     }
   }
+  /**
+   * Method that maps the skill areas of the activity
+   * @param activity activity that will get the mapped data
+   * @param pofActivity activity where the data is mapped from
+   */
   const taitoalueet = (activity, pofActivity) => {
     try {
       activity.taitoalueet = pofActivity.tags.taitoalueet.map(jtn => jtn.name)
@@ -19,6 +33,11 @@ const convertToBackendActivity = pofActivity => {
       activity.taitoalueet = []
     }
   }
+  /**
+   * Method that maps the pedagogical goals of the activity
+   * @param activity activity that will get the mapped data
+   * @param pofActivity activity where the data is mapped from
+   */
   const kasvatustavoitteet = (activity, pofActivity) => {
     try {
       activity.kasvatustavoitteet = pofActivity.tags.kasvatustavoitteet.map(
@@ -28,6 +47,11 @@ const convertToBackendActivity = pofActivity => {
       activity.kasvatustavoitteet = []
     }
   }
+  /**
+   * Method that maps the suggestions of the activity
+   * @param activity activity that will get the mapped data
+   * @param pofActivity activity where the data is mapped from
+   */
   const suggestions = (activity, pofActivity) => {
     try {
       activity.suggestions = pofActivity.suggestions_details.map(jtn => {
