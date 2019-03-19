@@ -1,5 +1,4 @@
 // Vendor
-
 import { connect } from 'react-redux'
 import axios from 'axios'
 import { DragDropContext } from 'react-dnd'
@@ -18,6 +17,7 @@ import './react_dates_overrides.css'
 import './stylesheets/index.css'
 import theme from './theme'
 import PropTypes from 'prop-types'
+
 // Components
 import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
@@ -30,16 +30,18 @@ import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
 import FeedbackButton from './components/FeedbackButton'
 import Login from './components/Login'
+
 // Utils
 import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
+
 // Services
 import {
   getGoogleToken,
   removeGoogleToken,
   getScout,
 } from './services/googleToken'
-import { loadCachedPofData, savePofData } from './services/localStorage'
+import { savePofData } from './services/localStorage'
 
 // Reducers
 import { notify } from './reducers/notificationReducer'
@@ -142,7 +144,7 @@ class App extends Component {
   }
 
   toggleDrawer = () => {
-    this.setState({ drawerVisible: !this.state.drawerVisible })
+    this.setState(state => ({ drawerVisible: !state.drawerVisible }))
   }
 
   selectView = value => () => {
@@ -269,8 +271,6 @@ const mapStateToProps = state => ({
   loading: state.loading,
 })
 
-const AppDnD = DragDropContext(HTML5Backend)(App)
-
 App.propTypes = {
   addStatusInfo: PropTypes.func.isRequired,
   buffer: PropTypes.shape({
@@ -297,6 +297,8 @@ App.propTypes = {
   }).isRequired,
   taskgroup: PropTypes.objectOf.isRequired,
 }
+
+const AppDnD = DragDropContext(HTML5Backend)(App)
 
 export default connect(
   mapStateToProps,

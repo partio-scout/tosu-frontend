@@ -252,7 +252,6 @@ StatusMessage.propTypes = {
   handleClose: PropTypes.func.isRequired,
   handleOpen: PropTypes.bool.isRequired,
   statusMessage: PropTypes.objectOf.isRequired,
-  showStatusBox: PropTypes.bool.isRequired,
   taskgroup: PropTypes.shape({
     value: PropTypes.number.isRequired,
   }).isRequired,

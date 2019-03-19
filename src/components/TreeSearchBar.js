@@ -143,8 +143,6 @@ class TreeSearchBar extends React.Component {
     const treeSearchBar = () => (
       <TreeSelect
         style={{ width: '100%' }}
-        transitionName="rc-tree-select-dropdown-slide-up"
-        choiceTransitionName="rc-tree-select-selection__choice-zoom"
         dropdownStyle={{
           position: 'absolute',
           maxHeight: 400,
@@ -170,43 +168,37 @@ class TreeSearchBar extends React.Component {
           margin: 10,
           padding: 10,
           backgroundColor: '#d6e8f7',
-          borderRadius: 2,
+          borderRadius: 3,
         }}
       >
-        <div style={{ float: 'left', marginRight: 10, marginBottom: 5 }}>
-          <Select
-            menuContainerStyle={{ width: '100%' }}
-            style={{ width: 200 }}
-            name="form-field-name"
-            value={this.props.taskgroup}
-            placeholder="Valitse tarppo..."
-            onChange={this.onChangeTaskgroup}
-            options={taskGroupTree.map(rootgroup => {
-              const status = createStatusMessage(
-                this.props.events,
-                this.props.pofTree,
-                rootgroup
+        <Select
+          name="form-field-name"
+          value={this.props.taskgroup}
+          placeholder="Valitse tarppo..."
+          onChange={this.onChangeTaskgroup}
+          options={taskGroupTree.map(rootgroup => {
+            const status = createStatusMessage(
+              this.props.events,
+              this.props.pofTree,
+              rootgroup
+            )
+            let labelText = rootgroup.title.props.name
+
+            if (status.taskgroupDone) {
+              labelText = (
+                <span style={{ textDecoration: 'line-through' }}>
+                  {labelText}
+                </span>
               )
-              let labelText = rootgroup.title.props.name
+            }
 
-              if (status.taskgroupDone) {
-                labelText = (
-                  <span style={{ textDecoration: 'line-through' }}>
-                    {labelText}
-                  </span>
-                )
-              }
-
-              return {
-                value: rootgroup.guid,
-                label: labelText,
-              }
-            })}
-          />
-        </div>
-        <div style={{ width: '80%' }}>
-          {this.props.taskgroup ? treeSearchBar() : null}
-        </div>
+            return {
+              value: rootgroup.guid,
+              label: labelText,
+            }
+          })}
+        />
+        {this.props.taskgroup ? treeSearchBar() : null}
       </div>
     )
   }

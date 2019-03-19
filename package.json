@@ -54,7 +54,6 @@
     "react-dnd": "^5.0.0",
     "react-dnd-html5-backend": "^2.6.0",
     "react-dom": "^16.5.2",
-    "react-fontawesome": "^1.6.1",
     "react-google-login": "^3.2.1",
     "react-material-ui-form-validator": "^2.0.2",
     "react-redux": "^5.0.7",
