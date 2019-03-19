@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { GoogleLogin } from 'react-google-login'
-import FontAwesome from 'react-fontawesome'
 import { Button } from '@material-ui/core'
 import isTouchDevice from 'is-touch-device'
 // Services
@@ -60,7 +59,6 @@ class Login extends React.Component {
           onSuccess={this.googleLoginSuccess}
           onFailure={this.googleLoginFail}
         >
-          <FontAwesome className="icon" name="google" />
           <span className="label">
             {' '}
             <span className="appbar-button-text">
