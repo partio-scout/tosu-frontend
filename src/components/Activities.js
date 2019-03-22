@@ -10,30 +10,10 @@ import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import PropTypesSchema from './PropTypesSchema'
 
 export class Activities extends React.Component {
-<<<<<<< proptypes
-  /** Deletes a given activity and updates the pofTree */
-=======
-  static propTypes = {
-    buffer: PropTypes.shape({}).isRequired,
-    events: PropTypes.arrayOf(PropTypes.object).isRequired,
-    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-    bufferzone: PropTypes.bool.isRequired,
-    parentId: PropTypes.number.isRequired,
-    notify: PropTypes.func.isRequired,
-    pofTreeUpdate: PropTypes.func.isRequired,
-    deleteActivityFromBuffer: PropTypes.func.isRequired,
-    deleteActivityFromEvent: PropTypes.func.isRequired,
-    minimal: PropTypes.bool.isRequired,
-    className: PropTypes.string.isRequired,
-    pofTree: PropTypes.shape({
-      children: PropTypes.arrayOf(PropTypes.object).isRequired,
-    }).isRequired,
-  }
   /**
    * Deletes a given activity and updates the pofTree
    * @param activity activity that is deleted
    */
->>>>>>> master
   deleteActivity = async activity => {
     try {
       const deleteActivity = this.props.bufferzone
