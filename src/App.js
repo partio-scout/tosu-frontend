@@ -58,7 +58,6 @@ import activityService from './services/activities'
 
 import { POF_ROOT } from './api-config'
 import { pofTreeSchema, eventSchema } from './pofTreeSchema'
-import initialization from './functions/initApplicationState'
 
 class App extends Component {
   state = {

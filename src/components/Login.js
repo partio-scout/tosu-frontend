@@ -23,7 +23,6 @@ import { activityInitialization } from '../reducers/activityReducer'
 import {pofTreeInitialization} from '../reducers/pofTreeReducer'
 
 
-import initialization from '../functions/initApplicationState'
 
 class Login extends React.Component {
   /**
