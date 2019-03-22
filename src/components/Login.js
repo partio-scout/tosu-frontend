@@ -47,11 +47,9 @@ class Login extends React.Component {
   render() {
     return (
       <div className="Login">
-        {!isTouchDevice() ? (
-          <p className="login-text">Toiminnan suunnittelusovellus</p>
-        ) : (
-          <p className="login-mobile-text">Toiminnan suunnittelusovellus</p>
-        )}
+        <p className={isTouchDevice() ? 'login-mobile-text' : 'login-text'}>
+          Toiminnan suunnittelusovellus
+        </p>
         <GoogleLogin
           className="login-button"
           scope="profile email"

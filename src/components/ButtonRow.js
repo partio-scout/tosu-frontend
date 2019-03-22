@@ -1,14 +1,23 @@
 import React from 'react'
+import moment from 'moment'
 import { connect } from 'react-redux'
-import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton/IconButton'
-import Icon from '@material-ui/core/Icon/Icon'
 import PropTypes from 'prop-types'
 import { DateRangePicker } from 'react-dates'
-import Add from '@material-ui/icons/Add'
+import AddIcon from '@material-ui/icons/Add'
+import AddCircleIcon from '@material-ui/icons/AddCircle'
 import CalendarToday from '@material-ui/icons/CalendarToday'
-import moment from 'moment'
+import ListIcon from '@material-ui/icons/List'
+import {
+  Button,
+  Icon,
+  IconButton,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+} from '@material-ui/core'
 import { viewChange } from '../reducers/viewReducer'
+import { selectTosu } from '../reducers/tosuReducer'
 
 class ButtonRow extends React.Component {
   static propTypes = {
@@ -22,12 +31,26 @@ class ButtonRow extends React.Component {
   state = {
     startDate: moment(),
     endDate: null,
+    anchorEl: null,
+    currentTosuID: null,
   }
+
+  /**
+   * Closes the menu and dispatches 'Tosu view change' -action
+   * @param {String} tosuID - ID of the selected Tosu
+   */
+  handleTosuSelect = tosuID => {
+    this.setState({ anchorEl: null })
+    if (this.state.currentTosuID !== tosuID) {
+      this.props.selectTosu(tosuID)
+    }
+  }
+
   /**
    * Changes the view to tab Omat/Kuksa/Kalenteri/Uusi tapahtuma
    * @param value new value
    */
-  selectView = value => () => {
+  selectView = value => {
     this.props.viewChange(value)
   }
   /**
@@ -65,7 +88,7 @@ class ButtonRow extends React.Component {
         className="mobile-button button"
         onClick={this.props.newEvent}
       >
-        <Add />
+        <AddIcon />
       </IconButton>
     )
     return (
@@ -105,6 +128,7 @@ class ButtonRow extends React.Component {
             newEventIcon
           ) : (
             <Button
+              className="button"
               onClick={this.props.newEvent}
               variant="contained"
               color="secondary"
@@ -112,6 +136,45 @@ class ButtonRow extends React.Component {
               Uusi tapahtuma
             </Button>
           )}
+          {this.props.mobile ? (
+            <IconButton
+              className="mobile-button button"
+              onClick={e => this.setState({ anchorEl: e.currentTarget })}
+            >
+              <ListIcon />
+            </IconButton>
+          ) : (
+            <Button
+              className="button"
+              onClick={e => this.setState({ anchorEl: e.currentTarget })}
+              variant="contained"
+              color="secondary"
+            >
+              Tosun nimi
+            </Button>
+          )}
+          <Menu
+            id="tosu-menu"
+            anchorEl={this.state.anchorEl}
+            open={Boolean(this.state.anchorEl)}
+            onClose={this.handleClose}
+          >
+            {this.props.tosuList.map(tosu => (
+              <MenuItem
+                key={tosu.id}
+                selected={tosu.selected}
+                onClick={this.handleTosuSelect(tosu.id)}
+              >
+                {tosu.name}
+              </MenuItem>
+            ))}
+            <MenuItem onClick={this.createTosuDialog}>
+              <ListItemText primary="UUSI" />
+              <ListItemIcon>
+                <AddCircleIcon />
+              </ListItemIcon>
+            </MenuItem>
+          </Menu>
         </div>
         <div
           className="date-range-container"
@@ -151,11 +214,15 @@ const mapStateToProps = state => ({
   filter: state.filter,
   startDate: state.startDate,
   endDate: state.endDate,
+  tosuList: state.tosu,
 })
+
+const mapDispatchToProps = {
+  viewChange,
+  selectTosu,
+}
 
 export default connect(
   mapStateToProps,
-  {
-    viewChange,
-  }
+  mapDispatchToProps
 )(ButtonRow)
