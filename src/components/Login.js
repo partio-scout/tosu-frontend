@@ -1,7 +1,7 @@
 // Vendor
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 import React from 'react'
+import PropTypes from 'prop-types'
 import { GoogleLogin } from 'react-google-login'
 import FontAwesome from 'react-fontawesome'
 import { Button } from '@material-ui/core'
@@ -19,6 +19,7 @@ import {
   deleteActivityFromBuffer,
 } from '../reducers/bufferZoneReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
+import PropTypesSchema from './PropTypesSchema'
 
 class Login extends React.Component {
   /**
@@ -85,14 +86,12 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  scout: PropTypes.string.isRequired,
-  scoutGoogleLogin: PropTypes.func.isRequired,
-  eventsInitialization: PropTypes.func.isRequired,
-  bufferZoneInitialization: PropTypes.func.isRequired,
-  pofTreeUpdate: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
+  ...PropTypesSchema,
 }
 
+Login.defaultProps = {
+  scout: PropTypes.shape({ id: '' }),
+}
 const mapStateToProps = state => ({
   scout: state.scout,
   buffer: state.buffer,
