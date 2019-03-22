@@ -12,7 +12,6 @@ import { Parser } from 'html-to-react'
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
 import { notify } from '../reducers/notificationReducer'
-import { editEvent } from '../reducers/eventReducer'
 import PropTypesSchema from './PropTypesSchema'
 import {
   editEvent,

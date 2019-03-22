@@ -5,7 +5,7 @@ import BigCalendar from 'react-big-calendar-like-google'
 import moment from 'moment'
 import 'moment/locale/fi'
 import 'react-big-calendar-like-google/lib/css/react-big-calendar.css'
-
+import PropTypes from 'prop-types'
 import CalendarToolbar from './CalendarToolbar'
 import CalendarEvent from './CalendarEvent'
 import { eventStyleGetter } from './CalendarEvent'

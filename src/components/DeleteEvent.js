@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Button, Dialog, DialogActions, DialogTitle } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { withStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
 import {
   deleteEvent,
   deleteEventGroup,

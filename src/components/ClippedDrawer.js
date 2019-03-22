@@ -2,7 +2,7 @@ import React from 'react'
 import Drawer from '@material-ui/core/Drawer'
 import Divider from '@material-ui/core/Divider'
 import { withStyles } from '@material-ui/core/styles'
-
+import PropTypes from 'prop-types'
 import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
 import StatusMessage from './StatusMessage'

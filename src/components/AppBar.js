@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import AccountIcon from './AccountIcon'
+import PropTypes from 'prop-types'
 import PropTypesSchema from './PropTypesSchema'
 
 const styles = theme => ({
