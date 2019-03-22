@@ -2,6 +2,16 @@ import eventService from '../services/events'
 import eventGroupService from '../services/eventgroups'
 import activityService from '../services/activities'
 
+
+
+/**
+ * Add activity to a state event
+ * @param {Object} state - event state object
+ * @param {Object} action - reducer action
+ * @param {Number} action.eventId - nodebackend id of the event
+ * @param {Object} action.activity - activity to add
+ * @param {String} action.activity.id - node backend id of the activity
+ */
 const addToEvent = (state, action) => {
   try {
     const newState = { ...state }
@@ -15,6 +25,13 @@ const addToEvent = (state, action) => {
   }
 }
 
+/**
+ * Delete activity from a state event
+ * @param {Object} state - hashmap of the state-events
+ * @param {Object} action - reducer action
+ * @param {String} action.eventId - node backend id of the target event
+ * @param {Number} action.activitId - node backend id of the target activity
+ */
 const deleteFromEvent = (state, action) => {
   try {
     const newState = { ...state }
@@ -29,6 +46,15 @@ const deleteFromEvent = (state, action) => {
   }
 }
 
+/**
+ * Update event in state hashmap
+ * @param {Object} state - state hashmap
+ * @param {Object} action - reducer action
+ * @param {Object} action.event - event to update
+ * @param {Object[]} action.event.activities - list of event activities in object form that will be mapped to ids in this func
+ * @param {String} action.event.id - node backend id of this event
+ *
+ */
 const updateEvent = (state, action) => {
   const modEvent = Object.assign({}, action.modded)
   modEvent.activities = action.modded.activities.map(a => a.id)
@@ -37,18 +63,39 @@ const updateEvent = (state, action) => {
   return newState
 }
 
+
+/**
+ * Add event to state hashmap
+ * @param {Object} state - state hashmap
+ * @param {Object} action - reducer action
+ * @param {Object} action.event - event ot add
+ * @param {Number} action.event.id - id of the event 
+ *
+ */
 const addEventHelper = (state, action) => {
   const newState = { ...state }
   newState[action.event.id] = { ...action.event }
   return newState
 }
 
+/**
+ * Delete event from state hashmap
+ * @param {Object} 
+ * @param {Object} action - reducer action
+ * @param {Number} action.eventId - Id of the event to be deleted
+ */
 const deleteEventHelper = (state, action) => {
   const newState = { ...state }
   delete newState[action.eventId]
   return newState
 }
 
+/**
+ * Delete eventgrop from event state hashmap
+ * @param {Object} state - event state hashmap
+ * @param {Object} action - reducer action
+ * @param {Number} action.eventGroupId - eventGroup to be deleted
+ */
 const deleteEventGroupHelper = (state, action) => {
   const newState = { ...state }
   Object.keys(newState)
@@ -59,6 +106,10 @@ const deleteEventGroupHelper = (state, action) => {
   return newState
 }
 
+/**
+ * Reducer for application events
+ * State is kept in hashmap form
+ */
 const reducer = (state = {}, action) => {
   switch (action.type) {
     case 'INIT_EVENTS':
@@ -81,13 +132,21 @@ const reducer = (state = {}, action) => {
   }
 }
 
+/**
+ * Initialize event hashmap
+ * @param {Object} events - events in normalized hashmap form
+ */
 export const eventsInitialization = events => async dispatch => {
   dispatch({
     type: 'INIT_EVENTS',
     events,
   })
 }
-
+/**
+ * Delete event from state and backend
+ * @param{Number} eventId - id of the event to be removed
+ *
+ */
 export const deleteEvent = eventId => dispatch => {
   eventService.deleteEvent(eventId).then(() =>
     dispatch({
@@ -96,7 +155,10 @@ export const deleteEvent = eventId => dispatch => {
     })
   )
 }
-
+/**
+ * Delete kuksa event from plan
+ * @param {Object} event - kuksa event in plan
+ */
 export const deleteSyncedEvent = event => dispatch => {
   eventService.deleteEvent(event.id).then(() => {
     dispatch({
@@ -115,6 +177,11 @@ export const deleteSyncedEvent = event => dispatch => {
   })
 }
 
+/**
+ * Delete all events in an eventgroup
+ * @param {Number} eventgroupId 
+ *
+ */
 export const deleteEventGroup = eventGroupId => dispatch => {
   eventGroupService.deleteEventGroup(eventGroupId).then(() =>
     dispatch({
@@ -123,7 +190,10 @@ export const deleteEventGroup = eventGroupId => dispatch => {
     })
   )
 }
-
+/**
+ * Add event to state
+ * @param {Object} event - event to add
+ */
 export const addEvent = event => dispatch => {
   eventService.create(event).then(created => {
     created.activities = []
@@ -134,6 +204,10 @@ export const addEvent = event => dispatch => {
   })
 }
 
+/**
+ * Add kuksa event to application events
+ * @param {Object} event - event to add
+ */
 export const addEventFromKuksa = event => dispatch => {
   eventService.create(event).then(created => {
     created.activities = []
@@ -148,7 +222,10 @@ export const addEventFromKuksa = event => dispatch => {
     })
   })
 }
-
+/* 
+ * Edit event in state hashmap
+ * @Param {Object} event
+ */
 export const editEvent = event => dispatch => {
   eventService.edit(event).then(modded =>
     dispatch({
@@ -157,7 +234,12 @@ export const editEvent = event => dispatch => {
     })
   )
 }
-
+/**
+ * Add activity to an event in the state hashmap and backend.
+ * @param eventId - id of the target event
+ * @param {Object} activity - activity to add
+ *
+ */
 export const addActivityToEvent = (eventId, activity) => dispatch => {
   eventService.addActivity(eventId, activity).then(postedActivity =>
     dispatch({
@@ -168,6 +250,13 @@ export const addActivityToEvent = (eventId, activity) => dispatch => {
   )
 }
 
+/**
+ * Delete an activity to from event in state and Backend
+ * @param eventId
+ * @param activityId
+ *
+ *
+ */
 export const deleteActivityFromEvent = (activityId, eventId) => dispatch => {
     dispatch({
       type: 'DELETE_ACTIVITY_FROM_EVENT',

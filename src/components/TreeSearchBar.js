@@ -70,11 +70,9 @@ class TreeSearchBar extends React.Component {
           activities = activities.concat(activity.guid)
         })
       })
-      console.log(activities)
-      console.log(mandatoryActivities)
       const promises = mandatoryActivities.map(activity =>
         activities.includes(activity)
-          ? console.log("REE")
+          ? null
           : addActivityToRelevantReducers(this.props, { guid: activity })
       )
       try {

@@ -135,7 +135,6 @@ const deepStateCopy = (state) => {
  * @param {string[]} existingActivityGuids - GUID:s of activities in use
  */
 const updateState = (state, existingActivityGuids) => {
-  console.log("POFTREE UPDATE")
   let updatedState = deepStateCopy(state)
   updatedState = disableTasksInFilterIfExists(
     updatedState,

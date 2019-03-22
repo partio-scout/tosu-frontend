@@ -53,7 +53,6 @@ class SuggestionCard extends React.Component {
       this.props.deletePlan(plan.id, plan.activityId)
       const updatedActivity = {...activity}
       updatedActivity.plans = activity.plans.filter( p => (p.id !== plan.id))
-      console.log(updatedActivity)
       this.props.updateActivity(updatedActivity)
     } catch (exception) {
       notify('Toteutusvinkin poistaminen ei onnistunut')

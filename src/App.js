@@ -69,26 +69,6 @@ class App extends Component {
     startDate: moment(),
   }
 
-  initialization = async () => {
-    const pofRequest = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
-    const pofData = pofRequest.data
-    const normalizedPof = normalize(pofData, pofTreeSchema)
-    this.props.pofTreeInitialization(normalizedPof)
-    const eventDataRaw = await eventService.getAll(this.props.scout.id)
-    const eventData = normalize(eventDataRaw, eventSchema).entities
-    if(!eventData.activities) eventData.activities = {}
-    const buffer = await activityService.getBufferZoneActivities(
-      this.props.scout.id
-    )
-    this.props.activityInitialization(
-      Object.keys(eventData.activities).map(key => eventData.activities[key]),
-      buffer.activities
-    )
-    this.props.eventsInitialization(eventData.events)
-    console.log(buffer)
-    this.props.bufferZoneInitialization(buffer)
-  }
-
   componentDidMount = async () => {
     switch (window.location.pathname) {
       case '/new-event':
@@ -106,12 +86,6 @@ class App extends Component {
     }
     await this.checkLoggedIn()
     //let pofData = loadCachedPofData()
-    let pofData = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
-    pofData = pofData.data
-    console.log(pofData)
-    let normalizedPof = normalize(pofData, pofTreeSchema)
-    console.log(normalizedPof)
-    await this.props.pofTreeInitialization(normalizedPof)
     if (this.props.scout !== null) {
       await this.initialization()
       this.props.pofTreeUpdate(this.props.activities)
@@ -149,6 +123,25 @@ class App extends Component {
       this.setState({ bufferZoneHeight: height })
     }
   }
+  initialization = async () => {
+    const pofRequest = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
+    const pofData = pofRequest.data
+    const normalizedPof = normalize(pofData, pofTreeSchema)
+    this.props.pofTreeInitialization(normalizedPof)
+    const eventDataRaw = await eventService.getAll(this.props.scout.id)
+    const eventData = normalize(eventDataRaw, eventSchema).entities
+    if(!eventData.activities) eventData.activities = {}
+    const buffer = await activityService.getBufferZoneActivities(
+      this.props.scout.id
+    )
+    this.props.activityInitialization(
+      Object.keys(eventData.activities).map(key => eventData.activities[key]),
+      buffer.activities
+    )
+    this.props.eventsInitialization(eventData.events)
+    this.props.bufferZoneInitialization(buffer)
+  }
+
 
   checkLoggedIn = async () => {
     // Google login

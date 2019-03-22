@@ -19,7 +19,12 @@ const reducer = (state = {}, action) => {
       return state
   }
 }
-
+/**
+ * Init activity state
+ * @param eventActivities{Object[]} - list of activities in events
+ * @param bufferActivities{Object[]} - list of activities in buffer
+ *
+ */
 export const activityInitialization = (
   eventActivities,
   bufferActivities
