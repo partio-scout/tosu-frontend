@@ -3,13 +3,13 @@ import { connect } from 'react-redux'
 import { Button, Dialog, DialogActions, DialogTitle } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { withStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types'
 import {
   deleteEvent,
   deleteEventGroup,
   deleteSyncedEvent,
 } from '../reducers/eventReducer'
 import { notify } from '../reducers/notificationReducer'
+import PropTypesSchema from './PropTypesSchema'
 
 const styles = theme => ({
   button: {
@@ -28,20 +28,6 @@ class DeleteEvent extends React.Component {
    * If eventGroupId exists, it's a recurring event, so we need to enable deleting those.
    * DeleteEvent never allows modifications to kuksaEvents (not synced).
    */
-  static propTypes = {
-    data: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      synced: PropTypes.bool,
-      eventGroupId: PropTypes.number,
-      kuksaEvent: PropTypes.object,
-    }).isRequired,
-    deleteSyncedEvent: PropTypes.func.isRequired,
-    deleteEvent: PropTypes.func.isRequired,
-    deleteEventGroup: PropTypes.func.isRequired,
-    notify: PropTypes.func.isRequired,
-    minimal: PropTypes.bool.isRequired,
-    classes: PropTypes.shape({}).isRequired,
-  }
   state = { open: false }
 
   /**
@@ -142,6 +128,12 @@ class DeleteEvent extends React.Component {
     )
   }
 }
+
+DeleteEvent.propTypes = {
+  ...PropTypesSchema,
+}
+
+DeleteEvent.defaultProps = {}
 
 export default connect(
   null,

@@ -36,12 +36,10 @@
   background-color: #121b3d;
 }
 .feedback {
-  textalign: center;
   padding: 10px;
   position: fixed;
   left: 0;
   bottom: 0;
-  width: 100%;
 }
 
 #empty-button {
