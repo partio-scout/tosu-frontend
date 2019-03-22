@@ -16,7 +16,12 @@ import {
   addActivityToEventOnlyLocally,
 } from '../reducers/eventReducer'
 import PropTypesSchema from './PropTypesSchema'
-
+/**
+ * Collects an element and allows it to be dropped to a container.
+ * @param connector  allows user to assign one of the predefined roles (a drag source, a drag preview, or a drop target) to the DOM nodes in the render function. Imported from react-dnd
+ * @param monitor allows user to update the props of the components in response to the drag and drop state changes. Imported from react-dnd
+ * @returns state of dragging
+ */
 function collect(connector, monitor) {
   return {
     connectDropTarget: connector.dropTarget(),

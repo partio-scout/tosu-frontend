@@ -62,7 +62,9 @@ class EditEvent extends React.Component {
   handleClose = () => {
     this.setState({ open: false })
   }
-
+  /**
+   * Closes the eventform and sends the changes to eventreducer
+   */
   handleCloseAndSend = async () => {
     const moddedEvent = {
       id: this.props.data.id,
@@ -131,7 +133,7 @@ class EditEvent extends React.Component {
     })
   }
 
-  render(props) {
+  render() {
     const { classes } = this.props
     const event = this.props.data
     // Never allow modifications to kuksaEvents (not synced)

@@ -8,7 +8,7 @@ import BufferZone from './BufferZone'
 import StatusMessage from './StatusMessage'
 import PropTypesSchema from './PropTypesSchema'
 
-const styles = theme => ({
+const styles = () => ({
   divider: {
     height: 4,
     backgroundColor: '#243265',
@@ -18,11 +18,15 @@ const styles = theme => ({
 
 class ClippedDrawer extends React.Component {
   state = { showStatusBox: true }
-
+  /**
+   * Renders statusbox visible
+   */
   handleOpen = () => {
     this.setState({ showStatusBox: true })
   }
-
+  /**
+   * Hides statusbox
+   */
   handleClose = () => {
     this.setState({ showStatusBox: false })
   }

@@ -14,6 +14,10 @@ import {
 } from '../reducers/bufferZoneReducer'
 import PropTypesSchema from './PropTypesSchema'
 
+/**
+ * Determines the style used in the element
+ * @param theme props that contains the styles
+ */
 const styles = theme => ({
   button: {
     marginRight: theme.spacing.unit,
@@ -32,6 +36,10 @@ const styles = theme => ({
 })
 
 export class BufferZone extends React.Component {
+
+  /**
+   * Clears the activities from the buffer
+   */
   clear = async () => {
     if (this.props.buffer.activities) {
       const promises = this.props.buffer.activities.map(activity =>
