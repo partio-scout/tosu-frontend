@@ -30,6 +30,7 @@ import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
 import FeedbackButton from './components/FeedbackButton'
 import Login from './components/Login'
+import PropTypesSchema from './components/PropTypesSchema'
 // Utils
 import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
@@ -112,7 +113,7 @@ class App extends Component {
       this.props.events,
       this.props.pofTree,
       this.props.taskgroup,
-      this.props.activities,
+      this.props.activities
     )
     this.props.addStatusInfo(status)
   }
@@ -129,7 +130,7 @@ class App extends Component {
     this.props.pofTreeInitialization(normalizedPof)
     const eventDataRaw = await eventService.getAll(this.props.scout.id)
     const eventData = normalize(eventDataRaw, eventSchema).entities
-    if(!eventData.activities) eventData.activities = {}
+    if (!eventData.activities) eventData.activities = {}
     const buffer = await activityService.getBufferZoneActivities(
       this.props.scout.id
     )
@@ -140,7 +141,6 @@ class App extends Component {
     this.props.eventsInitialization(eventData.events)
     this.props.bufferZoneInitialization(buffer)
   }
-
 
   checkLoggedIn = async () => {
     // Google login
@@ -190,7 +190,10 @@ class App extends Component {
     if (this.props.scout === null) {
       return (
         <div className="Login">
-          <Login token="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com" initialization={this.initialization} />
+          <Login
+            token="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com"
+            initialization={this.initialization}
+          />
         </div>
       )
     }
@@ -288,29 +291,11 @@ class App extends Component {
 }
 
 App.propTypes = {
-  addStatusInfo: PropTypes.func.isRequired,
-  buffer: PropTypes.shape({
-    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }).isRequired,
-  bufferZoneInitialization: PropTypes.func.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  deleteActivityFromBuffer: PropTypes.func.isRequired,
-  eventsInitialization: PropTypes.func.isRequired,
-  pofTreeInitialization: PropTypes.func.isRequired,
-  pofTreeUpdate: PropTypes.func.isRequired,
-  readScout: PropTypes.func.isRequired,
-  scout: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-  }).isRequired,
-  pofTree: PropTypes.shape({
-    children: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }).isRequired,
-  scoutGoogleLogin: PropTypes.func.isRequired,
-  setLoading: PropTypes.func.isRequired,
-  store: PropTypes.shape({
-    getState: PropTypes.func.isRequired,
-  }).isRequired,
-  taskgroup: PropTypes.objectOf.isRequired,
+  ...PropTypesSchema,
+}
+
+App.defaultProps = {
+  scout: PropTypes.shape({ id: '' }),
 }
 
 const mapStateToProps = state => ({

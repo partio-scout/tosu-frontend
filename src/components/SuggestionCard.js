@@ -9,26 +9,16 @@ import {
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { Parser } from 'html-to-react'
-import PropTypes from 'prop-types'
 import { deletePlan } from '../reducers/planReducer'
-import { editEvent} from '../reducers/eventReducer'
+import { editEvent } from '../reducers/eventReducer'
 import planService from '../services/plan'
 import convertToSimpleActivity from '../functions/activityConverter.js'
 import findActivity from '../functions/findActivity'
 import { notify } from '../reducers/notificationReducer'
 import { updateActivity } from '../reducers/activityReducer'
+import PropTypesSchema from './PropTypesSchema'
 
 class SuggestionCard extends React.Component {
-  static propTypes = {
-    event: PropTypes.shape({ id: PropTypes.number.isRequired }).isRequired,
-    plan: PropTypes.shape({ id: PropTypes.number.isRequired }).isRequired,
-    activity: PropTypes.shape({ id: PropTypes.number.isRequired }).isRequired,
-    pofTree: PropTypes.object.isRequired,
-    editEvent: PropTypes.func.isRequired,
-    notify: PropTypes.func.isRequired,
-    deletePlan: PropTypes.func.isRequired,
-  }
-
   constructor(props) {
     super(props)
     this.deleteClick = this.deleteClick.bind(this)
@@ -51,8 +41,8 @@ class SuggestionCard extends React.Component {
     try {
       await planService.deletePlan(plan.id)
       this.props.deletePlan(plan.id, plan.activityId)
-      const updatedActivity = {...activity}
-      updatedActivity.plans = activity.plans.filter( p => (p.id !== plan.id))
+      const updatedActivity = { ...activity }
+      updatedActivity.plans = activity.plans.filter(p => p.id !== plan.id)
       this.props.updateActivity(updatedActivity)
     } catch (exception) {
       notify('Toteutusvinkin poistaminen ei onnistunut')
@@ -93,6 +83,12 @@ class SuggestionCard extends React.Component {
     )
   }
 }
+
+SuggestionCard.propTypes = {
+  ...PropTypesSchema,
+}
+
+SuggestionCard.defaultProps = {}
 
 const mapStateToProps = state => ({
   pofTree: state.pofTree,

@@ -1,10 +1,11 @@
 import React from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
-import PropTypes from 'prop-types'
 import { DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
+import PropTypes from 'prop-types'
+import PropTypesSchema from './PropTypesSchema'
 
 import { addEventFromKuksa } from '../reducers/eventReducer'
 
@@ -80,6 +81,12 @@ const mapDispatchToProps = {
   notify,
   addEventFromKuksa,
 }
+
+AddToPlan.propTypes = {
+  ...PropTypesSchema,
+}
+
+AddToPlan.defaultProps = {}
 
 export default connect(
   null,

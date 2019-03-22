@@ -15,12 +15,9 @@ import {
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally,
 } from '../reducers/eventReducer'
-import {
-    updateActivity,
-} from '../reducers/activityReducer'
-import {pofTreeUpdate} from '../reducers/pofTreeReducer'
-
-
+import { updateActivity } from '../reducers/activityReducer'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
+import PropTypesSchema from './PropTypesSchema'
 /**
  * Collects an element and allows it to be dropped to a container.
  * @param connector  allows user to assign one of the predefined roles (a drag source, a drag preview, or a drop target) to the DOM nodes in the render function. Imported from react-dnd
@@ -37,16 +34,6 @@ function collect(connector, monitor) {
 }
 
 class ActivityDragAndDropTarget extends React.Component {
-  static propTypes = {
-    odd: PropTypes.bool.isRequired,
-    isOver: PropTypes.bool.isRequired,
-    canDrop: PropTypes.bool.isRequired,
-    event: PropTypes.bool.isRequired,
-    className: PropTypes.string.isRequired,
-    connectDropTarget: PropTypes.func.isRequired,
-    children: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }
-
   render() {
     const { isOver, canDrop, connectDropTarget, odd, event } = this.props
     const baseColor = event ? (odd ? '#EFEEEE' : '#D6E8F7') : '#FFF'
@@ -84,6 +71,12 @@ const mapDispatchToProps = {
   deleteActivityFromEvent,
   updateActivity,
 }
+
+ActivityDragAndDropTarget.propTypes = {
+  ...PropTypesSchema,
+}
+
+ActivityDragAndDropTarget.defaultProps = {}
 
 export default connect(
   mapStateToProps,

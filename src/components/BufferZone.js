@@ -3,14 +3,17 @@ import React from 'react'
 import Divider from '@material-ui/core/Divider/Divider'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
-import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import Activities from './Activities'
 import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import { deleteActivity } from '../reducers/activityReducer'
+import {
+  deleteActivityFromBufferOnlyLocally,
+  deleteActivityFromBuffer,
+} from '../reducers/bufferZoneReducer'
+import PropTypesSchema from './PropTypesSchema'
 
 /**
  * Determines the style used in the element
@@ -34,17 +37,6 @@ const styles = theme => ({
 })
 
 export class BufferZone extends React.Component {
-  static propTypes = {
-    buffer: PropTypes.shape({
-      activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-      id: PropTypes.number.isRequired,
-    }).isRequired,
-    events: PropTypes.arrayOf(PropTypes.object).isRequired,
-    deleteActivityFromBuffer: PropTypes.func.isRequired,
-    pofTreeUpdate: PropTypes.func.isRequired,
-    notify: PropTypes.func.isRequired,
-    classes: PropTypes.shape({}).isRequired,
-  }
   /**
    * Clears the activities from the buffer
    */
@@ -53,9 +45,11 @@ export class BufferZone extends React.Component {
       let promises = this.props.buffer.activities.map(activity =>
         this.props.deleteActivityFromBuffer(activity)
       )
-      promises = promises.concat(this.props.buffer.activities.map( activity =>
+      promises = promises.concat(
+        this.props.buffer.activities.map(activity =>
           this.props.deleteActivity(activity)
-      ))
+        )
+      )
       try {
         await Promise.all(promises)
         this.props.pofTreeUpdate(this.props.activities)
@@ -111,6 +105,12 @@ const mapDispatchToProps = {
   deleteActivityFromBuffer,
   deleteActivity,
 }
+
+BufferZone.propTypes = {
+  ...PropTypesSchema,
+}
+
+BufferZone.defaultProps = {}
 
 export default connect(
   mapStateToProps,

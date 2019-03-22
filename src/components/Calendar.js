@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 // React big calendar: https://onursimsek94.github.io/react-big-calendar/examples/index.html
 import BigCalendar from 'react-big-calendar-like-google'
@@ -13,6 +12,7 @@ import { eventStyleGetter } from './CalendarEvent'
 import { closePopper } from '../reducers/calendarReducer'
 import { eventList } from '../reducers/eventReducer'
 
+import PropTypesSchema from './PropTypesSchema'
 
 const localizer = BigCalendar.momentLocalizer(moment)
 
@@ -98,6 +98,11 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = { closePopper }
+Calendar.propTypes = {
+  ...PropTypesSchema,
+}
+
+Calendar.defaultProps = {}
 
 export default connect(
   mapStateToProps,

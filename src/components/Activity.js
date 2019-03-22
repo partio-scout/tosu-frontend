@@ -5,13 +5,13 @@ import Chip from '@material-ui/core/Chip'
 import Icon from '@material-ui/core/Icon'
 import { DragSource } from 'react-dnd'
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { notify } from '../reducers/notificationReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
-import {pofTreeUpdate } from '../reducers/pofTreeReducer'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
+import PropTypesSchema from './PropTypesSchema'
 
 /**
  * Methods that handle the dragging of an activity
@@ -54,15 +54,6 @@ function collect(connector, monitor) {
 }
 
 class Activity extends Component {
-  static propTypes = {
-    connectDragSource: PropTypes.func.isRequired,
-    activity: PropTypes.shape({}).isRequired,
-    pofActivity: PropTypes.shape({}).isRequired,
-    parentId: PropTypes.number.isRequired,
-    minimal: PropTypes.bool.isRequired,
-    deleteActivity: PropTypes.func.isRequired,
-  }
-
   state = { open: false }
 
   /**
@@ -168,6 +159,12 @@ const mapDispatchToProps = {
   notify,
   pofTreeUpdate,
 }
+
+Activity.propTypes = {
+  ...PropTypesSchema,
+}
+
+Activity.defaultProps = {}
 
 export default connect(
   mapStateToProps,

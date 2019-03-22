@@ -18,7 +18,6 @@ import {
   Card,
 } from '@material-ui/core'
 
-import PropTypes from 'prop-types'
 import ReactTooltip from 'react-tooltip'
 import Warning from '@material-ui/icons/Warning'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -46,8 +45,10 @@ import eventService from '../services/events'
 import { deletePlan } from '../reducers/planReducer'
 import SuggestionCard from '../components/SuggestionCard'
 import { getTask } from '../functions/denormalizations'
-import {getActivityList } from '../reducers/activityReducer'
+import { getActivityList } from '../reducers/activityReducer'
 // Warning icon
+import PropTypesSchema from './PropTypesSchema'
+
 const warning = (
   <div className="tooltip">
     <Warning className="warning" />
@@ -254,7 +255,9 @@ class EventCard extends React.Component {
       <CardContent style={this.state.expanded ? {} : { padding: '3px' }}>
         <div className="mobile-event-card-media">
           <Activities
-            activities={this.props.event.activities.map(key => this.props.activities[key])}
+            activities={this.props.event.activities.map(
+              key => this.props.activities[key]
+            )}
             bufferzone={false}
             parentId={this.props.event.id}
           />
@@ -292,7 +295,9 @@ class EventCard extends React.Component {
       <CardContent style={this.state.expanded ? {} : { padding: '3px 10px' }}>
         <div className="activity-header">
           <Activities
-            activities={this.props.event.activities.map(key => this.props.activities[key])}
+            activities={this.props.event.activities.map(
+              key => this.props.activities[key]
+            )}
             bufferzone={false}
             parentId={this.props.event.id}
             minimal
@@ -381,7 +386,9 @@ class EventCard extends React.Component {
         <div> {informationContainer()} </div>
         <b>
           <Activities
-            activities={this.props.event.activities.map(key => this.props.activities[key])}
+            activities={this.props.event.activities.map(
+              key => this.props.activities[key]
+            )}
             bufferzone={false}
             parentId={this.props.event.id}
           />
@@ -470,37 +477,10 @@ class EventCard extends React.Component {
 }
 
 EventCard.propTypes = {
-  addActivityToEventOnlyLocally: PropTypes.func.isRequired,
-  buffer: PropTypes.shape({
-    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }).isRequired,
-  deleteActivityFromBuffer: PropTypes.func.isRequired,
-  editEvent: PropTypes.func.isRequired,
-  event: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    type: PropTypes.object.isRequired,
-    startDate: PropTypes.string.isRequired,
-    startTime: PropTypes.string.isRequired,
-    endDate: PropTypes.string.isRequired,
-    endTime: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    kuksaEventId: PropTypes.number.isRequired,
-    synced: PropTypes.bool.isRequired,
-    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }).isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  notify: PropTypes.func.isRequired,
-  odd: PropTypes.bool.isRequired,
-  pofTree: PropTypes.shape({
-    taskgroups: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }).isRequired,
-  pofTreeUpdate: PropTypes.func.isRequired,
-  setNotification: PropTypes.func.isRequired,
-  deletePlan: PropTypes.func.isRequired,
-  taskgroup: PropTypes.shape({
-    value: PropTypes.number.isRequired,
-  }).isRequired,
+  ...PropTypesSchema,
 }
+
+EventCard.defaultProps = {}
 
 const mapStateToProps = state => ({
   events: state.events,

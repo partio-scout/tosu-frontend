@@ -1,6 +1,5 @@
 import { connect } from 'react-redux'
 import React from 'react'
-import PropTypes from 'prop-types'
 import Activity from './Activity'
 import findActivity from '../functions/findActivity'
 import convertToSimpleActivity from '../functions/activityConverter'
@@ -8,26 +7,11 @@ import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
-import {getTask} from '../functions/denormalizations'
+import { getTask } from '../functions/denormalizations'
 import { deleteActivity } from '../reducers/activityReducer'
+import PropTypesSchema from './PropTypesSchema'
 
 export class Activities extends React.Component {
-  static propTypes = {
-    buffer: PropTypes.shape({}).isRequired,
-    events: PropTypes.arrayOf(PropTypes.object).isRequired,
-    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-    bufferzone: PropTypes.bool.isRequired,
-    parentId: PropTypes.number.isRequired,
-    notify: PropTypes.func.isRequired,
-    pofTreeUpdate: PropTypes.func.isRequired,
-    deleteActivityFromBuffer: PropTypes.func.isRequired,
-    deleteActivityFromEvent: PropTypes.func.isRequired,
-    minimal: PropTypes.bool.isRequired,
-    className: PropTypes.string.isRequired,
-    pofTree: PropTypes.shape({
-      children: PropTypes.arrayOf(PropTypes.object).isRequired,
-    }).isRequired,
-  }
   /**
    * Deletes a given activity and updates the pofTree
    * @param activity activity that is deleted
@@ -79,6 +63,12 @@ export class Activities extends React.Component {
     )
   }
 }
+
+Activities.propTypes = {
+  ...PropTypesSchema,
+}
+
+Activities.defaultProps = {}
 
 const mapStateToProps = state => ({
   buffer: state.buffer,

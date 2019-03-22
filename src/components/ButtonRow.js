@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton/IconButton'
 import Icon from '@material-ui/core/Icon/Icon'
-import PropTypes from 'prop-types'
 import { DateRangePicker } from 'react-dates'
 import Add from '@material-ui/icons/Add'
 import CalendarToday from '@material-ui/icons/CalendarToday'
 import moment from 'moment'
 import { viewChange } from '../reducers/viewReducer'
+import PropTypesSchema from './PropTypesSchema'
 
 class ButtonRow extends React.Component {
   static propTypes = {
@@ -146,6 +146,12 @@ class ButtonRow extends React.Component {
     )
   }
 }
+
+ButtonRow.propTypes = {
+  ...PropTypesSchema,
+}
+
+ButtonRow.defaultProps = {}
 
 const mapStateToProps = state => ({
   view: state.view,

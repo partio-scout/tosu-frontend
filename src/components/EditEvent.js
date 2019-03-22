@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
@@ -13,6 +12,7 @@ import EventForm from './EventForm'
 import { notify } from '../reducers/notificationReducer'
 import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
+import PropTypesSchema from './PropTypesSchema'
 
 const styles = theme => ({
   button: {
@@ -27,24 +27,6 @@ const styles = theme => ({
 })
 
 class EditEvent extends React.Component {
-  static propTypes = {
-    data: PropTypes.shape({
-      type: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      startDate: PropTypes.string.isRequired,
-      startTime: PropTypes.string.isRequired,
-      endDate: PropTypes.string.isRequired,
-      endTime: PropTypes.string.isRequired,
-      information: PropTypes.string.isRequired,
-      id: PropTypes.number.isRequired,
-    }).isRequired,
-    notify: PropTypes.func.isRequired,
-    editEvent: PropTypes.func.isRequired,
-    classes: PropTypes.shape({}).isRequired,
-    minimal: PropTypes.bool.isRequired,
-    bufferZoneInitialization: PropTypes.func.isRequired,
-  }
-
   constructor(props) {
     super(props)
     this.state = {
@@ -194,6 +176,11 @@ const mapDispatchToProps = {
   notify,
 }
 
+EditEvent.propTypes = {
+  ...PropTypesSchema,
+}
+
+EditEvent.defaultProps = {}
 export default connect(
   null,
   mapDispatchToProps

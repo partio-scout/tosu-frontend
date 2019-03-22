@@ -1,9 +1,8 @@
 // Vendor
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 import React from 'react'
+import PropTypes from 'prop-types'
 import { GoogleLogin } from 'react-google-login'
-import FontAwesome from 'react-fontawesome'
 import { Button } from '@material-ui/core'
 import isTouchDevice from 'is-touch-device'
 // Services
@@ -20,9 +19,9 @@ import {
 } from '../reducers/bufferZoneReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
 import { activityInitialization } from '../reducers/activityReducer'
-import {pofTreeInitialization} from '../reducers/pofTreeReducer'
+import { pofTreeInitialization } from '../reducers/pofTreeReducer'
 
-
+import PropTypesSchema from './PropTypesSchema'
 
 class Login extends React.Component {
   /**
@@ -61,7 +60,6 @@ class Login extends React.Component {
           onSuccess={this.googleLoginSuccess}
           onFailure={this.googleLoginFail}
         >
-          <FontAwesome className="icon" name="google" />
           <span className="label">
             {' '}
             <span className="appbar-button-text">
@@ -86,19 +84,17 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  scout: PropTypes.string.isRequired,
-  scoutGoogleLogin: PropTypes.func.isRequired,
-  eventsInitialization: PropTypes.func.isRequired,
-  bufferZoneInitialization: PropTypes.func.isRequired,
-  pofTreeUpdate: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
+  ...PropTypesSchema,
 }
 
+Login.defaultProps = {
+  scout: PropTypes.shape({ id: '' }),
+}
 const mapStateToProps = state => ({
   scout: state.scout,
   buffer: state.buffer,
   events: state.events,
-  activities: state.activities
+  activities: state.activities,
 })
 
 const mapDispatchToProps = {

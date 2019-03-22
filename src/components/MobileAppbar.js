@@ -1,6 +1,5 @@
 import React from 'react'
 import Select from 'react-select'
-import PropTypes from 'prop-types'
 import List from '@material-ui/icons/List'
 import MenuItem from '@material-ui/core/MenuItem'
 import { connect } from 'react-redux'
@@ -10,7 +9,8 @@ import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import StatusMessage from './StatusMessage'
 import { createStatusMessage } from '../utils/createStatusMessage'
-import {pofTreeUpdate} from '../reducers/pofTreeReducer'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
+import PropTypesSchema from './PropTypesSchema'
 
 class MobileAppbar extends React.Component {
   state = { showStatusBox: true }
@@ -152,18 +152,7 @@ const mapStateToProps = state => ({
 })
 
 MobileAppbar.propTypes = {
-  addStatusMessage: PropTypes.func.isRequired,
-  emptyTaskgroup: PropTypes.func.isRequired,
-  pofTree: PropTypes.shape({
-    taskgroups: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }).isRequired,
-  selectTaskgroup: PropTypes.func.isRequired,
-  setHeaderHeight: PropTypes.func.isRequired,
-  headerVisible: PropTypes.bool.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  taskgroup: PropTypes.shape({
-    value: PropTypes.number.isRequired,
-  }).isRequired,
+  ...PropTypesSchema,
 }
 
 const mapDispatchToProps = {
@@ -173,6 +162,8 @@ const mapDispatchToProps = {
   pofTreeUpdate,
   emptyTaskgroup,
 }
+
+MobileAppbar.defaultProps = {}
 
 export default connect(
   mapStateToProps,

@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import IconButton from '@material-ui/core/IconButton'
-import PropTypes from 'prop-types'
 import { scoutLogout } from '../reducers/scoutReducer'
 import { API_ROOT } from '../api-config'
+import PropTypesSchema from './PropTypesSchema'
 
 class AccountIcon extends React.Component {
   state = {
@@ -69,10 +69,10 @@ class AccountIcon extends React.Component {
 }
 
 AccountIcon.propTypes = {
-  scoutLogout: PropTypes.func.isRequired,
-  mobileFeedback: PropTypes.func.isRequired,
-  accountIcon: PropTypes.shape({}).isRequired,
+  ...PropTypesSchema,
 }
+
+AccountIcon.defaultProps = {}
 
 const mapStateToProps = state => ({
   scout: state.scout,

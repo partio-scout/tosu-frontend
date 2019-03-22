@@ -1,7 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
+import PropTypesSchema from './PropTypesSchema'
 
 const styles = () => ({
   root: {
@@ -44,6 +44,7 @@ export const FeedbackButton = props => {
 export default FeedbackButton
 
 FeedbackButton.propTypes = {
-  feedback_url: PropTypes.string.isRequired,
-  visible: PropTypes.bool.isRequired,
+  ...PropTypesSchema,
 }
+
+FeedbackButton.defaultProps = {}

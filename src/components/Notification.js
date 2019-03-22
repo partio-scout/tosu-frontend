@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import FontAwesome from 'react-fontawesome'
-import PropTypes from 'prop-types'
+import PropTypesSchema from './PropTypesSchema'
 
 /**
  * Notification that is used in the footer element
@@ -12,19 +11,9 @@ const Notification = props => {
     return null
   }
   if (props.notification.textType === 'error') {
-    return (
-      <div className="footerError">
-        <FontAwesome className="notification-icon" name="exclamation-circle" />
-        {props.notification.text}
-      </div>
-    )
+    return <div className="footerError">{props.notification.text}</div>
   }
-  return (
-    <div className="footerSuccess">
-      <FontAwesome className="notification-icon" name="check-circle" />
-      {props.notification.text}
-    </div>
-  )
+  return <div className="footerSuccess">{props.notification.text}</div>
 }
 
 const mapStateToProps = state => ({
@@ -32,10 +21,9 @@ const mapStateToProps = state => ({
 })
 
 Notification.propTypes = {
-  notification: PropTypes.shape({
-    text: PropTypes.string.isRequired,
-    textType: PropTypes.string.isRequired,
-  }).isRequired,
+  ...PropTypesSchema,
 }
+
+Notification.defaultProps = {}
 
 export default connect(mapStateToProps)(Notification)

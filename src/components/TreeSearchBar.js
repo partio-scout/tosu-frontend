@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Select from 'react-select'
-import PropTypes from 'prop-types'
 import 'react-select/dist/react-select.css'
 import TreeSelect /* , { TreeNode, SHOW_PARENT } */ from 'rc-tree-select'
 import 'rc-tree-select/assets/index.css'
@@ -20,6 +19,7 @@ import {
 import { eventList } from '../reducers/eventReducer'
 import { addActivity } from '../reducers/activityReducer'
 import { addActivityToRelevantReducers } from '../functions/activityFunctions'
+import PropTypesSchema from './PropTypesSchema'
 
 class TreeSearchBar extends React.Component {
   state = { treePlaceHolder: 'Valitse ensin tarppo' }
@@ -35,7 +35,6 @@ class TreeSearchBar extends React.Component {
   onChangeChildren = async activityGuid => {
     if (this.isLeaf(activityGuid)) {
       try {
-        
         await addActivityToRelevantReducers(this.props, { guid: activityGuid })
         this.props.pofTreeUpdate(this.props.activities)
         this.props.notify('Aktiviteetti on lisätty!', 'success')
@@ -77,7 +76,7 @@ class TreeSearchBar extends React.Component {
       )
       try {
         await Promise.all(promises)
-        
+
         this.props.notify(
           'Pakolliset aktiviteetit lisätty tai olemassa!',
           'success'
@@ -177,7 +176,7 @@ class TreeSearchBar extends React.Component {
                 this.props.events,
                 this.props.pofTree,
                 rootgroup,
-                this.props.activities,
+                this.props.activities
               )
               let labelText = rootgroup.title
 
@@ -205,22 +204,10 @@ class TreeSearchBar extends React.Component {
 }
 
 TreeSearchBar.propTypes = {
-  addStatusMessage: PropTypes.func.isRequired,
-  buffer: PropTypes.shape({
-    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }).isRequired,
-  emptyTaskgroup: PropTypes.func.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  notify: PropTypes.func.isRequired,
-  pofTree: PropTypes.object.isRequired,
-  pofTreeUpdate: PropTypes.func.isRequired,
-  postActivityToBuffer: PropTypes.func.isRequired,
-  selectTaskgroup: PropTypes.func.isRequired,
-  taskgroup: PropTypes.shape({
-    value: PropTypes.number.isRequired,
-    guid: PropTypes.string.isRequired,
-  }).isRequired,
+  ...PropTypesSchema,
 }
+
+TreeSearchBar.defaultProps = {}
 
 const mapStateToProps = state => ({
   events: state.events,

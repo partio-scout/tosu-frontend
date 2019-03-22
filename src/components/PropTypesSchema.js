@@ -32,7 +32,8 @@ const PropTypesSchema = {
       activities: PropTypes.arrayOf(PropTypes.object).isRequired,
     }).isRequired,
     scout: PropTypes.shape({
-      name: PropTypes.string,
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
     }).isRequired,
     classes: PropTypes.shape({
       label: PropTypes.string.isRequired,
@@ -71,6 +72,7 @@ const PropTypesSchema = {
     selectTaskgroup: PropTypes.func.isRequired,
     savedActivity: PropTypes.shape({}).isRequired,
     deletePlan: PropTypes.func.isRequired,
+    scoutGoogleLogin: PropTypes.func.isRequired,
 
     // PlanForm.js
     // none
@@ -103,7 +105,6 @@ const PropTypesSchema = {
     handleOpen: PropTypes.func.isRequired,
     statusMessage: PropTypes.shape({}).isRequired,
     // Login.js
-    scoutGoogleLogin: PropTypes.func.isRequired,
     eventsInitialization: PropTypes.func.isRequired,
     token: PropTypes.string.isRequired,
     // AccountIcon.js
@@ -126,16 +127,17 @@ const PropTypesSchema = {
     // Calendar.js
     shouldShowKuksaEventsAlso: PropTypes.bool.isRequired,
     // CalendarEvent.js
-    openPopper: PropTypes.func.isRequired,
-    popperOpen: PropTypes.bool.isRequired,
-    views: PropTypes.arrayOf(PropTypes.string).isRequired,
-    label: PropTypes.node.isRequired,
-    messages: PropTypes.shape({}).isRequired,
-    onNavigate: PropTypes.func.isRequired,
-    onViewChange: PropTypes.func.isRequired,
-    switchState: PropTypes.bool.isRequired,
-    hideKuksaEvents: PropTypes.bool.isRequired,
-    showKuksaEvents: PropTypes.bool.isRequired,
+    openPopper: PropTypes.func,
+    popperOpen: PropTypes.bool,
+    // CalendarToolbar.js
+    views: PropTypes.arrayOf(PropTypes.string),
+    label: PropTypes.node,
+    messages: PropTypes.shape({}),
+    onNavigate: PropTypes.func,
+    onViewChange: PropTypes.func,
+    switchState: PropTypes.bool,
+    hideKuksaEvents: PropTypes.bool,
+    showKuksaEvents: PropTypes.bool,
     // DeleteEvent.js
     deleteSyncedEvent: PropTypes.func.isRequired,
     deleteEvent: PropTypes.func.isRequired,
@@ -162,6 +164,15 @@ const PropTypesSchema = {
     // FeedbackButton.js
     feedback_url: PropTypes.string.isRequired,
     visible: PropTypes.bool.isRequired,
+    // App.js
+    addStatusInfo: PropTypes.func.isRequired,
+    pofTreeInitialization: PropTypes.func.isRequired,
+    readScout: PropTypes.func.isRequired,
+    setLoading: PropTypes.func.isRequired,
+    store: PropTypes.shape({
+      getState: PropTypes.func.isRequired,
+      dispatch: PropTypes.func.isRequired,
+    }).isRequired,
   }),
 }
 
