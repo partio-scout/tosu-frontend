@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import FontAwesome from 'react-fontawesome'
 import PropTypesSchema from './PropTypesSchema'
 
 /**
@@ -12,19 +11,9 @@ const Notification = props => {
     return null
   }
   if (props.notification.textType === 'error') {
-    return (
-      <div className="footerError">
-        <FontAwesome className="notification-icon" name="exclamation-circle" />
-        {props.notification.text}
-      </div>
-    )
+    return <div className="footerError">{props.notification.text}</div>
   }
-  return (
-    <div className="footerSuccess">
-      <FontAwesome className="notification-icon" name="check-circle" />
-      {props.notification.text}
-    </div>
-  )
+  return <div className="footerSuccess">{props.notification.text}</div>
 }
 
 const mapStateToProps = state => ({
