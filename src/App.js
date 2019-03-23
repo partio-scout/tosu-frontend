@@ -1,6 +1,7 @@
 // Vendor
 import { connect } from 'react-redux'
 import axios from 'axios'
+import PropTypes from 'prop-types'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import isTouchDevice from 'is-touch-device'
@@ -54,6 +55,7 @@ import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutGoogleLogin, readScout } from './reducers/scoutReducer'
 import { viewChange } from './reducers/viewReducer'
 import { setLoading } from './reducers/loadingReducer'
+import { tosuInitialization } from './reducers/tosuReducer'
 
 import { POF_ROOT } from './api-config'
 
@@ -88,8 +90,9 @@ class App extends Component {
     await this.props.pofTreeInitialization(pofData)
 
     if (this.props.scout !== null) {
+      await this.props.tosuInitialization()
       await Promise.all([
-        this.props.eventsInitialization(),
+        this.props.eventsInitialization(this.props.tosu.selected),
         this.props.bufferZoneInitialization(), // id tulee userista myöhemmin
       ]).then(() =>
         this.props.pofTreeUpdate(this.props.buffer, this.props.events)
@@ -110,15 +113,6 @@ class App extends Component {
     if (this.props.loading) {
       this.props.setLoading(false)
     }
-  }
-
-  componentDidUpdate = () => {
-    const status = createStatusMessage(
-      this.props.events,
-      this.props.pofTree,
-      this.props.taskgroup
-    )
-    this.props.addStatusInfo(status)
   }
 
   setHeaderHeight = height => {
@@ -268,6 +262,7 @@ const mapStateToProps = state => ({
   scout: state.scout,
   view: state.view,
   loading: state.loading,
+  tosu: state.tosu,
 })
 
 App.propTypes = {
@@ -288,6 +283,7 @@ export default connect(
     pofTreeUpdate,
     eventsInitialization,
     bufferZoneInitialization,
+    tosuInitialization,
     deleteActivityFromBuffer,
     addStatusInfo,
     scoutGoogleLogin,

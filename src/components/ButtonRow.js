@@ -15,36 +15,55 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core'
+import TosuDialog from './TosuDialog'
 import { viewChange } from '../reducers/viewReducer'
 import { selectTosu } from '../reducers/tosuReducer'
+import { eventsInitialization } from '../reducers/eventReducer'
 import PropTypesSchema from './PropTypesSchema'
 
 class ButtonRow extends React.Component {
-  state = {
-    startDate: moment(),
-    endDate: null,
-    anchorEl: null,
-    currentTosuID: null,
+  constructor(props) {
+    super(props)
+    this.tosuDialog = React.createRef()
+    this.state = {
+      startDate: moment(),
+      endDate: null,
+      anchorEl: null,
+    }
+  }
+
+  /**
+   * Closes the Tosu select menu
+   */
+  handleTosuMenuClose = () => {
+    this.setState({ anchorEl: null })
   }
 
   /**
    * Closes the menu and dispatches 'Tosu view change' -action
-   * @param {String} tosuID - ID of the selected Tosu
+   * @param tosuId - ID of the selected Tosu
    */
-  handleTosuSelect = tosuID => {
-    this.setState({ anchorEl: null })
-    if (this.state.currentTosuID !== tosuID) {
-      this.props.selectTosu(tosuID)
+  handleTosuSelect = tosuId => {
+    this.handleTosuMenuClose()
+    if (this.props.tosuMap.selected !== tosuId) {
+      this.props.selectTosu(tosuId)
+      this.props.eventsInitialization(tosuId)
     }
+  }
+
+  /**
+   * Opens dialog to create new Tosu
+   */
+  openTosuDialog = () => {
+    this.tosuDialog.current.handleOpen()
+    this.handleTosuMenuClose()
   }
 
   /**
    * Changes the view to tab Omat/Kuksa/Kalenteri/Uusi tapahtuma
    * @param value new value
    */
-  selectView = value => {
-    this.props.viewChange(value)
-  }
+  selectView = value => this.props.viewChange(value)
   /**
    * Clears the calendar daterange so that it shows all events
    */
@@ -63,6 +82,8 @@ class ButtonRow extends React.Component {
   }
 
   render() {
+    const { anchorEl, startDate, endDate } = this.state
+
     const calendarIcon = (
       <IconButton
         className={
@@ -70,7 +91,7 @@ class ButtonRow extends React.Component {
             ? 'active-mobile-button button'
             : 'mobile-button button'
         }
-        onClick={this.selectView('CALENDAR')}
+        onClick={() => this.selectView('CALENDAR')}
       >
         <CalendarToday />
       </IconButton>
@@ -88,7 +109,7 @@ class ButtonRow extends React.Component {
         <div className="button-row">
           <Button
             className={this.props.view === 'OWN' ? 'active button' : 'button'}
-            onClick={this.selectView('OWN')}
+            onClick={() => this.selectView('OWN')}
             variant="contained"
             color="secondary"
           >
@@ -96,7 +117,7 @@ class ButtonRow extends React.Component {
           </Button>
           <Button
             className={this.props.view === 'KUKSA' ? 'active button' : 'button'}
-            onClick={this.selectView('KUKSA')}
+            onClick={() => this.selectView('KUKSA')}
             variant="contained"
             color="secondary"
           >
@@ -109,7 +130,7 @@ class ButtonRow extends React.Component {
               className={
                 this.props.view === 'CALENDAR' ? 'active button' : 'button'
               }
-              onClick={this.selectView('CALENDAR')}
+              onClick={() => this.selectView('CALENDAR')}
               variant="contained"
               color="secondary"
             >
@@ -142,31 +163,34 @@ class ButtonRow extends React.Component {
               variant="contained"
               color="secondary"
             >
-              Tosun nimi
+              tosun nimi
             </Button>
           )}
           <Menu
             id="tosu-menu"
-            anchorEl={this.state.anchorEl}
-            open={Boolean(this.state.anchorEl)}
-            onClose={this.handleClose}
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={this.handleTosuMenuClose}
           >
-            {this.props.tosuList.map(tosu => (
-              <MenuItem
-                key={tosu.id}
-                selected={tosu.selected}
-                onClick={this.handleTosuSelect(tosu.id)}
-              >
-                {tosu.name}
-              </MenuItem>
-            ))}
-            <MenuItem onClick={this.createTosuDialog}>
+            {Object.entries(this.props.tosuMap).map(([property, tosu]) =>
+              property === 'selected' ? null : (
+                <MenuItem
+                  key={tosu.id}
+                  selected={tosu.selected}
+                  onClick={() => this.handleTosuSelect(tosu.id)}
+                >
+                  {tosu.name}
+                </MenuItem>
+              )
+            )}
+            <MenuItem onClick={this.openTosuDialog}>
               <ListItemText primary="UUSI" />
               <ListItemIcon>
                 <AddCircleIcon />
               </ListItemIcon>
             </MenuItem>
           </Menu>
+          <TosuDialog ref={this.tosuDialog} />
         </div>
         <div
           className="date-range-container"
@@ -176,8 +200,8 @@ class ButtonRow extends React.Component {
           <DateRangePicker
             startDateId="startDate"
             endDateId="endDate"
-            startDate={this.state.startDate}
-            endDate={this.state.endDate}
+            startDate={startDate}
+            endDate={endDate}
             onDatesChange={this.dateRangeUpdate}
             focusedInput={this.state.focusedInput}
             onFocusChange={focusedInput => {
@@ -212,12 +236,13 @@ const mapStateToProps = state => ({
   filter: state.filter,
   startDate: state.startDate,
   endDate: state.endDate,
-  tosuList: state.tosu,
+  tosuMap: state.tosu,
 })
 
 const mapDispatchToProps = {
   viewChange,
   selectTosu,
+  eventsInitialization,
 }
 
 export default connect(
