@@ -3,7 +3,6 @@ import React from 'react'
 import Divider from '@material-ui/core/Divider/Divider'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
-import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import Activities from './Activities'
@@ -13,6 +12,8 @@ import {
   deleteActivityFromBufferOnlyLocally,
   deleteActivityFromBuffer,
 } from '../reducers/bufferZoneReducer'
+import PropTypesSchema from './PropTypesSchema'
+
 /**
  * Determines the style used in the element
  * @param theme props that contains the styles
@@ -35,17 +36,7 @@ const styles = theme => ({
 })
 
 export class BufferZone extends React.Component {
-  static propTypes = {
-    buffer: PropTypes.shape({
-      activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-      id: PropTypes.number.isRequired,
-    }).isRequired,
-    events: PropTypes.arrayOf(PropTypes.object).isRequired,
-    deleteActivityFromBuffer: PropTypes.func.isRequired,
-    pofTreeUpdate: PropTypes.func.isRequired,
-    notify: PropTypes.func.isRequired,
-    classes: PropTypes.shape({}).isRequired,
-  }
+
   /**
    * Clears the activities from the buffer
    */
@@ -97,6 +88,12 @@ const mapStateToProps = state => ({
   buffer: state.buffer,
   events: state.events,
 })
+
+BufferZone.propTypes = {
+  ...PropTypesSchema,
+}
+
+BufferZone.defaultProps = {}
 
 export default connect(
   mapStateToProps,

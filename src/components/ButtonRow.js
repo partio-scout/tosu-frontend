@@ -1,7 +1,6 @@
 import React from 'react'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 import { DateRangePicker } from 'react-dates'
 import AddIcon from '@material-ui/icons/Add'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
@@ -18,16 +17,9 @@ import {
 } from '@material-ui/core'
 import { viewChange } from '../reducers/viewReducer'
 import { selectTosu } from '../reducers/tosuReducer'
+import PropTypesSchema from './PropTypesSchema'
 
 class ButtonRow extends React.Component {
-  static propTypes = {
-    viewChange: PropTypes.func.isRequired,
-    dateRangeUpdate: PropTypes.func.isRequired,
-    view: PropTypes.string.isRequired,
-    newEvent: PropTypes.func.isRequired,
-    mobile: PropTypes.bool.isRequired,
-    filter: PropTypes.bool.isRequired,
-  }
   state = {
     startDate: moment(),
     endDate: null,
@@ -208,6 +200,12 @@ class ButtonRow extends React.Component {
     )
   }
 }
+
+ButtonRow.propTypes = {
+  ...PropTypesSchema,
+}
+
+ButtonRow.defaultProps = {}
 
 const mapStateToProps = state => ({
   view: state.view,

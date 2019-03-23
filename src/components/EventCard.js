@@ -20,7 +20,6 @@ import {
   Switch,
 } from '@material-ui/core'
 
-import PropTypes from 'prop-types'
 import Warning from '@material-ui/icons/Warning'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
@@ -46,6 +45,7 @@ import {
 import eventService from '../services/events'
 import { deletePlan } from '../reducers/planReducer'
 import SuggestionCard from '../components/SuggestionCard'
+import PropTypesSchema from './PropTypesSchema'
 
 const warning = (
   <div className="tooltip">
@@ -482,37 +482,10 @@ class EventCard extends React.Component {
 }
 
 EventCard.propTypes = {
-  addActivityToEventOnlyLocally: PropTypes.func.isRequired,
-  buffer: PropTypes.shape({
-    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }).isRequired,
-  deleteActivityFromBuffer: PropTypes.func.isRequired,
-  editEvent: PropTypes.func.isRequired,
-  event: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    type: PropTypes.object.isRequired,
-    startDate: PropTypes.string.isRequired,
-    startTime: PropTypes.string.isRequired,
-    endDate: PropTypes.string.isRequired,
-    endTime: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    kuksaEventId: PropTypes.number.isRequired,
-    synced: PropTypes.bool.isRequired,
-    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }).isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  notify: PropTypes.func.isRequired,
-  odd: PropTypes.bool.isRequired,
-  pofTree: PropTypes.shape({
-    taskgroups: PropTypes.arrayOf(PropTypes.object).isRequired,
-  }).isRequired,
-  pofTreeUpdate: PropTypes.func.isRequired,
-  setNotification: PropTypes.func.isRequired,
-  deletePlan: PropTypes.func.isRequired,
-  taskgroup: PropTypes.shape({
-    value: PropTypes.number.isRequired,
-  }).isRequired,
+  ...PropTypesSchema,
 }
+
+EventCard.defaultProps = {}
 
 const mapStateToProps = state => ({
   events: state.events,

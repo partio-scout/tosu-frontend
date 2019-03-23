@@ -1,20 +1,14 @@
 import React from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
-import PropTypes from 'prop-types'
 import { DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
+import PropTypesSchema from './PropTypesSchema'
 
 import { addEventFromKuksa } from '../reducers/eventReducer'
 
 class AddToPlan extends React.Component {
-  static propTypes = {
-    event: PropTypes.shape({ id: PropTypes.number.isRequired }).isRequired,
-    addEventFromKuksa: PropTypes.func.isRequired,
-    notify: PropTypes.func.isRequired,
-    buttonClass: PropTypes.string.isRequired,
-  }
   state = { dialogOpen: false }
 
   /**
@@ -74,6 +68,12 @@ class AddToPlan extends React.Component {
     )
   }
 }
+
+AddToPlan.propTypes = {
+  ...PropTypesSchema,
+}
+
+AddToPlan.defaultProps = {}
 
 export default connect(
   null,
