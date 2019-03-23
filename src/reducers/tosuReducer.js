@@ -1,37 +1,80 @@
 import tosuService from '../services/tosu'
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = {}, action) => {
   switch (action.type) {
+    case 'INIT_TOSU':
+      const selectedTosu = action.tosuList.find(tosu => tosu.selected)
+      const tosuMap = action.tosuList.reduce(
+        (soFar, row) => ({ ...soFar, ...{ [row.id]: row } }),
+        {}
+      )
+      return {
+        selected: selectedTosu.id,
+        ...tosuMap,
+      }
     case 'SELECT_TOSU':
-      return Object.assign(state, { selected: action.tosuId })
+      // Get previously selected and set its state to false
+      var oldSelected = state[state.selected]
+      oldSelected.selected = false
+
+      // Get newly selected and set its state to true
+      var newSelected = state[action.tosuId]
+      newSelected.selected = true
+
+      // Return new state with updated objects for oldSelected and newSelected,
+      // and selected set to new ID.
+      return {
+        ...state,
+        [oldSelected.id]: oldSelected,
+        [newSelected.id]: newSelected,
+        selected: action.tosuId,
+      }
+    case 'CREATE_TOSU':
+      return {
+        ...state,
+        [action.newTosu.id]: action.newTosu,
+        selected: action.newTosu.id,
+      }
     default:
       return state
   }
 }
-
-/* 
- * Will be in the form of:
-  {
-    selected: tosuId,
-    allTosus: {
-      tosuId: { 
-        scoutId,
-        name,
-        selected,
-       }
-    }
-  }
-*/
-const initialState = tosuService.getAll()
+/**
+ * Fetch list of Tosus belonging to the scout and save it in the store
+ */
+export const tosuInitialization = () => dispatch =>
+  tosuService.getAll().then(tosuList =>
+    dispatch({
+      type: 'INIT_TOSU',
+      tosuList,
+    })
+  )
 
 /**
- * Creates an action to select new Tosu
- * @param {String} tosuId - Name of the Tosu
- * @returns action
+ * Select new Tosu and update selection in backend
+ * @param tosuId - ID of the Tosu to be selected
  */
-export const selectTosu = tosuId => ({
-  type: 'SELECT_TOSU',
-  tosuId,
-})
+export const selectTosu = tosuId => dispatch =>
+  tosuService.select(tosuId).then(updatedTosu =>
+    dispatch({
+      type: 'SELECT_TOSU',
+      tosuId: updatedTosu.id,
+    })
+  )
+
+/**
+ * Create new tosu and push to backend
+ * @param tosuName - Name for the new tosu
+ */
+export const createTosu = tosuName => dispatch =>
+  tosuService
+    .create(tosuName)
+    .then(newTosu =>
+      dispatch({
+        type: 'CREATE_TOSU',
+        newTosu,
+      })
+    )
+    .catch(error => console.log(error))
 
 export default reducer
