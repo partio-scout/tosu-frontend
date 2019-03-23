@@ -22,7 +22,8 @@ export class Activities extends React.Component {
       await deleteActivity(activity.id)
       this.props.pofTreeUpdate(this.props.buffer, this.props.events)
       this.props.notify('Aktiviteetti poistettu!', 'success')
-    } catch (exception) {
+    } catch (error) {
+      console.log(error)
       this.props.notify(
         'Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!'
       )

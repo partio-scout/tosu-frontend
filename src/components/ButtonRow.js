@@ -19,6 +19,7 @@ import TosuDialog from './TosuDialog'
 import { viewChange } from '../reducers/viewReducer'
 import { selectTosu } from '../reducers/tosuReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
+import { setLoading } from '../reducers/loadingReducer'
 import PropTypesSchema from './PropTypesSchema'
 
 class ButtonRow extends React.Component {
@@ -46,8 +47,11 @@ class ButtonRow extends React.Component {
   handleTosuSelect = tosuId => {
     this.handleTosuMenuClose()
     if (this.props.tosuMap.selected !== tosuId) {
+      this.props.setLoading(true)
       this.props.selectTosu(tosuId)
-      this.props.eventsInitialization(tosuId)
+      this.props
+        .eventsInitialization(tosuId)
+        .then(() => this.props.setLoading(false))
     }
   }
 
@@ -83,6 +87,7 @@ class ButtonRow extends React.Component {
 
   render() {
     const { anchorEl, startDate, endDate } = this.state
+    const { tosuMap } = this.props
 
     const calendarIcon = (
       <IconButton
@@ -163,7 +168,10 @@ class ButtonRow extends React.Component {
               variant="contained"
               color="secondary"
             >
-              tosun nimi
+              {/* Placeholder untill Tosus are loaded */
+              Object.entries(tosuMap).length === 0
+                ? 'Ladataan...'
+                : tosuMap[tosuMap.selected].name}
             </Button>
           )}
           <Menu
@@ -243,6 +251,7 @@ const mapDispatchToProps = {
   viewChange,
   selectTosu,
   eventsInitialization,
+  setLoading,
 }
 
 export default connect(
