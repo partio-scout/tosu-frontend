@@ -62,12 +62,13 @@ const reducer = (state = [], action) => {
   }
 }
 
-export const eventsInitialization = tosuId => async dispatch => {
-  const events = await eventService.getAll(tosuId)
-  dispatch({
-    type: 'INIT_EVENTS',
-    events,
-  })
+export const eventsInitialization = tosuId => dispatch => {
+  return eventService.getAll(tosuId).then(events =>
+    dispatch({
+      type: 'INIT_EVENTS',
+      events,
+    })
+  )
 }
 
 export const deleteEvent = eventId => async dispatch => {

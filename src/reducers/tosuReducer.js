@@ -41,14 +41,16 @@ const reducer = (state = {}, action) => {
 }
 /**
  * Fetch list of Tosus belonging to the scout and save it in the store
+ * @returns id of the currently selected Tosu
  */
-export const tosuInitialization = () => dispatch =>
-  tosuService.getAll().then(tosuList =>
-    dispatch({
-      type: 'INIT_TOSU',
-      tosuList,
-    })
-  )
+export const tosuInitialization = () => async dispatch => {
+  const tosuList = await tosuService.getAll()
+  dispatch({
+    type: 'INIT_TOSU',
+    tosuList,
+  })
+  return tosuList.find(tosu => tosu.selected).id
+}
 
 /**
  * Select new Tosu and update selection in backend

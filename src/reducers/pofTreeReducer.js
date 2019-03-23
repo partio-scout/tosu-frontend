@@ -158,30 +158,24 @@ const reducer = (state = {}, action) => {
   }
 }
 
-export const pofTreeInitialization = pofJson => {
-  return async dispatch => {
-    dispatch({
-      type: 'INIT_TREE_POF',
-      pofJson,
-    })
-  }
-}
+export const pofTreeInitialization = pofJson => ({
+  type: 'INIT_TREE_POF',
+  pofJson,
+})
 
 export const pofTreeUpdate = (buffer, events) => {
   let usedBuffer = buffer
   if (isTouchDevice()) {
     usedBuffer = { id: 0, activities: [] }
   }
-  return async dispatch => {
-    const existingActivityGuids = arrayActivityGuidsFromBufferAndEvents(
-      usedBuffer,
-      events
-    )
+  const existingActivityGuids = arrayActivityGuidsFromBufferAndEvents(
+    usedBuffer,
+    events
+  )
 
-    dispatch({
-      type: 'SET_TREE_POF',
-      existingActivityGuids,
-    })
+  return {
+    type: 'SET_TREE_POF',
+    existingActivityGuids,
   }
 }
 

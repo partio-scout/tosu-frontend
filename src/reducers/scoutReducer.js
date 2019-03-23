@@ -1,6 +1,5 @@
 import scoutService from '../services/scout'
 import {
-  setGoogleToken,
   removeGoogleToken,
   getScout,
   removeScout,
@@ -12,45 +11,41 @@ const reducer = (state = null, action) => {
       return action.scout
     case 'SCOUT_LOGOUT':
       return null
-    case 'SCOUT_DELETE':
-      return null
-
     default:
       return state
   }
 }
 
-export const scoutGoogleLogin = token => async dispatch => {
-  const scout = await scoutService.findOrCreateScout(token)
-  setGoogleToken(token)
+export const scoutGoogleLogin = token => dispatch =>
+  scoutService.findOrCreateScout(token).then(scout =>
+    dispatch({
+      type: 'SCOUT_LOGIN',
+      scout,
+    })
+  )
 
-  dispatch({
-    type: 'SCOUT_LOGIN',
-    scout,
-  })
-}
+export const readScout = () => ({
+  type: 'SCOUT_LOGIN',
+  scout: getScout(),
+})
 
-export const readScout = () => async dispatch => {
-  const scout = getScout()
-  dispatch({
-    type: 'SCOUT_LOGIN',
-    scout,
-  })
-}
-
-export const scoutLogout = () => async dispatch => {
+export const scoutLogout = () => {
   removeGoogleToken()
   removeScout()
-  dispatch({
+  return {
     type: 'SCOUT_LOGOUT',
-  })
+  }
 }
 
-export const scoutDelete = () => async dispatch => {
-  await scoutService.deleteScout()
-  dispatch({
-    type: 'SCOUT_DELETE',
-  })
+export const scoutDelete = () => dispatch => {
+  scoutService
+    .deleteScout()
+    .then(
+      dispatch({
+        type: 'SCOUT_LOGOUT',
+      })
+    )
+    .catch(error => console.log(error))
 }
 
 export default reducer

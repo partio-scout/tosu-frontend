@@ -7,7 +7,7 @@ const reducer = (state = { text: null, status: null }, action) => {
   return state
 }
 
-export const addStatusMessage = id => dispatch => {
+export const addStatusMessage = id => {
   let text
   if (id === 1) {
     text = 'Valitse ensimmäisenä suoritettava tarppo.'
@@ -17,13 +17,13 @@ export const addStatusMessage = id => dispatch => {
     text = 'Valitse aktiviteetteja'
   }
 
-  dispatch({
+  return {
     type: 'SHOW_MESSAGE',
     text,
-  })
+  }
 }
 
-export const addStatusInfo = status => dispatch => {
+export const addStatusInfo = status => {
   const newStatus = {
     taskgroupDone: status.taskgroupDone,
     firstTaskgroup: status.firstTaskgroup,
@@ -38,10 +38,10 @@ export const addStatusInfo = status => dispatch => {
     warnings: status.warnings,
   }
 
-  dispatch({
+  return {
     type: 'SHOW_STATUS',
     status: newStatus,
-  })
+  }
 }
 
 export default reducer

@@ -30,13 +30,13 @@ const reducer = (state = { id: 0, activities: [] }, action) => {
   }
 }
 
-export const bufferZoneInitialization = () => async dispatch => {
-  const buffer = await activityService.getBufferZoneActivities()
-  dispatch({
-    type: 'INIT_BUFFER',
-    buffer,
-  })
-}
+export const bufferZoneInitialization = () => dispatch =>
+  activityService.getBufferZoneActivities().then(buffer =>
+    dispatch({
+      type: 'INIT_BUFFER',
+      buffer,
+    })
+  )
 
 export const postActivityToBuffer = activity => async dispatch => {
   const responseActivity = await activityService.addActivityToBufferZone(
@@ -48,12 +48,13 @@ export const postActivityToBuffer = activity => async dispatch => {
   })
 }
 
-export const deleteActivityFromBuffer = activityId => async dispatch => {
-  await activityService.deleteActivity(activityId)
+export const deleteActivityFromBuffer = activityId => dispatch => {
+  const action = activityService.deleteActivity(activityId)
   dispatch({
     type: 'DELETE_FROM_BUFFER',
     activityId,
   })
+  return action
 }
 
 export const deleteActivityFromBufferOnlyLocally = activityId => async dispatch => {
