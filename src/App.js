@@ -35,11 +35,7 @@ import PropTypesSchema from './components/PropTypesSchema'
 import filterEvents from './functions/filterEvents'
 
 // Services
-import {
-  getGoogleToken,
-  removeGoogleToken,
-  getScout,
-} from './services/googleToken'
+import { getGoogleToken, getScout } from './services/googleToken'
 
 // Reducers
 import { notify } from './reducers/notificationReducer'
@@ -67,38 +63,44 @@ class App extends Component {
   }
 
   componentDidMount = async () => {
-    // Load pofData and put it in Redux store
     try {
+      // Load pofData and put it in Redux store
+      const pofData = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
+      this.props.pofTreeInitialization(pofData)
+
+      if (getGoogleToken() !== null) {
+        // Create or load existing user based on the googleToken
+        await this.props.scoutGoogleLogin(getGoogleToken())
+
+        // then load user's Tosus
+        const tosuId = await this.props.tosuInitialization()
+
+        // load user's activities which are in buffer
+        // load user's events based on selected Tosu
+        await Promise.all([
+          this.props.eventsInitialization(tosuId),
+          this.props.bufferZoneInitialization(),
+        ])
+
+          // Then update the pofTree with current buffer and loaded events
+          .then(() =>
+            this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+          )
+
+        // then remove activities from buffer if using touch device
+        if (isTouchDevice()) {
+          // Wait for all deletions to finish
+          await Promise.all(
+            this.props.buffer.activities.map(activity =>
+              this.props.deleteActivityFromBuffer(activity.id)
+            )
+          ).catch(error => console.log('Error while emptying buffer', error))
+        }
+      }
     } catch (error) {
       console.log(error)
     }
-    const pofData = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
-    this.props.pofTreeInitialization(pofData)
-    if (getGoogleToken() !== null) {
-      // Create or load existing user based on the googleToken
-      await this.props.scoutGoogleLogin(getGoogleToken())
-      // then load user's Tosus
-      const tosuId = await this.props.tosuInitialization()
-      // load user's activities which are in buffer
-      // load user's events based on selected Tosu
-      await Promise.all([
-        this.props.eventsInitialization(tosuId),
-        this.props.bufferZoneInitialization(),
-      ])
-        // Then update the pofTree with current buffer and loaded events
-        .then(() =>
-          this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-        )
-      // then remove activities from buffer if using touch device
-      if (isTouchDevice()) {
-        // Wait for all deletions to finish
-        await Promise.all(
-          this.props.buffer.activities.map(activity =>
-            this.props.deleteActivityFromBuffer(activity.id)
-          )
-        ).catch(error => console.log('Error while emptying buffer', error))
-      }
-    }
+
     // PartioID login (BROKEN)
     if (getScout() !== null) {
       this.props.readScout() // Reads scout from a cookie. (Has only name)
