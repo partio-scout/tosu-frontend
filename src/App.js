@@ -32,7 +32,6 @@ import FeedbackButton from './components/FeedbackButton'
 import Login from './components/Login'
 import PropTypesSchema from './components/PropTypesSchema'
 // Utils
-import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
 
 // Services
@@ -41,7 +40,6 @@ import {
   removeGoogleToken,
   getScout,
 } from './services/googleToken'
-import { savePofData } from './services/localStorage'
 
 // Reducers
 import { notify } from './reducers/notificationReducer'
@@ -69,70 +67,50 @@ class App extends Component {
   }
 
   componentDidMount = async () => {
-    switch (window.location.pathname) {
-      case '/new-event':
-        this.setState({
-          headerVisible: false,
-          bufferZoneHeight: 0,
-          newEventVisible: false,
-        })
-        break
-      case '/calendar':
-        this.props.viewChange('CALENDAR')
-        break
-      default:
-        break
+    // Load pofData and put it in Redux store
+    try {
+    } catch (error) {
+      console.log(error)
     }
-    await this.checkLoggedIn()
-    // Load pofData, cache it and put it in Redux Store
     const pofData = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
-    savePofData(pofData)
-    await this.props.pofTreeInitialization(pofData)
-
-    if (this.props.scout !== null) {
-      await this.props.tosuInitialization()
+    this.props.pofTreeInitialization(pofData)
+    if (getGoogleToken() !== null) {
+      // Create or load existing user based on the googleToken
+      await this.props.scoutGoogleLogin(getGoogleToken())
+      // then load user's Tosus
+      const tosuId = await this.props.tosuInitialization()
+      // load user's activities which are in buffer
+      // load user's events based on selected Tosu
       await Promise.all([
-        this.props.eventsInitialization(this.props.tosu.selected),
-        this.props.bufferZoneInitialization(), // id tulee userista myöhemmin
-      ]).then(() =>
-        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-      )
-    }
-    // If touch device is used, empty bufferzone so activities that have been left to bufferzone can be added to events
-    if (isTouchDevice()) {
-      const bufferActivities = this.props.buffer.activities
-      const promises = bufferActivities.map(activity =>
-        this.props.deleteActivityFromBuffer(activity.id)
-      )
-      try {
-        await Promise.all(promises)
-      } catch (exception) {
-        console.log('Error in emptying buffer', exception)
+        this.props.eventsInitialization(tosuId),
+        this.props.bufferZoneInitialization(),
+      ])
+        // Then update the pofTree with current buffer and loaded events
+        .then(() =>
+          this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+        )
+      // then remove activities from buffer if using touch device
+      if (isTouchDevice()) {
+        // Wait for all deletions to finish
+        await Promise.all(
+          this.props.buffer.activities.map(activity =>
+            this.props.deleteActivityFromBuffer(activity.id)
+          )
+        ).catch(error => console.log('Error while emptying buffer', error))
       }
     }
-    if (this.props.loading) {
-      this.props.setLoading(false)
+    // PartioID login (BROKEN)
+    if (getScout() !== null) {
+      this.props.readScout() // Reads scout from a cookie. (Has only name)
     }
+
+    // Finish loading after everything above is done
+    this.props.setLoading(false)
   }
 
   setHeaderHeight = height => {
     if (height !== this.state.bufferZoneHeight) {
       this.setState({ bufferZoneHeight: height })
-    }
-  }
-
-  checkLoggedIn = async () => {
-    // Google login
-    if (getGoogleToken() !== null) {
-      try {
-        await this.props.scoutGoogleLogin(getGoogleToken())
-      } catch (exception) {
-        removeGoogleToken()
-      }
-    }
-    // PartioID login
-    if (getScout() !== null) {
-      await this.props.readScout() // Reads scout from a cookie. (Has only name)
     }
   }
 
@@ -265,6 +243,21 @@ const mapStateToProps = state => ({
   tosu: state.tosu,
 })
 
+const mapDispatchToProps = {
+  notify,
+  pofTreeInitialization,
+  pofTreeUpdate,
+  eventsInitialization,
+  bufferZoneInitialization,
+  tosuInitialization,
+  deleteActivityFromBuffer,
+  addStatusInfo,
+  scoutGoogleLogin,
+  readScout,
+  viewChange,
+  setLoading,
+}
+
 App.propTypes = {
   ...PropTypesSchema,
 }
@@ -277,18 +270,5 @@ const AppDnD = DragDropContext(HTML5Backend)(App)
 
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    pofTreeInitialization,
-    pofTreeUpdate,
-    eventsInitialization,
-    bufferZoneInitialization,
-    tosuInitialization,
-    deleteActivityFromBuffer,
-    addStatusInfo,
-    scoutGoogleLogin,
-    readScout,
-    viewChange,
-    setLoading,
-  }
+  mapDispatchToProps
 )(AppDnD)
