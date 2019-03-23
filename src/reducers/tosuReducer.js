@@ -57,12 +57,15 @@ export const tosuInitialization = () => async dispatch => {
  * @param tosuId - ID of the Tosu to be selected
  */
 export const selectTosu = tosuId => dispatch =>
-  tosuService.select(tosuId).then(updatedTosu =>
-    dispatch({
-      type: 'SELECT_TOSU',
-      tosuId: updatedTosu.id,
-    })
-  )
+  tosuService
+    .select(tosuId)
+    .then(updatedTosu =>
+      dispatch({
+        type: 'SELECT_TOSU',
+        tosuId: updatedTosu.id,
+      })
+    )
+    .catch(error => console.log(error))
 
 /**
  * Create new tosu and push to backend

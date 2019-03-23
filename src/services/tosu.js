@@ -22,8 +22,9 @@ const select = async tosuId => {
 }
 
 const create = async tosuName => {
-  const response = await axios.post(`${baseUrl}/${tosuName}`)
-  return response.data
+  const newTosu = await axios.post(`${baseUrl}/${tosuName}`)
+  const selected = await axios.put(`${baseUrl}/select/${newTosu.data.id}`)
+  return selected.data
 }
 
 export default { getAll, select, create }
