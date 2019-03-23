@@ -3,8 +3,8 @@ import { API_ROOT } from '../api-config'
 
 const baseUrl = `${API_ROOT}/events`
 
-const getAll = async userid => {
-  const response = await axios.get(baseUrl)
+const getAll = async tosuId => {
+  const response = await axios.get(`${baseUrl}/${tosuId}`)
   return response.data
 }
 
