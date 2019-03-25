@@ -1,7 +1,7 @@
 // Vendor
-
 import { connect } from 'react-redux'
 import axios from 'axios'
+import PropTypes from 'prop-types'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import isTouchDevice from 'is-touch-device'
@@ -17,7 +17,7 @@ import 'react-sticky-header/styles.css'
 import './react_dates_overrides.css'
 import './stylesheets/index.css'
 import theme from './theme'
-import PropTypes from 'prop-types'
+
 // Components
 import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
@@ -34,13 +34,13 @@ import PropTypesSchema from './components/PropTypesSchema'
 // Utils
 import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
+
 // Services
 import {
   getGoogleToken,
-  removeGoogleToken,
   getScout,
+  removeGoogleToken,
 } from './services/googleToken'
-import { loadCachedPofData, savePofData } from './services/localStorage'
 
 // Reducers
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
@@ -56,6 +56,7 @@ import { viewChange } from './reducers/viewReducer'
 import { setLoading } from './reducers/loadingReducer'
 import eventService from './services/events'
 import activityService from './services/activities'
+import { tosuInitialization } from './reducers/tosuReducer'
 
 import { POF_ROOT } from './api-config'
 import { pofTreeSchema, eventSchema } from './pofTreeSchema'
@@ -103,9 +104,14 @@ class App extends Component {
         console.log('Error in emptying buffer', exception)
       }
     }
-    if (this.props.loading) {
-      this.props.setLoading(false)
+
+    // PartioID login (BROKEN)
+    if (getScout() !== null) {
+      this.props.readScout() // Reads scout from a cookie. (Has only name)
     }
+
+    // Finish loading after everything above is done
+    this.props.setLoading(false)
   }
 
   componentDidUpdate = () => {
@@ -128,9 +134,11 @@ class App extends Component {
     const pofData = pofRequest.data
     const normalizedPof = normalize(pofData, pofTreeSchema)
     this.props.pofTreeInitialization(normalizedPof)
-    const eventDataRaw = await eventService.getAll(this.props.scout.id)
+    const tosuID = await this.props.tosuInitialization()
+    const eventDataRaw = await eventService.getAll(tosuID)
     const eventData = normalize(eventDataRaw, eventSchema).entities
     if (!eventData.activities) eventData.activities = {}
+    if (!eventData.events) eventData.events = {}
     const buffer = await activityService.getBufferZoneActivities(
       this.props.scout.id
     )
@@ -158,7 +166,7 @@ class App extends Component {
   }
 
   toggleDrawer = () => {
-    this.setState({ drawerVisible: !this.state.drawerVisible })
+    this.setState(state => ({ drawerVisible: !state.drawerVisible }))
   }
 
   selectView = value => () => {
@@ -308,6 +316,7 @@ const mapStateToProps = state => ({
   view: state.view,
   loading: state.loading,
   activities: state.activities,
+  tosu: state.tosu,
 })
 
 const mapDispatchToProps = {
@@ -316,12 +325,17 @@ const mapDispatchToProps = {
   eventsInitialization,
   activityInitialization,
   bufferZoneInitialization,
+  tosuInitialization,
   deleteActivityFromBuffer,
   addStatusInfo,
   scoutGoogleLogin,
   readScout,
   viewChange,
   setLoading,
+}
+
+App.propTypes = {
+  ...PropTypesSchema,
 }
 
 const AppDnD = DragDropContext(HTML5Backend)(App)

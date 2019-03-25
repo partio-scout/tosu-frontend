@@ -16,9 +16,10 @@ import {
   DialogContentText,
   DialogTitle,
   Card,
+  FormControlLabel,
+  Switch,
 } from '@material-ui/core'
 
-import ReactTooltip from 'react-tooltip'
 import Warning from '@material-ui/icons/Warning'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'

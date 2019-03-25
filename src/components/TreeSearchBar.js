@@ -134,8 +134,6 @@ class TreeSearchBar extends React.Component {
     const treeSearchBar = () => (
       <TreeSelect
         style={{ width: '100%' }}
-        transitionName="rc-tree-select-dropdown-slide-up"
-        choiceTransitionName="rc-tree-select-selection__choice-zoom"
         dropdownStyle={{
           position: 'absolute',
           maxHeight: 400,
@@ -160,7 +158,7 @@ class TreeSearchBar extends React.Component {
           margin: 10,
           padding: 10,
           backgroundColor: '#d6e8f7',
-          borderRadius: 2,
+          borderRadius: 3,
         }}
       >
         <div style={{ float: 'left', marginRight: 10, marginBottom: 5 }}>

@@ -29,9 +29,8 @@ export const addStatusMessage = id => {
   }
 }
 
-export const addStatusInfo = status => ({
-  type: 'SHOW_STATUS',
-  status: {
+export const addStatusInfo = status => {
+  const newStatus = {
     taskgroupDone: status.taskgroupDone,
     firstTaskgroup: status.firstTaskgroup,
     lastTaskgroup: status.lastTaskgroup,
@@ -43,7 +42,12 @@ export const addStatusInfo = status => ({
     extraTask: status.extraTask,
     dates: status.dates,
     warnings: status.warnings,
-  },
-})
+  }
+
+  return {
+    type: 'SHOW_STATUS',
+    status: newStatus,
+  }
+}
 
 export default reducer

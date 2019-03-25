@@ -4,6 +4,7 @@ const reducer = (state = {}, action) => {
   const newState = Object.assign({}, state)
   switch (action.type) {
     case 'INIT_ACTIVITIES': {
+      console.log(action.activities)
       return action.activities
     }
     case 'ALTER_ACTIVITY': {

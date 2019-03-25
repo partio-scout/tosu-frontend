@@ -21,6 +21,7 @@ import { eventsInitialization } from '../reducers/eventReducer'
 import { activityInitialization } from '../reducers/activityReducer'
 import { pofTreeInitialization } from '../reducers/pofTreeReducer'
 
+import { tosuInitialization } from '../reducers/tosuReducer'
 import PropTypesSchema from './PropTypesSchema'
 
 class Login extends React.Component {
@@ -48,11 +49,9 @@ class Login extends React.Component {
   render() {
     return (
       <div className="Login">
-        {!isTouchDevice() ? (
-          <p className="login-text">Toiminnan suunnittelusovellus</p>
-        ) : (
-          <p className="login-mobile-text">Toiminnan suunnittelusovellus</p>
-        )}
+        <p className={isTouchDevice() ? 'login-mobile-text' : 'login-text'}>
+          Toiminnan suunnittelusovellus
+        </p>
         <GoogleLogin
           className="login-button"
           scope="profile email"
@@ -61,7 +60,6 @@ class Login extends React.Component {
           onFailure={this.googleLoginFail}
         >
           <span className="label">
-            {' '}
             <span className="appbar-button-text">
               Kirjaudu sisään Googlella
             </span>
@@ -72,7 +70,6 @@ class Login extends React.Component {
           href={`${API_ROOT}/scouts/login`}
         >
           <span className="login-button">
-            {' '}
             <span className="appbar-button-text">
               Kirjaudu sisään PartioID:llä
             </span>
@@ -95,6 +92,7 @@ const mapStateToProps = state => ({
   buffer: state.buffer,
   events: state.events,
   activities: state.activities,
+  tosu: state.tosu,
 })
 
 const mapDispatchToProps = {
@@ -103,6 +101,7 @@ const mapDispatchToProps = {
   pofTreeUpdate,
   eventsInitialization,
   activityInitialization,
+  tosuInitialization,
   bufferZoneInitialization,
   deleteActivityFromBuffer,
   scoutGoogleLogin,

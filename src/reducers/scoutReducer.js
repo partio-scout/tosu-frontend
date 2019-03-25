@@ -12,9 +12,6 @@ const reducer = (state = null, action) => {
       return action.scout
     case 'SCOUT_LOGOUT':
       return null
-    case 'SCOUT_DELETE':
-      return null
-
     default:
       return state
   }
@@ -42,12 +39,15 @@ export const scoutLogout = () => {
   }
 }
 
-// Never used...
-// export const scoutDelete = () => {
-//   scoutService.deleteScout()
-//   return {
-//     type: 'SCOUT_DELETE',
-//   }
-// }
+export const scoutDelete = () => dispatch => {
+  scoutService
+    .deleteScout()
+    .then(
+      dispatch({
+        type: 'SCOUT_LOGOUT',
+      })
+    )
+    .catch(error => console.log(error))
+}
 
 export default reducer

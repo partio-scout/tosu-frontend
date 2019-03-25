@@ -2,8 +2,6 @@ import eventService from '../services/events'
 import eventGroupService from '../services/eventgroups'
 import activityService from '../services/activities'
 
-
-
 /**
  * Add activity to a state event
  * @param {Object} state - event state object
@@ -63,13 +61,12 @@ const updateEvent = (state, action) => {
   return newState
 }
 
-
 /**
  * Add event to state hashmap
  * @param {Object} state - state hashmap
  * @param {Object} action - reducer action
  * @param {Object} action.event - event ot add
- * @param {Number} action.event.id - id of the event 
+ * @param {Number} action.event.id - id of the event
  *
  */
 const addEventHelper = (state, action) => {
@@ -80,7 +77,7 @@ const addEventHelper = (state, action) => {
 
 /**
  * Delete event from state hashmap
- * @param {Object} 
+ * @param {Object}
  * @param {Object} action - reducer action
  * @param {Number} action.eventId - Id of the event to be deleted
  */
@@ -142,6 +139,7 @@ export const eventsInitialization = events => async dispatch => {
     events,
   })
 }
+
 /**
  * Delete event from state and backend
  * @param{Number} eventId - id of the event to be removed
@@ -165,7 +163,6 @@ export const deleteSyncedEvent = event => dispatch => {
       type: 'DELETE_EVENT',
       eventId: event.id,
     })
-
     // Add the event back to the list of Kuksa events (to show on the 'Kuksa' page)
     event.id = `kuksa${event.kuksaEventId}`
     event.kuksaEvent = true
@@ -179,7 +176,7 @@ export const deleteSyncedEvent = event => dispatch => {
 
 /**
  * Delete all events in an eventgroup
- * @param {Number} eventgroupId 
+ * @param {Number} eventgroupId
  *
  */
 export const deleteEventGroup = eventGroupId => dispatch => {
@@ -222,7 +219,8 @@ export const addEventFromKuksa = event => dispatch => {
     })
   })
 }
-/* 
+
+/*
  * Edit event in state hashmap
  * @Param {Object} event
  */
@@ -258,11 +256,11 @@ export const addActivityToEvent = (eventId, activity) => dispatch => {
  *
  */
 export const deleteActivityFromEvent = (activityId, eventId) => dispatch => {
-    dispatch({
-      type: 'DELETE_ACTIVITY_FROM_EVENT',
-      activityId,
-      eventId,
-    })
+  dispatch({
+    type: 'DELETE_ACTIVITY_FROM_EVENT',
+    activityId,
+    eventId,
+  })
 }
 
 export const addActivityToEventOnlyLocally = (eventId, activity) => ({

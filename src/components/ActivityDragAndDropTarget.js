@@ -1,7 +1,6 @@
 import { connect } from 'react-redux'
 import React from 'react'
 import { DropTarget } from 'react-dnd'
-import PropTypes from 'prop-types'
 import ItemTypes from '../ItemTypes'
 import DropActivity from '../functions/DropActivity'
 import { notify } from '../reducers/notificationReducer'

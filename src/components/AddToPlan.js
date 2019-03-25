@@ -26,7 +26,10 @@ class AddToPlan extends React.Component {
     this.handleButtonDialogClose()
     try {
       delete this.props.event.id
-      this.props.addEventFromKuksa(this.props.event)
+      await this.props.addEventFromKuksa({
+        ...this.props.event,
+        tosuId: this.props.tosu.selected,
+      })
       this.props.notify('Tapahtuma lisätty suunnitelmaan!', 'success')
     } catch (exception) {
       console.error('Error in adding event to tosu:', exception)
@@ -88,7 +91,14 @@ AddToPlan.propTypes = {
 
 AddToPlan.defaultProps = {}
 
+const mapStateToProps = state => ({
+  tosu: state.tosu,
+})
+
 export default connect(
-  null,
-  mapDispatchToProps
+  mapStateToProps,
+  {
+    notify,
+    addEventFromKuksa,
+  }
 )(AddToPlan)

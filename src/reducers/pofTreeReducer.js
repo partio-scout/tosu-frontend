@@ -1,13 +1,13 @@
 import React from 'react'
 import isTouchDevice from 'is-touch-device'
-import {eventList} from './eventReducer'
+import { eventList } from './eventReducer'
 import { getActivityList } from './activityReducer'
 // helpers
 /*
  * put all picked activities from events and buffer into a string array made of their guid
  * we use that to search/filter from pofdata
  */
-const arrayActivityGuidsFromBufferAndEvents = (activities) => {
+const arrayActivityGuidsFromBufferAndEvents = activities => {
   return getActivityList(activities).map(activity => activity.guid)
 }
 
@@ -113,19 +113,18 @@ const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (
   return root
 }
 
-
-const deepStateCopy = (state) => {
-    const stateCopy = {...state}
-    stateCopy.entities = {...state.entities}
-    stateCopy.entities.activities = {...state.entities.activities}
-    Object.keys(state.entities.activities).forEach(key => {
-        stateCopy.entities.activities[key] = {...state.entities.activities[key] }
-    })
-    stateCopy.entities.tarppo = {...state.entities.tarppo}
-    Object.keys(state.entities.tarppo).forEach(key => {
-        stateCopy.entities.tarppo[key] = {...state.entities.tarppo[key]}
-    })
-    return stateCopy
+const deepStateCopy = state => {
+  const stateCopy = { ...state }
+  stateCopy.entities = { ...state.entities }
+  stateCopy.entities.activities = { ...state.entities.activities }
+  Object.keys(state.entities.activities).forEach(key => {
+    stateCopy.entities.activities[key] = { ...state.entities.activities[key] }
+  })
+  stateCopy.entities.tarppo = { ...state.entities.tarppo }
+  Object.keys(state.entities.tarppo).forEach(key => {
+    stateCopy.entities.tarppo[key] = { ...state.entities.tarppo[key] }
+  })
+  return stateCopy
 }
 
 /**
@@ -168,7 +167,7 @@ export const pofTreeInitialization = pofJson => ({
   pofJson,
 })
 
-export const pofTreeUpdate = (activities) => ({
+export const pofTreeUpdate = activities => ({
   type: 'SET_TREE_POF',
   activities: arrayActivityGuidsFromBufferAndEvents(activities),
 })

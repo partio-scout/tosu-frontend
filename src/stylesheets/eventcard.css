@@ -89,14 +89,6 @@
   color: red;
 }
 
-.event-card-odd {
-  background-color: #d6e8f7;
-}
-
-.event-card-even {
-  background-color: #efeeee;
-}
-
 p.eventTimes::first-letter {
   text-transform: uppercase;
 }

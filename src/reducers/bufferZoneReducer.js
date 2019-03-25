@@ -1,8 +1,8 @@
 import activityService from '../services/activities'
 
 /**
- * Adds an activity to the buffer 
-*/
+ * Adds an activity to the buffer
+ */
 const addToBuffer = (action, state) => {
   const newActivities = state.activities.concat(action.activity.id)
   const newBuffer = Object.assign({}, state)
@@ -23,10 +23,10 @@ const deleteFromBuffer = (action, state) => {
   return leBuffer
 }
 
-const initBuffer = (action) => {
-    const newState = {...action.buffer}
-    newState.activities = action.buffer.activities.map(activity => activity.id)
-    return newState
+const initBuffer = action => {
+  const newState = { ...action.buffer }
+  newState.activities = action.buffer.activities.map(activity => activity.id)
+  return newState
 }
 
 const reducer = (state = { id: 0, activities: [] }, action) => {
@@ -42,18 +42,18 @@ const reducer = (state = { id: 0, activities: [] }, action) => {
   }
 }
 
-export const bufferZoneInitialization = (buffer) => dispatch => {
-    dispatch({
-      type: 'INIT_BUFFER',
-      buffer,
-    })
+export const bufferZoneInitialization = buffer => dispatch => {
+  dispatch({
+    type: 'INIT_BUFFER',
+    buffer,
+  })
 }
 
 export const postActivityToBuffer = activity => dispatch => {
-    dispatch({
-      type: 'ADD_TO_BUFFER',
-      activity,
-    })
+  dispatch({
+    type: 'ADD_TO_BUFFER',
+    activity,
+  })
 }
 
 export const deleteActivityFromBuffer = activityId => dispatch => {

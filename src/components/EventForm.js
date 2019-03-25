@@ -177,11 +177,7 @@ export default class EventForm extends React.Component {
         >
           <Icon color="primary">clear</Icon>
         </IconButton>
-        <ValidatorForm
-          ref="form"
-          onSubmit={this.send}
-          onError={errors => console.log(errors)}
-        >
+        <ValidatorForm ref="form" onSubmit={this.send}>
           <TextValidator
             label="Tapahtuman nimi"
             name="title"

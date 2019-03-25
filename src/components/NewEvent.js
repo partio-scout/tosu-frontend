@@ -51,6 +51,7 @@ class NewEvent extends React.Component {
         endTime: moment(this.state.endTime).format('HH:mm'),
         type: this.state.type,
         information: this.state.information,
+        tosuId: this.props.tosu.selected,
       }
       try {
         await this.sendEventPostRequest(data)
@@ -86,6 +87,7 @@ class NewEvent extends React.Component {
           type: this.state.type,
           information: this.state.information,
           eventGroupId: response.id,
+          tosuId: this.props.tosu.selected,
         }
 
         promises = promises.concat(this.sendEventPostRequest(data))
@@ -204,12 +206,17 @@ NewEvent.propTypes = {
 }
 
 NewEvent.defaultProps = {}
+
+const mapStateToProps = state => ({
+  tosu: state.tosu,
+})
+
 const mapDispatchToProps = {
   addEvent,
   notify,
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(NewEvent)

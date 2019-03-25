@@ -14,13 +14,15 @@ const arrayActivityGuidsFromBufferAndEvents = (
     event.activities.forEach(key => {
       const activity = stateActivities[key]
       // Get information about activity from pofdata
-      const found = getTask(activity.guid, pofTree)
-      // Save the date of the event when activity is planned
-      const savedActivity = Object.assign(
-        { ...found },
-        { date: event.startDate }
-      )
-      activities = activities.concat(savedActivity)
+      if (activity) {
+        const found = getTask(activity.guid, pofTree)
+        // Save the date of the event when activity is planned
+        const savedActivity = Object.assign(
+          { ...found },
+          { date: event.startDate }
+        )
+        activities = activities.concat(savedActivity)
+      }
     })
   })
   return activities
