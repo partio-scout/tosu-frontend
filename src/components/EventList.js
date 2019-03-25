@@ -20,6 +20,7 @@ class EventList extends React.Component {
 
   render() {
     const { events, filter } = this.props
+    console.log(filter)
     const shouldShowAllKuksaEvents = this.state.shouldShowAllKuksaEvents
     /**
      * Determines which events are shown. If filter is set to FUTURE, show all events with end date equal
