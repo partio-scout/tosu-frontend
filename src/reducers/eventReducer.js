@@ -47,9 +47,9 @@ const reducer = (state = [], action) => {
         .filter(event => event.id.toString() !== action.modded.id.toString())
         .concat(action.modded)
     case 'UPDATE_INFO':
-        return state
-          .filter(event => event.id.toString() !== action.modded.id.toString())
-          .concat(action.modded)
+      return state
+        .filter(event => event.id.toString() !== action.modded.id.toString())
+        .concat(action.modded)
 
     case 'ADD_ACTIVITY_TO_EVENT':
       return addToEvent(state, action)
@@ -62,12 +62,13 @@ const reducer = (state = [], action) => {
   }
 }
 
-export const eventsInitialization = userId => async dispatch => {
-  const events = await eventService.getAll(userId)
-  dispatch({
-    type: 'INIT_EVENTS',
-    events,
-  })
+export const eventsInitialization = tosuId => dispatch => {
+  return eventService.getAll(tosuId).then(events =>
+    dispatch({
+      type: 'INIT_EVENTS',
+      events,
+    })
+  )
 }
 
 export const deleteEvent = eventId => async dispatch => {
@@ -85,7 +86,7 @@ export const deleteSyncedEvent = event => async dispatch => {
     eventId: event.id,
   })
   // Add the event back to the list of Kuksa events (to show on the 'Kuksa' page)
-  event.id = `kuksa${  event.kuksaEventId}`
+  event.id = `kuksa${event.kuksaEventId}`
   event.kuksaEvent = true
   event.activities = []
   dispatch({
@@ -121,7 +122,7 @@ export const addEventFromKuksa = event => async dispatch => {
   // Delete the Kuksa event to not shot the same event on multiple pages
   dispatch({
     type: 'DELETE_EVENT',
-    id: `kuksa${  event.kuksaEventId}`,
+    id: `kuksa${event.kuksaEventId}`,
   })
 }
 
@@ -137,7 +138,7 @@ export const editInfo = info => async dispatch => {
   const modded = await eventService.editInfo(info)
   dispatch({
     type: 'UPDATE_INFO',
-    modded
+    modded,
   })
 }
 

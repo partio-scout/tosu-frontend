@@ -16,8 +16,8 @@ class AccountIcon extends React.Component {
   /**
    * Logs out the current user and redirects to the login page
    */
-  forceMyOwnLogout = async () => {
-    await this.props.scoutLogout()
+  forceMyOwnLogout = () => {
+    this.props.scoutLogout()
     window.location = `${API_ROOT}/scouts/logout`
   }
   /**

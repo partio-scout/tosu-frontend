@@ -8,8 +8,8 @@ const reducer = (state = true, action) => {
 }
 
 export const setLoading = bool => ({
-    type: 'SET_LOADING',
-    bool,
-  })
+  type: 'SET_LOADING',
+  bool,
+})
 
 export default reducer

@@ -18,6 +18,7 @@ import {
   deleteActivityFromBuffer,
 } from '../reducers/bufferZoneReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
+import { tosuInitialization } from '../reducers/tosuReducer'
 import PropTypesSchema from './PropTypesSchema'
 
 class Login extends React.Component {
@@ -26,17 +27,24 @@ class Login extends React.Component {
    * @param response response from server
    */
   googleLoginSuccess = async response => {
-    if (this.props.scout === null) {
-      this.props.setLoading(true)
-      await this.props.scoutGoogleLogin(response.tokenId)
-      setGoogleToken(response.tokenId)
-      await Promise.all([
-        this.props.eventsInitialization(),
-        this.props.bufferZoneInitialization(),
-      ])
+    this.props.setLoading(true)
+    await this.props.scoutGoogleLogin(response.tokenId)
+    setGoogleToken(response.tokenId)
+    const tosuId = await this.props.tosuInitialization()
+    await Promise.all([
+      this.props.eventsInitialization(tosuId),
+      this.props.bufferZoneInitialization(),
+    ]).then(() =>
       this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-      this.props.setLoading(false)
+    )
+    if (isTouchDevice()) {
+      await Promise.all(
+        this.props.buffer.activities.map(activity =>
+          this.props.deleteActivityFromBuffer(activity.id)
+        )
+      ).catch(error => console.log('Error while emptying buffer', error))
     }
+    this.props.setLoading(false)
   }
   /**
    * Returns an error message if login is unsuccesful
@@ -48,11 +56,9 @@ class Login extends React.Component {
   render() {
     return (
       <div className="Login">
-        {!isTouchDevice() ? (
-          <p className="login-text">Toiminnan suunnittelusovellus</p>
-        ) : (
-          <p className="login-mobile-text">Toiminnan suunnittelusovellus</p>
-        )}
+        <p className={isTouchDevice() ? 'login-mobile-text' : 'login-text'}>
+          Toiminnan suunnittelusovellus
+        </p>
         <GoogleLogin
           className="login-button"
           scope="profile email"
@@ -61,7 +67,6 @@ class Login extends React.Component {
           onFailure={this.googleLoginFail}
         >
           <span className="label">
-            {' '}
             <span className="appbar-button-text">
               Kirjaudu sisään Googlella
             </span>
@@ -72,7 +77,6 @@ class Login extends React.Component {
           href={`${API_ROOT}/scouts/login`}
         >
           <span className="login-button">
-            {' '}
             <span className="appbar-button-text">
               Kirjaudu sisään PartioID:llä
             </span>
@@ -94,6 +98,7 @@ const mapStateToProps = state => ({
   scout: state.scout,
   buffer: state.buffer,
   events: state.events,
+  tosu: state.tosu,
 })
 
 export default connect(
@@ -102,6 +107,7 @@ export default connect(
     notify,
     pofTreeUpdate,
     eventsInitialization,
+    tosuInitialization,
     bufferZoneInitialization,
     deleteActivityFromBuffer,
     scoutGoogleLogin,

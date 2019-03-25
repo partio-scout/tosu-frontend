@@ -17,15 +17,10 @@ import {
   DialogTitle,
   Card,
   FormControlLabel,
-  TextField,
-  Typography,
   Switch,
-  Collapse,
 } from '@material-ui/core'
 
-import ReactTooltip from 'react-tooltip'
 import Warning from '@material-ui/icons/Warning'
-import DeleteIcon from '@material-ui/icons/Delete'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
 import { Parser } from 'html-to-react'
@@ -48,11 +43,7 @@ import {
   bufferZoneInitialization,
 } from '../reducers/bufferZoneReducer'
 import eventService from '../services/events'
-import planService from '../services/plan'
 import { deletePlan } from '../reducers/planReducer'
-import findActivity from '../functions/findActivity'
-import convertToSimpleActivity from '../functions/activityConverter'
-
 import SuggestionCard from '../components/SuggestionCard'
 import PropTypesSchema from './PropTypesSchema'
 
