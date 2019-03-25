@@ -32,6 +32,7 @@ import FeedbackButton from './components/FeedbackButton'
 import Login from './components/Login'
 import PropTypesSchema from './components/PropTypesSchema'
 // Utils
+import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
 
 // Services
@@ -108,6 +109,15 @@ class App extends Component {
 
     // Finish loading after everything above is done
     this.props.setLoading(false)
+  }
+
+  componentDidUpdate = () => {
+    const status = createStatusMessage(
+      this.props.events,
+      this.props.pofTree,
+      this.props.taskgroup
+    )
+    this.props.addStatusInfo(status)
   }
 
   setHeaderHeight = height => {
