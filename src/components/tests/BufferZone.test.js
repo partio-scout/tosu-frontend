@@ -87,24 +87,18 @@ const tick = () => new Promise(resolve => {
 
 describe('<BufferZone />', () => {
   it("renders nothing if bufferzone doesn't have an id", () => {
-    const wrapper = shallow(testZoneNoBufferId()).dive()
+    const wrapper = shallow(testZoneNoBufferId()).childAt(0).dive()
     expect(wrapper.contains(<div />)).to.equal(true)
   })
 
   it("renders nothing if bufferzone doesn't have activities", () => {
-    const wrapper = shallow(testZoneNoBufferActivities()).dive()
+    const wrapper = shallow(testZoneNoBufferActivities()).childAt(0).dive()
     expect(wrapper.contains(<div />)).to.equal(true)
   })
 
   it('renders an ActivityDragAndDropTarget if bufferzone has an id', () => {
-    const wrapper = shallow(testZone()).dive()
+    const wrapper = shallow(testZone()).childAt(0).dive()
     expect(wrapper.find({ activities: [testActivity] }))
   })
 
-  it('removes activities when clear is clicked', async () => {
-    const wrapper = shallow(testZone()).dive()
-    const button = wrapper.find({ id: 'empty-button' })
-    button.simulate('click', { currentTarget: wrapper })
-    await tick()
-  })
 })
