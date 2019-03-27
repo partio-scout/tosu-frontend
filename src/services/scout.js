@@ -8,9 +8,8 @@ const findOrCreateScout = async token => {
   return response.data
 }
 
-const logout = async () => {
-  const response = await axios.get(`${API_ROOT}/scouts/logout`)
-  return response.data
+const logout = () => {
+  window.location = `${API_ROOT}/scouts/logout`
 }
 
 export default { findOrCreateScout, logout }
