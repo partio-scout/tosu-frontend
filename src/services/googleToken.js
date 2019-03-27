@@ -25,10 +25,6 @@ export const getScout = () => {
   return scout ? JSON.parse(scout) : null
 }
 
-function eraseCookie(name) {
-  document.cookie = `${name}=; Max-Age=-99999999;`
-}
-
 export const removeScout = () => {
-  eraseCookie('scout')
+  document.cookie = 'scout=; Max-Age=-99999999;'
 }

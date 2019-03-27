@@ -23,7 +23,7 @@ import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
 import MobileAppbar from './components/MobileAppbar'
 import ClippedDrawer from './components/ClippedDrawer'
-import NotificationFooter from './components/NotificationFooter'
+import Notification from './components/Notification'
 import EventCard from './components/EventCard'
 import KuksaEventCard from './components/KuksaEventCard'
 import Calendar from './components/Calendar'
@@ -229,7 +229,7 @@ class App extends Component {
                   <DialogTitle>Luo uusi tapahtuma</DialogTitle>
                   <NewEvent closeMe={this.handleClose} />
                 </Dialog>
-                <NotificationFooter />
+                <Notification />
               </div>
             </div>
           </div>

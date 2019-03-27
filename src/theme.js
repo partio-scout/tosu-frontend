@@ -28,11 +28,6 @@ const theme = createMuiTheme({
         fontWeight: 700,
       },
     },
-    MuiButton: {
-      contained: {
-        boxShadow: 'none',
-      },
-    },
   },
 })
 export default theme
