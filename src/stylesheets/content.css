@@ -1,22 +1,5 @@
-.top-bar-left {
-  float: left;
-}
-
-.top-bar-right {
-  float: right;
-}
-
 .loading-bar {
   margin-top: 5px;
-}
-
-.flexbox {
-  display: flex;
-}
-
-.content {
-  padding: 10px 10px 0px;
-  max-height: 100%;
 }
 
 span.label {

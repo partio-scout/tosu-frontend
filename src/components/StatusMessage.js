@@ -236,16 +236,14 @@ const Instruction = ({ statusMessage, taskgroup }) => {
   )
 }
 
-class StatusMessage extends React.Component {
-  render() {
-    return (
-      <Instruction
-        statusMessage={this.props.statusMessage}
-        taskgroup={this.props.taskgroup}
-        style={{ marginTop: 30 }}
-      />
-    )
-  }
+function StatusMessage(props) {
+  return (
+    <Instruction
+      statusMessage={props.statusMessage}
+      taskgroup={props.taskgroup}
+      style={{ marginTop: 30 }}
+    />
+  )
 }
 
 StatusMessage.propTypes = {
@@ -255,8 +253,6 @@ StatusMessage.propTypes = {
 StatusMessage.defaultProps = {}
 
 const mapStateToProps = state => ({
-  handleClose: state.handleClose,
-  handleOpen: state.handleOpen,
   statusMessage: state.statusMessage,
   taskgroup: state.taskgroup,
 })

@@ -33,10 +33,18 @@ const styles = theme => ({
     backgroundColor: '#243265',
     margin: '20px 14px',
   },
+  bufferzone: {
+    marginLeft: 14,
+    marginRight: 14,
+    minHeight: 60,
+    minWidth: 200,
+    borderRadius: 8,
+    display: 'flex',
+    flexFlow: 'row wrap',
+  },
 })
 
 export class BufferZone extends React.Component {
-
   /**
    * Clears the activities from the buffer
    */
@@ -66,7 +74,7 @@ export class BufferZone extends React.Component {
     return (
       <div>
         <ActivityDragAndDropTarget bufferzone parentId={this.props.buffer.id}>
-          <div id="bufferzone">
+          <div className={classes.bufferzone}>
             <Activities
               activities={this.props.buffer.activities}
               bufferzone

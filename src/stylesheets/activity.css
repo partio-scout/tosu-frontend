@@ -20,20 +20,6 @@
   width: 600px;
 }
 
-.action-help {
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  color: #28aae0;
-  margin: 10px 10px 10px 20px;
-  cursor: pointer;
-}
-
-.action-help:hover,
-.action-help:focus {
-  color: #253264;
-}
-
 .connect-drag-source {
   float: left;
   margin: 4px;
