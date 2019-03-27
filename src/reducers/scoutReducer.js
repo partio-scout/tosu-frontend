@@ -29,23 +29,13 @@ export const readScout = () => ({
   scout: getScout(),
 })
 
-export const scoutLogout = () => {
+export const scoutLogout = () => async dispatch => {
   removeGoogleToken()
   removeScout()
-  return {
+  await scoutService.logout()
+  dispatch({
     type: 'SCOUT_LOGOUT',
-  }
-}
-
-export const scoutDelete = () => dispatch => {
-  scoutService
-    .deleteScout()
-    .then(
-      dispatch({
-        type: 'SCOUT_LOGOUT',
-      })
-    )
-    .catch(error => console.log(error))
+  })
 }
 
 export default reducer
