@@ -28,7 +28,6 @@ import EventCard from './components/EventCard'
 import KuksaEventCard from './components/KuksaEventCard'
 import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
-import FeedbackButton from './components/FeedbackButton'
 import Login from './components/Login'
 import PropTypesSchema from './components/PropTypesSchema'
 // Utils
@@ -156,13 +155,6 @@ class App extends Component {
       )
     }
 
-    const mobileMenu = () => (
-      <MobileAppbar
-        setHeaderHeight={this.setHeaderHeight}
-        headerVisible={this.state.headerVisible}
-      />
-    )
-
     const eventsToList = (
       <div className="event-list-container">
         {view === 'KUKSA'}
@@ -187,7 +179,6 @@ class App extends Component {
       </div>
     )
 
-    const dndMenu = () => <AppBar toggleSideBar={this.toggleDrawer} />
     const calendar = (
       <Calendar events={this.props.events} mobile={isTouchDevice()} />
     )
@@ -195,48 +186,57 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-          <div> {isTouchDevice() ? mobileMenu() : dndMenu()} </div>
-          <div className="flexbox">
-            {isTouchDevice() ? null : (
-              <div
-                className={
-                  this.state.drawerVisible ? 'visible-drawer' : 'hidden-drawer'
-                }
-              >
-                <ClippedDrawer />
-              </div>
+          <div style={{ display: 'flex' }}>
+            {isTouchDevice() ? (
+              <MobileAppbar
+                setHeaderHeight={this.setHeaderHeight}
+                headerVisible={this.state.headerVisible}
+              />
+            ) : (
+              <AppBar />
             )}
-            <div id="container" style={{ paddingTop: 0 }}>
-              <div className="content">
-                <ButtonRow
-                  view={this.state.view}
-                  newEvent={this.newEvent}
-                  dateRangeUpdate={this.dateRangeUpdate}
-                  mobile={isTouchDevice()}
-                />
+            <ClippedDrawer />
+            <div
+              style={{
+                padding: theme.spacing.unit * 3,
+                width: '100%',
+                flexGrow: 1,
+                transition: this.props.ui.sideBarVisible
+                  ? theme.transitions.create('margin', {
+                      easing: theme.transitions.easing.sharp,
+                      duration: theme.transitions.duration.leavingScreen,
+                    })
+                  : theme.transitions.create('margin', {
+                      easing: theme.transitions.easing.easeOut,
+                      duration: theme.transitions.duration.enteringScreen,
+                    }),
+                marginLeft: this.props.ui.sideBarVisible ? 0 : -400,
+              }}
+            >
+              <div style={theme.mixins.toolbar} />
+              <ButtonRow
+                view={this.state.view}
+                newEvent={this.newEvent}
+                dateRangeUpdate={this.dateRangeUpdate}
+                mobile={isTouchDevice()}
+              />
+              {this.props.loading ? (
+                <div className="loading-bar">
+                  <LinearProgress />
+                </div>
+              ) : null}
+              {this.props.view === 'CALENDAR' ? calendar : eventsToList}
 
-                {this.props.loading ? (
-                  <div className="loading-bar">
-                    <LinearProgress />
-                  </div>
-                ) : null}
-                {this.props.view === 'CALENDAR' ? calendar : eventsToList}
-
-                <Dialog
-                  open={this.state.newEventVisible}
-                  onClose={this.handleClose}
-                >
-                  <DialogTitle>Luo uusi tapahtuma</DialogTitle>
-                  <NewEvent closeMe={this.handleClose} />
-                </Dialog>
-                <Notification />
-              </div>
+              <Dialog
+                open={this.state.newEventVisible}
+                onClose={this.handleClose}
+              >
+                <DialogTitle>Luo uusi tapahtuma</DialogTitle>
+                <NewEvent closeMe={this.handleClose} />
+              </Dialog>
+              <Notification />
             </div>
           </div>
-          <FeedbackButton
-            feedback_url="https://docs.google.com/forms/d/e/1FAIpQLSddXqlQaFd8054I75s4UZEPeQAh_ardxRl11YYw3b2JBk0Y-Q/viewform"
-            visible={!isTouchDevice()}
-          />
         </div>
       </MuiThemeProvider>
     )
@@ -253,6 +253,7 @@ const mapStateToProps = state => ({
   view: state.view,
   loading: state.loading,
   tosu: state.tosu,
+  ui: state.ui,
 })
 
 const mapDispatchToProps = {

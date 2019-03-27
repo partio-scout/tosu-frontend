@@ -1,53 +1,50 @@
 import React from 'react'
-import Drawer from '@material-ui/core/Drawer'
-import Divider from '@material-ui/core/Divider'
+import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
+import { Drawer, Divider } from '@material-ui/core'
 
+import { setSideBar } from '../reducers/uiReducer'
 import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
 import StatusMessage from './StatusMessage'
+
 import PropTypesSchema from './PropTypesSchema'
 
-const styles = () => ({
+const drawerWidth = 400
+
+const styles = theme => ({
   divider: {
     height: 4,
     backgroundColor: '#243265',
     margin: '20px 14px',
   },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  toolbar: theme.mixins.toolbar,
 })
 
-class ClippedDrawer extends React.Component {
-  state = { showStatusBox: true }
-  /**
-   * Renders statusbox visible
-   */
-  handleOpen = () => {
-    this.setState({ showStatusBox: true })
-  }
-  /**
-   * Hides statusbox
-   */
-  handleClose = () => {
-    this.setState({ showStatusBox: false })
-  }
+function ClippedDrawer(props) {
+  const { classes } = props
 
-  render() {
-    const { classes } = this.props
-    return (
-      <div className="drawer-root">
-        <Drawer variant="permanent" className="drawer-paper">
-          <TreeSearchBar />
-          <Divider variant="middle" className={classes.divider} />
-          <BufferZone />
-          <StatusMessage
-            showStatusBox={this.state.showStatusBox}
-            handleClose={this.handleClose}
-            handleOpen={this.handleOpen}
-          />
-        </Drawer>
-      </div>
-    )
-  }
+  return (
+    <Drawer
+      open={props.ui.sideBarVisible}
+      variant="persistent"
+      className={classes.drawer}
+      classes={{ paper: classes.drawerPaper }}
+    >
+      <div className={classes.toolbar} />
+      <TreeSearchBar />
+      <Divider variant="middle" className={classes.divider} />
+      <BufferZone />
+      <StatusMessage />
+    </Drawer>
+  )
 }
 
 ClippedDrawer.propTypes = {
@@ -56,4 +53,15 @@ ClippedDrawer.propTypes = {
 
 ClippedDrawer.defaultProps = {}
 
-export default withStyles(styles)(ClippedDrawer)
+const mapStateToProps = state => ({
+  ui: state.ui,
+})
+
+const mapDispatchToProps = {
+  setSideBar,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(ClippedDrawer))
