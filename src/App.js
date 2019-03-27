@@ -14,7 +14,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles'
 // CSS
 import 'react-dates/lib/css/_datepicker.css'
 import 'react-sticky-header/styles.css'
-import './react_dates_overrides.css'
+import './stylesheets/react_dates_overrides.css'
 import './stylesheets/index.css'
 import theme from './theme'
 
