@@ -30,6 +30,7 @@ export default class EventForm extends React.Component {
     checked: false,
     repeatCount: 2,
     repeatFrequency: 2,
+    lastDate: this.props.data.lastDate,
     type: this.props.data.type,
     information: this.props.data.information,
   }
@@ -118,6 +119,13 @@ export default class EventForm extends React.Component {
     })
   }
 
+  handleLastDate = date => {
+    this.setState({
+      lastDate: date.toDate(),
+    })
+
+  }
+
   handleTitle = event => {
     this.setState({
       title: event.target.value,
@@ -136,6 +144,14 @@ export default class EventForm extends React.Component {
     })
   }
 
+  countFrequencyTimes(date) {
+
+  }
+
+  countDateFromFrequency(frequency) {
+
+  }
+
   send = async () => {
     await this.props.update(
       this.state.title,
@@ -146,6 +162,7 @@ export default class EventForm extends React.Component {
       this.state.checked,
       this.state.repeatCount,
       this.state.repeatFrequency,
+      this.state.lastDate,
       this.state.type,
       this.state.information
     )
@@ -263,6 +280,23 @@ export default class EventForm extends React.Component {
           ) : null}
           {this.props.allowRepeatedEvent ? (
             <div className="frequent" style={frequentStyle}>
+
+            <SelectValidator
+              name="repeatFrequency"
+              label="Toistumisväli"
+              value={this.state.repeatFrequency}
+              onChange={this.handleFrequency}
+              disabled={!this.state.checked}
+              fullWidth
+            >
+              <MenuItem value={1}>Päivittäin</MenuItem>
+              <MenuItem value={2}>Viikottain</MenuItem>
+              <MenuItem value={3}>Joka toinen viikko</MenuItem>
+              <MenuItem value={4}>Kuukausittain (esim. 12. pvä)</MenuItem>
+            </SelectValidator>
+
+              <p><div>Valitse toistumien lukumäärä tai viimeinen päivämäärä toistumiselle.</div></p>
+
               <TextValidator
                 label="Toistuvien tapahtumien määrä"
                 name="repeatCount"
@@ -278,19 +312,19 @@ export default class EventForm extends React.Component {
               />
               <br />
 
-              <SelectValidator
-                name="repeatFrequency"
-                label="Toistumisväli"
-                value={this.state.repeatFrequency}
-                onChange={this.handleFrequency}
-                disabled={!this.state.checked}
-                fullWidth
-              >
-                <MenuItem value={1}>Päivittäin</MenuItem>
-                <MenuItem value={2}>Viikottain</MenuItem>
-                <MenuItem value={3}>Joka toinen viikko</MenuItem>
-                <MenuItem value={4}>Kuukausittain (esim. 12. pvä)</MenuItem>
-              </SelectValidator>
+              <MuiPickersUtilsProvider utils={MomentUtils}>
+                <ValidatedDatePicker
+                  label="Viimeinen toistumispäivä"
+                  onChange={this.handleLastDate}
+                  name="startDate"
+                  autoOk
+                  cancelLabel="Peruuta"
+                  value={this.state.lastDate === '' ? null : this.state.lastDate}
+                  fullWidth
+                  margin="normal"
+                />
+                </MuiPickersUtilsProvider>
+                <br />
             </div>
           ) : null}
           <br />
