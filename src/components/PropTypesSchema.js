@@ -1,5 +1,22 @@
 import PropTypes from 'prop-types'
 // check "event:", twice, different types
+//
+//
+//
+
+export const eventShape = PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      type: PropTypes.string.isRequired,
+      startDate: PropTypes.string.isRequired,
+      startTime: PropTypes.string.isRequired,
+      endDate: PropTypes.string.isRequired,
+      endTime: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      kuksaEventId: PropTypes.number,
+      synced: PropTypes.bool,
+      activities: PropTypes.arrayOf(PropTypes.string).isRequired,
+    })
+
 const PropTypesSchema = {
   PropTypesCommon: PropTypes.shape({
     // Several files
@@ -176,4 +193,4 @@ const PropTypesSchema = {
   }),
 }
 
-export default PropTypesSchema
+export default { PropTypesSchema, eventShape }
