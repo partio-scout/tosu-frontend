@@ -12,6 +12,8 @@ import ScoutReducer from './reducers/scoutReducer'
 import calendarReducer from './reducers/calendarReducer'
 import viewReducer from './reducers/viewReducer'
 import loadingReducer from './reducers/loadingReducer'
+import activityReducer from './reducers/activityReducer'
+
 import tosuReducer from './reducers/tosuReducer'
 
 const reducer = combineReducers({
@@ -19,6 +21,7 @@ const reducer = combineReducers({
   pofTree: pofTreeReducer,
   buffer: BufferReducer,
   events: EventsReducer,
+  activities: activityReducer,
   plans: PlanReducer,
   statusMessage: StatusMessageReducer,
   taskgroup: TaskgroupReducer,

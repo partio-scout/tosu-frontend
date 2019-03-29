@@ -10,6 +10,7 @@ import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import PropTypesSchema from './PropTypesSchema'
 
 /**
@@ -64,7 +65,6 @@ class Activity extends Component {
 
   render() {
     const { activity, pofActivity, connectDragSource, parentId } = this.props
-
     let lastGuid = 0
     if (pofActivity) {
       const lastParentIndex = pofActivity.parents.length - 1
@@ -153,6 +153,13 @@ const mapStateToProps = state => ({
   events: state.events,
 })
 
+const mapDispatchToProps = {
+  deleteActivityFromEvent,
+  deleteActivityFromBuffer,
+  notify,
+  pofTreeUpdate,
+}
+
 Activity.propTypes = {
   ...PropTypesSchema,
 }
@@ -161,9 +168,5 @@ Activity.defaultProps = {}
 
 export default connect(
   mapStateToProps,
-  {
-    deleteActivityFromEvent,
-    deleteActivityFromBuffer,
-    notify,
-  }
+  mapDispatchToProps
 )(DraggableActivity)

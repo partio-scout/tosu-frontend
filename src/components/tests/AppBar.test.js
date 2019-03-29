@@ -16,8 +16,8 @@ describe('<Appbar />', () => {
         toggleSideBar={jest.fn()}
         classes={{ label: 'wow' }}
       />
-    )
-    expect(wrapper.find(AccountIcon)).to.have.lengthOf(1)
+    ).childAt(0).childAt(1)
+    expect(wrapper.find('Connect(AccountIcon)')).to.have.lengthOf(1)
   })
 
   it('renders a switch for the sidebar', () => {
@@ -31,8 +31,7 @@ describe('<Appbar />', () => {
     const form = wrapper
       .find({ label: 'Piilota suunnittelunäkymä' })
       .dive()
-      .dive()
-    expect(form.find('.toggle-sidebar')).to.have.lengthOf(1)
+    expect(form).to.have.lengthOf(1)
   })
 
   it('initially shows the sidebar', () => {
@@ -46,21 +45,4 @@ describe('<Appbar />', () => {
     expect(wrapper.state('sidebarVisible')).to.be.true
   })
 
-  it('hides the sidebar after switch click', () => {
-    const mockHandler = jest.fn()
-    const wrapper = shallow(
-      <AppBar
-        scout={testScout}
-        toggleSideBar={jest.fn()}
-        classes={{ label: 'wow' }}
-      />
-    )
-    const swich = wrapper
-      .find({ label: 'Piilota suunnittelunäkymä' })
-      .dive()
-      .dive()
-      .find('.toggle-sidebar')
-    swich.simulate('click', { currentTarget: wrapper })
-    expect(wrapper.state('sidebarVisible')).to.be.false
-  })
 })

@@ -16,13 +16,14 @@ const reducer = (state = null, action) => {
   }
 }
 
-export const scoutGoogleLogin = token => dispatch =>
-  scoutService.findOrCreateScout(token).then(scout =>
+export const scoutGoogleLogin = token => async dispatch => {
+  await scoutService.findOrCreateScout(token).then(scout =>
     dispatch({
       type: 'SCOUT_LOGIN',
       scout,
     })
   )
+}
 
 export const readScout = () => ({
   type: 'SCOUT_LOGIN',

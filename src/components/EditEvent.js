@@ -78,7 +78,6 @@ class EditEvent extends React.Component {
     }
     try {
       this.props.editEvent(moddedEvent)
-      this.props.bufferZoneInitialization(0)
       // await eventService.edit(data);
       this.setState({ open: false })
       this.props.notify('Tapahtuman muokkaus onnistui!', 'success')
@@ -171,13 +170,18 @@ class EditEvent extends React.Component {
   }
 }
 
+const mapDispatchToProps = {
+  editEvent,
+  bufferZoneInitialization,
+  notify,
+}
+
 EditEvent.propTypes = {
   ...PropTypesSchema,
 }
 
 EditEvent.defaultProps = {}
-
 export default connect(
   null,
-  { editEvent, bufferZoneInitialization, notify }
+  mapDispatchToProps
 )(withStyles(styles)(EditEvent))

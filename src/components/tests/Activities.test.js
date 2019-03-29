@@ -17,7 +17,9 @@ const mockNotify = jest.fn()
 const mockPofTreeUpdate = jest.fn()
 const mockDeleteActivityFromBuffer = jest.fn()
 const mockDeleteActivityFromEvent = jest.fn()
-
+const mockPofTree = {
+    activities: { 'asdfghsfgasfsdf':{ guid: 'asdfghsfgasfsdf'}}, 
+}
 const testActivity = {
   activityBufferId: 1,
   createdAt: '2019-01-28T08:58:07.557Z',
@@ -41,36 +43,12 @@ describe('<Activities />', () => {
         activities={[testActivity]}
         buffer={{}}
         events={[]}
+        pofTree={mockPofTree}
       />
     )
     expect(
       wrapper.find({ className: 'activity-list' }).children().length
     ).to.equal(1)
   })
-  it('delete function calls deleteactivity and pofTreeUpdate', () => {
-    const wrapper = mount(
-      <Provider store={store}>
-        <Activities
-          bufferzone
-          parentId={1}
-          notify={mockNotify}
-          pofTreeUpdate={mockPofTreeUpdate}
-          deleteActivityFromBuffer={mockDeleteActivityFromBuffer}
-          deleteActivityFromEvent={mockDeleteActivityFromEvent}
-          className="activity-list"
-          activities={[testActivity]}
-          buffer={{}}
-          events={[]}
-        />
-      </Provider>
-    )
-    const activity = wrapper.find({ activity: testActivity }).children()
-    activity
-      .instance()
-      .props.deleteActivity(testActivity)
-      .then(() => {
-        expect(mockDeleteActivityFromBuffer.mock.calls.length).to.equal(1)
-        expect(mockPofTreeUpdate.mock.calls.length).to.equal(1)
-      })
-  })
+
 })

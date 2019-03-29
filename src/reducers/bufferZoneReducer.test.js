@@ -30,7 +30,7 @@ describe('bufferZone reducer', () => {
 
     const newState = reducer(firstState, expectedAction)
 
-    expect(newState.activities[0]).toEqual(activity)
+    expect(newState.activities[0]).toEqual(activity.id)
     expect(newState.activities.length).toEqual(firstState.activities.length + 1)
   })
 

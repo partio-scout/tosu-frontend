@@ -1,21 +1,28 @@
 import moment from 'moment'
-import findActivity from '../functions/findActivity'
+import { getTask } from '../functions/denormalizations'
+import { eventList } from '../reducers/eventReducer'
 
-const arrayActivityGuidsFromBufferAndEvents = (events, pofTree) => {
+const arrayActivityGuidsFromBufferAndEvents = (
+  events,
+  stateActivities,
+  pofTree
+) => {
   let activities = []
 
   // Get all activities that are in one of the events
-  events.forEach(event => {
-    event.activities.forEach(activity => {
+  eventList(events).forEach(event => {
+    event.activities.forEach(key => {
+      const activity = stateActivities[key]
       // Get information about activity from pofdata
-      const found = findActivity(activity, pofTree)
-
-      // Save the date of the event when activity is planned
-      const savedActivity = Object.assign(
-        { ...found },
-        { date: event.startDate }
-      )
-      activities = activities.concat(savedActivity)
+      if (activity) {
+        const found = getTask(activity.guid, pofTree)
+        // Save the date of the event when activity is planned
+        const savedActivity = Object.assign(
+          { ...found },
+          { date: event.startDate }
+        )
+        activities = activities.concat(savedActivity)
+      }
     })
   })
   return activities
@@ -259,9 +266,10 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
   return status
 }
 
-const createStatusMessage = (events, pofTree, taskgroup) => {
+const createStatusMessage = (events, pofTree, taskgroup, activities) => {
   const selectedActivities = arrayActivityGuidsFromBufferAndEvents(
     events,
+    activities,
     pofTree
   )
 

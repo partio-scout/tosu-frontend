@@ -45,6 +45,9 @@ import {
 import eventService from '../services/events'
 import { deletePlan } from '../reducers/planReducer'
 import SuggestionCard from '../components/SuggestionCard'
+import { getTask } from '../functions/denormalizations'
+import { getActivityList } from '../reducers/activityReducer'
+// Warning icon
 import PropTypesSchema from './PropTypesSchema'
 
 const warning = (
@@ -84,7 +87,7 @@ class EventCard extends React.Component {
         this.props.notify('Aktiviteetin lisäämisessä tapahtui virhe!')
       }
     }
-    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+    this.props.pofTreeUpdate(this.props.activities)
   }
   /**
    *  Deletes all activities from the local buffer and updates the pofTree
@@ -102,7 +105,7 @@ class EventCard extends React.Component {
       }
     }
 
-    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+    this.props.pofTreeUpdate(this.props.activities)
   }
   /**
    * Checks whether a given value is part of a pofTree using breath-first-search
@@ -153,7 +156,6 @@ class EventCard extends React.Component {
   /* creates a new event with modified information and sends it to eventReducer's editEvent method */
   changeInfo = async event => {
     event.preventDefault()
-
     const moddedEvent = {
       id: this.props.event.id,
       title: this.props.event.title,
@@ -163,8 +165,8 @@ class EventCard extends React.Component {
       endTime: this.props.event.endTime,
       type: this.props.event.type,
       information: event.target.children[2].value,
+      activities: this.props.event.activities,
     }
-    this.props.bufferZoneInitialization(0)
     this.props.editEvent(moddedEvent)
     this.setState({ editMode: false })
   }
@@ -249,24 +251,14 @@ class EventCard extends React.Component {
         </Dialog>
       </div>
     )
-    const syncToKuksaSwitch = (
-      <FormControlLabel
-        control={
-          <Switch
-            checked={this.state.syncToKuksa}
-            onClick={this.handleSyncSwitchClick}
-            color="primary"
-          />
-        }
-        label="Synkronoi Kuksaan"
-      />
-    )
 
     const touchDeviceNotExpanded = (
       <CardContent style={this.state.expanded ? {} : { padding: '3px' }}>
         <div className="mobile-event-card-media">
           <Activities
-            activities={this.props.event.activities}
+            activities={this.props.event.activities.map(
+              key => this.props.activities[key]
+            )}
             bufferzone={false}
             parentId={this.props.event.id}
           />
@@ -304,7 +296,9 @@ class EventCard extends React.Component {
       <CardContent style={this.state.expanded ? {} : { padding: '3px 10px' }}>
         <div className="activity-header">
           <Activities
-            activities={this.props.event.activities}
+            activities={this.props.event.activities.map(
+              key => this.props.activities[key]
+            )}
             bufferzone={false}
             parentId={this.props.event.id}
             minimal
@@ -370,7 +364,6 @@ class EventCard extends React.Component {
     }
     const expanded = (
       <CardContent>
-        {syncConfirmDialog}
         <div className="eventTimes">
           <span>{event.type} alkaa:</span>{' '}
           {moment(event.startDate)
@@ -394,24 +387,28 @@ class EventCard extends React.Component {
         <div> {informationContainer()} </div>
         <b>
           <Activities
-            activities={this.props.event.activities}
+            activities={this.props.event.activities.map(
+              key => this.props.activities[key]
+            )}
             bufferzone={false}
             parentId={this.props.event.id}
           />
         </b>
         <br style={{ clear: 'both' }} />{' '}
-        {event.activities.map(activity =>
-          activity.plans.map(plan => (
-            <div key={plan.id}>
-              {' '}
-              <SuggestionCard
-                plan={plan}
-                activity={activity}
-                event={this.props.event}
-              />{' '}
-            </div>
-          ))
-        )}{' '}
+        {event.activities.map(key => {
+          const activity = this.props.activities[key]
+          if (activity) {
+            return activity.plans.map(plan => (
+              <div key={plan.id}>
+                <SuggestionCard
+                  plan={plan}
+                  activity={activity}
+                  event={this.props.event}
+                />
+              </div>
+            ))
+          }
+        })}
       </CardContent>
     )
     return (
@@ -494,20 +491,23 @@ const mapStateToProps = state => ({
   taskgroup: state.taskgroup,
   status: state.statusMessage.status,
   plans: state.plans,
+  activities: state.activities,
 })
+
+const mapDispatchToProps = {
+  notify,
+  editEvent,
+  deletePlan,
+  deleteActivityFromEvent,
+  bufferZoneInitialization,
+  addActivityToEventOnlyLocally,
+  deleteActivityFromEventOnlyLocally,
+  postActivityToBufferOnlyLocally,
+  deleteActivityFromBufferOnlyLocally,
+  pofTreeUpdate,
+}
 
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    editEvent,
-    deletePlan,
-    deleteActivityFromEvent,
-    bufferZoneInitialization,
-    addActivityToEventOnlyLocally,
-    deleteActivityFromEventOnlyLocally,
-    postActivityToBufferOnlyLocally,
-    deleteActivityFromBufferOnlyLocally,
-    pofTreeUpdate,
-  }
+  mapDispatchToProps
 )(EventCard)

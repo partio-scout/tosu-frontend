@@ -10,7 +10,7 @@ import { Dialog, DialogTitle, LinearProgress } from '@material-ui/core'
 import moment from 'moment'
 import 'react-dates/initialize'
 import { MuiThemeProvider } from '@material-ui/core/styles'
-
+import { normalize } from 'normalizr'
 // CSS
 import 'react-dates/lib/css/_datepicker.css'
 import 'react-sticky-header/styles.css'
@@ -36,23 +36,30 @@ import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
 
 // Services
-import { getGoogleToken, getScout } from './services/googleToken'
+import {
+  getGoogleToken,
+  getScout,
+  removeGoogleToken,
+} from './services/googleToken'
 
 // Reducers
-import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import {
   bufferZoneInitialization,
   deleteActivityFromBuffer,
 } from './reducers/bufferZoneReducer'
-import { eventsInitialization } from './reducers/eventReducer'
+import { eventsInitialization, eventList } from './reducers/eventReducer'
+import { activityInitialization } from './reducers/activityReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutGoogleLogin, readScout } from './reducers/scoutReducer'
 import { viewChange } from './reducers/viewReducer'
 import { setLoading } from './reducers/loadingReducer'
+import eventService from './services/events'
+import activityService from './services/activities'
 import { tosuInitialization } from './reducers/tosuReducer'
 
 import { POF_ROOT } from './api-config'
+import { pofTreeSchema, eventSchema } from './pofTreeSchema'
 
 class App extends Component {
   state = {
@@ -64,42 +71,38 @@ class App extends Component {
   }
 
   componentDidMount = async () => {
-    try {
-      // Load pofData and put it in Redux store
-      const pofData = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
-      this.props.pofTreeInitialization(pofData)
+    switch (window.location.pathname) {
+      case '/new-event':
+        this.setState({
+          headerVisible: false,
+          bufferZoneHeight: 0,
+          newEventVisible: false,
+        })
+        break
+      case '/calendar':
+        this.props.viewChange('CALENDAR')
+        break
+      default:
+        break
+    }
+    await this.checkLoggedIn()
+    //let pofData = loadCachedPofData()
+    if (this.props.scout !== null) {
+      await this.initialization()
+      this.props.pofTreeUpdate(this.props.activities)
+    }
 
-      if (getGoogleToken() !== null) {
-        // Create or load existing user based on the googleToken
-        await this.props.scoutGoogleLogin(getGoogleToken())
-
-        // then load user's Tosus
-        const tosuId = await this.props.tosuInitialization()
-
-        // load user's activities which are in buffer
-        // load user's events based on selected Tosu
-        await Promise.all([
-          this.props.eventsInitialization(tosuId),
-          this.props.bufferZoneInitialization(),
-        ])
-
-          // Then update the pofTree with current buffer and loaded events
-          .then(() =>
-            this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-          )
-
-        // then remove activities from buffer if using touch device
-        if (isTouchDevice()) {
-          // Wait for all deletions to finish
-          await Promise.all(
-            this.props.buffer.activities.map(activity =>
-              this.props.deleteActivityFromBuffer(activity.id)
-            )
-          ).catch(error => console.log('Error while emptying buffer', error))
-        }
+    // If touch device is used, empty bufferzone so activities that have been left to bufferzone can be added to events
+    if (isTouchDevice()) {
+      const bufferActivities = this.props.buffer.activities
+      const promises = bufferActivities.map(activity =>
+        this.props.deleteActivityFromBuffer(activity.id)
+      )
+      try {
+        await Promise.all(promises)
+      } catch (exception) {
+        console.log('Error in emptying buffer', exception)
       }
-    } catch (error) {
-      console.log(error)
     }
 
     // PartioID login (BROKEN)
@@ -115,7 +118,8 @@ class App extends Component {
     const status = createStatusMessage(
       this.props.events,
       this.props.pofTree,
-      this.props.taskgroup
+      this.props.taskgroup,
+      this.props.activities
     )
     this.props.addStatusInfo(status)
   }
@@ -123,6 +127,41 @@ class App extends Component {
   setHeaderHeight = height => {
     if (height !== this.state.bufferZoneHeight) {
       this.setState({ bufferZoneHeight: height })
+    }
+  }
+  initialization = async () => {
+    const pofRequest = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
+    const pofData = pofRequest.data
+    const normalizedPof = normalize(pofData, pofTreeSchema)
+    this.props.pofTreeInitialization(normalizedPof)
+    const tosuID = await this.props.tosuInitialization()
+    const eventDataRaw = await eventService.getAll(tosuID)
+    const eventData = normalize(eventDataRaw, eventSchema).entities
+    if (!eventData.activities) eventData.activities = {}
+    if (!eventData.events) eventData.events = {}
+    const buffer = await activityService.getBufferZoneActivities(
+      this.props.scout.id
+    )
+    this.props.activityInitialization(
+      Object.keys(eventData.activities).map(key => eventData.activities[key]),
+      buffer.activities
+    )
+    this.props.eventsInitialization(eventData.events)
+    this.props.bufferZoneInitialization(buffer)
+  }
+
+  checkLoggedIn = async () => {
+    // Google login
+    if (getGoogleToken() !== null) {
+      try {
+        await this.props.scoutGoogleLogin(getGoogleToken())
+      } catch (exception) {
+        removeGoogleToken()
+      }
+    }
+    // PartioID login
+    if (getScout() !== null) {
+      this.props.readScout() // Reads scout from a cookie. (Has only name)
     }
   }
 
@@ -144,14 +183,25 @@ class App extends Component {
   render() {
     const view = this.props.view
     const { startDate, endDate } = this.state
-    const initialEvents = this.props.events
+    const initialEvents = () => {
+      const events = eventList(this.props.events)
+      events.forEach(event => {
+        event.activities = event.activities.map(
+          key => this.props.activities[key]
+        )
+      })
+      return events
+    }
     const eventsToShow = () =>
-      filterEvents(view, initialEvents, startDate, endDate)
+      filterEvents(view, initialEvents(), startDate, endDate)
     let odd = true
     if (this.props.scout === null) {
       return (
         <div className="Login">
-          <Login token="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com" />
+          <Login
+            token="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com"
+            initialization={this.initialization}
+          />
         </div>
       )
     }
@@ -171,7 +221,12 @@ class App extends Component {
             isTouchDevice() ? 'mobile-event-list event-list' : 'event-list'
           }
         >
-          {eventsToShow().map(event => {
+          {filterEvents(
+            view,
+            eventList(this.props.events),
+            startDate,
+            endDate
+          ).map(event => {
             odd = !odd
             return (
               <li className="event-list-item" key={event.id ? event.id : 0}>
@@ -243,6 +298,14 @@ class App extends Component {
   }
 }
 
+App.propTypes = {
+  ...PropTypesSchema,
+}
+
+App.defaultProps = {
+  scout: PropTypes.shape({ id: '' }),
+}
+
 const mapStateToProps = state => ({
   notification: state.notification,
   buffer: state.buffer,
@@ -252,14 +315,15 @@ const mapStateToProps = state => ({
   scout: state.scout,
   view: state.view,
   loading: state.loading,
+  activities: state.activities,
   tosu: state.tosu,
 })
 
 const mapDispatchToProps = {
-  notify,
   pofTreeInitialization,
   pofTreeUpdate,
   eventsInitialization,
+  activityInitialization,
   bufferZoneInitialization,
   tosuInitialization,
   deleteActivityFromBuffer,
@@ -272,10 +336,6 @@ const mapDispatchToProps = {
 
 App.propTypes = {
   ...PropTypesSchema,
-}
-
-App.defaultProps = {
-  scout: PropTypes.shape({ id: '' }),
 }
 
 const AppDnD = DragDropContext(HTML5Backend)(App)

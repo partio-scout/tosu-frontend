@@ -7,6 +7,8 @@ import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
+import { getTask } from '../functions/denormalizations'
+import { deleteActivity } from '../reducers/activityReducer'
 import PropTypesSchema from './PropTypesSchema'
 
 export class Activities extends React.Component {
@@ -16,14 +18,15 @@ export class Activities extends React.Component {
    */
   deleteActivity = async activity => {
     try {
-      const deleteActivity = this.props.bufferzone
+      const deleteActivityFromParent = this.props.bufferzone
         ? this.props.deleteActivityFromBuffer
         : this.props.deleteActivityFromEvent
-      await deleteActivity(activity.id)
-      this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+      await deleteActivityFromParent(activity.id, activity.eventId)
+      this.props.deleteActivity(activity.id)
+      this.props.pofTreeUpdate(this.props.stateActivities)
       this.props.notify('Aktiviteetti poistettu!', 'success')
-    } catch (error) {
-      console.log(error)
+    } catch (exception) {
+      console.log(exception)
       this.props.notify(
         'Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!'
       )
@@ -35,7 +38,7 @@ export class Activities extends React.Component {
     if (this.props.activities) {
       rows = this.props.activities.map(activity => {
         const pofActivity = convertToSimpleActivity(
-          findActivity(activity, this.props.pofTree)
+          getTask(activity.guid, this.props.pofTree)
         )
         return pofActivity === null ? (
           undefined
@@ -71,14 +74,18 @@ const mapStateToProps = state => ({
   buffer: state.buffer,
   events: state.events,
   pofTree: state.pofTree,
+  stateActivities: state.activities,
 })
+
+const mapDispatchToProps = {
+  notify,
+  pofTreeUpdate,
+  deleteActivityFromBuffer,
+  deleteActivityFromEvent,
+  deleteActivity,
+}
 
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    pofTreeUpdate,
-    deleteActivityFromBuffer,
-    deleteActivityFromEvent,
-  }
+  mapDispatchToProps
 )(Activities)

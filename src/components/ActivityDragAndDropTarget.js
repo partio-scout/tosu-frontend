@@ -14,6 +14,8 @@ import {
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally,
 } from '../reducers/eventReducer'
+import { updateActivity } from '../reducers/activityReducer'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import PropTypesSchema from './PropTypesSchema'
 /**
  * Collects an element and allows it to be dropped to a container.
@@ -54,7 +56,20 @@ const DroppableActivityDragAndDropTarget = DropTarget(
 const mapStateToProps = state => ({
   buffer: state.buffer,
   events: state.events,
+  activities: state.activities,
 })
+
+const mapDispatchToProps = {
+  notify,
+  deleteActivityFromEventOnlyLocally,
+  addActivityToEventOnlyLocally,
+  deleteActivityFromBufferOnlyLocally,
+  postActivityToBufferOnlyLocally,
+  pofTreeUpdate,
+  deleteActivityFromBuffer,
+  deleteActivityFromEvent,
+  updateActivity,
+}
 
 ActivityDragAndDropTarget.propTypes = {
   ...PropTypesSchema,
@@ -64,13 +79,5 @@ ActivityDragAndDropTarget.defaultProps = {}
 
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    deleteActivityFromEventOnlyLocally,
-    addActivityToEventOnlyLocally,
-    deleteActivityFromBufferOnlyLocally,
-    postActivityToBufferOnlyLocally,
-    deleteActivityFromBuffer,
-    deleteActivityFromEvent,
-  }
+  mapDispatchToProps
 )(DroppableActivityDragAndDropTarget)

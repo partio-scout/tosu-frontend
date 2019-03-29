@@ -96,11 +96,12 @@ KuksaEventCard.propTypes = {
   ...PropTypesSchema,
 }
 
+const mapDispatchToProps = {
+  notify,
+}
 KuksaEventCard.defaultProps = {}
 
 export default connect(
   null,
-  {
-    notify,
-  }
+  mapDispatchToProps
 )(KuksaEventCard)

@@ -9,6 +9,7 @@ import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import StatusMessage from './StatusMessage'
 import { createStatusMessage } from '../utils/createStatusMessage'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import PropTypesSchema from './PropTypesSchema'
 
 class MobileAppbar extends React.Component {
@@ -154,14 +155,17 @@ MobileAppbar.propTypes = {
   ...PropTypesSchema,
 }
 
+const mapDispatchToProps = {
+  notify,
+  addStatusMessage,
+  selectTaskgroup,
+  pofTreeUpdate,
+  emptyTaskgroup,
+}
+
 MobileAppbar.defaultProps = {}
 
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    addStatusMessage,
-    selectTaskgroup,
-    emptyTaskgroup,
-  }
+  mapDispatchToProps
 )(MobileAppbar)
