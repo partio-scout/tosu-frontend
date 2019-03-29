@@ -30,13 +30,9 @@ const reducer = (state = {}, action) => {
         selected: action.tosuId,
       }
     case 'CREATE_TOSU':
-      var oldSelected = state[state.selected]
-      oldSelected.selected = false
       return {
         ...state,
-        [action.newTosu.id]: action.newTosu,
-        selected: action.newTosu.id,
-        [oldSelected.id]: oldSelected,
+        [action.newTosu.id]: {...action.newTosu, selected:false},
       }
     default:
       return state

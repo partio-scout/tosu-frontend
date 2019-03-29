@@ -185,6 +185,7 @@ class ButtonRow extends React.Component {
               onClick={e => this.setState({ anchorEl: e.currentTarget })}
               variant="contained"
               color="secondary"
+              disabled={this.props.loading}
             >
               {/* Placeholder untill Tosus are loaded */
               Object.entries(tosuMap).length === 0
@@ -266,6 +267,7 @@ const mapStateToProps = state => ({
   activities: state.activities,
   buffer: state.buffer,
   scout: state.scout,
+  loading: state.loading,
 })
 
 const mapDispatchToProps = {

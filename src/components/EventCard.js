@@ -397,17 +397,18 @@ class EventCard extends React.Component {
         <br style={{ clear: 'both' }} />{' '}
         {event.activities.map(key => {
           const activity = this.props.activities[key]
-          return activity.plans.map(plan => (
-            <div key={plan.id}>
-              {' '}
-              <SuggestionCard
-                plan={plan}
-                activity={activity}
-                event={this.props.event}
-              />{' '}
-            </div>
-          ))
-        })}{' '}
+          if (activity) {
+            return activity.plans.map(plan => (
+              <div key={plan.id}>
+                <SuggestionCard
+                  plan={plan}
+                  activity={activity}
+                  event={this.props.event}
+                />
+              </div>
+            ))
+          }
+        })}
       </CardContent>
     )
     return (
