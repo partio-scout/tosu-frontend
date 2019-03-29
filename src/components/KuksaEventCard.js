@@ -78,12 +78,12 @@ class KuksaEventCard extends React.Component {
             <CardContent>
               <h2>{event.title}</h2>
               <p className="eventTimes">
-                <span>{event.type} alkaa:</span>{' '}
-                {moment(event.startDate).format('D.M.YYYY')} kello{' '}
+                <span>{event.type} alkaa:</span>
+                {moment(event.startDate).format('D.M.YYYY')} kello
                 {event.startTime}
               </p>
               <p className="eventTimes">
-                <span>{event.type} päättyy:</span>{' '}
+                <span>{event.type} päättyy:</span>
                 {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
               </p>
               <p>{information}</p>

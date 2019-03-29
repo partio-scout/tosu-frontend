@@ -417,17 +417,17 @@ class EventCard extends React.Component {
       <CardContent>
         {syncConfirmDialog}
         <div className="eventTimes">
-          <span>{event.type} alkaa:</span>{' '}
+          <span>{event.type} alkaa:</span>
           {moment(event.startDate)
             .locale('fi')
-            .format('ddd D.M.YYYY')}{' '}
+            .format('ddd D.M.YYYY')}
           kello {event.startTime.substring(0, 5)}
         </div>
         <div className="eventTimes">
-          <span>{event.type} päättyy:</span>{' '}
+          <span>{event.type} päättyy:</span>
           {moment(event.endDate)
             .locale('fi')
-            .format('ddd D.M.YYYY')}{' '}
+            .format('ddd D.M.YYYY')}
           kello {event.endTime.substring(0, 5)}
         </div>
         {this.state.editMode ? null : (
@@ -444,19 +444,18 @@ class EventCard extends React.Component {
             parentId={this.props.event.id}
           />
         </b>
-        <br style={{ clear: 'both' }} />{' '}
+        <br style={{ clear: 'both' }} />
         {event.activities.map(activity =>
           activity.plans.map(plan => (
             <div key={plan.id}>
-              {' '}
               <SuggestionCard
                 plan={plan}
                 activity={activity}
                 event={this.props.event}
-              />{' '}
+              />
             </div>
           ))
-        )}{' '}
+        )}
       </CardContent>
     )
     return (

@@ -53,9 +53,9 @@ export class BufferZone extends React.Component {
       <div>
         <ActivityDragAndDropTarget bufferzone parentId={this.props.buffer.id}>
           <div className={classes.bufferzone}>
-            <div style={{ width: '100%', marginBottom: 15 }}>
+            <div style={{ width: '100%', margin: '0 4px 10px' }}>
               <Typography variant="h6" inline gutterBottom>
-                Aktiviteetit:
+                Aktiviteetit
               </Typography>
               <Button
                 variant="outlined"

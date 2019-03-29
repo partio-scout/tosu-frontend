@@ -2,7 +2,13 @@ import React from 'react'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { DateRangePicker } from 'react-dates'
-import { Button, Icon, IconButton, withStyles } from '@material-ui/core'
+import {
+  Button,
+  Icon,
+  IconButton,
+  withStyles,
+  Typography,
+} from '@material-ui/core'
 import { viewChange } from '../reducers/uiReducer'
 import PropTypesSchema from './PropTypesSchema'
 
@@ -94,7 +100,9 @@ class ButtonRow extends React.Component {
           className={classes.dateRangeContainer}
           style={ui.view === 'CALENDAR' ? { display: 'none' } : {}}
         >
-          Rajaa tapahtumia:
+          <Typography inline style={{ margin: '0 10px 0 4px' }}>
+            Rajaa tapahtumia
+          </Typography>
           <DateRangePicker
             startDateId="startDate"
             endDateId="endDate"

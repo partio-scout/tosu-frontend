@@ -43,7 +43,7 @@ const Instruction = ({ statusMessage, taskgroup }) => {
     <div style={{ fontSize: '0.8rem', lineHeight: '1.6rem' }}>
       <p>
         <h2>
-          {taskgroup.title}{' '}
+          {taskgroup.title}
           {statusMessage.status.taskgroupDone ? <span>(valmis)</span> : null}
         </h2>
 
@@ -69,7 +69,7 @@ const Instruction = ({ statusMessage, taskgroup }) => {
     <div style={{ fontSize: '0.8rem', lineHeight: '1.4rem' }}>
       <div style={{ marginBottom: 0 }}>
         <h2>
-          {taskgroup.title}{' '}
+          {taskgroup.title}
           {statusMessage.status.taskgroupDone ? <span>(valmis)</span> : null}
         </h2>
 
@@ -199,11 +199,11 @@ const Instruction = ({ statusMessage, taskgroup }) => {
         <br />
         Suhde toiseen, valittu {statusMessage.status.extraTask.suhdeToiseen}
         <br />
-        Suhde yhteiskuntaan, valittu{' '}
+        Suhde yhteiskuntaan, valittu
         {statusMessage.status.extraTask.suhdeYhteiskuntaan}
         <br />
-        Suhde ympäristöön, valittu{' '}
-        {statusMessage.status.extraTask.suhdeYmparistoon}{' '}
+        Suhde ympäristöön, valittu
+        {statusMessage.status.extraTask.suhdeYmparistoon}
       </p>
     </div>
   )

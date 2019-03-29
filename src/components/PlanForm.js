@@ -68,13 +68,13 @@ class PlanForm extends React.Component {
                 <br />
                 <strong>Taitoalueet:</strong> {activity.taitoalueet.join(', ')}
                 <br />
-                <strong>Kasvatustavoitteet:</strong>{' '}
+                <strong>Kasvatustavoitteet:</strong>
                 {activity.kasvatustavoitteet.join(', ')}
                 <br />
-                <strong>Johtamistaidot:</strong>{' '}
+                <strong>Johtamistaidot:</strong>
                 {activity.johtamistaito.join(', ')}
                 <br />
-                <strong>Pakollisuus:</strong>{' '}
+                <strong>Pakollisuus:</strong>
                 {activity.mandatory ? 'Pakollinen ' : 'Ei pakollinen '}
                 <img
                   src={activity.mandatoryIconUrl}
@@ -89,7 +89,7 @@ class PlanForm extends React.Component {
                 <strong>Kuvaus: </strong> {this.stripHtml(activity.content)}
               </p>
               <p>
-                <strong>Johtajan tehtävät: </strong>{' '}
+                <strong>Johtajan tehtävät: </strong>
                 {this.stripHtml(activity.leader_tasks)}
               </p>
             </div>

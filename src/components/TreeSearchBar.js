@@ -165,7 +165,7 @@ class TreeSearchBar extends React.Component {
     return (
       <div
         style={{
-          margin: 10,
+          margin: 14,
           padding: 10,
           backgroundColor: '#d6e8f7',
           borderRadius: 3,

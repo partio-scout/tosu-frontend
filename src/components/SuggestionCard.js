@@ -50,8 +50,7 @@ class SuggestionCard extends React.Component {
           <CardHeader
             action={
               <IconButton onClick={this.deleteClick}>
-                {' '}
-                <DeleteIcon />{' '}
+                <DeleteIcon />
               </IconButton>
             }
             title={plan.title}
