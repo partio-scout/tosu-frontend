@@ -8,6 +8,7 @@ import {
   Collapse,
   IconButton,
   CardContent,
+  withStyles,
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
@@ -16,6 +17,12 @@ import { Parser } from 'html-to-react'
 import AddToPlan from './AddToPlan'
 import { notify } from '../reducers/notificationReducer'
 import PropTypesSchema from './PropTypesSchema'
+
+const styles = {
+  arrowUp: {
+    transform: 'rotate(180deg)',
+  },
+}
 
 class KuksaEventCard extends React.Component {
   state = { expanded: false }
@@ -28,7 +35,7 @@ class KuksaEventCard extends React.Component {
   }
 
   render() {
-    const { event } = this.props
+    const { event, classes } = this.props
 
     moment.locale('fi')
     const title = this.state.expanded ? '' : event.title
@@ -60,7 +67,7 @@ class KuksaEventCard extends React.Component {
             action={
               <IconButton
                 onClick={this.handleExpandChange}
-                className={this.state.expanded ? 'arrow-up' : ''}
+                className={this.state.expanded ? classes.arrowUp : ''}
               >
                 <ExpandMoreIcon />
               </IconButton>
@@ -103,4 +110,4 @@ export default connect(
   {
     notify,
   }
-)(KuksaEventCard)
+)(withStyles(styles)(KuksaEventCard))

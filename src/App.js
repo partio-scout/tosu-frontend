@@ -6,7 +6,13 @@ import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import isTouchDevice from 'is-touch-device'
 import React, { Component } from 'react'
-import { Dialog, DialogTitle, LinearProgress } from '@material-ui/core'
+import {
+  Dialog,
+  DialogTitle,
+  LinearProgress,
+  Grid,
+  CssBaseline,
+} from '@material-ui/core'
 import moment from 'moment'
 import 'react-dates/initialize'
 import { MuiThemeProvider } from '@material-ui/core/styles'
@@ -14,15 +20,14 @@ import { MuiThemeProvider } from '@material-ui/core/styles'
 // CSS
 import 'react-dates/lib/css/_datepicker.css'
 import 'react-sticky-header/styles.css'
-import './react_dates_overrides.css'
+import './stylesheets/react_dates_overrides.css'
 import './stylesheets/index.css'
 import theme from './theme'
 
 // Components
 import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
-import MobileAppbar from './components/MobileAppbar'
-import ClippedDrawer from './components/ClippedDrawer'
+import ActivitiesSidebar from './components/ActivitiesSidebar'
 import Notification from './components/Notification'
 import EventCard from './components/EventCard'
 import KuksaEventCard from './components/KuksaEventCard'
@@ -47,7 +52,7 @@ import {
 import { eventsInitialization } from './reducers/eventReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutGoogleLogin, readScout } from './reducers/scoutReducer'
-import { viewChange } from './reducers/viewReducer'
+import { viewChange } from './reducers/uiReducer'
 import { setLoading } from './reducers/loadingReducer'
 import { tosuInitialization } from './reducers/tosuReducer'
 
@@ -141,17 +146,20 @@ class App extends Component {
   }
 
   render() {
-    const view = this.props.view
+    const view = this.props.ui.view
     const { startDate, endDate } = this.state
     const initialEvents = this.props.events
+
     const eventsToShow = () =>
       filterEvents(view, initialEvents, startDate, endDate)
+
     let odd = true
     if (this.props.scout === null) {
       return (
-        <div className="Login">
+        <MuiThemeProvider theme={theme}>
+          <CssBaseline />
           <Login token="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com" />
-        </div>
+        </MuiThemeProvider>
       )
     }
 
@@ -185,58 +193,38 @@ class App extends Component {
 
     return (
       <MuiThemeProvider theme={theme}>
-        <div>
-          <div style={{ display: 'flex' }}>
-            {isTouchDevice() ? (
-              <MobileAppbar
-                setHeaderHeight={this.setHeaderHeight}
-                headerVisible={this.state.headerVisible}
-              />
-            ) : (
-              <AppBar />
-            )}
-            <ClippedDrawer />
-            <div
-              style={{
-                padding: theme.spacing.unit * 3,
-                width: '100%',
-                flexGrow: 1,
-                transition: this.props.ui.sideBarVisible
-                  ? theme.transitions.create('margin', {
-                      easing: theme.transitions.easing.sharp,
-                      duration: theme.transitions.duration.leavingScreen,
-                    })
-                  : theme.transitions.create('margin', {
-                      easing: theme.transitions.easing.easeOut,
-                      duration: theme.transitions.duration.enteringScreen,
-                    }),
-                marginLeft: this.props.ui.sideBarVisible ? 0 : -400,
-              }}
-            >
+        <CssBaseline />
+        <div style={{ display: 'flex' }}>
+          <AppBar />
+          <Grid container style={{ minHeight: '100vh' }}>
+            <Grid item xs={4} style={{ borderRight: '1px solid #ccc' }}>
+              <ActivitiesSidebar />
+            </Grid>
+            <Grid item xs={8}>
               <div style={theme.mixins.toolbar} />
-              <ButtonRow
-                view={this.state.view}
-                newEvent={this.newEvent}
-                dateRangeUpdate={this.dateRangeUpdate}
-                mobile={isTouchDevice()}
-              />
-              {this.props.loading ? (
-                <div className="loading-bar">
-                  <LinearProgress />
-                </div>
-              ) : null}
-              {this.props.view === 'CALENDAR' ? calendar : eventsToList}
+              <div style={{ padding: theme.spacing.unit * 3 }}>
+                <ButtonRow
+                  view={view}
+                  newEvent={this.newEvent}
+                  dateRangeUpdate={this.dateRangeUpdate}
+                  mobile={isTouchDevice()}
+                />
+                {this.props.loading ? (
+                  <LinearProgress style={{ marginTop: 5 }} />
+                ) : null}
+                {view === 'CALENDAR' ? calendar : eventsToList}
 
-              <Dialog
-                open={this.state.newEventVisible}
-                onClose={this.handleClose}
-              >
-                <DialogTitle>Luo uusi tapahtuma</DialogTitle>
-                <NewEvent closeMe={this.handleClose} />
-              </Dialog>
-              <Notification />
-            </div>
-          </div>
+                <Dialog
+                  open={this.state.newEventVisible}
+                  onClose={this.handleClose}
+                >
+                  <DialogTitle>Luo uusi tapahtuma</DialogTitle>
+                  <NewEvent closeMe={this.handleClose} />
+                </Dialog>
+              </div>
+            </Grid>
+          </Grid>
+          <Notification />
         </div>
       </MuiThemeProvider>
     )
@@ -250,7 +238,6 @@ const mapStateToProps = state => ({
   pofTree: state.pofTree,
   taskgroup: state.taskgroup,
   scout: state.scout,
-  view: state.view,
   loading: state.loading,
   tosu: state.tosu,
   ui: state.ui,

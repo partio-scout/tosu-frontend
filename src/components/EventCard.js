@@ -18,6 +18,7 @@ import {
   Card,
   FormControlLabel,
   Switch,
+  withStyles,
 } from '@material-ui/core'
 
 import Warning from '@material-ui/icons/Warning'
@@ -47,12 +48,43 @@ import { deletePlan } from '../reducers/planReducer'
 import SuggestionCard from '../components/SuggestionCard'
 import PropTypesSchema from './PropTypesSchema'
 
-const warning = (
-  <div className="tooltip">
-    <Warning className="warning" />
-    <span className="tooltiptext"> Tapahtumasta puuttuu aktiviteetti!</span>
-  </div>
-)
+const styles = {
+  activityHeader: {
+    margin: 0,
+    minHeight: 0,
+    borderRadius: 8,
+    display: 'flex',
+    flexFlow: 'row wrap',
+  },
+  information: {
+    padding: 2,
+    paddingRight: 12,
+    paddingLeft: 12,
+    marginRight: 5,
+    marginBottom: 7,
+    borderRadius: 5,
+    fontFamily: "'Roboto', sans-serif",
+    backgroundColor: '#253264',
+    color: '#fff',
+    fontWeight: 900,
+    border: 'none',
+    cursor: 'pointer',
+  },
+  warning: {
+    width: 15,
+    height: 15,
+    padding: 0,
+    marginRight: 7,
+    color: '#f14150',
+  },
+  arrowUp: {
+    transform: 'rotate(180deg)',
+  },
+  tooltip: {
+    position: 'relative',
+    display: 'inline-block',
+  },
+}
 
 class EventCard extends React.Component {
   constructor(props) {
@@ -67,6 +99,7 @@ class EventCard extends React.Component {
     this.changeInfo = this.changeInfo.bind(this)
     this.renderEdit = this.renderEdit.bind(this)
   }
+
   /**
    *  Adds the activity to local storage and updates the guid. Also updates the pofTree.
    *  @param activityGuid the global identifier of the activity
@@ -86,6 +119,7 @@ class EventCard extends React.Component {
     }
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
+
   /**
    *  Deletes all activities from the local buffer and updates the pofTree
    */
@@ -104,6 +138,7 @@ class EventCard extends React.Component {
 
     this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
+
   /**
    * Checks whether a given value is part of a pofTree using breath-first-search
    * @param value value that is searched
@@ -174,8 +209,16 @@ class EventCard extends React.Component {
   }
 
   render() {
-    const { event, odd } = this.props
+    const { event, odd, classes } = this.props
     let editButton = <div />
+
+    const warning = (
+      <div className="tooltip">
+        <Warning className={classes.warning} />
+        <span className="tooltiptext"> Tapahtumasta puuttuu aktiviteetti!</span>
+      </div>
+    )
+
     moment.locale('fi')
     const { title } = event
     const subtitle = this.state.expanded
@@ -302,7 +345,7 @@ class EventCard extends React.Component {
     )
     const notExpanded = (
       <CardContent style={this.state.expanded ? {} : { padding: '3px 10px' }}>
-        <div className="activity-header">
+        <div className={classes.activityHeader}>
           <Activities
             activities={this.props.event.activities}
             bufferzone={false}
@@ -336,8 +379,10 @@ class EventCard extends React.Component {
       this.setState({ editMode: !this.state.editMode })
     }
 
-    /** Returns a component with a form to input new information if editMode is true, otherwise returns the information in text form */
-
+    /**
+     * Returns a component with a form to input new information if editMode is true,
+     * otherwise returns the information in text form
+     */
     const informationContainer = () => {
       if (this.state.editMode) {
         return (
@@ -348,7 +393,7 @@ class EventCard extends React.Component {
                 type="submit"
                 value="TALLENNA"
                 align="top"
-                className="information"
+                className={classes.information}
               />
               {editButton}
             </span>
@@ -361,7 +406,7 @@ class EventCard extends React.Component {
     }
     if (!this.props.event.kuksaEventId) {
       editButton = (
-        <button onClick={this.renderEdit} className="information">
+        <button onClick={this.renderEdit} className={classes.information}>
           {this.state.editMode ? 'PERUUTA' : 'MUOKKAA'}
         </button>
       )
@@ -416,7 +461,7 @@ class EventCard extends React.Component {
     )
     return (
       <div className={cardClassName}>
-        <Card style={{ boxShadow: 'none' }}>
+        <Card>
           <ActivityDragAndDropTarget
             odd={odd}
             event
@@ -446,7 +491,7 @@ class EventCard extends React.Component {
               action={
                 <IconButton
                   onClick={this.handleExpandChange}
-                  className={this.state.expanded ? 'arrow-up' : ''}
+                  className={this.state.expanded ? classes.arrowUp : ''}
                 >
                   <ExpandMoreIcon />
                 </IconButton>
@@ -462,13 +507,11 @@ class EventCard extends React.Component {
               style={this.state.expanded ? {} : { paddingTop: '5px' }}
             >
               <EditEvent
-                buttonClass="buttonRight"
                 data={this.props.event}
                 setNotification={this.props.setNotification}
                 minimal={!this.state.expanded}
               />
               <DeleteEvent
-                buttonClass="buttonRight"
                 data={this.props.event}
                 setNotification={this.props.setNotification}
                 minimal={!this.state.expanded}
@@ -510,4 +553,4 @@ export default connect(
     deleteActivityFromBufferOnlyLocally,
     pofTreeUpdate,
   }
-)(EventCard)
+)(withStyles(styles)(EventCard))

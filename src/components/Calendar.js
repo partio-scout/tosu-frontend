@@ -11,6 +11,23 @@ import CalendarEvent from './CalendarEvent'
 import { eventStyleGetter } from './CalendarEvent'
 import { closePopper } from '../reducers/calendarReducer'
 import PropTypesSchema from './PropTypesSchema'
+import { withStyles } from '@material-ui/core'
+
+const styles = {
+  mobileCalendar: {
+    height: 100,
+    minHeight: 'calc(100vh - 350px)',
+    width: '80vmin',
+    marginBottom: 'calc(100vh - 500px)',
+  },
+  calendar: {
+    height: '70vmin',
+    minHeight: 500,
+    width: '80vmin',
+    paddingTop: 20,
+    marginBottom: 'calc(100vh - 500px)',
+  },
+}
 
 const localizer = BigCalendar.momentLocalizer(moment)
 
@@ -58,14 +75,18 @@ export class Calendar extends Component {
   }
 
   render() {
-    const { events } = this.props
+    const { events, classes } = this.props
     const eventsToShow = prepareEventsToCalendarEvents(
       events,
       this.props.shouldShowKuksaEventsAlso
     )
 
     return (
-      <div className={this.props.mobile ? 'mobile-calendar' : 'calendar'}>
+      <div
+        className={
+          this.props.mobile ? classes.mobileCalendar : classes.calendar
+        }
+      >
         <BigCalendar
           localizer={localizer}
           events={eventsToShow}
@@ -97,4 +118,4 @@ Calendar.defaultProps = {}
 export default connect(
   mapStateToProps,
   { closePopper }
-)(Calendar)
+)(withStyles(styles)(Calendar))

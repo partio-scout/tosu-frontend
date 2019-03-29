@@ -18,6 +18,10 @@ const theme = createMuiTheme({
       main: '#28AAE0',
       contrastText: '#ffffff',
     },
+    background: {
+      paper: '#fff',
+      default: '#fff',
+    },
   },
   overrides: {
     MuiChip: {

@@ -13,6 +13,44 @@ import EditEvent from './EditEvent'
 import AddToPlan from './AddToPlan'
 import { openPopper, closePopper } from '../reducers/calendarReducer'
 import PropTypesSchema from './PropTypesSchema'
+import { withStyles } from '@material-ui/core'
+
+const styles = {
+  calendarActivityMarker: {
+    height: 8,
+    width: 8,
+    backgroundColor: 'white',
+    borderRadius: '50%',
+    display: 'inline-block',
+  },
+  calendarEventPopper: {
+    minWidth: 200,
+    padding: 10,
+    borderRadius: 4,
+  },
+  calendarEventButtonWrapper: {
+    display: 'flex',
+    width: '100%',
+  },
+  calendarEventActivityWrapper: {
+    paddingBottom: 10,
+    maxWidth: 500,
+    display: 'flex',
+    flexFlow: 'row wrap',
+  },
+  calendarEventTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  calendarPopoverLeft: {
+    marginBottom: 'auto',
+    display: 'inline-block',
+  },
+  calendarPopoverRight: {
+    float: 'right',
+    marginTop: 7,
+  },
+}
 
 /**
  * Intializes the activitynmarkers for rendering
@@ -23,7 +61,10 @@ function createActivityMarkers(activities) {
   const markers = [' ']
   for (let i = 0; i < activities.length; i += 1) {
     markers.push(
-      <span className="calendar-activity-marker" key={activities[i].id} />
+      <span
+        className={this.props.classes.calendarActivityMarker}
+        key={activities[i].id}
+      />
     )
   }
   return markers
@@ -73,9 +114,9 @@ class CalendarEvent extends Component {
     }
   }
   openPopper = target => {
-     this.setState(state => ({ anchorEl: target }))
-     this.props.openPopper(this.props.event.id)
-   }
+    this.setState(state => ({ anchorEl: target }))
+    this.props.openPopper(this.props.event.id)
+  }
   closePopper = () => {
     this.setState(state => ({ anchorEl: null }))
     this.props.closePopper()
@@ -128,14 +169,14 @@ class CalendarEvent extends Component {
           activities={this.props.event.activities}
           bufferzone={false}
           parentId={this.props.event.id}
-          className="calendar-event-activity-wrapper"
+          className={this.props.classes.calendarEventActivityWrapper}
         />
       </div>
     )
 
     const editDeleteButtons = (
       <div>
-        <div className="calendar-event-button-wrapper">
+        <div className={this.props.classes.calendarEventButtonWrapper}>
           <EditEvent
             buttonClass="calendar-button"
             data={event.originalData}
@@ -155,10 +196,12 @@ class CalendarEvent extends Component {
     const popoverContent = (
       <div>
         <div>
-          <div className="calendar-popover-left">
-            <p className="calendar-event-title">{event.title}</p>
+          <div className={this.props.classes.calendarPopoverLeft}>
+            <p className={this.props.classes.calendarEventTitle}>
+              {event.title}
+            </p>
           </div>
-          <div className="calendar-popover-right">
+          <div className={this.props.classes.calendarPopoverRight}>
             <IconButton onClick={this.closePopper}>
               <Icon>close</Icon>
             </IconButton>
@@ -174,7 +217,7 @@ class CalendarEvent extends Component {
 
     // Don't allow dragging activities to kuksa events
     const paperContent = event.kuksaEvent ? (
-      <div className="calendar-event-popper">
+      <div className={this.props.classes.calendarEventPopper}>
         {popoverContent}
         <br />
       </div>
@@ -182,7 +225,7 @@ class CalendarEvent extends Component {
       <ActivityDragAndDropTarget
         bufferzone={false}
         parentId={this.props.event.id}
-        className="calendar-event-popper"
+        className={this.props.classes.calendarEventPopper}
       >
         {popoverContent}
       </ActivityDragAndDropTarget>
@@ -223,4 +266,4 @@ export default connect(
     openPopper,
     closePopper,
   }
-)(CalendarEvent)
+)(withStyles(styles)(CalendarEvent))

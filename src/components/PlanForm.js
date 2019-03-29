@@ -3,9 +3,17 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import PlanCard from './PlanCard'
+import { withStyles } from '@material-ui/core'
 
-/** Use Typography v2: https://material-ui.com/style/typography/#strategies */
-window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
+const styles = {
+  headline: {
+    width: 600,
+    fontSize: 24,
+    paddingTop: 16,
+    marginBottom: 12,
+    fontWeight: 400,
+  },
+}
 
 function TabContainer(props) {
   return (
@@ -15,7 +23,7 @@ function TabContainer(props) {
   )
 }
 
-export default class PlanForm extends React.Component {
+class PlanForm extends React.Component {
   state = { value: 0 }
 
   handleChange = (event, value) => {
@@ -34,7 +42,7 @@ export default class PlanForm extends React.Component {
 
   render() {
     const { value } = this.state
-    const { activity, savedActivity, parentId } = this.props
+    const { activity, savedActivity, parentId, classes } = this.props
 
     const suggestionDetails = activity.suggestions.map(suggestion => (
       <PlanCard
@@ -90,7 +98,7 @@ export default class PlanForm extends React.Component {
         {value === 1 && (
           <TabContainer>
             <div>
-              <h2 className="headline">Toteutusvinkit</h2>
+              <h2 className={classes.headline}>Toteutusvinkit</h2>
               {suggestionDetails.length !== 0
                 ? suggestionDetails
                 : 'Ei toteutusvinkkejä'}
@@ -101,3 +109,5 @@ export default class PlanForm extends React.Component {
     )
   }
 }
+
+export default withStyles(styles)(PlanForm)

@@ -24,6 +24,13 @@ const styles = theme => ({
   iconSmall: {
     fontSize: 14,
   },
+  eventForm: {
+    maxWidth: 800,
+    margin: '0 auto',
+  },
+  newFormPaper: {
+    padding: 20,
+  },
 })
 
 class EditEvent extends React.Component {
@@ -155,8 +162,8 @@ class EditEvent extends React.Component {
           <DialogTitle>
             {'Muokataan tapahtumaa'} {this.state.title}
           </DialogTitle>
-          <div className="event-form">
-            <Paper className="new-form-paper">
+          <div className={classes.eventForm}>
+            <Paper className={classes.newFormPaper}>
               <EventForm
                 submitFunction={this.handleCloseAndSend.bind(this)}
                 close={this.handleClose.bind(this)}

@@ -11,6 +11,27 @@ import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
 import PropTypesSchema from './PropTypesSchema'
+import { withStyles } from '@material-ui/core'
+
+const styles = {
+  connectDragSource: {
+    float: 'left',
+    margin: 4,
+  },
+  connectDragSourceMinimal: {
+    float: 'left',
+    margin: 1,
+  },
+  dialogCloseButton: {
+    backgroundColor: '#ccc',
+    color: '#fff',
+    float: 'right',
+    fontSize: '1.2rem',
+    lineHeight: '1.2rem',
+    borderRadius: '100%',
+    boxShadow: '1px 1px 3px',
+  },
+}
 
 /**
  * Methods that handle the dragging of an activity
@@ -63,7 +84,13 @@ class Activity extends Component {
   }
 
   render() {
-    const { activity, pofActivity, connectDragSource, parentId } = this.props
+    const {
+      activity,
+      pofActivity,
+      connectDragSource,
+      parentId,
+      classes,
+    } = this.props
 
     let lastGuid = 0
     if (pofActivity) {
@@ -82,8 +109,8 @@ class Activity extends Component {
         <div
           className={
             this.props.minimal
-              ? 'connect-drag-source-minimal'
-              : 'connect-drag-source'
+              ? classes.connectDragSourceMinimal
+              : classes.connectDragSource
           }
           style={{ visibility: 'visible' }}
         >
@@ -110,7 +137,7 @@ class Activity extends Component {
                 {pofActivity.title}
 
                 <button
-                  className="dialog-close-button"
+                  className={classes.dialogCloseButton}
                   onClick={this.handleClick}
                 >
                   x
@@ -166,4 +193,4 @@ export default connect(
     deleteActivityFromBuffer,
     notify,
   }
-)(DraggableActivity)
+)(withStyles(styles)(DraggableActivity))

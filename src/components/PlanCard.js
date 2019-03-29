@@ -14,6 +14,13 @@ import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
 import { notify } from '../reducers/notificationReducer'
 import { editEvent } from '../reducers/eventReducer'
 import PropTypesSchema from './PropTypesSchema'
+import { withStyles } from '@material-ui/core'
+
+const styles = {
+  arrowUp: {
+    transform: 'rotate(180deg)',
+  },
+}
 
 class PlanCard extends React.Component {
   state = { expanded: false }
@@ -105,7 +112,7 @@ class PlanCard extends React.Component {
   }
 
   render() {
-    const { suggestion, savedActivity, plans, parentId } = this.props
+    const { suggestion, savedActivity, plans, parentId, classes } = this.props
     // Find plans for current activity from store
     const activityPlans = plans.filter(plan => plan.id === savedActivity.id)
 
@@ -165,7 +172,7 @@ class PlanCard extends React.Component {
         <CardActions>
           <IconButton
             onClick={this.handleExpandChange}
-            className={this.state.expanded ? 'arrow-up' : ''}
+            className={this.state.expanded ? classes.arrowUp : ''}
           >
             <ExpandMoreIcon />
           </IconButton>
@@ -196,4 +203,4 @@ export default connect(
     editEvent,
     notify,
   }
-)(PlanCard)
+)(withStyles(styles)(PlanCard))

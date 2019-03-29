@@ -19,7 +19,15 @@ const smallDone = <Done className="small-done" key="done" />
  */
 const warning = message => (
   <div className="tooltip" key="warning">
-    <Warning className="warning" />
+    <Warning
+      style={{
+        width: 15,
+        height: 15,
+        padding: 0,
+        marginRight: 7,
+        color: '#f14150',
+      }}
+    />
     <span className="tooltiptext">{message}</span>
   </div>
 )

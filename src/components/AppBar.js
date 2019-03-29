@@ -24,7 +24,7 @@ const styles = theme => ({
 function TopBar(props) {
   const { tosu, scout, classes } = props
   return (
-    <AppBar position="fixed" className={classes.appBar}>
+    <AppBar className={classes.appBar}>
       <Toolbar>
         <IconButton
           color="inherit"

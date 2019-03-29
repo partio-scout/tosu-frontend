@@ -15,6 +15,17 @@ import {
   addActivityToEventOnlyLocally,
 } from '../reducers/eventReducer'
 import PropTypesSchema from './PropTypesSchema'
+import { withStyles } from '@material-ui/core'
+
+const styles = {
+  pattern: {
+    background:
+      'radial-gradient(#6eff3f 15%, transparent 16%) 0 0, radial-gradient(#6eff3f 15%, transparent 16%) 8px 8px, radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 0 1px, radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 8px 9px',
+    backgroundColor: 'white',
+    backgroundSize: '16px 16px',
+  },
+}
+
 /**
  * Collects an element and allows it to be dropped to a container.
  * @param connector  allows user to assign one of the predefined roles (a drag source, a drag preview, or a drop target) to the DOM nodes in the render function. Imported from react-dnd
@@ -30,19 +41,17 @@ function collect(connector, monitor) {
   }
 }
 
-class ActivityDragAndDropTarget extends React.Component {
-  render() {
-    const { isOver, canDrop, connectDropTarget, odd, event } = this.props
-    const baseColor = event ? (odd ? '#EFEEEE' : '#D6E8F7') : '#FFF'
-    const background = { backgroundColor: canDrop ? '#C8E6C9' : baseColor }
-    const className = (this.props.className || '') + (isOver ? ' pattern' : '')
+function ActivityDragAndDropTarget(props) {
+  const { isOver, canDrop, connectDropTarget, odd, event, classes } = props
+  const baseColor = event ? (odd ? '#EFEEEE' : '#D6E8F7') : '#FFF'
+  const background = { backgroundColor: canDrop ? '#C8E6C9' : baseColor }
+  const className = (props.className || '') + (isOver ? classes.pattern : '')
 
-    return connectDropTarget(
-      <div style={background} className={className}>
-        {this.props.children}
-      </div>
-    )
-  }
+  return connectDropTarget(
+    <div style={background} className={className}>
+      {props.children}
+    </div>
+  )
 }
 
 const DroppableActivityDragAndDropTarget = DropTarget(
@@ -73,4 +82,4 @@ export default connect(
     deleteActivityFromBuffer,
     deleteActivityFromEvent,
   }
-)(DroppableActivityDragAndDropTarget)
+)(withStyles(styles)(DroppableActivityDragAndDropTarget))

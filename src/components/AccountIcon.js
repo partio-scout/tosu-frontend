@@ -30,7 +30,10 @@ function AccountIcon(props) {
     setOpen(true)
   }
 
-  const handleClickAway = () => setOpen(false)
+  const handleClickAway = () => {
+    setOpen(false)
+    setAnchorEl(null)
+  }
 
   return (
     <div>

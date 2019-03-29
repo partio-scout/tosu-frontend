@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { GoogleLogin } from 'react-google-login'
-import { Button } from '@material-ui/core'
+import { Button, withStyles, Typography } from '@material-ui/core'
 import isTouchDevice from 'is-touch-device'
 // Services
 import { setGoogleToken } from '../services/googleToken' // TODO: rename service
@@ -20,6 +20,19 @@ import {
 import { eventsInitialization } from '../reducers/eventReducer'
 import { tosuInitialization } from '../reducers/tosuReducer'
 import PropTypesSchema from './PropTypesSchema'
+
+const styles = theme => ({
+  loginButton: {
+    margin: theme.spacing.unit,
+    backgroundColor: 'white',
+  },
+  login: {
+    paddingTop: '20vh',
+    paddingBottom: '20vh',
+    textAlign: 'center',
+    background: '#253264',
+  },
+})
 
 class Login extends React.Component {
   /**
@@ -54,33 +67,39 @@ class Login extends React.Component {
   }
 
   render() {
+    const { classes } = this.props
     return (
-      <div className="Login">
-        <p className={isTouchDevice() ? 'login-mobile-text' : 'login-text'}>
+      <div className={classes.login}>
+        <Typography
+          variant="h4"
+          style={{ color: 'white', textTransform: 'uppercase' }}
+          gutterBottom
+        >
           Toiminnan suunnittelusovellus
-        </p>
+        </Typography>
         <GoogleLogin
-          className="login-button"
           scope="profile email"
           clientId={this.props.token} // TODO: Maybe get the token out of here
           onSuccess={this.googleLoginSuccess}
           onFailure={this.googleLoginFail}
-        >
-          <span className="label">
-            <span className="appbar-button-text">
+          render={renderProps => (
+            <Button
+              onClick={renderProps.onClick}
+              variant="contained"
+              size="small"
+              className={classes.loginButton}
+            >
               Kirjaudu sisään Googlella
-            </span>
-          </span>
-        </GoogleLogin>
+            </Button>
+          )}
+        />
         <Button
-          style={{ backgroundColor: 'transparent' }}
+          variant="contained"
+          size="small"
+          className={classes.loginButton}
           href={`${API_ROOT}/scouts/login`}
         >
-          <span className="login-button">
-            <span className="appbar-button-text">
-              Kirjaudu sisään PartioID:llä
-            </span>
-          </span>
+          Kirjaudu sisään PartioID:llä
         </Button>
       </div>
     )
@@ -114,4 +133,4 @@ export default connect(
     readScout,
     setLoading,
   }
-)(Login)
+)(withStyles(styles)(Login))
