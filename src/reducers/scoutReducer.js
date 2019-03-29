@@ -8,7 +8,6 @@ import {
 const reducer = (state = null, action) => {
   switch (action.type) {
     case 'SCOUT_LOGIN':
-      console.log(action.scout)
       return action.scout
     case 'SCOUT_LOGOUT':
       return null

@@ -78,7 +78,6 @@ class ButtonRow extends React.Component {
    * Opens dialog to create new Tosu
    */
   openTosuDialog = () => {
-    console.log(this.tosuDialog)
     this.tosuDialog.current.handleOpen()
     this.handleTosuMenuClose()
   }
@@ -108,7 +107,6 @@ class ButtonRow extends React.Component {
   render() {
     const { anchorEl, startDate, endDate } = this.state
     const { tosuMap } = this.props
-    console.log(this.tosuDialog)
     const calendarIcon = (
       <IconButton
         className={

@@ -64,7 +64,6 @@ class PlanCard extends React.Component {
       parentActivity.plans.push(data)
       this.props.updateActivity(parentActivity)
     } catch (exception) {
-      console.log(exception)
       this.props.notify('Toteutusvinkin tallentaminen ei onnistunut')
     }
   }
