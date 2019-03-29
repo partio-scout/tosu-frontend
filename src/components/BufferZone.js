@@ -1,25 +1,14 @@
 import { connect } from 'react-redux'
 import React from 'react'
-import Divider from '@material-ui/core/Divider/Divider'
-import { withStyles } from '@material-ui/core/styles'
+import { Typography, Button, Divider, withStyles } from '@material-ui/core'
+import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
+import { notify } from '../reducers/notificationReducer'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import Activities from './Activities'
 import PropTypesSchema from './PropTypesSchema'
 
-/**
- * Determines the style used in the element
- * @param theme props that contains the styles
- */
-const styles = theme => ({
-  button: {
-    marginRight: theme.spacing.unit,
-  },
-  rightIcon: {
-    marginLeft: theme.spacing.unit,
-  },
-  iconSmall: {
-    fontSize: 14,
-  },
+const styles = {
   divider: {
     height: 4,
     backgroundColor: '#243265',
@@ -28,15 +17,30 @@ const styles = theme => ({
   bufferzone: {
     marginLeft: 14,
     marginRight: 14,
-    minHeight: 60,
-    minWidth: 200,
-    borderRadius: 8,
     display: 'flex',
     flexFlow: 'row wrap',
   },
-})
+}
 
 export class BufferZone extends React.Component {
+  /**
+   * Clears the activities from the buffer
+   */
+  clear = async () => {
+    if (this.props.buffer.activities) {
+      const promises = this.props.buffer.activities.map(activity =>
+        this.props.deleteActivityFromBuffer(activity.id)
+      )
+      try {
+        await Promise.all(promises)
+        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+        this.props.notify('Aktiviteetit poistettu.', 'success')
+      } catch (exception) {
+        this.props.notify('Kaikkia aktiviteetteja ei voitu poistaa.')
+      }
+    }
+  }
+
   render() {
     const { classes } = this.props
     if (!this.props.buffer.id) {
@@ -49,6 +53,20 @@ export class BufferZone extends React.Component {
       <div>
         <ActivityDragAndDropTarget bufferzone parentId={this.props.buffer.id}>
           <div className={classes.bufferzone}>
+            <div style={{ width: '100%', marginBottom: 15 }}>
+              <Typography variant="h6" inline gutterBottom>
+                Aktiviteetit:
+              </Typography>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                onClick={this.clear}
+                style={{ float: 'right' }}
+              >
+                Tyhjennä
+              </Button>
+            </div>
             <Activities
               activities={this.props.buffer.activities}
               bufferzone
@@ -64,7 +82,14 @@ export class BufferZone extends React.Component {
 
 const mapStateToProps = state => ({
   buffer: state.buffer,
+  events: state.events,
 })
+
+const mapDispatchToProps = {
+  notify,
+  pofTreeUpdate,
+  deleteActivityFromBuffer,
+}
 
 BufferZone.propTypes = {
   ...PropTypesSchema,
@@ -72,4 +97,7 @@ BufferZone.propTypes = {
 
 BufferZone.defaultProps = {}
 
-export default connect(mapStateToProps)(withStyles(styles)(BufferZone))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(BufferZone))

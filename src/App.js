@@ -197,12 +197,12 @@ class App extends Component {
         <div style={{ display: 'flex' }}>
           <AppBar />
           <Grid container style={{ minHeight: '100vh' }}>
-            <Grid item xs={4} style={{ borderRight: '1px solid #ccc' }}>
+            <Grid item xs={4} style={{ overflowX: 'auto' }}>
               <ActivitiesSidebar />
             </Grid>
             <Grid item xs={8}>
               <div style={theme.mixins.toolbar} />
-              <div style={{ padding: theme.spacing.unit * 3 }}>
+              <div style={{ padding: theme.spacing.unit * 2 }}>
                 <ButtonRow
                   view={view}
                   newEvent={this.newEvent}

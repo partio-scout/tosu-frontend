@@ -5,13 +5,9 @@ import findActivity from '../functions/findActivity'
 import convertToSimpleActivity from '../functions/activityConverter'
 import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import {
-  deleteActivityFromBuffer,
-  deleteActivityFromBufferOnlyLocally,
-} from '../reducers/bufferZoneReducer'
+import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import PropTypesSchema from './PropTypesSchema'
-import { Typography, Button } from '@material-ui/core'
 
 export class Activities extends React.Component {
   /**
@@ -31,24 +27,6 @@ export class Activities extends React.Component {
       this.props.notify(
         'Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!'
       )
-    }
-  }
-
-  /**
-   * Clears the activities from the buffer
-   */
-  clear = async () => {
-    if (this.props.buffer.activities) {
-      const promises = this.props.buffer.activities.map(activity =>
-        this.props.deleteActivityFromBuffer(activity.id)
-      )
-      try {
-        await Promise.all(promises)
-        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-        this.props.notify('Aktiviteetit poistettu.', 'success')
-      } catch (exception) {
-        this.props.notify('Kaikkia aktiviteetteja ei voitu poistaa.')
-      }
     }
   }
 
@@ -74,27 +52,7 @@ export class Activities extends React.Component {
         )
       })
     }
-    return (
-      <div>
-        {rows.length > 0 && !this.props.minimal && (
-          <React.Fragment>
-            <Typography variant="h6" inline gutterBottom>
-              Aktiviteetit:
-            </Typography>
-            <Button
-              variant="outlined"
-              size="small"
-              color="primary"
-              onClick={this.clear}
-              style={{ float: 'right' }}
-            >
-              Tyhjennä
-            </Button>
-          </React.Fragment>
-        )}
-        <div>{rows}</div>
-      </div>
-    )
+    return <div>{rows}</div>
   }
 }
 
@@ -117,6 +75,5 @@ export default connect(
     pofTreeUpdate,
     deleteActivityFromBuffer,
     deleteActivityFromEvent,
-    deleteActivityFromBufferOnlyLocally,
   }
 )(Activities)
