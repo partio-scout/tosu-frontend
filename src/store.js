@@ -10,7 +10,6 @@ import StatusMessageReducer from './reducers/statusMessageReducer'
 import TaskgroupReducer from './reducers/taskgroupReducer'
 import ScoutReducer from './reducers/scoutReducer'
 import calendarReducer from './reducers/calendarReducer'
-import viewReducer from './reducers/viewReducer'
 import loadingReducer from './reducers/loadingReducer'
 import tosuReducer from './reducers/tosuReducer'
 import uiReducer from './reducers/uiReducer'
@@ -25,7 +24,6 @@ const reducer = combineReducers({
   taskgroup: TaskgroupReducer,
   scout: ScoutReducer,
   calendar: calendarReducer,
-  view: viewReducer,
   loading: loadingReducer,
   tosu: tosuReducer,
   ui: uiReducer,
