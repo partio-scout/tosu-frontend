@@ -29,15 +29,12 @@ class MobileAppbar extends React.Component {
    * @param taskgroup method needs to check if taskgroup is determined
    */
   onChangeTaskgroup = async taskgroup => {
-    console.log("hoi")
     if (taskgroup === null) {
       this.setState({ treePlaceHolder: 'Valitse ensin tarppo' })
       this.props.addStatusMessage('Valitse ensin tarppo!')
       this.props.emptyTaskgroup()
-
       return
     }
-    console.log(taskgroup)
     const selectedGroup = getTaskGroup(taskgroup.value, this.props.pofTree)
     this.props.selectTaskgroup(selectedGroup)
     this.updateStatusMessage()
