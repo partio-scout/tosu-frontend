@@ -213,9 +213,29 @@ class EventCard extends React.Component {
     let editButton = <div />
 
     const warning = (
-      <div className="tooltip">
+      <div className={classes.tooltip}>
         <Warning className={classes.warning} />
-        <span className="tooltiptext"> Tapahtumasta puuttuu aktiviteetti!</span>
+        {/* TODO: add this:
+         * .tooltip:hover .tooltiptext {
+         *   visibility: visible;
+         * }
+         */}
+        <span
+          style={{
+            position: 'absolute',
+            visibility: 'hidden',
+            minWidth: 200,
+            fontSize: 14,
+            backgroundColor: 'black',
+            color: '#fff',
+            textAlign: 'center',
+            borderRadius: 6,
+            padding: 5,
+            zIndex: 1,
+          }}
+        >
+          Tapahtumasta puuttuu aktiviteetti!
+        </span>
       </div>
     )
 
@@ -468,7 +488,6 @@ class EventCard extends React.Component {
             parentId={this.props.event.id}
           >
             <CardHeader
-              style={this.state.expanded ? {} : { paddingBottom: '5px' }}
               title={
                 <div>
                   {title}
@@ -502,9 +521,7 @@ class EventCard extends React.Component {
             {!isTouchDevice() && !this.state.expanded ? notExpanded : null}
             {this.state.expanded ? expanded : null}
 
-            <CardActions
-              style={this.state.expanded ? {} : { paddingTop: '5px' }}
-            >
+            <CardActions>
               <EditEvent
                 data={this.props.event}
                 setNotification={this.props.setNotification}

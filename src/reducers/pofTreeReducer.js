@@ -72,8 +72,21 @@ const fillWithNeededVariable = root => {
       task.title = (
         <span
           name={task.title}
-          className="tree-search-title"
-          style={{ backgroundColor: task.isMandatory ? '#2196f3' : '#E3F2FD' }}
+          /*
+           * TODO: add this:
+           * tree-search-title:hover
+           * background: #90caf9
+           */
+          style={{
+            backgroundColor: task.isMandatory ? '#2196f3' : '#E3F2FD',
+            display: 'block',
+            lineHeight: 28,
+            margin: 0,
+            marginTop: -20,
+            padding: 3,
+            cursor: 'pointer',
+            pointerEvents: 'none',
+          }}
         >
           {task.title}
         </span>

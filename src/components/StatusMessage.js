@@ -18,7 +18,13 @@ const smallDone = <Done className="small-done" key="done" />
  * @param message Message that shows in the tooltip
  */
 const warning = message => (
-  <div className="tooltip" key="warning">
+  <div
+    style={{
+      position: 'relative',
+      display: 'inline-block',
+    }}
+    key="warning"
+  >
     <Warning
       style={{
         width: 15,
@@ -28,7 +34,27 @@ const warning = message => (
         color: '#f14150',
       }}
     />
-    <span className="tooltiptext">{message}</span>
+    {/* TODO: add this:
+     * .tooltip:hover .tooltiptext {
+     *   visibility: visible;
+     * }
+     */}
+    <span
+      className={{
+        position: 'absolute',
+        visibility: 'hidden',
+        minWidth: 200,
+        fontSize: 14,
+        backgroundColor: 'black',
+        color: '#fff',
+        textAlign: 'center',
+        borderRadius: 6,
+        padding: 5,
+        zIndex: 1,
+      }}
+    >
+      {message}
+    </span>
   </div>
 )
 

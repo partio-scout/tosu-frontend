@@ -31,6 +31,26 @@ const styles = {
     borderRadius: '100%',
     boxShadow: '1px 1px 3px',
   },
+  mandatory: {
+    cursor: 'grab',
+    backgroundColor: '#97bcd7',
+  },
+  nonMandatory: {
+    cursor: 'grab',
+    backgroundColor: '#aed3eb',
+  },
+  avatar: {
+    height: 26,
+    width: 26,
+    marginLeft: 3,
+    color: '#1a237e',
+  },
+  minimalAvatar: {
+    height: 20,
+    width: 20,
+    marginLeft: 3,
+    color: '#1a237e',
+  },
 }
 
 /**
@@ -79,9 +99,7 @@ class Activity extends Component {
   /**
    *  Opens the activity
    */
-  handleClick = () => {
-    this.setState({ open: !this.state.open })
-  }
+  handleClick = () => this.setState({ open: !this.state.open })
 
   render() {
     const {
@@ -97,12 +115,6 @@ class Activity extends Component {
       const lastParentIndex = pofActivity.parents.length - 1
       lastGuid = pofActivity.parents[lastParentIndex].guid
     }
-    const chipClass = `${pofActivity.mandatory ? '' : 'non-'}mandatory-chip${
-      this.props.minimal ? '-minimal' : ''
-    }`
-    const avatarClass = `${
-      pofActivity.mandatory ? '' : 'non-'
-    }mandatory-chip-avatar${this.props.minimal ? '-minimal' : ''}`
 
     if (activity && pofActivity) {
       return connectDragSource(
@@ -112,22 +124,25 @@ class Activity extends Component {
               ? classes.connectDragSourceMinimal
               : classes.connectDragSource
           }
-          style={{ visibility: 'visible' }}
         >
           <Chip
             onDelete={() => this.props.deleteActivity(activity)}
-            className={chipClass}
+            className={
+              pofActivity.mandatory ? classes.mandatory : classes.nonMandatory
+            }
             key={activity.id}
             onClick={this.handleClick}
             deleteIcon={<Icon color="primary">clear</Icon>}
-            style={this.props.minimal ? { height: '25px' } : {}}
+            style={this.props.minimal ? { height: 26 } : {}}
             avatar={
-              <Avatar
-                alt="Mandatory Icon"
-                src={pofActivity.mandatoryIconUrl}
-                className={avatarClass}
-                style={this.props.minimal ? { height: '25px' } : {}}
-              />
+              pofActivity.mandatory ? (
+                <Avatar
+                  src={pofActivity.mandatoryIconUrl}
+                  className={
+                    this.props.minimal ? classes.minimalAvatar : classes.avatar
+                  }
+                />
+              ) : null
             }
             label={pofActivity.title}
           />
