@@ -18,6 +18,8 @@ import { MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from '@date-io/moment'
 import ValidatedDatePicker from '../utils/ValidatedDatePicker'
 import ValidatedTimePicker from '../utils/ValidatedTimePicker'
+import FrequentEventsHandler from '../utils/FrequentEventsHandler'
+import repeatCount from '../utils/repeatCount'
 import PropTypesSchema from './PropTypesSchema'
 
 export default class EventForm extends React.Component {
@@ -37,6 +39,7 @@ export default class EventForm extends React.Component {
 
   componentDidMount() {
     ValidatorForm.addValidationRule('dateIsLater', value => {
+      console.log('value= ',value);
       if (!value || !this.state.startDate) {
         return false
       }
@@ -111,6 +114,10 @@ export default class EventForm extends React.Component {
     this.setState({
       repeatCount: event.target.value,
     })
+    this.countDate(
+      this.state.startDate,
+      this.state.repeatFrequency,
+      event.target.value)
   }
 
   handleFrequency = event => {
@@ -123,7 +130,10 @@ export default class EventForm extends React.Component {
     this.setState({
       lastDate: date.toDate(),
     })
-
+    this.countRepeatCount(
+      this.state.startDate,
+      this.state.repeatFrequency,
+      date.toDate())
   }
 
   handleTitle = event => {
@@ -144,12 +154,24 @@ export default class EventForm extends React.Component {
     })
   }
 
-  countFrequencyTimes(date) {
-
+  countRepeatCount(startDate, repeatFrequency, lastDate) {
+    let newRepeatCount = repeatCount(
+      startDate,
+      repeatFrequency,
+      lastDate)
+    this.setState({
+      repeatCount: newRepeatCount
+    })
   }
 
-  countDateFromFrequency(frequency) {
-
+  countDate(startDate, repeatFrequency, repeatCount) {
+    let newDate = FrequentEventsHandler(
+    startDate,
+    repeatFrequency,
+    repeatCount).format('YYYY-MM-DD')
+    this.setState({
+      lastDate: moment(newDate).toDate()
+    })
   }
 
   send = async () => {
@@ -166,7 +188,7 @@ export default class EventForm extends React.Component {
       this.state.type,
       this.state.information
     )
-
+    
     this.props.submitFunction()
   }
 
@@ -295,13 +317,14 @@ export default class EventForm extends React.Component {
               <MenuItem value={4}>Kuukausittain (esim. 12. pvä)</MenuItem>
             </SelectValidator>
 
-              <p><div>Valitse toistumien lukumäärä tai viimeinen päivämäärä toistumiselle.</div></p>
+              <div><p><font color='green'>Valitse toistumien lukumäärä tai viimeinen päivämäärä toistumiselle.</font></p></div>
 
               <TextValidator
                 label="Toistuvien tapahtumien määrä"
                 name="repeatCount"
                 value={this.state.repeatCount}
                 onChange={this.handleNewEventFormChange}
+                onChange={this.handleRepeatCount}
                 disabled={!this.state.checked}
                 validators={['minNumber:2', 'maxNumber:55']}
                 errorMessages={[
@@ -320,6 +343,7 @@ export default class EventForm extends React.Component {
                   autoOk
                   cancelLabel="Peruuta"
                   value={this.state.lastDate === '' ? null : this.state.lastDate}
+                  validators={['dateIsLater']}
                   fullWidth
                   margin="normal"
                 />

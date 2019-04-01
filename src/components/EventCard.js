@@ -371,7 +371,7 @@ class EventCard extends React.Component {
     const expanded = (
       <CardContent>
         {syncConfirmDialog}
-        <div className="eventTimes">
+        <div className="eventTies">
           <span>{event.type} alkaa:</span>{' '}
           {moment(event.startDate)
             .locale('fi')

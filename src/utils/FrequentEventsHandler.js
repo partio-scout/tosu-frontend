@@ -6,31 +6,30 @@ const handleFrequentEvent = (date, repeatFrequency, i) => {
   // Repeat every day
   if (repeatFrequency === 1) {
     if (i !== 0) {
-      newDate = moment(date).add(i, 'days')
+      newDate = moment(date).add(i-1, 'days')
     }
   }
 
   // Repeat every week
   if (repeatFrequency === 2) {
     if (i !== 0) {
-      newDate = moment(date).add(i, 'weeks')
+      newDate = moment(date).add(i-1, 'weeks')
     }
   }
 
   // Repeat every other week
   if (repeatFrequency === 3) {
     if (i !== 0) {
-      newDate = moment(date).add(i * 14, 'days')
+      newDate = moment(date).add(i-1 * 14, 'days')
     }
   }
 
   // Repeat every month
   if (repeatFrequency === 4) {
     if (i !== 0) {
-      newDate = moment(date).add(i, 'months')
+      newDate = moment(date).add(i-1, 'months')
     }
   }
-
   return newDate
 }
 
