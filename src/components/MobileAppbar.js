@@ -9,6 +9,8 @@ import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import StatusMessage from './StatusMessage'
 import { createStatusMessage } from '../utils/createStatusMessage'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
+import { getTask, getTaskGroup, getRootGroup } from '../functions/denormalizations'
 import PropTypesSchema from './PropTypesSchema'
 
 class MobileAppbar extends React.Component {
@@ -31,18 +33,11 @@ class MobileAppbar extends React.Component {
       this.setState({ treePlaceHolder: 'Valitse ensin tarppo' })
       this.props.addStatusMessage('Valitse ensin tarppo!')
       this.props.emptyTaskgroup()
-
       return
     }
-
-    const selectedGroup = this.props.pofTree.taskgroups.find(
-      group => group.guid === taskgroup.value
-    )
-
+    const selectedGroup = getTaskGroup(taskgroup.value, this.props.pofTree)
     this.props.selectTaskgroup(selectedGroup)
-
     this.updateStatusMessage()
-
     this.setState({ treePlaceHolder: 'Lisää aktiviteetti' })
   }
 
@@ -74,10 +69,11 @@ class MobileAppbar extends React.Component {
 
   render() {
     let taskgroups = []
-
-    if (this.props.pofTree.taskgroups) {
-      taskgroups = this.props.pofTree.taskgroups
+    if(!this.props.pofTree) {
+        return (<div />)
     }
+    taskgroups = getRootGroup(this.props.pofTree)
+    if(!taskgroups) return (<div id="top-bar-header"/>)
     return (
       <div
         className="top-search"
@@ -97,7 +93,8 @@ class MobileAppbar extends React.Component {
                 const status = createStatusMessage(
                   this.props.events,
                   this.props.pofTree,
-                  taskgroup
+                  taskgroup,
+                  this.props.activities,
                 )
                 let labelText = taskgroup.label
 
@@ -148,20 +145,24 @@ const mapStateToProps = state => ({
   taskgroup: state.taskgroup,
   status: state.statusMessage.status,
   scout: state.scout,
+  activities: state.activities,
 })
 
 MobileAppbar.propTypes = {
   ...PropTypesSchema,
 }
 
+const mapDispatchToProps = {
+  notify,
+  addStatusMessage,
+  selectTaskgroup,
+  pofTreeUpdate,
+  emptyTaskgroup,
+}
+
 MobileAppbar.defaultProps = {}
 
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    addStatusMessage,
-    selectTaskgroup,
-    emptyTaskgroup,
-  }
+  mapDispatchToProps
 )(MobileAppbar)

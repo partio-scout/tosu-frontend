@@ -7,7 +7,7 @@ import { scoutLogout } from '../reducers/scoutReducer'
 import { API_ROOT } from '../api-config'
 import PropTypesSchema from './PropTypesSchema'
 
-class AccountIcon extends React.Component {
+export class AccountIcon extends React.Component {
   state = {
     anchorEl: null,
     accountIcon: this.props.accountIcon,
@@ -79,9 +79,11 @@ const mapStateToProps = state => ({
   buffer: state.buffer,
 })
 
+const mapDispatchToProps = {
+  scoutLogout,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    scoutLogout,
-  }
+  mapDispatchToProps
 )(AccountIcon)

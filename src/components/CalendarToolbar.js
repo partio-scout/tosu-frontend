@@ -122,10 +122,12 @@ const mapStateToProps = state => ({
   switchState: state.calendar.showKuksa,
 })
 
+const mapDispatchToProps = {
+  showKuksaEvents,
+  hideKuksaEvents,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    showKuksaEvents,
-    hideKuksaEvents,
-  }
+  mapDispatchToProps
 )(withStyles(styles)(Toolbar))

@@ -5,7 +5,9 @@ import { DateRangePicker } from 'react-dates'
 import AddIcon from '@material-ui/icons/Add'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import CalendarToday from '@material-ui/icons/CalendarToday'
+import PropTypes from 'prop-types'
 import ListIcon from '@material-ui/icons/List'
+import { normalize } from 'normalizr'
 import {
   Button,
   Icon,
@@ -19,8 +21,13 @@ import TosuDialog from './TosuDialog'
 import { viewChange } from '../reducers/viewReducer'
 import { selectTosu } from '../reducers/tosuReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
+import { activityInitialization } from '../reducers/activityReducer'
 import { setLoading } from '../reducers/loadingReducer'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
+import activityService from '../services/activities'
+import eventService from '../services/events'
 import PropTypesSchema from './PropTypesSchema'
+import { eventSchema } from '../pofTreeSchema'
 
 class ButtonRow extends React.Component {
   constructor(props) {
@@ -44,14 +51,26 @@ class ButtonRow extends React.Component {
    * Closes the menu and dispatches 'Tosu view change' -action
    * @param tosuId - ID of the selected Tosu
    */
-  handleTosuSelect = tosuId => {
+  handleTosuSelect = async tosuId => {
     this.handleTosuMenuClose()
     if (this.props.tosuMap.selected !== tosuId) {
       this.props.setLoading(true)
       this.props.selectTosu(tosuId)
-      this.props
-        .eventsInitialization(tosuId)
-        .then(() => this.props.setLoading(false))
+      this.props.eventsInitialization({})
+      const eventDataRaw = await eventService.getAll(tosuId)
+      const eventData = normalize(eventDataRaw, eventSchema).entities
+      if (!eventData.activities) eventData.activities = {}
+      if (!eventData.events) eventData.events = {}
+      const buffer = await activityService.getBufferZoneActivities(
+        this.props.scout.id
+      )
+      this.props.activityInitialization(
+        Object.keys(eventData.activities).map(key => eventData.activities[key]),
+        buffer.activities
+      )
+      this.props.eventsInitialization(eventData.events)
+      this.props.pofTreeUpdate(this.props.activities)
+      this.props.setLoading(false)
     }
   }
 
@@ -88,7 +107,6 @@ class ButtonRow extends React.Component {
   render() {
     const { anchorEl, startDate, endDate } = this.state
     const { tosuMap } = this.props
-
     const calendarIcon = (
       <IconButton
         className={
@@ -167,6 +185,7 @@ class ButtonRow extends React.Component {
               onClick={e => this.setState({ anchorEl: e.currentTarget })}
               variant="contained"
               color="secondary"
+              disabled={this.props.loading}
             >
               {/* Placeholder untill Tosus are loaded */
               Object.entries(tosuMap).length === 0
@@ -176,9 +195,9 @@ class ButtonRow extends React.Component {
           )}
           <Menu
             id="tosu-menu"
-            anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={this.handleTosuMenuClose}
+            anchorEl={anchorEl}
           >
             {Object.entries(this.props.tosuMap).map(([property, tosu]) =>
               property === 'selected' ? null : (
@@ -245,13 +264,19 @@ const mapStateToProps = state => ({
   startDate: state.startDate,
   endDate: state.endDate,
   tosuMap: state.tosu,
+  activities: state.activities,
+  buffer: state.buffer,
+  scout: state.scout,
+  loading: state.loading,
 })
 
 const mapDispatchToProps = {
   viewChange,
   selectTosu,
   eventsInitialization,
+  activityInitialization,
   setLoading,
+  pofTreeUpdate,
 }
 
 export default connect(
