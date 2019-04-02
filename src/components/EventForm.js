@@ -83,6 +83,13 @@ export default class EventForm extends React.Component {
       startDate: date.toDate(),
       endDate: date.toDate(),
     })
+    this.countDate(
+      date.toDate(),
+      this.state.repeatFrequency,
+      this.state.repeatCount
+    )
+    console.log(this.state.repeatFrequency);
+    console.log(this.state.repeatCount);
   }
 
   handleStartTime = date => {
@@ -124,6 +131,14 @@ export default class EventForm extends React.Component {
     this.setState({
       repeatFrequency: event.target.value,
     })
+    this.countDate(
+      this.state.startDate,
+      event.target.value,
+      this.state.repeatCount
+    )
+    console.log(this.state.startDate);
+    console.log(event.target.value);
+    console.log(this.state.repeatCount);
   }
 
   handleLastDate = date => {
@@ -159,6 +174,10 @@ export default class EventForm extends React.Component {
       startDate,
       repeatFrequency,
       lastDate)
+    console.log(newRepeatCount);
+    if (isNaN(newRepeatCount)) {
+      newRepeatCount = 2
+    }
     this.setState({
       repeatCount: newRepeatCount
     })
@@ -169,9 +188,26 @@ export default class EventForm extends React.Component {
     startDate,
     repeatFrequency,
     repeatCount).format('YYYY-MM-DD')
-    this.setState({
-      lastDate: moment(newDate).toDate()
-    })
+    if (repeatFrequency === 1) {
+      this.setState({
+        lastDate: moment(newDate).add(-1, 'days').toDate()
+      })
+    }
+    if (repeatFrequency === 2) {
+      this.setState({
+        lastDate: moment(newDate).add(-1, 'weeks').toDate()
+      })
+    }
+    if (repeatFrequency === 3) {
+      this.setState({
+        lastDate: moment(newDate).add(-1 * 14, 'weeks').toDate()
+      })
+    }
+    if (repeatFrequency === 4) {
+      this.setState({
+        lastDate: moment(newDate).add(-1, 'months').toDate()
+      })
+    }
   }
 
   send = async () => {
@@ -188,7 +224,7 @@ export default class EventForm extends React.Component {
       this.state.type,
       this.state.information
     )
-    
+
     this.props.submitFunction()
   }
 
@@ -329,6 +365,7 @@ export default class EventForm extends React.Component {
                 validators={['minNumber:2', 'maxNumber:55']}
                 errorMessages={[
                   'Toistuvien tapahtumien määrän pitää olla väliltä 2 - 55!',
+                  'Toistuvien tapahtumien määrän pitää olla väliltä 2 - 55!'
                 ]}
                 fullWidth
                 margin="normal"
@@ -344,6 +381,9 @@ export default class EventForm extends React.Component {
                   cancelLabel="Peruuta"
                   value={this.state.lastDate === '' ? null : this.state.lastDate}
                   validators={['dateIsLater']}
+                  errorMessages={[
+                    'Tarvittavia tietoja puuttuu tai ne ovat virheellisiä. (Alkamispäivä ja tapahtumien määrä.)'
+                  ]}
                   fullWidth
                   margin="normal"
                 />
