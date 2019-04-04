@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -12,7 +13,6 @@ import { Parser } from 'html-to-react'
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
 import { notify } from '../reducers/notificationReducer'
-import PropTypesSchema from './PropTypesSchema'
 import {
   editEvent,
   addActivityToEventOnlyLocally,
@@ -176,7 +176,17 @@ const mapStateToProps = state => ({
 })
 
 PlanCard.propTypes = {
-  ...PropTypesSchema,
+  plans: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  initPlans: PropTypes.func.isRequired,
+  savePlan: PropTypes.func.isRequired,
+  deletePlan: PropTypes.func.isRequired,
+  editEvent: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
+  deleteActivityFromEventOnlyLocall: PropTypes.func.isRequired,
+  addActivityToEventOnlyLocally: PropTypes.func.isRequired,
+  updateActivity: PropTypes.func.isRequired,
 }
 
 PlanCard.defaultProps = {}

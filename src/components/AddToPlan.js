@@ -5,18 +5,11 @@ import { DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
 import PropTypes from 'prop-types'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 import { addEventFromKuksa } from '../reducers/eventReducer'
 
 class AddToPlan extends React.Component {
-  static propTypes = {
-    event: PropTypes.shape({ id: PropTypes.number.isRequired }).isRequired,
-    addEventFromKuksa: PropTypes.func.isRequired,
-    notify: PropTypes.func.isRequired,
-    buttonClass: PropTypes.string.isRequired,
-  }
-
   state = { dialogOpen: false }
 
   /**
@@ -85,15 +78,19 @@ const mapDispatchToProps = {
   addEventFromKuksa,
 }
 
-AddToPlan.propTypes = {
-  ...PropTypesSchema,
-}
-
-AddToPlan.defaultProps = {}
-
 const mapStateToProps = state => ({
   tosu: state.tosu,
 })
+
+AddToPlan.propTypes = {
+  event: PropTypesSchema.eventShape.isRequired,
+  addEventFromKuksa: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
+  tosu: PropTypes.func.isRequired,
+  buttonClass: PropTypes.string.isRequired,
+}
+
+AddToPlan.defaultProps = {}
 
 export default connect(
   mapStateToProps,

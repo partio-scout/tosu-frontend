@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
   Button,
@@ -9,7 +10,6 @@ import {
   DialogTitle,
 } from '@material-ui/core'
 import { createTosu } from '../reducers/tosuReducer'
-import PropTypesSchema from './PropTypesSchema'
 
 class TosuDialog extends React.Component {
   state = {
@@ -72,7 +72,7 @@ class TosuDialog extends React.Component {
 }
 
 TosuDialog.propTypes = {
-  ...PropTypesSchema,
+  createTosu: PropTypes.func.isRequired,
 }
 
 const mapDispatchToProps = {
