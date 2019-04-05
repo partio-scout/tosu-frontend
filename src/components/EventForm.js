@@ -193,7 +193,7 @@ export default class EventForm extends React.Component {
     }
     if (repeatFrequency === 3) {
       this.setState({
-        lastDate: moment(newDate).add(-1 * 14, 'weeks').toDate()
+        lastDate: moment(newDate).add((1 * 14)-14, 'weeks').toDate()
       })
     }
     if (repeatFrequency === 4) {
