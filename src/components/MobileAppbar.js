@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Select from 'react-select'
 import List from '@material-ui/icons/List'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -10,8 +11,7 @@ import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import StatusMessage from './StatusMessage'
 import { createStatusMessage } from '../utils/createStatusMessage'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import { getTask, getTaskGroup, getRootGroup } from '../functions/denormalizations'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 class MobileAppbar extends React.Component {
   state = { showStatusBox: true }
@@ -149,7 +149,17 @@ const mapStateToProps = state => ({
 })
 
 MobileAppbar.propTypes = {
-  ...PropTypesSchema,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  pofTree: PropTypesSchema.pofTreeShape.isRequired,
+  taskgroup: PropTypesSchema.taskgroupShape.isRequired,
+  status: PropTypes.string.isRequired,
+  scout: PropTypesSchema.scoutShape.isRequired,
+  notify: PropTypes.func.isRequired,
+  addStatusMessage: PropTypes.func.isRequired,
+  selectTaskgroup: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  emptyTaskgroup: PropTypes.func.isRequired,
 }
 
 const mapDispatchToProps = {

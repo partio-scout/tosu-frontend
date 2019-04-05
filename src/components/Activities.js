@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import React from 'react'
+import PropTypes from 'prop-types'
 import Activity from './Activity'
 import findActivity from '../functions/findActivity'
 import convertToSimpleActivity from '../functions/activityConverter'
@@ -9,8 +10,9 @@ import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { deleteActivityFromBuffer, postActivityToBuffer } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { getTask } from '../functions/denormalizations'
-import { deleteActivity, updateActivity } from '../reducers/activityReducer'
-import PropTypesSchema from './PropTypesSchema'
+import { deleteActivity } from '../reducers/activityReducer'
+import PropTypesSchema from '../utils/PropTypesSchema'
+
 
 export class Activities extends React.Component {
   /**
@@ -18,23 +20,18 @@ export class Activities extends React.Component {
    * @param activity activity that is deleted
    */
   deleteActivity = async activity => {
-    try { 
-      if( this.props.bufferzone ) {
-        this.props.deleteActivityFromBuffer(activity.id)
-        this.props.deleteActivity(activity.id)
-        this.props.pofTreeUpdate(this.props.stateActivities)
-      } else {
-        this.props.deleteActivityFromEvent(activity.id, activity.eventId)
-        this.props.postActivityToBuffer(activity)
-        const res = await activityService.moveActivityFromEventToBufferZone(
-            activity.id, activity.eventId)
-        this.props.updateActivity(res)
-      }
-     this.props.notify('Aktiviteetti poistettu!', 'success')
+    try {
+      const deleteActivityFromParent = this.props.bufferzone
+        ? this.props.deleteActivityFromBuffer
+        : this.props.deleteActivityFromEvent
+      await deleteActivityFromParent(activity.id, activity.eventId)
+      this.props.deleteActivity(activity.id)
+      this.props.pofTreeUpdate(this.props.stateActivities)
+      this.props.notify('Aktiviteetti poistettu!', 'success')
     } catch (exception) {
       console.log(exception)
       this.props.notify(
-        'Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!' 
+        'Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!'
       )
     }
   }
@@ -71,7 +68,20 @@ export class Activities extends React.Component {
 }
 
 Activities.propTypes = {
-  ...PropTypesSchema,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  stateActivities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  bufferzone: PropTypes.bool.isRequired,
+  parentId: PropTypes.number.isRequired,
+  notify: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
+  deleteActivityFromEvent: PropTypes.func.isRequired,
+  deleteActivity: PropTypes.func.isRequired,
+  minimal: PropTypes.bool.isRequired,
+  className: PropTypes.string.isRequired,
+  pofTree: PropTypesSchema.pofTreeShape.isRequired,
 }
 
 Activities.defaultProps = {}
@@ -90,7 +100,6 @@ const mapDispatchToProps = {
   deleteActivityFromEvent,
   deleteActivity,
   postActivityToBuffer,
-  updateActivity,
 }
 
 export default connect(

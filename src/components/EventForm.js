@@ -18,7 +18,6 @@ import { MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from '@date-io/moment'
 import ValidatedDatePicker from '../utils/ValidatedDatePicker'
 import ValidatedTimePicker from '../utils/ValidatedTimePicker'
-import PropTypesSchema from './PropTypesSchema'
 
 export default class EventForm extends React.Component {
   state = {
@@ -329,9 +328,3 @@ export default class EventForm extends React.Component {
     )
   }
 }
-
-EventForm.propTypes = {
-  ...PropTypesSchema,
-}
-
-EventForm.defaultProps = {}

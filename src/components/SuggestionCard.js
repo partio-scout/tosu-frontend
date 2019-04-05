@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
   Card,
   CardHeader,
@@ -16,7 +17,7 @@ import convertToSimpleActivity from '../functions/activityConverter.js'
 import findActivity from '../functions/findActivity'
 import { notify } from '../reducers/notificationReducer'
 import { updateActivity } from '../reducers/activityReducer'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 class SuggestionCard extends React.Component {
   constructor(props) {
@@ -85,7 +86,12 @@ class SuggestionCard extends React.Component {
 }
 
 SuggestionCard.propTypes = {
-  ...PropTypesSchema,
+  pofTree: PropTypesSchema.pofTreeShape.isRequired,
+  plans: PropTypes.arrayOf(PropTypes.object).isRequired,
+  notify: PropTypes.func.isRequired,
+  editEvent: PropTypes.func.isRequired,
+  deletePlan: PropTypes.func.isRequired,
+  updateActivity: PropTypes.func.isRequired,
 }
 
 SuggestionCard.defaultProps = {}

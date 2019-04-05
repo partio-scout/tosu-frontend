@@ -3,6 +3,7 @@ import React from 'react'
 import Divider from '@material-ui/core/Divider/Divider'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
+import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import Activities from './Activities'
@@ -13,7 +14,7 @@ import {
   deleteActivityFromBufferOnlyLocally,
   deleteActivityFromBuffer,
 } from '../reducers/bufferZoneReducer'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 /**
  * Determines the style used in the element
@@ -107,7 +108,15 @@ const mapDispatchToProps = {
 }
 
 BufferZone.propTypes = {
-  ...PropTypesSchema,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
+  deleteActivity: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  pofTree: PropTypesSchema.pofTreeShape.isRequired,
+  notify: PropTypes.func.isRequired,
+  classes: PropTypesSchema.classesShape.isRequired,
 }
 
 BufferZone.defaultProps = {}
