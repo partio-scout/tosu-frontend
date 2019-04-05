@@ -54,6 +54,41 @@ class Login extends React.Component {
   }
 
   render() {
+    const backdoorLogin = () => {
+      this.googleLoginSuccess({ tokenId: '1234' })
+    }
+    const PartioIDLogin = () => {
+      if (!process.env.REACT_APP_TEST) {
+        console.log(process.env)
+        return (
+          <Button
+            style={{ backgroundColor: 'transparent' }}
+            href={`${API_ROOT}/scouts/login`}
+          >
+            <span className="login-button">
+              <span className="appbar-button-text">
+                Kirjaudu sisään PartioID:llä
+              </span>
+            </span>
+          </Button>
+        )
+      }
+      return (
+        <Button
+          style={{ backgroundColor: 'transparent' }}
+          onClick={() => {
+            console.log('click')
+          }}
+        >
+          <span className="login-button">
+            <span className="appbar-button-text">
+              Kirjaudu sisään PartioID:llä (testi)
+            </span>
+          </span>
+        </Button>
+      )
+    }
+
     return (
       <div className="Login">
         <p className={isTouchDevice() ? 'login-mobile-text' : 'login-text'}>
@@ -72,16 +107,7 @@ class Login extends React.Component {
             </span>
           </span>
         </GoogleLogin>
-        <Button
-          style={{ backgroundColor: 'transparent' }}
-          href={`${API_ROOT}/scouts/login`}
-        >
-          <span className="login-button">
-            <span className="appbar-button-text">
-              Kirjaudu sisään PartioID:llä
-            </span>
-          </span>
-        </Button>
+        {PartioIDLogin()}
       </div>
     )
   }
