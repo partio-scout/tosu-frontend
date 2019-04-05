@@ -10,7 +10,7 @@ import {
   deleteSyncedEvent,
 } from '../reducers/eventReducer'
 import { notify } from '../reducers/notificationReducer'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 const styles = theme => ({
   button: {
@@ -25,30 +25,11 @@ const styles = theme => ({
 })
 
 class DeleteEvent extends React.Component {
-  /**  PropTypes for DeleteEvent.
-   * If eventGroupId exists, it's a recurring event, so we need to enable deleting those.
-   * DeleteEvent never allows modifications to kuksaEvents (not synced).
-   */
-  static propTypes = {
-    data: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      synced: PropTypes.bool,
-      eventGroupId: PropTypes.number,
-      kuksaEvent: PropTypes.object,
-    }).isRequired,
-    deleteSyncedEvent: PropTypes.func.isRequired,
-    deleteEvent: PropTypes.func.isRequired,
-    deleteEventGroup: PropTypes.func.isRequired,
-    notify: PropTypes.func.isRequired,
-    minimal: PropTypes.bool.isRequired,
-    classes: PropTypes.shape({}).isRequired,
-  }
-
-  state = { open: false }
-
   /**
    * Deletes a given event and creates a notification acknowledging it. Also closes the dialog box
    */
+  state = { open: false }
+
   deleteEvent = async () => {
     this.handleClose()
     try {
@@ -153,7 +134,17 @@ const mapDispatchToProps = {
 }
 
 DeleteEvent.propTypes = {
-  ...PropTypesSchema,
+  /**  PropTypes for DeleteEvent.
+   * If eventGroupId exists, it's a recurring event, so we need to enable deleting those.
+   * DeleteEvent never allows modifications to kuksaEvents (not synced).
+   */
+  data: PropTypesSchema.dataShape.isRequired,
+  deleteSyncedEvent: PropTypes.func.isRequired,
+  deleteEvent: PropTypes.func.isRequired,
+  deleteEventGroup: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
+  minimal: PropTypes.bool.isRequired,
+  classes: PropTypesSchema.classesShape.isRequired,
 }
 
 DeleteEvent.defaultProps = {}
