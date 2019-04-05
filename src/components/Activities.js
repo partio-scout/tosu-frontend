@@ -4,13 +4,15 @@ import PropTypes from 'prop-types'
 import Activity from './Activity'
 import findActivity from '../functions/findActivity'
 import convertToSimpleActivity from '../functions/activityConverter'
+import activityService from '../services/activities'
 import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
+import { deleteActivityFromBuffer, postActivityToBuffer } from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { getTask } from '../functions/denormalizations'
 import { deleteActivity } from '../reducers/activityReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
+
 
 export class Activities extends React.Component {
   /**
@@ -97,6 +99,7 @@ const mapDispatchToProps = {
   deleteActivityFromBuffer,
   deleteActivityFromEvent,
   deleteActivity,
+  postActivityToBuffer,
 }
 
 export default connect(

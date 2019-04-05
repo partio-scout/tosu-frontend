@@ -47,9 +47,9 @@ import eventService from '../services/events'
 import { deletePlan } from '../reducers/planReducer'
 import SuggestionCard from '../components/SuggestionCard'
 import { getTask } from '../functions/denormalizations'
-import { getActivityList } from '../reducers/activityReducer'
-// Warning icon
+import { getActivityList, addActivity } from '../reducers/activityReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
+
 
 const warning = (
   <div className="tooltip">
@@ -81,7 +81,7 @@ class EventCard extends React.Component {
         const res = await eventService.addActivity(this.props.event.id, {
           guid: activityGuid,
         })
-
+        this.props.addActivity(res)
         this.props.addActivityToEventOnlyLocally(this.props.event.id, res)
         this.props.notify('Aktiviteetti on lisätty!', 'success')
       } catch (exception) {
@@ -97,7 +97,7 @@ class EventCard extends React.Component {
     if (isTouchDevice()) {
       const bufferActivities = this.props.buffer.activities
       const promises = bufferActivities.map(activity =>
-        this.props.deleteActivityFromBuffer(activity.id)
+        this.props.deleteActivityFromBuffer(activity)
       )
       try {
         await Promise.all(promises)
@@ -115,21 +115,10 @@ class EventCard extends React.Component {
   isLeaf = value => {
     if (!value) {
       return false
-    }
-    let queues = [...this.props.pofTree.taskgroups]
-    while (queues.length) {
-      const item = queues.shift()
-      if (item.value.toString() === value.toString()) {
-        if (!item.children) {
-          return true
-        }
+    } if( value.children) {
         return false
-      }
-      if (item.children) {
-        queues = queues.concat(item.children)
-      }
     }
-    return false
+    return true
   }
 
   filterTreeNode = (input, child) =>
@@ -195,8 +184,7 @@ class EventCard extends React.Component {
       cardClassName = 'kuksa-synced-event-card'
     }
 
-    const taskGroupTree = this.props.pofTree.taskgroups
-
+    const taskGroupTree = getRootGroup(this.props.pofTree)
     let selectedTaskGroupPofData = []
     if (
       this.props.taskgroup !== undefined &&
@@ -518,6 +506,7 @@ const mapDispatchToProps = {
   deleteActivityFromEvent,
   bufferZoneInitialization,
   addActivityToEventOnlyLocally,
+  addActivity,
   deleteActivityFromEventOnlyLocally,
   postActivityToBufferOnlyLocally,
   deleteActivityFromBufferOnlyLocally,
