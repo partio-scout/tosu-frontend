@@ -12,6 +12,7 @@ import StatusMessage from './StatusMessage'
 import { createStatusMessage } from '../utils/createStatusMessage'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
+import { getTask, getTaskGroup, getRootGroup } from '../functions/denormalizations'
 
 class MobileAppbar extends React.Component {
   state = { showStatusBox: true }
