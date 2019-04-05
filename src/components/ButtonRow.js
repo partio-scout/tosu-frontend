@@ -104,9 +104,20 @@ class ButtonRow extends React.Component {
     this.props.dateRangeUpdate({ startDate, endDate })
   }
 
+ canCreateEvent = ( tosu ) => {
+     if (!tosu) return false
+     if (Object.entries(tosu) === 0) {
+         return false
+     } else if( !tosu.selected ) {
+         return false 
+    }
+     return true
+ }
+
   render() {
     const { anchorEl, startDate, endDate } = this.state
     const { tosuMap } = this.props
+    console.log('in button row: ', tosuMap.selected)
     const calendarIcon = (
       <IconButton
         className={
@@ -168,6 +179,7 @@ class ButtonRow extends React.Component {
               onClick={this.props.newEvent}
               variant="contained"
               color="secondary"
+              disabled={!this.canCreateEvent(tosuMap)}
             >
               Uusi tapahtuma
             </Button>
@@ -188,9 +200,12 @@ class ButtonRow extends React.Component {
               disabled={this.props.loading}
             >
               {/* Placeholder untill Tosus are loaded */
-              Object.entries(tosuMap).length === 0
+              this.props.loading
                 ? 'Ladataan...'
-                : tosuMap[tosuMap.selected].name}
+                : Object.entries(tosuMap).length === 0
+                ? 'Ei tosuja'
+                : tosuMap[tosuMap.selected].name
+              }
             </Button>
           )}
           <Menu
