@@ -29,6 +29,7 @@ import Activities from './Activities'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
+import {getRootGroup} from '../functions/denormalizations'
 
 import {
   editEvent,
