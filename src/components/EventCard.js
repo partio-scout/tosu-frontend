@@ -50,6 +50,7 @@ import { getTask } from '../functions/denormalizations'
 import { getActivityList, addActivity } from '../reducers/activityReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
+
 const warning = (
   <div className="tooltip">
     <Warning className="warning" />
