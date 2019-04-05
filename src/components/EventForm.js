@@ -39,7 +39,6 @@ export default class EventForm extends React.Component {
 
   componentDidMount() {
     ValidatorForm.addValidationRule('dateIsLater', value => {
-      console.log('value= ',value);
       if (!value || !this.state.startDate) {
         return false
       }
@@ -88,8 +87,6 @@ export default class EventForm extends React.Component {
       this.state.repeatFrequency,
       this.state.repeatCount
     )
-    console.log(this.state.repeatFrequency);
-    console.log(this.state.repeatCount);
   }
 
   handleStartTime = date => {
@@ -136,9 +133,6 @@ export default class EventForm extends React.Component {
       event.target.value,
       this.state.repeatCount
     )
-    console.log(this.state.startDate);
-    console.log(event.target.value);
-    console.log(this.state.repeatCount);
   }
 
   handleLastDate = date => {
@@ -174,9 +168,8 @@ export default class EventForm extends React.Component {
       startDate,
       repeatFrequency,
       lastDate)
-    console.log(newRepeatCount);
     if (isNaN(newRepeatCount)) {
-      newRepeatCount = 2
+      newRepeatCount = 1
     }
     this.setState({
       repeatCount: newRepeatCount
