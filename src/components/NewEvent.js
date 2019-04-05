@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import isTouchDevice from 'is-touch-device'
@@ -8,7 +9,6 @@ import FrequentEventsHandler from '../utils/FrequentEventsHandler'
 import EventForm from './EventForm'
 import { addEvent } from '../reducers/eventReducer'
 import { notify } from '../reducers/notificationReducer'
-import PropTypesSchema from './PropTypesSchema'
 
 class NewEvent extends React.Component {
   state = {
@@ -202,7 +202,9 @@ class NewEvent extends React.Component {
 }
 
 NewEvent.propTypes = {
-  ...PropTypesSchema,
+  addEvent: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
+  tosu: PropTypes.string.isRequired,
 }
 
 NewEvent.defaultProps = {}

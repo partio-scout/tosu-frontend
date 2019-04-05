@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import Select from 'react-select'
 import 'react-select/dist/react-select.css'
@@ -19,7 +20,7 @@ import {
 import { eventList } from '../reducers/eventReducer'
 import { addActivity } from '../reducers/activityReducer'
 import { addActivityToRelevantReducers } from '../functions/activityFunctions'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 class TreeSearchBar extends React.Component {
   state = { treePlaceHolder: 'Valitse ensin tarppo' }
@@ -202,7 +203,18 @@ class TreeSearchBar extends React.Component {
 }
 
 TreeSearchBar.propTypes = {
-  ...PropTypesSchema,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  pofTree: PropTypesSchema.pofTreeShape.isRequired,
+  taskgroup: PropTypesSchema.taskgroupShape.isRequired,
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  notify: PropTypes.func.isRequired,
+  postActivityToBuffer: PropTypes.func.isRequired,
+  addActivity: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  addStatusMessage: PropTypes.func.isRequired,
+  selectTaskgroup: PropTypes.func.isRequired,
+  emptyTaskgroup: PropTypes.func.isRequired,
 }
 
 TreeSearchBar.defaultProps = {}

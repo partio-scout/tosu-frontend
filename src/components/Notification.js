@@ -1,6 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import PropTypesSchema from './PropTypesSchema'
 
 /**
  * Notification that is used in the footer element
@@ -21,7 +21,7 @@ const mapStateToProps = state => ({
 })
 
 Notification.propTypes = {
-  ...PropTypesSchema,
+  notification: PropTypes.string.isRequired,
 }
 
 Notification.defaultProps = {}
