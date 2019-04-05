@@ -12,7 +12,7 @@ import { eventStyleGetter } from './CalendarEvent'
 import { closePopper } from '../reducers/calendarReducer'
 import { eventList } from '../reducers/eventReducer'
 
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 const localizer = BigCalendar.momentLocalizer(moment)
 
@@ -54,13 +54,6 @@ function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
 }
 
 export class Calendar extends Component {
-  static propTypes = {
-    closePopper: PropTypes.func.isRequired,
-    events: PropTypes.arrayOf(PropTypes.object).isRequired,
-    mobile: PropTypes.bool.isRequired,
-    shouldShowKuksaEventsAlso: PropTypes.bool.isRequired,
-  }
-
   constructor(props) {
     super(props)
     this.props.closePopper()
@@ -98,8 +91,12 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = { closePopper }
+
 Calendar.propTypes = {
-  ...PropTypesSchema,
+  closePopper: PropTypes.func.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  mobile: PropTypes.bool.isRequired,
+  shouldShowKuksaEventsAlso: PropTypes.bool.isRequired,
 }
 
 Calendar.defaultProps = {}

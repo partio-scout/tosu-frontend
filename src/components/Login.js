@@ -22,7 +22,7 @@ import { activityInitialization } from '../reducers/activityReducer'
 import { pofTreeInitialization } from '../reducers/pofTreeReducer'
 
 import { tosuInitialization } from '../reducers/tosuReducer'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 class Login extends React.Component {
   /**
@@ -81,7 +81,24 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  ...PropTypesSchema,
+  scout: PropTypesSchema.scoutShape.isRequired,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  store: PropTypesSchema.storeShape.isRequired,
+  scoutGoogleLogin: PropTypes.func.isRequired,
+  eventsInitialization: PropTypes.func.isRequired,
+  bufferZoneInitialization: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tosu: PropTypes.string.isRequired,
+  notify: PropTypes.func.isRequired,
+  pofTreeInitialization: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  activityInitialization: PropTypes.func.isRequired,
+  tosuInitialization: PropTypes.func.isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
 }
 
 Login.defaultProps = {

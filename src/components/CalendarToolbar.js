@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Switch, FormControlLabel } from '@material-ui/core'
 import Select from '@material-ui/core/Select'
@@ -9,7 +10,6 @@ import ChevronRight from '@material-ui/icons/ChevronRight'
 import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import { withStyles } from '@material-ui/core/styles'
 import { showKuksaEvents, hideKuksaEvents } from '../reducers/calendarReducer'
-import PropTypesSchema from './PropTypesSchema'
 
 const navigate = {
   PREVIOUS: 'PREV',
@@ -28,7 +28,6 @@ const styles = theme => ({
 })
 
 class Toolbar extends React.Component {
-
   /**
    * Toggles whether kuksa events are shown
    */
@@ -113,7 +112,16 @@ class Toolbar extends React.Component {
 }
 
 Toolbar.propTypes = {
-  ...PropTypesSchema,
+  view: PropTypes.string.isRequired,
+  views: PropTypes.arrayOf(PropTypes.string).isRequired,
+  label: PropTypes.node.isRequired,
+  messages: PropTypes.object,
+  onNavigate: PropTypes.func.isRequired,
+  onViewChange: PropTypes.func.isRequired,
+  showKuksaEvents: PropTypes.func.isRequired,
+  hideKuksaEvents: PropTypes.func.isRequired,
+  switchState: PropTypes.bool,
+  classes: PropTypes.object.isRequired,
 }
 
 Toolbar.defaultProps = {}

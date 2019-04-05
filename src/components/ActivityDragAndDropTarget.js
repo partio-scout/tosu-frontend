@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import React from 'react'
+import PropTypes from 'prop-types'
 import { DropTarget } from 'react-dnd'
 import ItemTypes from '../ItemTypes'
 import DropActivity from '../functions/DropActivity'
@@ -16,7 +17,7 @@ import {
 } from '../reducers/eventReducer'
 import { updateActivity } from '../reducers/activityReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 /**
  * Collects an element and allows it to be dropped to a container.
  * @param connector  allows user to assign one of the predefined roles (a drag source, a drag preview, or a drop target) to the DOM nodes in the render function. Imported from react-dnd
@@ -72,7 +73,25 @@ const mapDispatchToProps = {
 }
 
 ActivityDragAndDropTarget.propTypes = {
-  ...PropTypesSchema,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  events: PropTypes.shape({}).isRequired,
+  activities: PropTypes.shape({}).isRequired,
+  deleteActivityFromEventOnlyLocally: PropTypes.func.isRequired,
+  addActivityToEventOnlyLocally: PropTypes.func.isRequired,
+  deleteActivityFromBufferOnlyLocally: PropTypes.func.isRequired,
+  postActivityToBufferOnlyLocally: PropTypes.func.isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
+  deleteActivityFromEvent: PropTypes.func.isRequired,
+  updateActivity: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  odd: PropTypes.bool.isRequired,
+  isOver: PropTypes.bool.isRequired,
+  canDrop: PropTypes.bool.isRequired,
+  event: PropTypesSchema.eventShape.isRequired,
+  className: PropTypes.string.isRequired,
+  connectDropTarget: PropTypes.func.isRequired,
+  children: PropTypes.arrayOf(PropTypes.object).isRequired,
 }
 
 ActivityDragAndDropTarget.defaultProps = {}

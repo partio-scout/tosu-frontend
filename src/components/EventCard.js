@@ -4,6 +4,7 @@ import isTouchDevice from 'is-touch-device'
 import TreeSelect /* ,{ TreeNode, SHOW_PARENT } */ from 'rc-tree-select'
 import 'rc-tree-select/assets/index.css'
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
   CardActions,
   CardHeader,
@@ -48,7 +49,7 @@ import SuggestionCard from '../components/SuggestionCard'
 import { getTask } from '../functions/denormalizations'
 import { getActivityList } from '../reducers/activityReducer'
 // Warning icon
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 const warning = (
   <div className="tooltip">
@@ -479,7 +480,23 @@ class EventCard extends React.Component {
 }
 
 EventCard.propTypes = {
-  ...PropTypesSchema,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  pofTree: PropTypesSchema.pofTreeShape.isRequired,
+  taskgroup: PropTypesSchema.taskgroupShape.isRequired,
+  status: PropTypes.string.isRequired,
+  plans: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  notify: PropTypes.func.isRequired,
+  editEvent: PropTypes.func.isRequired,
+  deletePlan: PropTypes.func.isRequired,
+  deleteActivityFromEvent: PropTypes.func.isRequired,
+  bufferZoneInitialization: PropTypes.func.isRequired,
+  addActivityToEventOnlyLocally: PropTypes.func.isRequired,
+  deleteActivityFromEventOnlyLocally: PropTypes.func.isRequired,
+  postActivityToBufferOnlyLocally: PropTypes.func.isRequired,
+  deleteActivityFromBufferOnlyLocally: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
 }
 
 EventCard.defaultProps = {}

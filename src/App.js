@@ -30,7 +30,7 @@ import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
 import FeedbackButton from './components/FeedbackButton'
 import Login from './components/Login'
-import PropTypesSchema from './components/PropTypesSchema'
+import PropTypesSchema from './utils/PropTypesSchema'
 // Utils
 import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
@@ -299,7 +299,28 @@ class App extends Component {
 }
 
 App.propTypes = {
-  ...PropTypesSchema,
+  notification: PropTypes.string.isRequired,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  pofTree: PropTypesSchema.pofTreeShape.isRequired,
+  taskgroup: PropTypesSchema.taskgroupShape.isRequired,
+  scout: PropTypesSchema.scoutShape.isRequired,
+  view: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
+  tosu: PropTypes.string.isRequired,
+  pofTreeInitialization: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  eventsInitialization: PropTypes.func.isRequired,
+  activityInitialization: PropTypes.func.isRequired,
+  bufferZoneInitialization: PropTypes.func.isRequired,
+  tosuInitialization: PropTypes.func.isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
+  addStatusInfo: PropTypes.func.isRequired,
+  scoutGoogleLogin: PropTypes.func.isRequired,
+  readScout: PropTypes.func.isRequired,
+  viewChange: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
 }
 
 App.defaultProps = {
