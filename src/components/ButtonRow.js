@@ -51,7 +51,15 @@ class ButtonRow extends React.Component {
    * Closes the menu and dispatches 'Tosu view change' -action
    * @param tosuId - ID of the selected Tosu
    */
-  handleTosuSelect = async tosuId => {
+  handleTosuSelect = tosuId => {
+    if (this.props.tosuMap.selected !== tosuId) {
+      this.handleTosuSelectHelper(tosuId)
+      this.tosuDialog.current.handleClose()
+    }
+  }
+
+  
+  handleTosuSelectHelper = async tosuId => {
     this.handleTosuMenuClose()
     const {
       setLoading,
@@ -62,18 +70,16 @@ class ButtonRow extends React.Component {
       activities,
       buffer,
     } = this.props
-    if (this.props.tosuMap.selected !== tosuId) {
-      tosuChange(
-        tosuId,
-        setLoading,
-        selectTosu,
-        eventsInitialization,
-        activityInitialization,
-        pofTreeUpdate,
-        activities,
-        buffer
-      )
-    }
+    tosuChange(
+      tosuId,
+      setLoading,
+      selectTosu,
+      eventsInitialization,
+      activityInitialization,
+      pofTreeUpdate,
+      activities,
+      buffer
+    )
   }
 
   /**
@@ -235,7 +241,7 @@ class ButtonRow extends React.Component {
           </Menu>
           <TosuDialog
             ref={this.tosuDialog}
-            handleTosuSelect={this.handleTosuSelect}
+            handleTosuSelect={this.handleTosuSelectHelper}
           />
         </div>
         <div

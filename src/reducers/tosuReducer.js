@@ -40,7 +40,9 @@ const reducer = (state = {}, action) => {
       if (state.selected) {
         return {
           ...state,
-          [action.newTosu.id]: { ...action.newTosu, selected: false },
+          [action.newTosu.id]: { ...action.newTosu, selected: true },
+          [state.selected]: {...state[state.selected], selected:false},
+          selected: action.newTosu.id,
         }
       } else {
         return {
@@ -63,6 +65,7 @@ const reducer = (state = {}, action) => {
       }
       selected.selected = true
       newState.selected = selected.id
+      console.log(selected)
       return newState
     default:
       return state
@@ -121,9 +124,8 @@ export const createTosu = tosuName => async dispatch => {
 }
 
 export const deleteTosu = tosuId => dispatch => {
-  tosuService
-    .deleteTosu(tosuId)
-    .then(() => dispatch({ type: 'DELETE_TOSU', tosuId }))
+  tosuService.deleteTosu(tosuId)
+  dispatch({ type: 'DELETE_TOSU', tosuId })
 }
 
 export default reducer

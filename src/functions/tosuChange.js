@@ -14,8 +14,9 @@ const tosuChange = async (
   activities,
   buffer
 ) => {
+    console.log("Changing tosu")
     setLoading(true)
-    selectTosu(tosuId)
+    await selectTosu(tosuId)
     eventsInitalization({})
     const eventDataRaw = await eventService.getAll(tosuId)
     const eventData = normalize(eventDataRaw, eventSchema).entities
