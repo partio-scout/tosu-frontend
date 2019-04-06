@@ -53,6 +53,7 @@ class DeleteTosuButton extends Component {
       deleteTosu,
       selectTosu,
       eventsInitialization,
+      activityInitialization,
       initialization,
       pofTreeUpdate,
       notify,
@@ -61,9 +62,7 @@ class DeleteTosuButton extends Component {
     } = this.props
     e.preventDefault()
     const toDelete = tosu.selected
-    console.log(toDelete)
     await deleteTosu(toDelete)
-    console.log(tosu.selected)
     if (this.props.tosu.selected) {
       tosuChange(
         this.props.tosu.selected,
@@ -80,7 +79,6 @@ class DeleteTosuButton extends Component {
       initialization()
     }
     notify('Tosu poistettu', 'success')
-    console.log(this.props.tosu)
     this.handleClose()
   }
   render() {

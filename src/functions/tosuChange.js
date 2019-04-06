@@ -14,7 +14,6 @@ const tosuChange = async (
   activities,
   buffer
 ) => {
-    console.log("Changing tosu")
     setLoading(true)
     await selectTosu(tosuId)
     eventsInitalization({})

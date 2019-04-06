@@ -125,7 +125,6 @@ class ButtonRow extends React.Component {
   render() {
     const { anchorEl, startDate, endDate } = this.state
     const { tosuMap } = this.props
-    console.log('in button row: ', tosuMap.selected)
     const calendarIcon = (
       <IconButton
         className={

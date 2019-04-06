@@ -28,7 +28,7 @@ const reducer = (state = {}, action) => {
 export const activityInitialization = (
   eventActivities,
   bufferActivities
-) => async dispatch => {
+) => dispatch => {
   const initialState = {}
   eventActivities.forEach(activity => {
     initialState[activity.id] = activity

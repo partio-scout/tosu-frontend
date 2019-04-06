@@ -3,7 +3,6 @@ import tosuService from '../services/tosu'
 const reducer = (state = {}, action) => {
   switch (action.type) {
     case 'INIT_TOSU':
-      console.log(action.tosuList)
       var selectedTosu = action.tosuList.find(tosu => tosu.selected)
       if (!selectedTosu && action.tosuList.length > 0) {
         selectedTosu = action.tosuList[0]
@@ -59,13 +58,11 @@ const reducer = (state = {}, action) => {
           .map(key => newState[key])
           .find(tosu => !tosu.selected),
       }
-      console.log(selected)
       if (!selected.id) {
         return {}
       }
       selected.selected = true
       newState.selected = selected.id
-      console.log(selected)
       return newState
     default:
       return state
