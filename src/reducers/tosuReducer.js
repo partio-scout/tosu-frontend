@@ -8,8 +8,8 @@ const reducer = (state = {}, action) => {
       if (!selectedTosu && action.tosuList.length > 0) {
         selectedTosu = action.tosuList[0]
         selectedTosu.selected = true
-      } else  if( action.tosuList.length === 0){
-          return {}
+      } else if (action.tosuList.length === 0) {
+        return {}
       }
       const tosuMap = action.tosuList.reduce(
         (soFar, row) => ({ ...soFar, ...{ [row.id]: row } }),
@@ -37,16 +37,16 @@ const reducer = (state = {}, action) => {
         selected: action.tosuId,
       }
     case 'CREATE_TOSU':
-      if(state.selected) {
-      return {
-        ...state,
-        [action.newTosu.id]: { ...action.newTosu, selected: false },
-      } }
-      else {
+      if (state.selected) {
         return {
-            ...state,
-            [action.newTosu.id]: {...action.newTosu, selected:true},
-            selected: action.newTosu.id
+          ...state,
+          [action.newTosu.id]: { ...action.newTosu, selected: false },
+        }
+      } else {
+        return {
+          ...state,
+          [action.newTosu.id]: { ...action.newTosu, selected: true },
+          selected: action.newTosu.id,
         }
       }
     case 'DELETE_TOSU':
@@ -58,8 +58,8 @@ const reducer = (state = {}, action) => {
           .find(tosu => !tosu.selected),
       }
       console.log(selected)
-      if(!selected.id){
-          return {}
+      if (!selected.id) {
+        return {}
       }
       selected.selected = true
       newState.selected = selected.id
@@ -74,7 +74,7 @@ const reducer = (state = {}, action) => {
  */
 export const tosuInitialization = () => async dispatch => {
   const tosuList = await tosuService.getAll()
-  if(tosuList.length <= 0) {
+  if (tosuList.length <= 0) {
     return null
   }
   dispatch({
@@ -107,16 +107,18 @@ export const selectTosu = tosuId => dispatch =>
  * Create new tosu and push to backend
  * @param tosuName - Name for the new tosu
  */
-export const createTosu = tosuName => dispatch =>
-  tosuService
-    .create(tosuName)
-    .then(newTosu =>
-      dispatch({
-        type: 'CREATE_TOSU',
-        newTosu,
-      })
-    )
-    .catch(error => console.log(error))
+export const createTosu = tosuName => async dispatch => {
+  try {
+    const newTosu = await tosuService.create(tosuName)
+    dispatch({
+      type: 'CREATE_TOSU',
+      newTosu,
+    })
+    return newTosu
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 export const deleteTosu = tosuId => dispatch => {
   tosuService

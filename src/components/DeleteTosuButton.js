@@ -8,6 +8,24 @@ import { eventsInitialization } from '../reducers/eventReducer'
 import {notify} from '../reducers/notificationReducer'
 import theme from '../theme'
 
+
+
+
+const styles = () => ( {
+    root: {
+        background:'#FE6B8B' ,
+        color: 'white',
+        borderRadius: 3,
+        border: 0,
+        height: 48,
+    },
+    label: {
+        textTransform: 'uppercase'
+    },
+})
+
+const StyledButton = withStyles(styles)(Button)
+
 class DeleteTosuButton extends Component{
   render() {
     const {
@@ -20,10 +38,8 @@ class DeleteTosuButton extends Component{
     } = this.props
     if( Object.entries(tosu).length === 0) return (<div/>)
     return (
-    <MuiThemeProvider theme={theme}>
-      <Button
+      <StyledButton classes={{label: 'deleteTosuButton' }}
         variant="contained"
-        color="error"
         onClick={e => {
           setLoading(true)
           e.preventDefault()
@@ -38,11 +54,11 @@ class DeleteTosuButton extends Component{
         }}
       >
         Poista tosu
-      </Button>
-    </MuiThemeProvider>
+      </StyledButton>
     )
   }
 }
+
 
 const mapStateToProps = state => ({
     tosu: state.tosu,
@@ -54,5 +70,6 @@ const mapDispatchToProps = {
     eventsInitialization,
     notify,
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(DeleteTosuButton)
