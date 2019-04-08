@@ -215,7 +215,7 @@ export const addEventFromKuksa = event => dispatch => {
     // Delete the Kuksa event to not show the same event on multiple pages
     dispatch({
       type: 'DELETE_EVENT',
-      id: `kuksa${event.kuksaEventId}`,
+      eventId: `kuksa${event.kuksaEventId}`,
     })
   })
 }

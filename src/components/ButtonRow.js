@@ -28,7 +28,7 @@ import activityService from '../services/activities'
 import eventService from '../services/events'
 import PropTypesSchema from '../utils/PropTypesSchema'
 import { eventSchema } from '../pofTreeSchema'
-
+import tosuChange from '../functions/tosuChange'
 class ButtonRow extends React.Component {
   constructor(props) {
     super(props)
@@ -51,27 +51,35 @@ class ButtonRow extends React.Component {
    * Closes the menu and dispatches 'Tosu view change' -action
    * @param tosuId - ID of the selected Tosu
    */
-  handleTosuSelect = async tosuId => {
-    this.handleTosuMenuClose()
+  handleTosuSelect = tosuId => {
     if (this.props.tosuMap.selected !== tosuId) {
-      this.props.setLoading(true)
-      this.props.selectTosu(tosuId)
-      this.props.eventsInitialization({})
-      const eventDataRaw = await eventService.getAll(tosuId)
-      const eventData = normalize(eventDataRaw, eventSchema).entities
-      if (!eventData.activities) eventData.activities = {}
-      if (!eventData.events) eventData.events = {}
-      const buffer = await activityService.getBufferZoneActivities(
-        this.props.scout.id
-      )
-      this.props.activityInitialization(
-        Object.keys(eventData.activities).map(key => eventData.activities[key]),
-        buffer.activities
-      )
-      this.props.eventsInitialization(eventData.events)
-      this.props.pofTreeUpdate(this.props.activities)
-      this.props.setLoading(false)
+      this.handleTosuSelectHelper(tosuId)
+      this.tosuDialog.current.handleClose()
     }
+  }
+
+  
+  handleTosuSelectHelper = async tosuId => {
+    this.handleTosuMenuClose()
+    const {
+      setLoading,
+      selectTosu,
+      eventsInitialization,
+      activityInitialization,
+      pofTreeUpdate,
+      activities,
+      buffer,
+    } = this.props
+    tosuChange(
+      tosuId,
+      setLoading,
+      selectTosu,
+      eventsInitialization,
+      activityInitialization,
+      pofTreeUpdate,
+      activities,
+      buffer
+    )
   }
 
   /**
@@ -102,6 +110,16 @@ class ButtonRow extends React.Component {
   dateRangeUpdate = ({ startDate, endDate }) => {
     this.setState({ startDate, endDate })
     this.props.dateRangeUpdate({ startDate, endDate })
+  }
+
+  canCreateEvent = tosu => {
+    if (!tosu) return false
+    if (Object.entries(tosu) === 0) {
+      return false
+    } else if (!tosu.selected) {
+      return false
+    }
+    return true
   }
 
   render() {
@@ -168,6 +186,7 @@ class ButtonRow extends React.Component {
               onClick={this.props.newEvent}
               variant="contained"
               color="secondary"
+              disabled={!this.canCreateEvent(tosuMap)}
             >
               Uusi tapahtuma
             </Button>
@@ -188,8 +207,10 @@ class ButtonRow extends React.Component {
               disabled={this.props.loading}
             >
               {/* Placeholder untill Tosus are loaded */
-              Object.entries(tosuMap).length === 0
+              this.props.loading
                 ? 'Ladataan...'
+                : Object.entries(tosuMap).length === 0
+                ? 'Ei tosuja'
                 : tosuMap[tosuMap.selected].name}
             </Button>
           )}
@@ -217,7 +238,10 @@ class ButtonRow extends React.Component {
               </ListItemIcon>
             </MenuItem>
           </Menu>
-          <TosuDialog ref={this.tosuDialog} />
+          <TosuDialog
+            ref={this.tosuDialog}
+            handleTosuSelect={this.handleTosuSelectHelper}
+          />
         </div>
         <div
           className="date-range-container"

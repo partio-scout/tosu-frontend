@@ -28,9 +28,10 @@ class TosuDialog extends React.Component {
     this.setState({ name: event.target.value })
   }
 
-  handleTosuCreate = () => {
+  handleTosuCreate = async () => {
     this.handleClose()
-    this.props.createTosu(this.state.name)
+    const created = await this.props.createTosu(this.state.name)
+    this.props.handleTosuSelect(created.id)
   }
 
   render() {

@@ -3,7 +3,13 @@ import tosuService from '../services/tosu'
 const reducer = (state = {}, action) => {
   switch (action.type) {
     case 'INIT_TOSU':
-      const selectedTosu = action.tosuList.find(tosu => tosu.selected)
+      var selectedTosu = action.tosuList.find(tosu => tosu.selected)
+      if (!selectedTosu && action.tosuList.length > 0) {
+        selectedTosu = action.tosuList[0]
+        selectedTosu.selected = true
+      } else if (action.tosuList.length === 0) {
+        return {}
+      }
       const tosuMap = action.tosuList.reduce(
         (soFar, row) => ({ ...soFar, ...{ [row.id]: row } }),
         {}
@@ -30,10 +36,34 @@ const reducer = (state = {}, action) => {
         selected: action.tosuId,
       }
     case 'CREATE_TOSU':
-      return {
-        ...state,
-        [action.newTosu.id]: {...action.newTosu, selected:false},
+      if (state.selected) {
+        return {
+          ...state,
+          [action.newTosu.id]: { ...action.newTosu, selected: true },
+          [state.selected]: {...state[state.selected], selected:false},
+          selected: action.newTosu.id,
+        }
+      } else {
+        return {
+          ...state,
+          [action.newTosu.id]: { ...action.newTosu, selected: true },
+          selected: action.newTosu.id,
+        }
       }
+    case 'DELETE_TOSU':
+      const newState = { ...state }
+      delete newState[action.tosuId]
+      const selected = {
+        ...Object.keys(newState)
+          .map(key => newState[key])
+          .find(tosu => !tosu.selected),
+      }
+      if (!selected.id) {
+        return {}
+      }
+      selected.selected = true
+      newState.selected = selected.id
+      return newState
     default:
       return state
   }
@@ -44,11 +74,18 @@ const reducer = (state = {}, action) => {
  */
 export const tosuInitialization = () => async dispatch => {
   const tosuList = await tosuService.getAll()
+  if (tosuList.length <= 0) {
+    return null
+  }
   dispatch({
     type: 'INIT_TOSU',
     tosuList,
   })
-  return tosuList.find(tosu => tosu.selected).id
+  var tosu = tosuList.find(tosu => tosu.selected)
+  if (!tosu && tosuList.length > 0) {
+    tosu = tosuList[0]
+  }
+  return tosu.id
 }
 
 /**
@@ -70,15 +107,22 @@ export const selectTosu = tosuId => dispatch =>
  * Create new tosu and push to backend
  * @param tosuName - Name for the new tosu
  */
-export const createTosu = tosuName => dispatch =>
-  tosuService
-    .create(tosuName)
-    .then(newTosu =>
-      dispatch({
-        type: 'CREATE_TOSU',
-        newTosu,
-      })
-    )
-    .catch(error => console.log(error))
+export const createTosu = tosuName => async dispatch => {
+  try {
+    const newTosu = await tosuService.create(tosuName)
+    dispatch({
+      type: 'CREATE_TOSU',
+      newTosu,
+    })
+    return newTosu
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const deleteTosu = tosuId => dispatch => {
+  tosuService.deleteTosu(tosuId)
+  dispatch({ type: 'DELETE_TOSU', tosuId })
+}
 
 export default reducer
