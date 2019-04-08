@@ -288,7 +288,6 @@ class App extends Component {
                   </div>
                 ) : null}
                 {this.props.view === 'CALENDAR' ? calendar : eventsToList}
-                <DeleteTosuButton initialization={this.initialization} />
                 <Dialog
                   open={this.state.newEventVisible}
                   onClose={this.handleClose}
