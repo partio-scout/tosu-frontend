@@ -150,26 +150,6 @@ class Activity extends React.Component {
               </Avatar>
               <span className={classes.activityTitle}>{pofActivity.title}</span>
               <Dialog
-                title={
-                  <div>
-                    {pofActivity.title}
-
-                    <button
-                      className="dialog-close-button"
-                      onClick={this.handleClick}
-                    >
-                      x
-                    </button>
-
-                    <br />
-
-                    {pofActivity.parents.map(parent => (
-                      <span style={{ fontSize: '0.9rem' }} key={parent.guid}>
-                        {parent.title} {parent.guid === lastGuid ? null : ' - '}
-                      </span>
-                    ))}
-                  </div>
-                }
                 modal={false}
                 open={this.state.open}
                 onRequestClose={this.handleClick}

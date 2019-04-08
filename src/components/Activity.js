@@ -11,7 +11,7 @@ import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
 import PropTypesSchema from './PropTypesSchema'
-import { withStyles } from '@material-ui/core'
+import { withStyles, DialogTitle } from '@material-ui/core'
 
 const styles = {
   connectDragSource: {
@@ -146,30 +146,7 @@ class Activity extends Component {
             }
             label={pofActivity.title}
           />
-          <Dialog
-            title={
-              <div>
-                {pofActivity.title}
-
-                <button
-                  className={classes.dialogCloseButton}
-                  onClick={this.handleClick}
-                >
-                  x
-                </button>
-
-                <br />
-
-                {pofActivity.parents.map(parent => (
-                  <span style={{ fontSize: '0.9rem' }} key={parent.guid}>
-                    {parent.title} {parent.guid === lastGuid ? null : ' - '}
-                  </span>
-                ))}
-              </div>
-            }
-            open={this.state.open}
-            onClose={this.handleClick}
-          >
+          <Dialog open={this.state.open} onClose={this.handleClick}>
             <PlanForm
               activity={pofActivity}
               savedActivity={activity}

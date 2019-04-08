@@ -53,23 +53,6 @@ const styles = {
 }
 
 /**
- * Intializes the activitynmarkers for rendering
- * @param activities activities shown on the calendar
- * @returns markers that contain the activities
- */
-function createActivityMarkers(activities) {
-  const markers = [' ']
-  for (let i = 0; i < activities.length; i += 1) {
-    markers.push(
-      <span
-        className={this.props.classes.calendarActivityMarker}
-        key={activities[i].id}
-      />
-    )
-  }
-  return markers
-}
-/**
  * Function to handle the styles of the event
  * @param event event that is modified
  */
@@ -88,6 +71,24 @@ export function eventStyleGetter(event) {
 class CalendarEvent extends Component {
   state = {
     anchorEl: null,
+  }
+
+  /**
+   * Intializes the activitynmarkers for rendering
+   * @param activities activities shown on the calendar
+   * @returns markers that contain the activities
+   */
+  createActivityMarkers(activities) {
+    const markers = [' ']
+    for (let i = 0; i < activities.length; i += 1) {
+      markers.push(
+        <span
+          className={this.props.classes.calendarActivityMarker}
+          key={activities[i].id}
+        />
+      )
+    }
+    return markers
   }
 
   /**
@@ -236,7 +237,7 @@ class CalendarEvent extends Component {
         <div aria-describedby={id} onClick={this.handleClick}>
           <span>{event.title}</span>
           <br />
-          {createActivityMarkers(event.activities)}
+          {this.createActivityMarkers(event.activities)}
         </div>
         <Popper id={id} open={open} anchorEl={anchorEl} style={{ zIndex: 999 }}>
           <div className={popoverContentClassName}>
