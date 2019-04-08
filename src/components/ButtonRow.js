@@ -26,7 +26,7 @@ import { setLoading } from '../reducers/loadingReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import activityService from '../services/activities'
 import eventService from '../services/events'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 import { eventSchema } from '../pofTreeSchema'
 import tosuChange from '../functions/tosuChange'
 class ButtonRow extends React.Component {
@@ -277,7 +277,25 @@ class ButtonRow extends React.Component {
 }
 
 ButtonRow.propTypes = {
-  ...PropTypesSchema,
+  viewChange: PropTypes.func.isRequired,
+  dateRangeUpdate: PropTypes.func.isRequired,
+  view: PropTypes.string.isRequired,
+  filter: PropTypes.string.isRequired,
+  newEvent: PropTypes.func.isRequired,
+  mobile: PropTypes.bool.isRequired,
+  startDate: PropTypes.string.isRequired,
+  endDate: PropTypes.string.isRequired,
+  tosuMap: PropTypes.string.isRequired,
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  scout: PropTypesSchema.scoutShape.isRequired,
+  mobile: PropTypes.bool.isRequired,
+  viewChange: PropTypes.func.isRequired,
+  selectTosu: PropTypes.func.isRequired,
+  eventsInitialization: PropTypes.func.isRequired,
+  activityInitialization: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
 }
 
 ButtonRow.defaultProps = {}

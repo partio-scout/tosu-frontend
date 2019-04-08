@@ -11,7 +11,7 @@ import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
 import ActivityPreview from './ActivityPreview'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 const styles = {
   chip: {
@@ -182,7 +182,13 @@ const DraggableActivity = DragSource(
 )(Activity)
 
 Activity.propTypes = {
-  ...PropTypesSchema,
+  notification: PropTypesSchema.string.isRequired,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  deleteActivityFromEvent: PropTypes.func.isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
 }
 
 Activity.defaultProps = {}

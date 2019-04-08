@@ -20,7 +20,6 @@ import ValidatedDatePicker from '../utils/ValidatedDatePicker'
 import ValidatedTimePicker from '../utils/ValidatedTimePicker'
 import FrequentEventsHandler from '../utils/FrequentEventsHandler'
 import repeatCount from '../utils/repeatCount'
-import PropTypesSchema from './PropTypesSchema'
 
 export default class EventForm extends React.Component {
   state = {
@@ -169,7 +168,7 @@ export default class EventForm extends React.Component {
       repeatFrequency,
       lastDate)
     if (isNaN(newRepeatCount)) {
-      newRepeatCount = 2
+      newRepeatCount = 1
     }
     this.setState({
       repeatCount: newRepeatCount
@@ -193,7 +192,7 @@ export default class EventForm extends React.Component {
     }
     if (repeatFrequency === 3) {
       this.setState({
-        lastDate: moment(newDate).add(-1 * 14, 'weeks').toDate()
+        lastDate: moment(newDate).add((1 * 14)-14, 'weeks').toDate()
       })
     }
     if (repeatFrequency === 4) {
@@ -420,9 +419,3 @@ export default class EventForm extends React.Component {
     )
   }
 }
-
-EventForm.propTypes = {
-  ...PropTypesSchema,
-}
-
-EventForm.defaultProps = {}

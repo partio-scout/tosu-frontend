@@ -1,7 +1,7 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 const styles = () => ({
   root: {

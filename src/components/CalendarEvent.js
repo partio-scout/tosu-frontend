@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Popper from '@material-ui/core/Popper'
 import Paper from '@material-ui/core/Paper'
 import Icon from '@material-ui/core/Icon'
@@ -12,7 +13,7 @@ import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
 import AddToPlan from './AddToPlan'
 import { openPopper, closePopper } from '../reducers/calendarReducer'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 /**
  * Intializes the activitynmarkers for rendering
@@ -209,7 +210,13 @@ class CalendarEvent extends Component {
 }
 
 CalendarEvent.propTypes = {
-  ...PropTypesSchema,
+  event: PropTypesSchema.eventShape.isRequired,
+  pofTree: PropTypesSchema.pofTreeShape.isRequired,
+  closePopper: PropTypes.func.isRequired,
+  openPopper: PropTypes.func.isRequired,
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  popperOpen: PropTypes.string.isRequired,
+  popperEventId: PropTypes.number.isRequired,
 }
 
 CalendarEvent.defaultProps = {}

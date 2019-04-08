@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
 import StatusMessage from './StatusMessage'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 const styles = () => ({
   divider: {
@@ -17,10 +17,6 @@ const styles = () => ({
 })
 
 class ClippedDrawer extends React.Component {
-  static propTypes = {
-    classes: PropTypes.shape({}).isRequired,
-  }
-
   state = { showStatusBox: true }
   /**
    * Renders statusbox visible
@@ -55,7 +51,7 @@ class ClippedDrawer extends React.Component {
 }
 
 ClippedDrawer.propTypes = {
-  ...PropTypesSchema,
+  classes: PropTypesSchema.classesShape.isRequired,
 }
 
 ClippedDrawer.defaultProps = {}
