@@ -30,8 +30,9 @@ import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
 import FeedbackButton from './components/FeedbackButton'
 import Login from './components/Login'
+import DeleteTosuButton from './components/DeleteTosuButton'
+// Utils 
 import PropTypesSchema from './utils/PropTypesSchema'
-// Utils
 import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
 
@@ -56,7 +57,11 @@ import { viewChange } from './reducers/viewReducer'
 import { setLoading } from './reducers/loadingReducer'
 import eventService from './services/events'
 import activityService from './services/activities'
-import { tosuInitialization } from './reducers/tosuReducer'
+import {
+  tosuInitialization,
+  deleteTosu,
+  selectTosu,
+} from './reducers/tosuReducer'
 
 import { POF_ROOT } from './api-config'
 import { pofTreeSchema, eventSchema } from './pofTreeSchema'
@@ -135,18 +140,22 @@ class App extends Component {
     const normalizedPof = normalize(pofData, pofTreeSchema)
     this.props.pofTreeInitialization(normalizedPof)
     const tosuID = await this.props.tosuInitialization()
-    const eventDataRaw = await eventService.getAll(tosuID)
-    const eventData = normalize(eventDataRaw, eventSchema).entities
-    if (!eventData.activities) eventData.activities = {}
-    if (!eventData.events) eventData.events = {}
     const buffer = await activityService.getBufferZoneActivities(
       this.props.scout.id
     )
-    this.props.activityInitialization(
-      Object.keys(eventData.activities).map(key => eventData.activities[key]),
-      buffer.activities
-    )
-    this.props.eventsInitialization(eventData.events)
+    if (tosuID) {
+      const eventDataRaw = await eventService.getAll(tosuID)
+      const eventData = normalize(eventDataRaw, eventSchema).entities
+      if (!eventData.activities) eventData.activities = {}
+      if (!eventData.events) eventData.events = {}
+      this.props.activityInitialization(
+        Object.keys(eventData.activities).map(key => eventData.activities[key]),
+        buffer.activities
+      )
+      this.props.eventsInitialization(eventData.events)
+    } else {
+      this.props.activityInitialization([], buffer.activities)
+    }
     this.props.bufferZoneInitialization(buffer)
   }
 
@@ -238,6 +247,9 @@ class App extends Component {
               </li>
             )
           })}
+          <li>
+            <DeleteTosuButton initialization={this.initialization} />
+          </li>
         </ul>
       </div>
     )
@@ -276,7 +288,7 @@ class App extends Component {
                   </div>
                 ) : null}
                 {this.props.view === 'CALENDAR' ? calendar : eventsToList}
-
+                <DeleteTosuButton initialization={this.initialization} />
                 <Dialog
                   open={this.state.newEventVisible}
                   onClose={this.handleClose}
@@ -353,6 +365,8 @@ const mapDispatchToProps = {
   readScout,
   viewChange,
   setLoading,
+  deleteTosu,
+  selectTosu,
 }
 
 App.propTypes = {
