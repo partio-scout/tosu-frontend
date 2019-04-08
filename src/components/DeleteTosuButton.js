@@ -9,7 +9,7 @@ import {
   DialogTitle,
   withStyles,
 } from '@material-ui/core'
-
+import DeleteIcon from '@material-ui/icons/Delete'
 import { setLoading } from '../reducers/loadingReducer'
 import { deleteTosu, selectTosu } from '../reducers/tosuReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
@@ -26,7 +26,6 @@ const styles = () => ({
     color: 'white',
     borderRadius: 3,
     border: 0,
-    height: 48,
   },
   label: {
     textTransform: 'uppercase',
@@ -91,7 +90,7 @@ class DeleteTosuButton extends Component {
           variant="contained"
           onClick={() => this.handleClickOpen()}
         >
-          Poista tosu
+          Poista tosu <DeleteIcon/>
         </StyledButton>
         <Dialog
           open={this.state.open}
