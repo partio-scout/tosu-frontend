@@ -1,8 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Done from '@material-ui/icons/Done'
 import Warning from '@material-ui/icons/Warning'
-import PropTypesSchema from './PropTypesSchema'
 import 'react-select/dist/react-select.css'
 import 'rc-tree-select/assets/index.css'
 import { Paper, Typography } from '@material-ui/core'
@@ -249,7 +249,10 @@ class StatusMessage extends React.Component {
 }
 
 StatusMessage.propTypes = {
-  ...PropTypesSchema,
+  handleClose: PropTypes.func.isRequired,
+  handleOpen: PropTypes.func.isRequired,
+  statusMessage: PropTypes.func.isRequired,
+  taskgroup: PropTypes.func.isRequired,
 }
 
 StatusMessage.defaultProps = {}
@@ -261,7 +264,4 @@ const mapStateToProps = state => ({
   taskgroup: state.taskgroup,
 })
 
-export default connect(
-  mapStateToProps,
-  {}
-)(StatusMessage)
+export default connect(mapStateToProps)(StatusMessage)

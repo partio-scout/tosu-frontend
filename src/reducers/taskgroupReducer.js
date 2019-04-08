@@ -7,17 +7,13 @@ const reducer = (state = null, action) => {
   return state
 }
 
-export const selectTaskgroup = taskgroup => dispatch => {
-  dispatch({
-    type: 'SELECT',
-    taskgroup,
-  })
-}
+export const selectTaskgroup = taskgroup => ({
+  type: 'SELECT',
+  taskgroup,
+})
 
-export const emptyTaskgroup = () => dispatch => {
-  dispatch({
-    type: 'EMPTY',
-  })
-}
+export const emptyTaskgroup = () => ({
+  type: 'EMPTY',
+})
 
 export default reducer

@@ -3,13 +3,14 @@ import { connect } from 'react-redux'
 import { Button, Dialog, DialogActions, DialogTitle } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { withStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
 import {
   deleteEvent,
   deleteEventGroup,
   deleteSyncedEvent,
 } from '../reducers/eventReducer'
 import { notify } from '../reducers/notificationReducer'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 const styles = theme => ({
   button: {
@@ -24,22 +25,18 @@ const styles = theme => ({
 })
 
 class DeleteEvent extends React.Component {
-  /**  PropTypes for DeleteEvent.
-   * If eventGroupId exists, it's a recurring event, so we need to enable deleting those.
-   * DeleteEvent never allows modifications to kuksaEvents (not synced).
-   */
-  state = { open: false }
-
   /**
    * Deletes a given event and creates a notification acknowledging it. Also closes the dialog box
    */
+  state = { open: false }
+
   deleteEvent = async () => {
     this.handleClose()
     try {
       if (this.props.data.synced) {
-        await this.props.deleteSyncedEvent(this.props.data)
+        this.props.deleteSyncedEvent(this.props.data)
       } else {
-        await this.props.deleteEvent(this.props.data.id)
+        this.props.deleteEvent(this.props.data.id)
       }
       this.props.notify('Tapahtuma poistettu!', 'success')
     } catch (exception) {
@@ -53,7 +50,7 @@ class DeleteEvent extends React.Component {
   deleteEventGroup = async () => {
     this.handleClose()
     try {
-      await this.props.deleteEventGroup(this.props.data.eventGroupId)
+      this.props.deleteEventGroup(this.props.data.eventGroupId)
       this.props.notify('Toistuva tapahtuma poistettu!', 'success')
     } catch (exception) {
       console.error('Error in deleting event:', exception)
@@ -129,13 +126,30 @@ class DeleteEvent extends React.Component {
   }
 }
 
+const mapDispatchToProps = {
+  deleteEvent,
+  notify,
+  deleteEventGroup,
+  deleteSyncedEvent,
+}
+
 DeleteEvent.propTypes = {
-  ...PropTypesSchema,
+  /**  PropTypes for DeleteEvent.
+   * If eventGroupId exists, it's a recurring event, so we need to enable deleting those.
+   * DeleteEvent never allows modifications to kuksaEvents (not synced).
+   */
+  data: PropTypesSchema.dataShape.isRequired,
+  deleteSyncedEvent: PropTypes.func.isRequired,
+  deleteEvent: PropTypes.func.isRequired,
+  deleteEventGroup: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
+  minimal: PropTypes.bool.isRequired,
+  classes: PropTypesSchema.classesShape.isRequired,
 }
 
 DeleteEvent.defaultProps = {}
 
 export default connect(
   null,
-  { deleteEvent, notify, deleteEventGroup, deleteSyncedEvent }
+  mapDispatchToProps
 )(withStyles(styles)(DeleteEvent))

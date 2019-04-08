@@ -18,7 +18,8 @@ import { MuiPickersUtilsProvider } from 'material-ui-pickers'
 import MomentUtils from '@date-io/moment'
 import ValidatedDatePicker from '../utils/ValidatedDatePicker'
 import ValidatedTimePicker from '../utils/ValidatedTimePicker'
-import PropTypesSchema from './PropTypesSchema'
+import FrequentEventsHandler from '../utils/FrequentEventsHandler'
+import repeatCount from '../utils/repeatCount'
 
 export default class EventForm extends React.Component {
   state = {
@@ -30,6 +31,7 @@ export default class EventForm extends React.Component {
     checked: false,
     repeatCount: 2,
     repeatFrequency: 2,
+    lastDate: this.props.data.lastDate,
     type: this.props.data.type,
     information: this.props.data.information,
   }
@@ -79,6 +81,11 @@ export default class EventForm extends React.Component {
       startDate: date.toDate(),
       endDate: date.toDate(),
     })
+    this.countDate(
+      date.toDate(),
+      this.state.repeatFrequency,
+      this.state.repeatCount
+    )
   }
 
   handleStartTime = date => {
@@ -110,12 +117,31 @@ export default class EventForm extends React.Component {
     this.setState({
       repeatCount: event.target.value,
     })
+    this.countDate(
+      this.state.startDate,
+      this.state.repeatFrequency,
+      event.target.value)
   }
 
   handleFrequency = event => {
     this.setState({
       repeatFrequency: event.target.value,
     })
+    this.countDate(
+      this.state.startDate,
+      event.target.value,
+      this.state.repeatCount
+    )
+  }
+
+  handleLastDate = date => {
+    this.setState({
+      lastDate: date.toDate(),
+    })
+    this.countRepeatCount(
+      this.state.startDate,
+      this.state.repeatFrequency,
+      date.toDate())
   }
 
   handleTitle = event => {
@@ -136,6 +162,46 @@ export default class EventForm extends React.Component {
     })
   }
 
+  countRepeatCount(startDate, repeatFrequency, lastDate) {
+    let newRepeatCount = repeatCount(
+      startDate,
+      repeatFrequency,
+      lastDate)
+    if (isNaN(newRepeatCount)) {
+      newRepeatCount = 1
+    }
+    this.setState({
+      repeatCount: newRepeatCount
+    })
+  }
+
+  countDate(startDate, repeatFrequency, repeatCount) {
+    let newDate = FrequentEventsHandler(
+    startDate,
+    repeatFrequency,
+    repeatCount).format('YYYY-MM-DD')
+    if (repeatFrequency === 1) {
+      this.setState({
+        lastDate: moment(newDate).add(-1, 'days').toDate()
+      })
+    }
+    if (repeatFrequency === 2) {
+      this.setState({
+        lastDate: moment(newDate).add(-1, 'weeks').toDate()
+      })
+    }
+    if (repeatFrequency === 3) {
+      this.setState({
+        lastDate: moment(newDate).add((1 * 14)-14, 'weeks').toDate()
+      })
+    }
+    if (repeatFrequency === 4) {
+      this.setState({
+        lastDate: moment(newDate).add(-1, 'months').toDate()
+      })
+    }
+  }
+
   send = async () => {
     await this.props.update(
       this.state.title,
@@ -146,6 +212,7 @@ export default class EventForm extends React.Component {
       this.state.checked,
       this.state.repeatCount,
       this.state.repeatFrequency,
+      this.state.lastDate,
       this.state.type,
       this.state.information
     )
@@ -263,34 +330,57 @@ export default class EventForm extends React.Component {
           ) : null}
           {this.props.allowRepeatedEvent ? (
             <div className="frequent" style={frequentStyle}>
+
+            <SelectValidator
+              name="repeatFrequency"
+              label="Toistumisväli"
+              value={this.state.repeatFrequency}
+              onChange={this.handleFrequency}
+              disabled={!this.state.checked}
+              fullWidth
+            >
+              <MenuItem value={1}>Päivittäin</MenuItem>
+              <MenuItem value={2}>Viikottain</MenuItem>
+              <MenuItem value={3}>Joka toinen viikko</MenuItem>
+              <MenuItem value={4}>Kuukausittain (esim. 12. pvä)</MenuItem>
+            </SelectValidator>
+
+              <div><p><font color='green'>Valitse toistumien lukumäärä tai viimeinen päivämäärä toistumiselle.</font></p></div>
+
               <TextValidator
                 label="Toistuvien tapahtumien määrä"
                 name="repeatCount"
                 value={this.state.repeatCount}
                 onChange={this.handleNewEventFormChange}
+                onChange={this.handleRepeatCount}
                 disabled={!this.state.checked}
                 validators={['minNumber:2', 'maxNumber:55']}
                 errorMessages={[
                   'Toistuvien tapahtumien määrän pitää olla väliltä 2 - 55!',
+                  'Toistuvien tapahtumien määrän pitää olla väliltä 2 - 55!'
                 ]}
                 fullWidth
                 margin="normal"
               />
               <br />
 
-              <SelectValidator
-                name="repeatFrequency"
-                label="Toistumisväli"
-                value={this.state.repeatFrequency}
-                onChange={this.handleFrequency}
-                disabled={!this.state.checked}
-                fullWidth
-              >
-                <MenuItem value={1}>Päivittäin</MenuItem>
-                <MenuItem value={2}>Viikottain</MenuItem>
-                <MenuItem value={3}>Joka toinen viikko</MenuItem>
-                <MenuItem value={4}>Kuukausittain (esim. 12. pvä)</MenuItem>
-              </SelectValidator>
+              <MuiPickersUtilsProvider utils={MomentUtils}>
+                <ValidatedDatePicker
+                  label="Viimeinen toistumispäivä"
+                  onChange={this.handleLastDate}
+                  name="startDate"
+                  autoOk
+                  cancelLabel="Peruuta"
+                  value={this.state.lastDate === '' ? null : this.state.lastDate}
+                  validators={['dateIsLater']}
+                  errorMessages={[
+                    'Tarvittavia tietoja puuttuu tai ne ovat virheellisiä. (Alkamispäivä ja tapahtumien määrä.)'
+                  ]}
+                  fullWidth
+                  margin="normal"
+                />
+                </MuiPickersUtilsProvider>
+                <br />
             </div>
           ) : null}
           <br />
@@ -329,9 +419,3 @@ export default class EventForm extends React.Component {
     )
   }
 }
-
-EventForm.propTypes = {
-  ...PropTypesSchema,
-}
-
-EventForm.defaultProps = {}

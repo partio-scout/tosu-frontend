@@ -1,19 +1,19 @@
 import reducer from './eventReducer'
 
-const initialEvents = [
-  {
+const initialEvents = {
+  1: {
     activities: [],
     eventGroupId: null,
     id: 1,
     title: 'Testi',
   },
-  {
+  2: {
     activities: [],
     eventGroupId: null,
     id: 2,
     title: 'Testi2',
   },
-]
+}
 
 describe('event reducer', () => {
   it('retuns null as inital state', () => {
@@ -49,8 +49,10 @@ describe('event reducer', () => {
 
     const newState = reducer(firstState, expectedAction)
 
-    expect(newState).toEqual(initialEvents.concat([newEvent]))
-    expect(newState.length).toEqual(firstState.length + 1)
+    expect(newState[newEvent.id]).toEqual(newEvent)
+    expect(Object.keys(newState).length).toEqual(
+      Object.keys(firstState).length + 1
+    )
   })
 
   it('DELETE_EVENT removes selected event', () => {
@@ -67,33 +69,33 @@ describe('event reducer', () => {
     }
     const newState = reducer(firstState, expectedAction)
 
-    expect(newState).toEqual(
-      initialEvents.filter(event => event.id !== eventId)
+    expect(newState[eventId]).toEqual(undefined)
+    expect(Object.keys(newState).length).toEqual(
+      Object.keys(firstState).length - 1
     )
-    expect(newState.length).toEqual(firstState.length - 1)
   })
 
   it('DELETE_EVENTGROUP removes all events in the group', () => {
-    const initialEventgroup = [
-      {
+    const initialEventgroup = {
+      1: {
         activities: [],
         eventGroupId: 1,
         id: 1,
         title: 'Testi',
       },
-      {
+      2: {
         activities: [],
         eventGroupId: 1,
         id: 2,
         title: 'Testi2',
       },
-      {
+      3: {
         activities: [],
         eventGroupId: null,
-        id: 2,
+        id: 3,
         title: 'Testi3',
       },
-    ]
+    }
 
     const firstState = reducer(null, {
       type: 'INIT_EVENTS',
@@ -107,14 +109,14 @@ describe('event reducer', () => {
       eventGroupId,
     }
 
-    const expectedState = [
-      {
+    const expectedState = {
+      3: {
         activities: [],
         eventGroupId: null,
-        id: 2,
+        id: 3,
         title: 'Testi3',
       },
-    ]
+    }
 
     const newState = reducer(firstState, expectedAction)
 
@@ -140,8 +142,10 @@ describe('event reducer', () => {
 
     const newState = reducer(firstState, expectedAction)
 
-    expect(newState.filter(event => event.id === modded.id)).toEqual([modded])
-    expect(newState.length).toEqual(initialEvents.length)
+    expect(newState[modded.id]).toEqual(modded)
+    expect(Object.keys(newState).length).toEqual(
+      Object.keys(initialEvents).length
+    )
   })
 
   it('ADD_ACTIVITY_TO_EVENT adds activity to event', () => {
@@ -149,7 +153,7 @@ describe('event reducer', () => {
       type: 'INIT_EVENTS',
       events: initialEvents,
     })
-    const activity = { title: 'aktiviteetti' }
+    const activity = { id: 5, title: 'aktiviteetti' }
     const eventId = 1
     const expectedAction = {
       type: 'ADD_ACTIVITY_TO_EVENT',
@@ -159,41 +163,42 @@ describe('event reducer', () => {
 
     const newState = reducer(firstState, expectedAction)
 
-    const selectedEvent = newState.filter(event => event.id === eventId)[0]
+    const selectedEvent = newState[eventId]
 
-    expect(selectedEvent.activities).toEqual([activity])
+    expect(selectedEvent.activities).toEqual([activity.id])
   })
 
   it('DELETE_ACTIVITY_FROM_EVENT removes activity from event', () => {
-    const eventWithActivity = [
-      {
-        activities: [{ id: 11, title: 'poistettava', eventId: 2 }],
+    const eventWithActivity = {
+      2: {
+        activities: [11],
         eventGroupId: null,
         id: 2,
         title: 'Testi2',
       },
-    ]
+    }
     const firstState = reducer(null, {
       type: 'INIT_EVENTS',
       events: eventWithActivity,
     })
 
     const activityId = 11
-
+    const eventId = 2
     const expectedAction = {
       type: 'DELETE_ACTIVITY_FROM_EVENT',
       activityId,
+      eventId,
     }
 
     const newState = reducer(firstState, expectedAction)
 
-    expect(newState).toEqual([
-      {
+    expect(newState).toEqual({
+      2: {
         activities: [],
         eventGroupId: null,
         id: 2,
         title: 'Testi2',
       },
-    ])
+    })
   })
 })

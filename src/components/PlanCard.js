@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -12,8 +13,12 @@ import { Parser } from 'html-to-react'
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
 import { notify } from '../reducers/notificationReducer'
-import { editEvent } from '../reducers/eventReducer'
-import PropTypesSchema from './PropTypesSchema'
+import {
+  editEvent,
+  addActivityToEventOnlyLocally,
+  deleteActivityFromEventOnlyLocally,
+} from '../reducers/eventReducer'
+import { updateActivity } from '../reducers/activityReducer'
 
 class PlanCard extends React.Component {
   state = { expanded: false }
@@ -24,8 +29,7 @@ class PlanCard extends React.Component {
   componentDidUpdate = () => {
     this.updateSuggestions()
   }
-
-  handleExpandChange = () => {
+  handleExpandChange = expanded => {
     this.setState({ expanded: !this.state.expanded })
   }
 
@@ -53,18 +57,13 @@ class PlanCard extends React.Component {
     }
     try {
       const res = await planService.addPlanToActivity(data, activityId)
+      data.id = res.id
       this.props.savePlan(suggestion, activityId, res.id)
-      let parentEvent = this.props.events.find(e => {
-        return parentId === e.id
-      })
-      parentEvent.activities
-        .find(e => {
-          return e.id === activityId
-        })
-        .plans.push(data)
-      this.props.editEvent(parentEvent)
+      const parentActivity = { ...this.props.activities[activityId] }
+      parentActivity.plans = Array.from(parentActivity.plans)
+      parentActivity.plans.push(data)
+      this.props.updateActivity(parentActivity)
     } catch (exception) {
-      console.log(exception)
       this.props.notify('Toteutusvinkin tallentaminen ei onnistunut')
     }
   }
@@ -78,16 +77,11 @@ class PlanCard extends React.Component {
     try {
       await planService.deletePlan(id)
       this.props.deletePlan(id, activityId)
-      const parentEvent = this.props.events.find(e => {
-        return e.id === parentId
-      })
-      const activity = parentEvent.activities.find(e => {
-        return e.id === activityId
-      })
+      const activity = { ...this.props.activities[activityId] }
       activity.plans = activity.plans.filter(e => {
         return e.id !== id
       })
-      this.props.editEvent(parentEvent)
+      this.props.updateActivity(activity)
     } catch (exception) {
       console.log(exception)
       this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
@@ -108,12 +102,11 @@ class PlanCard extends React.Component {
     const { suggestion, savedActivity, plans, parentId } = this.props
     // Find plans for current activity from store
     const activityPlans = plans.filter(plan => plan.id === savedActivity.id)
-
     let selectedPlan = []
 
     // Check if current suggestion is selected or not
     if (activityPlans.length !== 0) {
-      selectedPlan = activityPlans[0].plans.filter(
+      selectedPlan = savedActivity.plans.filter(
         plan => plan.guid === suggestion.guid
       )
     }
@@ -179,21 +172,36 @@ class PlanCard extends React.Component {
 const mapStateToProps = state => ({
   plans: state.plans,
   events: state.events,
+  activities: state.activities,
 })
 
 PlanCard.propTypes = {
-  ...PropTypesSchema,
+  plans: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  initPlans: PropTypes.func.isRequired,
+  savePlan: PropTypes.func.isRequired,
+  deletePlan: PropTypes.func.isRequired,
+  editEvent: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
+  deleteActivityFromEventOnlyLocall: PropTypes.func.isRequired,
+  addActivityToEventOnlyLocally: PropTypes.func.isRequired,
+  updateActivity: PropTypes.func.isRequired,
 }
 
 PlanCard.defaultProps = {}
+const mapDispatchToProps = {
+  initPlans,
+  savePlan,
+  deletePlan,
+  editEvent,
+  notify,
+  deleteActivityFromEventOnlyLocally,
+  addActivityToEventOnlyLocally,
+  updateActivity,
+}
 
 export default connect(
   mapStateToProps,
-  {
-    initPlans,
-    savePlan,
-    deletePlan,
-    editEvent,
-    notify,
-  }
+  mapDispatchToProps
 )(PlanCard)

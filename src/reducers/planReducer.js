@@ -31,28 +31,22 @@ const reducer = (state = [], action) => {
   }
 }
 
-export const initPlans = plans => dispatch => {
-  dispatch({
-    type: 'INIT_PLANS',
-    plans,
-  })
-}
+export const initPlans = plans => ({
+  type: 'INIT_PLANS',
+  plans,
+})
 
-export const savePlan = (suggestion, id, suggestionId) => dispatch => {
-  dispatch({
-    type: 'SAVE_PLAN',
-    id,
-    suggestion,
-    suggestionId,
-  })
-}
+export const savePlan = (suggestion, id, suggestionId) => ({
+  type: 'SAVE_PLAN',
+  id,
+  suggestion,
+  suggestionId,
+})
 
-export const deletePlan = (id, activityId) => dispatch => {
-  dispatch({
-    type: 'DELETE_PLAN',
-    id,
-    activityId,
-  })
-}
+export const deletePlan = (id, activityId) => ({
+  type: 'DELETE_PLAN',
+  id,
+  activityId,
+})
 
 export default reducer

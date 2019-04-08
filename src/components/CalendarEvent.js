@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Popper from '@material-ui/core/Popper'
 import Paper from '@material-ui/core/Paper'
 import Icon from '@material-ui/core/Icon'
@@ -12,7 +13,7 @@ import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
 import AddToPlan from './AddToPlan'
 import { openPopper, closePopper } from '../reducers/calendarReducer'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 /**
  * Intializes the activitynmarkers for rendering
@@ -72,10 +73,11 @@ class CalendarEvent extends Component {
       this.closePopper()
     }
   }
+
   openPopper = target => {
-     this.setState(state => ({ anchorEl: target }))
-     this.props.openPopper(this.props.event.id)
-   }
+    this.setState(state => ({ anchorEl: target }))
+    this.props.openPopper(this.props.event.id)
+  }
   closePopper = () => {
     this.setState(state => ({ anchorEl: null }))
     this.props.closePopper()
@@ -125,7 +127,9 @@ class CalendarEvent extends Component {
     const activities = (
       <div>
         <Activities
-          activities={this.props.event.activities}
+          activities={this.props.event.activities.map(
+            key => this.props.activities[key]
+          )}
           bufferzone={false}
           parentId={this.props.event.id}
           className="calendar-event-activity-wrapper"
@@ -206,7 +210,13 @@ class CalendarEvent extends Component {
 }
 
 CalendarEvent.propTypes = {
-  ...PropTypesSchema,
+  event: PropTypesSchema.eventShape.isRequired,
+  pofTree: PropTypesSchema.pofTreeShape.isRequired,
+  closePopper: PropTypes.func.isRequired,
+  openPopper: PropTypes.func.isRequired,
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  popperOpen: PropTypes.string.isRequired,
+  popperEventId: PropTypes.number.isRequired,
 }
 
 CalendarEvent.defaultProps = {}
@@ -215,12 +225,15 @@ const mapStateToProps = state => ({
   pofTree: state.pofTree,
   popperOpen: state.calendar.popperOpen,
   popperEventId: state.calendar.popperEventId,
+  activities: state.activities,
 })
+
+const mapDispatchToProps = {
+  openPopper,
+  closePopper,
+}
 
 export default connect(
   mapStateToProps,
-  {
-    openPopper,
-    closePopper,
-  }
+  mapDispatchToProps
 )(CalendarEvent)

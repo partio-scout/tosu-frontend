@@ -1,26 +1,38 @@
 import activityService from '../services/activities'
 
-/** Adds an activity to the buffer */
+/**
+ * Adds an activity to the buffer
+ */
 const addToBuffer = (action, state) => {
-  const newActivities = state.activities.concat(action.activity)
+  const newActivities = state.activities.concat(action.activity.id)
   const newBuffer = Object.assign({}, state)
   newBuffer.activities = newActivities
   return newBuffer
 }
-/** Deletes the activity from the buffer */
+/**
+ *
+ * Deletes the activity from the buffer
+ *
+ */
 const deleteFromBuffer = (action, state) => {
   const leActivities = state.activities.filter(
-    activity => activity.id.toString() !== action.activityId.toString()
+    activity => activity !== action.activityId
   )
   const leBuffer = Object.assign({}, state)
   leBuffer.activities = leActivities
   return leBuffer
 }
 
+const initBuffer = action => {
+  const newState = { ...action.buffer }
+  newState.activities = action.buffer.activities.map(activity => activity.id)
+  return newState
+}
+
 const reducer = (state = { id: 0, activities: [] }, action) => {
   switch (action.type) {
     case 'INIT_BUFFER':
-      return action.buffer
+      return initBuffer(action)
     case 'ADD_TO_BUFFER':
       return addToBuffer(action, state)
     case 'DELETE_FROM_BUFFER':
@@ -30,45 +42,37 @@ const reducer = (state = { id: 0, activities: [] }, action) => {
   }
 }
 
-export const bufferZoneInitialization = () => dispatch =>
-  activityService.getBufferZoneActivities().then(buffer =>
-    dispatch({
-      type: 'INIT_BUFFER',
-      buffer,
-    })
-  )
-
-export const postActivityToBuffer = activity => async dispatch => {
-  const responseActivity = await activityService.addActivityToBufferZone(
-    activity
-  )
+export const bufferZoneInitialization = buffer => dispatch => {
   dispatch({
-    type: 'ADD_TO_BUFFER',
-    activity: responseActivity,
+    type: 'INIT_BUFFER',
+    buffer,
   })
 }
 
-export const deleteActivityFromBuffer = activityId => dispatch => {
-  const action = activityService.deleteActivity(activityId)
-  dispatch({
-    type: 'DELETE_FROM_BUFFER',
-    activityId,
-  })
-  return action
-}
-
-export const deleteActivityFromBufferOnlyLocally = activityId => async dispatch => {
-  dispatch({
-    type: 'DELETE_FROM_BUFFER',
-    activityId,
-  })
-}
-
-export const postActivityToBufferOnlyLocally = activity => async dispatch => {
+export const postActivityToBuffer = activity => dispatch => {
   dispatch({
     type: 'ADD_TO_BUFFER',
     activity,
   })
 }
+
+export const deleteActivityFromBuffer = activityId => dispatch => {
+  dispatch({
+    type: 'DELETE_FROM_BUFFER',
+    activityId,
+  })
+}
+
+export const deleteActivityFromBufferOnlyLocally = activityId => async dispatch =>
+  dispatch({
+    type: 'DELETE_FROM_BUFFER',
+    activityId,
+  })
+
+export const postActivityToBufferOnlyLocally = activity => async dispatch =>
+  dispatch({
+    type: 'ADD_TO_BUFFER',
+    activity,
+  })
 
 export default reducer

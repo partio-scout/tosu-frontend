@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import {
@@ -10,7 +11,6 @@ import {
 import EventCard from './EventCard'
 import KuksaEventCard from './KuksaEventCard'
 import eventComparer from '../utils/EventCompare'
-import PropTypesSchema from './PropTypesSchema'
 
 class EventList extends React.Component {
   state = {
@@ -20,6 +20,7 @@ class EventList extends React.Component {
 
   render() {
     const { events, filter } = this.props
+    console.log(filter)
     const shouldShowAllKuksaEvents = this.state.shouldShowAllKuksaEvents
     /**
      * Determines which events are shown. If filter is set to FUTURE, show all events with end date equal
@@ -94,7 +95,8 @@ class EventList extends React.Component {
 }
 
 EventList.propTypes = {
-  ...PropTypesSchema,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  filter: PropTypes.string.isRequired,
 }
 
 EventList.defaultProps = {}

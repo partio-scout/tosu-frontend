@@ -5,9 +5,10 @@ import Menu from '@material-ui/core/Menu'
 import IconButton from '@material-ui/core/IconButton'
 import { scoutLogout } from '../reducers/scoutReducer'
 import { API_ROOT } from '../api-config'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypes from 'prop-types'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
-class AccountIcon extends React.Component {
+export class AccountIcon extends React.Component {
   state = {
     anchorEl: null,
     accountIcon: this.props.accountIcon,
@@ -69,7 +70,11 @@ class AccountIcon extends React.Component {
 }
 
 AccountIcon.propTypes = {
-  ...PropTypesSchema,
+  scout: PropTypesSchema.scoutShape.isRequired,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  scoutLogout: PropTypes.func.isRequired,
+  mobileFeedback: PropTypes.func.isRequired,
+  accountIcon: PropTypes.shape({}).isRequired,
 }
 
 AccountIcon.defaultProps = {}
@@ -79,9 +84,11 @@ const mapStateToProps = state => ({
   buffer: state.buffer,
 })
 
+const mapDispatchToProps = {
+  scoutLogout,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    scoutLogout,
-  }
+  mapDispatchToProps
 )(AccountIcon)

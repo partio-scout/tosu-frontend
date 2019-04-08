@@ -5,12 +5,14 @@ import Chip from '@material-ui/core/Chip'
 import Icon from '@material-ui/core/Icon'
 import { DragSource } from 'react-dnd'
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { notify } from '../reducers/notificationReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
-import PropTypesSchema from './PropTypesSchema'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 /**
  * Methods that handle the dragging of an activity
@@ -64,7 +66,6 @@ class Activity extends Component {
 
   render() {
     const { activity, pofActivity, connectDragSource, parentId } = this.props
-
     let lastGuid = 0
     if (pofActivity) {
       const lastParentIndex = pofActivity.parents.length - 1
@@ -153,17 +154,33 @@ const mapStateToProps = state => ({
   events: state.events,
 })
 
+const mapDispatchToProps = {
+  deleteActivityFromEvent,
+  deleteActivityFromBuffer,
+  notify,
+  pofTreeUpdate,
+}
+
 Activity.propTypes = {
-  ...PropTypesSchema,
+  notify: PropTypes.func.isRequired,
+  notification: PropTypes.string.isRequired,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  events: PropTypes.shape({}).isRequired,
+  connectDragSource: PropTypes.func.isRequired,
+  activity: PropTypes.shape({}).isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  pofActivity: PropTypes.shape({}).isRequired,
+  parentId: PropTypes.number.isRequired,
+  minimal: PropTypes.bool.isRequired,
+  deleteActivity: PropTypes.func.isRequired,
+  deleteActivityFromEvent: PropTypes.func.isRequired,
+  deleteActivityFromActivity: PropTypes.func.isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
 }
 
 Activity.defaultProps = {}
 
 export default connect(
   mapStateToProps,
-  {
-    deleteActivityFromEvent,
-    deleteActivityFromBuffer,
-    notify,
-  }
+  mapDispatchToProps
 )(DraggableActivity)
