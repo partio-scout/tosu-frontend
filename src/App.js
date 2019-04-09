@@ -166,7 +166,7 @@ class App extends Component {
     }
 
     const eventsToList = (
-      <div className="event-list-container">
+      <div id="event-list-container">
         {view === 'KUKSA'}
         <ul
           className={

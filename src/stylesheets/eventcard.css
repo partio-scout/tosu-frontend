@@ -1,42 +1,7 @@
-.event-card-title-left {
-  margin-bottom: auto;
-  float: left;
-}
-
-.event-card-title-right {
-  float: right;
-  margin-top: 7px;
-}
-
 .event-list {
   list-style: none;
   padding-left: 0;
   min-width: 100%;
-}
-
-.empty-event-card {
-  padding: 5px;
-  margin-bottom: 10px;
-  background-color: #f14150;
-  border-radius: 4px;
-}
-
-.kuksa-synced-event-card {
-  padding: 5px;
-  margin-bottom: 10px;
-  background-color: #63bcd1;
-  border-radius: 4px;
-}
-
-.kuksa-event-card {
-  padding: 5px;
-  margin-bottom: 10px;
-  background-color: lightgrey;
-  border-radius: 4px;
-}
-
-.event-card-subheader {
-  margin-top: 7px !important;
 }
 
 .event-card-wrapper {
@@ -55,8 +20,4 @@
 
 .event-card-wrapper > div > div:last-child {
   padding-top: 0;
-}
-
-.eventTimes > span {
-  font-weight: bold;
 }

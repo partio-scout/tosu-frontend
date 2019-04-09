@@ -50,6 +50,24 @@ const styles = {
     float: 'right',
     marginTop: 7,
   },
+  emptyEventCard: {
+    padding: 5,
+    marginBottom: 10,
+    backgroundColor: '#f14150',
+    borderRadius: 4,
+  },
+  kuksaSyncedEventCard: {
+    padding: 5,
+    marginBottom: 10,
+    backgroundColor: '#63bcd1',
+    borderRadius: 4,
+  },
+  kuksaEventCard: {
+    padding: 5,
+    marginBottom: 10,
+    backgroundColor: 'lightgrey',
+    borderRadius: 4,
+  },
 }
 
 /**
@@ -139,10 +157,10 @@ class CalendarEvent extends Component {
 
   render() {
     const { anchorEl } = this.state
+    const { classes, event } = this.props
     const open = Boolean(anchorEl)
     const id = open ? 'no-transition-popper' : null
 
-    const event = this.props.event
     const startTime = event.start.toLocaleTimeString('fi-FI', {
       hour: 'numeric',
       minute: 'numeric',
@@ -155,29 +173,29 @@ class CalendarEvent extends Component {
 
     let popoverContentClassName // Style: Normal
     if (event.activities.length === 0) {
-      popoverContentClassName = 'empty-event-card' // Style: No activities
+      popoverContentClassName = classes.emptyEventCard // Style: No activities
     }
     if (event.synced) {
-      popoverContentClassName = 'kuksa-synced-event-card' // Style: Synced to Kuksa
+      popoverContentClassName = classes.kuksaSyncedEventCard // Style: Synced to Kuksa
     }
     if (event.kuksaEvent) {
-      popoverContentClassName = 'kuksa-event-card' // Style: Kuksa event
+      popoverContentClassName = classes.kuksaEventCard // Style: Kuksa event
     }
 
     const activities = (
       <div>
         <Activities
-          activities={this.props.event.activities}
+          activities={event.activities}
           bufferzone={false}
-          parentId={this.props.event.id}
-          className={this.props.classes.calendarEventActivityWrapper}
+          parentId={event.id}
+          className={classes.calendarEventActivityWrapper}
         />
       </div>
     )
 
     const editDeleteButtons = (
       <div>
-        <div className={this.props.classes.calendarEventButtonWrapper}>
+        <div className={classes.calendarEventButtonWrapper}>
           <EditEvent
             buttonClass="calendar-button"
             data={event.originalData}
@@ -197,12 +215,10 @@ class CalendarEvent extends Component {
     const popoverContent = (
       <div>
         <div>
-          <div className={this.props.classes.calendarPopoverLeft}>
-            <p className={this.props.classes.calendarEventTitle}>
-              {event.title}
-            </p>
+          <div className={classes.calendarPopoverLeft}>
+            <p className={classes.calendarEventTitle}>{event.title}</p>
           </div>
-          <div className={this.props.classes.calendarPopoverRight}>
+          <div className={classes.calendarPopoverRight}>
             <IconButton onClick={this.closePopper}>
               <Icon>close</Icon>
             </IconButton>
@@ -218,15 +234,15 @@ class CalendarEvent extends Component {
 
     // Don't allow dragging activities to kuksa events
     const paperContent = event.kuksaEvent ? (
-      <div className={this.props.classes.calendarEventPopper}>
+      <div className={classes.calendarEventPopper}>
         {popoverContent}
         <br />
       </div>
     ) : (
       <ActivityDragAndDropTarget
         bufferzone={false}
-        parentId={this.props.event.id}
-        className={this.props.classes.calendarEventPopper}
+        parentId={event.id}
+        className={classes.calendarEventPopper}
       >
         {popoverContent}
       </ActivityDragAndDropTarget>

@@ -12,6 +12,10 @@ import KuksaEventCard from './KuksaEventCard'
 import eventComparer from '../utils/EventCompare'
 import PropTypesSchema from './PropTypesSchema'
 
+/**
+ * This class is not used! But it should be.
+ */
+
 class EventList extends React.Component {
   state = {
     shouldShowAllKuksaEvents: false,
@@ -21,6 +25,7 @@ class EventList extends React.Component {
   render() {
     const { events, filter } = this.props
     const shouldShowAllKuksaEvents = this.state.shouldShowAllKuksaEvents
+
     /**
      * Determines which events are shown. If filter is set to FUTURE, show all events with end date equal
      * or greater than today otherwise show events with end date less than today
@@ -66,8 +71,8 @@ class EventList extends React.Component {
       </Button>
     )
 
-    const eventsToList = (
-      <div className="event-list-container">
+    return (
+      <div id="event-list-container">
         {this.state.loading && (
           <div className="loading-bar">
             <LinearProgress />
@@ -88,8 +93,6 @@ class EventList extends React.Component {
         </ul>
       </div>
     )
-
-    return <div>{eventsToList}</div>
   }
 }
 

@@ -70,6 +70,26 @@ const styles = {
   boldedAttribute: {
     fontWeight: 'bold',
   },
+  eventCardTitleLeft: {
+    marginBottom: 'auto',
+    float: 'left',
+  },
+  eventCardTitleRight: {
+    marginTop: 3,
+    float: 'right',
+  },
+  emptyEventCard: {
+    padding: 5,
+    marginBottom: 10,
+    backgroundColor: '#f14150',
+    borderRadius: 4,
+  },
+  kuksaSyncedEventCard: {
+    padding: 5,
+    marginBottom: 10,
+    backgroundColor: '#63bcd1',
+    borderRadius: 4,
+  },
 }
 
 class EventCard extends React.Component {
@@ -218,11 +238,11 @@ class EventCard extends React.Component {
           .format('ddd D.M.YYYY')} ${event.startTime.substring(0, 5)}`
     let cardClassName = 'event-card-wrapper'
     if (this.props.event.activities.length === 0) {
-      cardClassName = 'empty-event-card'
+      cardClassName = classes.emptyEventCard
     }
     // Prioritize kuksa sync color over emptiness warning color (warning icon still visible)
     if (this.props.event.synced) {
-      cardClassName = 'kuksa-synced-event-card'
+      cardClassName = classes.kuksaSyncedEventCard
     }
 
     const taskGroupTree = this.props.pofTree.taskgroups
@@ -443,21 +463,19 @@ class EventCard extends React.Component {
           >
             <CardHeader
               title={
-                <div>
+                <React.Fragment>
                   {title}
                   &nbsp;
-                  {this.props.event.activities.length === 0 ? warning : ''}
-                </div>
+                  {this.props.event.activities.length === 0 ? warning : null}
+                </React.Fragment>
               }
               subheader={subtitle}
               titleTypographyProps={{
-                classes: { root: 'event-card-title-left' },
+                classes: { root: classes.eventCardTitleLeft },
                 variant: 'title',
               }}
               subheaderTypographyProps={{
-                classes: {
-                  root: 'event-card-title-right event-card-subheader',
-                },
+                classes: { root: classes.eventCardTitleRight },
                 variant: 'subtitle2',
               }}
               action={
