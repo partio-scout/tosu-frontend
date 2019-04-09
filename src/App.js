@@ -18,10 +18,12 @@ import 'react-dates/initialize'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 
 // CSS
-import 'react-dates/lib/css/_datepicker.css'
-import 'react-sticky-header/styles.css'
-import './stylesheets/react_dates_overrides.css'
 import './stylesheets/index.css'
+import 'react-dates/lib/css/_datepicker.css'
+import './stylesheets/react_dates_overrides.css'
+import 'rc-tree-select/assets/index.css'
+import 'react-big-calendar-like-google/lib/css/react-big-calendar.css'
+import 'react-select/dist/react-select.css'
 import theme from './theme'
 
 // Components

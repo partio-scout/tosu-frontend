@@ -73,19 +73,17 @@ const fillWithNeededVariable = root => {
         <span
           name={task.title}
           /*
-           * TODO: add this:
-           * tree-search-title:hover
+           * TODO: add this on hover:
            * background: #90caf9
            */
           style={{
             backgroundColor: task.isMandatory ? '#2196f3' : '#E3F2FD',
             display: 'block',
-            lineHeight: 28,
+            lineHeight: '28px',
             margin: 0,
             marginTop: -20,
             padding: 3,
             cursor: 'pointer',
-            pointerEvents: 'none',
           }}
         >
           {task.title}

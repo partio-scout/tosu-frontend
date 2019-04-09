@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import Done from '@material-ui/icons/Done'
 import Warning from '@material-ui/icons/Warning'
 import PropTypesSchema from './PropTypesSchema'
-import 'react-select/dist/react-select.css'
-import 'rc-tree-select/assets/index.css'
 import { Paper, Typography } from '@material-ui/core'
 
 // Done icon

@@ -1,5 +1,4 @@
 import { connect } from 'react-redux'
-import 'rc-tree-select/assets/index.css'
 import React from 'react'
 import {
   Card,

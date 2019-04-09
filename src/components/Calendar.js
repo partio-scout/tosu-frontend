@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import BigCalendar from 'react-big-calendar-like-google'
 import moment from 'moment'
 import 'moment/locale/fi'
-import 'react-big-calendar-like-google/lib/css/react-big-calendar.css'
 
 import CalendarToolbar from './CalendarToolbar'
 import CalendarEvent from './CalendarEvent'

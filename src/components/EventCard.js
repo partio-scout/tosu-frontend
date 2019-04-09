@@ -2,7 +2,6 @@ import { connect } from 'react-redux'
 import ReactDOM from 'react-dom'
 import isTouchDevice from 'is-touch-device'
 import TreeSelect /* ,{ TreeNode, SHOW_PARENT } */ from 'rc-tree-select'
-import 'rc-tree-select/assets/index.css'
 import React from 'react'
 import {
   CardActions,
