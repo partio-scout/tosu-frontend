@@ -26,6 +26,7 @@ function ActivitiesSidebar(props) {
       <TreeSearchBar />
       <Divider variant="middle" className={classes.divider} />
       <BufferZone />
+      <Divider variant="middle" className={classes.divider} />
       <StatusMessage />
     </div>
   )

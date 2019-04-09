@@ -27,7 +27,7 @@ const styles = {
     wordWrap: 'break-all',
     whiteSpace: 'normal',
     fontWeight: 'bold',
-    lineHeight: 26,
+    lineHeight: '26px',
     padding: 3,
   },
   previewChip: {

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import React from 'react'
-import { Typography, Button, Divider, withStyles } from '@material-ui/core'
+import { Typography, Button, withStyles } from '@material-ui/core'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
@@ -9,11 +9,6 @@ import Activities from './Activities'
 import PropTypesSchema from './PropTypesSchema'
 
 const styles = {
-  divider: {
-    height: 4,
-    backgroundColor: '#243265',
-    margin: '20px 14px',
-  },
   bufferzone: {
     marginLeft: 14,
     marginRight: 14,
@@ -50,23 +45,23 @@ export class BufferZone extends React.Component {
       return <div />
     }
     return (
-      <div>
+      <div className={classes.bufferzone}>
+        <div style={{ width: '100%', padding: '0 4px 0', marginBottom: 10 }}>
+          <Typography variant="h6" inline gutterBottom>
+            Aktiviteetit
+          </Typography>
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            onClick={this.clear}
+            style={{ float: 'right' }}
+          >
+            Tyhjennä
+          </Button>
+        </div>
         <ActivityDragAndDropTarget bufferzone parentId={this.props.buffer.id}>
-          <div className={classes.bufferzone}>
-            <div style={{ width: '100%', margin: '0 4px 10px' }}>
-              <Typography variant="h6" inline gutterBottom>
-                Aktiviteetit
-              </Typography>
-              <Button
-                variant="outlined"
-                size="small"
-                color="primary"
-                onClick={this.clear}
-                style={{ float: 'right' }}
-              >
-                Tyhjennä
-              </Button>
-            </div>
+          <div>
             <Activities
               activities={this.props.buffer.activities}
               bufferzone
@@ -74,7 +69,6 @@ export class BufferZone extends React.Component {
             />
           </div>
         </ActivityDragAndDropTarget>
-        <Divider variant="middle" className={classes.divider} />
       </div>
     )
   }

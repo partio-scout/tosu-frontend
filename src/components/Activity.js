@@ -11,7 +11,7 @@ import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
 import PropTypesSchema from './PropTypesSchema'
-import { withStyles, DialogTitle } from '@material-ui/core'
+import { withStyles } from '@material-ui/core'
 
 const styles = {
   connectDragSource: {
@@ -32,12 +32,12 @@ const styles = {
     boxShadow: '1px 1px 3px',
   },
   mandatory: {
-    cursor: 'grab',
-    backgroundColor: '#97bcd7',
+    cursor: 'pointer',
+    backgroundColor: '#97bcd7 !important',
   },
   nonMandatory: {
-    cursor: 'grab',
-    backgroundColor: '#aed3eb',
+    cursor: 'pointer',
+    backgroundColor: '#aed3eb !important',
   },
   avatar: {
     height: 26,
