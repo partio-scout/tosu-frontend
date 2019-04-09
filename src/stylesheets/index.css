@@ -4,3 +4,23 @@ html,
 body {
   font-family: PT Sans, Source Sans Pro Black, sans-serif;
 }
+
+/* Some were too hard or ugly to move. These are collected below. GLHF */
+
+.tree-search-title {
+  display: block;
+  line-height: 28px;
+  margin: 0 !important;
+  margin-top: -20px !important;
+  padding: 3px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.tree-search-title:hover {
+  background: #90caf9 !important;
+}
+
+.rc-tree-select-tree-treenode-disabled .tree-search-title {
+  pointer-events: none;
+}

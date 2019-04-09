@@ -70,22 +70,7 @@ const fillWithNeededVariable = root => {
       task.isMandatory = task.tags.pakollisuus[0].slug === 'mandatory'
       task.label = task.title
       task.title = (
-        <span
-          name={task.title}
-          /*
-           * TODO: add this on hover:
-           * background: #90caf9
-           */
-          style={{
-            backgroundColor: task.isMandatory ? '#2196f3' : '#E3F2FD',
-            display: 'block',
-            lineHeight: '28px',
-            margin: 0,
-            marginTop: -20,
-            padding: 3,
-            cursor: 'pointer',
-          }}
-        >
+        <span name={task.title} className={'tree-search-title'}>
           {task.title}
         </span>
       )
