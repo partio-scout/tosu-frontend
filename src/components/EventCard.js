@@ -18,6 +18,8 @@ import {
   FormControlLabel,
   Switch,
   withStyles,
+  Tooltip,
+  TextField,
 } from '@material-ui/core'
 
 import Warning from '@material-ui/icons/Warning'
@@ -55,20 +57,6 @@ const styles = {
     display: 'flex',
     flexFlow: 'row wrap',
   },
-  information: {
-    padding: 2,
-    paddingRight: 12,
-    paddingLeft: 12,
-    marginRight: 5,
-    marginBottom: 7,
-    borderRadius: 5,
-    fontFamily: "'Roboto', sans-serif",
-    backgroundColor: '#253264',
-    color: '#fff',
-    fontWeight: 900,
-    border: 'none',
-    cursor: 'pointer',
-  },
   warning: {
     width: 15,
     height: 15,
@@ -79,9 +67,8 @@ const styles = {
   arrowUp: {
     transform: 'rotate(180deg)',
   },
-  tooltip: {
-    position: 'relative',
-    display: 'inline-block',
+  boldedAttribute: {
+    fontWeight: 'bold',
   },
 }
 
@@ -92,11 +79,17 @@ class EventCard extends React.Component {
       expanded: false,
       syncToKuksa: Boolean(props.event.synced), // Initial state of sync or no sync from backend
       syncDialogOpen: false,
-      editMode: false,
       newPlans: false,
+      information: props.event.information,
     }
     this.changeInfo = this.changeInfo.bind(this)
-    this.renderEdit = this.renderEdit.bind(this)
+  }
+
+  componentDidUpdate(oldProps) {
+    const newProps = this.props
+    if (oldProps.event.information !== newProps.event.information) {
+      this.setState({ information: newProps.event.information })
+    }
   }
 
   /**
@@ -184,10 +177,11 @@ class EventCard extends React.Component {
     // TODO
   }
 
-  /* creates a new event with modified information and sends it to eventReducer's editEvent method */
-  changeInfo = async event => {
-    event.preventDefault()
-
+  /**
+   * Creates a new event with modified information and sends it to
+   * eventReducer's editEvent method.
+   */
+  changeInfo = async () => {
     const moddedEvent = {
       id: this.props.event.id,
       title: this.props.event.title,
@@ -196,46 +190,23 @@ class EventCard extends React.Component {
       startTime: this.props.event.startTime,
       endTime: this.props.event.endTime,
       type: this.props.event.type,
-      information: event.target.children[2].value,
+      information: this.state.information,
     }
     this.props.bufferZoneInitialization(0)
     this.props.editEvent(moddedEvent)
-    this.setState({ editMode: false })
-  }
-
-  renderEdit = () => {
-    this.setState({ editMode: !this.state.editMode })
   }
 
   render() {
     const { event, odd, classes } = this.props
-    let editButton = <div />
 
     const warning = (
-      <div className={classes.tooltip}>
+      <Tooltip
+        title="Tapahtumasta puuttuu aktiviteetti!"
+        placement="right"
+        disableFocusListener
+      >
         <Warning className={classes.warning} />
-        {/* TODO: add this:
-         * .tooltip:hover .tooltiptext {
-         *   visibility: visible;
-         * }
-         */}
-        <span
-          style={{
-            position: 'absolute',
-            visibility: 'hidden',
-            minWidth: 200,
-            fontSize: 14,
-            backgroundColor: 'black',
-            color: '#fff',
-            textAlign: 'center',
-            borderRadius: 6,
-            padding: 5,
-            zIndex: 1,
-          }}
-        >
-          Tapahtumasta puuttuu aktiviteetti!
-        </span>
-      </div>
+      </Tooltip>
     )
 
     moment.locale('fi')
@@ -289,7 +260,7 @@ class EventCard extends React.Component {
 
       dialogConfirmHandler = this.startSyncingWithKuksa
     }
-    const information = new Parser().parse(event.information)
+
     const syncConfirmDialog = (
       <div>
         <Dialog
@@ -375,94 +346,77 @@ class EventCard extends React.Component {
       </CardContent>
     )
 
-    /** Creates a new event with modified information and sends it to eventReducer's editEvent method
-     * @param event Click event that has to be forwarded to this function so it can be prevented
+    /**
+     * Returns a component depending on if this is a Kuksa event
+     * or a user created event.
      */
-    const changeInfo = event => {
-      event.preventDefault()
-      const moddedEvent = {
-        id: this.props.event.id,
-        title: this.props.event.title,
-        startDate: this.props.event.startDate,
-        endDate: this.props.event.endDate,
-        startTime: this.props.event.startTime,
-        endTime: this.props.event.endTime,
-        type: this.props.event.type,
-        information: event.target.children[2].value,
-      }
-      this.props.editEvent(moddedEvent)
-      this.setState({ editMode: false })
-    }
-    /** Enables/disables edit mode, used in editButton */
-    const renderEdit = () => {
-      this.setState({ editMode: !this.state.editMode })
-    }
+    const informationContainer = event.kuksaEventId ? (
+      new Parser().parse(event.information)
+    ) : (
+      <form autoComplete="off">
+        <TextField
+          id="info-edit-area"
+          label="Lisätiedot"
+          fullWidth
+          multiline
+          margin="normal"
+          variant="outlined"
+          value={this.state.information}
+          onChange={e =>
+            this.setState({
+              information: e.target.value,
+            })
+          }
+        />
+        <Button
+          size="small"
+          variant="contained"
+          color="primary"
+          onClick={this.changeInfo}
+        >
+          PÄIVITÄ
+        </Button>
+      </form>
+    )
 
     /**
-     * Returns a component with a form to input new information if editMode is true,
-     * otherwise returns the information in text form
+     * Helper function to capitalize first letter of a string.
+     * @param string - A string to capitalize
      */
-    const informationContainer = () => {
-      if (this.state.editMode) {
-        return (
-          <form onSubmit={this.changeInfo}>
-            <span>
-              <b>Lisätiedot </b>
-              <input
-                type="submit"
-                value="TALLENNA"
-                align="top"
-                className={classes.information}
-              />
-              {editButton}
-            </span>
-            <br />
-            <textarea defaultValue={information} rows="4" cols="80" />
-          </form>
-        )
-      }
-      return <p>{information}</p>
-    }
-    if (!this.props.event.kuksaEventId) {
-      editButton = (
-        <button onClick={this.renderEdit} className={classes.information}>
-          {this.state.editMode ? 'PERUUTA' : 'MUOKKAA'}
-        </button>
-      )
-    } else {
-      editButton = ''
-    }
+    const capitalize = string =>
+      string.charAt(0).toUpperCase() + string.slice(1)
+
+    /**
+     * Expanded information of an event.
+     */
     const expanded = (
       <CardContent>
         {syncConfirmDialog}
-        <div className="eventTimes">
-          <span>{event.type} alkaa:</span>
+        <div>
+          <span className={classes.boldedAttribute}>
+            {capitalize(event.type)} alkaa:
+          </span>{' '}
           {moment(event.startDate)
             .locale('fi')
-            .format('ddd D.M.YYYY')}
+            .format('ddd D.M.YYYY')}{' '}
           kello {event.startTime.substring(0, 5)}
         </div>
-        <div className="eventTimes">
-          <span>{event.type} päättyy:</span>
+        <div>
+          <span className={classes.boldedAttribute}>
+            {capitalize(event.type)} päättyy:
+          </span>{' '}
           {moment(event.endDate)
             .locale('fi')
-            .format('ddd D.M.YYYY')}
+            .format('ddd D.M.YYYY')}{' '}
           kello {event.endTime.substring(0, 5)}
         </div>
-        {this.state.editMode ? null : (
-          <div>
-            <b>Lisätiedot </b>
-            {editButton}
-          </div>
-        )}
-        <div> {informationContainer()} </div>
-        <b>
-          <Activities
-            activities={this.props.event.activities}
-            bufferzone={false}
-            parentId={this.props.event.id}
-          />
-        </b>
+        {informationContainer}
+        <br style={{ clear: 'both' }} />
+        <Activities
+          activities={this.props.event.activities}
+          bufferzone={false}
+          parentId={this.props.event.id}
+        />
         <br style={{ clear: 'both' }} />
         {event.activities.map(activity =>
           activity.plans.map(plan => (
@@ -477,6 +431,7 @@ class EventCard extends React.Component {
         )}
       </CardContent>
     )
+
     return (
       <div className={cardClassName}>
         <Card>

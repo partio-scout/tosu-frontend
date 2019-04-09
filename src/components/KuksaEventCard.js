@@ -21,6 +21,10 @@ const styles = {
   arrowUp: {
     transform: 'rotate(180deg)',
   },
+
+  boldedAttribute: {
+    fontWeight: 'bold',
+  },
 }
 
 class KuksaEventCard extends React.Component {
@@ -76,16 +80,20 @@ class KuksaEventCard extends React.Component {
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
             <CardContent>
               <h2>{event.title}</h2>
-              <p className="eventTimes">
-                <span>{event.type} alkaa:</span>
-                {moment(event.startDate).format('D.M.YYYY')} kello
+              <div>
+                <span className={classes.boldedAttribute}>
+                  {event.type} alkaa:
+                </span>{' '}
+                {moment(event.startDate).format('D.M.YYYY')} kello{' '}
                 {event.startTime}
-              </p>
-              <p className="eventTimes">
-                <span>{event.type} päättyy:</span>
+              </div>
+              <div>
+                <span className={classes.boldedAttribute}>
+                  {event.type} päättyy:
+                </span>{' '}
                 {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
-              </p>
-              <p>{information}</p>
+              </div>
+              {information}
               <br style={{ clear: 'both' }} />
             </CardContent>
           </Collapse>

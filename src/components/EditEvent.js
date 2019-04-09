@@ -147,17 +147,18 @@ class EditEvent extends React.Component {
     const disabled = event.synced || event.kuksaEvent // TODO: Allow editing after Kuksa sync works both ways (remove event.synced check)
     return (
       <div>
-        <Button
-          size={this.props.minimal ? 'small' : 'medium'}
-          onClick={this.handleOpen}
-          disabled={disabled}
-          className={classes.button}
-          variant="contained"
-          color="primary"
-        >
-          Muokkaa
-          <Icon className={classes.rightIcon}>edit_icon</Icon>
-        </Button>
+        {disabled ? null : (
+          <Button
+            size={this.props.minimal ? 'small' : 'medium'}
+            onClick={this.handleOpen}
+            className={classes.button}
+            variant="contained"
+            color="primary"
+          >
+            Muokkaa
+            <Icon className={classes.rightIcon}>edit_icon</Icon>
+          </Button>
+        )}
         <Dialog open={this.state.open} onClose={this.handleClose}>
           <DialogTitle>
             {'Muokataan tapahtumaa'} {this.state.title}

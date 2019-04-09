@@ -62,24 +62,27 @@ class PlanForm extends React.Component {
           <TabContainer>
             <div>
               <p>
-                <strong>Paikka:</strong> {activity.place.join(', ')}
+                <strong>Paikka: </strong>
+                {activity.place.join(', ')}
                 <br />
-                <strong>Kesto:</strong> {activity.duration}
+                <strong>Kesto: </strong>
+                {activity.duration}
                 <br />
-                <strong>Taitoalueet:</strong> {activity.taitoalueet.join(', ')}
+                <strong>Taitoalueet: </strong>
+                {activity.taitoalueet.join(', ')}
                 <br />
-                <strong>Kasvatustavoitteet:</strong>
+                <strong>Kasvatustavoitteet: </strong>
                 {activity.kasvatustavoitteet.join(', ')}
                 <br />
-                <strong>Johtamistaidot:</strong>
+                <strong>Johtamistaidot: </strong>
                 {activity.johtamistaito.join(', ')}
                 <br />
-                <strong>Pakollisuus:</strong>
+                <strong>Pakollisuus: </strong>
                 {activity.mandatory ? 'Pakollinen ' : 'Ei pakollinen '}
                 <img
                   src={activity.mandatoryIconUrl}
-                  alt="mandatoryIcon"
-                  height="15px"
+                  alt="Pakollinen"
+                  height="16px"
                 />
               </p>
               <p>
