@@ -10,7 +10,6 @@ import {
   Dialog,
   DialogTitle,
   LinearProgress,
-  Grid,
   CssBaseline,
 } from '@material-ui/core'
 import moment from 'moment'
@@ -198,34 +197,30 @@ class App extends Component {
         <CssBaseline />
         <div style={{ display: 'flex' }}>
           <AppBar />
-          <Grid container style={{ minHeight: '100vh' }}>
-            <Grid item xs={4} style={{ overflowX: 'auto' }}>
-              <ActivitiesSidebar />
-            </Grid>
-            <Grid item xs={8}>
-              <div style={theme.mixins.toolbar} />
-              <div style={{ padding: theme.spacing.unit * 2 }}>
-                <ButtonRow
-                  view={view}
-                  newEvent={this.newEvent}
-                  dateRangeUpdate={this.dateRangeUpdate}
-                  mobile={isTouchDevice()}
-                />
-                {this.props.loading ? (
-                  <LinearProgress style={{ marginTop: 5 }} />
-                ) : null}
-                {view === 'CALENDAR' ? calendar : eventsToList}
+          <ActivitiesSidebar />
+          <div style={{ width: '100%' }}>
+            <div style={theme.mixins.toolbar} />
+            <div style={{ padding: theme.spacing.unit * 2 }}>
+              <ButtonRow
+                view={view}
+                newEvent={this.newEvent}
+                dateRangeUpdate={this.dateRangeUpdate}
+                mobile={isTouchDevice()}
+              />
+              {this.props.loading ? (
+                <LinearProgress style={{ marginTop: 5 }} />
+              ) : null}
+              {view === 'CALENDAR' ? calendar : eventsToList}
 
-                <Dialog
-                  open={this.state.newEventVisible}
-                  onClose={this.handleClose}
-                >
-                  <DialogTitle>Luo uusi tapahtuma</DialogTitle>
-                  <NewEvent closeMe={this.handleClose} />
-                </Dialog>
-              </div>
-            </Grid>
-          </Grid>
+              <Dialog
+                open={this.state.newEventVisible}
+                onClose={this.handleClose}
+              >
+                <DialogTitle>Luo uusi tapahtuma</DialogTitle>
+                <NewEvent closeMe={this.handleClose} />
+              </Dialog>
+            </div>
+          </div>
           <Notification />
         </div>
       </MuiThemeProvider>

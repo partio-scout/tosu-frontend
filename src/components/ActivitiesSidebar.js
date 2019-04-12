@@ -1,12 +1,14 @@
 import React from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import { Divider } from '@material-ui/core'
+import { Divider, Drawer } from '@material-ui/core'
 
 import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
 import StatusMessage from './StatusMessage'
 
 import PropTypesSchema from './PropTypesSchema'
+
+const drawerWidth = 380
 
 const styles = theme => ({
   divider: {
@@ -15,20 +17,32 @@ const styles = theme => ({
     margin: '20px 14px',
   },
   toolbar: theme.mixins.toolbar,
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
 })
 
 function ActivitiesSidebar(props) {
   const { classes } = props
 
   return (
-    <div>
+    <Drawer
+      className={classes.drawer}
+      variant="permanent"
+      classes={{
+        paper: classes.drawerPaper,
+      }}
+    >
       <div className={classes.toolbar} />
       <TreeSearchBar />
-      <Divider variant="middle" className={classes.divider} />
       <BufferZone />
       <Divider variant="middle" className={classes.divider} />
       <StatusMessage />
-    </div>
+    </Drawer>
   )
 }
 

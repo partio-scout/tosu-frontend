@@ -183,12 +183,11 @@ class CalendarEvent extends Component {
     }
 
     const activities = (
-      <div>
+      <div className={classes.calendarEventActivityWrapper}>
         <Activities
           activities={event.activities}
           bufferzone={false}
           parentId={event.id}
-          className={classes.calendarEventActivityWrapper}
         />
       </div>
     )
@@ -239,13 +238,11 @@ class CalendarEvent extends Component {
         <br />
       </div>
     ) : (
-      <ActivityDragAndDropTarget
-        bufferzone={false}
-        parentId={event.id}
-        className={classes.calendarEventPopper}
-      >
-        {popoverContent}
-      </ActivityDragAndDropTarget>
+      <div className={classes.calendarEventPopper}>
+        <ActivityDragAndDropTarget bufferzone={false} parentId={event.id}>
+          {popoverContent}
+        </ActivityDragAndDropTarget>
+      </div>
     )
 
     return (
