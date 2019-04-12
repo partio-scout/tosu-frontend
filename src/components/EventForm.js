@@ -212,7 +212,6 @@ export default class EventForm extends React.Component {
       this.state.checked,
       this.state.repeatCount,
       this.state.repeatFrequency,
-      this.state.lastDate,
       this.state.type,
       this.state.information
     )
