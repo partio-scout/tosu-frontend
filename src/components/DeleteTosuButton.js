@@ -90,7 +90,7 @@ class DeleteTosuButton extends Component {
           variant="contained"
           onClick={() => this.handleClickOpen()}
         >
-          Poista tosu <DeleteIcon/>
+          Poista tosu <DeleteIcon />
         </StyledButton>
         <Dialog
           open={this.state.open}
@@ -114,7 +114,7 @@ class DeleteTosuButton extends Component {
               >
                 Peruuta
               </Button>
-              <StyledButton onClick={this.deleteTosu}>
+              <StyledButton id="confirm" onClick={this.deleteTosu}>
                 {' '}
                 Poista tosu{' '}
               </StyledButton>

@@ -72,14 +72,8 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-<<<<<<< HEAD
     "cypress": "^3.2.0",
     "jsdoc": "^3.5.5"
-=======
-    "jsdoc": "^3.5.5",
-    "jsdom": "14.0.0",
-    "jsdom-global": "3.0.2"
->>>>>>> 704018243b5d77e463d8c4cdecc4af7b294e6e62
   },
   "eslintConfig": {
     "extends": "react-app"
