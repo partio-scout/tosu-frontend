@@ -5,12 +5,14 @@ import BigCalendar from 'react-big-calendar-like-google'
 import moment from 'moment'
 import 'moment/locale/fi'
 import 'react-big-calendar-like-google/lib/css/react-big-calendar.css'
-
+import PropTypes from 'prop-types'
 import CalendarToolbar from './CalendarToolbar'
 import CalendarEvent from './CalendarEvent'
 import { eventStyleGetter } from './CalendarEvent'
 import { closePopper } from '../reducers/calendarReducer'
-import PropTypesSchema from './PropTypesSchema'
+import { eventList } from '../reducers/eventReducer'
+
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 const localizer = BigCalendar.momentLocalizer(moment)
 
@@ -22,13 +24,13 @@ const localizer = BigCalendar.momentLocalizer(moment)
  * @returns all events mapped to calendar or just non kuksa events
  */
 function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
-  events = events.filter(event => {
+  const preparedEvents = eventList(events).filter(event => {
     if (event.kuksaEvent) {
       return shouldShowKuksaEventsAlso
     }
     return true
   })
-  return events.map(event => {
+  return preparedEvents.map(event => {
     const startDate = `${event.startDate} ${event.startTime}`
     const endDate = `${event.endDate} ${event.endTime}`
     return {
@@ -88,13 +90,18 @@ const mapStateToProps = state => ({
   shouldShowKuksaEventsAlso: state.calendar.showKuksa,
 })
 
+const mapDispatchToProps = { closePopper }
+
 Calendar.propTypes = {
-  ...PropTypesSchema,
+  closePopper: PropTypes.func.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  mobile: PropTypes.bool.isRequired,
+  shouldShowKuksaEventsAlso: PropTypes.bool.isRequired,
 }
 
 Calendar.defaultProps = {}
 
 export default connect(
   mapStateToProps,
-  { closePopper }
+  mapDispatchToProps
 )(Calendar)

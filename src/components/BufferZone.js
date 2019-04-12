@@ -3,16 +3,18 @@ import React from 'react'
 import Divider from '@material-ui/core/Divider/Divider'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
+import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import Activities from './Activities'
 import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
+import { deleteActivity } from '../reducers/activityReducer'
 import {
   deleteActivityFromBufferOnlyLocally,
   deleteActivityFromBuffer,
 } from '../reducers/bufferZoneReducer'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 /**
  * Determines the style used in the element
@@ -36,20 +38,25 @@ const styles = theme => ({
 })
 
 export class BufferZone extends React.Component {
-
   /**
    * Clears the activities from the buffer
    */
   clear = async () => {
     if (this.props.buffer.activities) {
-      const promises = this.props.buffer.activities.map(activity =>
-        this.props.deleteActivityFromBuffer(activity.id)
+      let promises = this.props.buffer.activities.map(activity =>
+        this.props.deleteActivityFromBuffer(activity)
+      )
+      promises = promises.concat(
+        this.props.buffer.activities.map(activity =>
+          this.props.deleteActivity(activity)
+        )
       )
       try {
         await Promise.all(promises)
-        this.props.pofTreeUpdate(this.props.buffer, this.props.events)
+        this.props.pofTreeUpdate(this.props.activities)
         this.props.notify('Aktiviteetit poistettu!', 'success')
       } catch (exception) {
+        console.log(exception)
         this.props.notify('Kaikkia aktiviteetteja ei voitu poistaa!')
       }
     }
@@ -68,7 +75,9 @@ export class BufferZone extends React.Component {
         <ActivityDragAndDropTarget bufferzone parentId={this.props.buffer.id}>
           <div id="bufferzone">
             <Activities
-              activities={this.props.buffer.activities}
+              activities={this.props.buffer.activities.map(
+                id => this.props.activities[id]
+              )}
               bufferzone
               parentId={this.props.buffer.id}
             />
@@ -87,20 +96,32 @@ export class BufferZone extends React.Component {
 const mapStateToProps = state => ({
   buffer: state.buffer,
   events: state.events,
+  pofTree: state.pofTree,
+  activities: state.activities,
 })
 
+const mapDispatchToProps = {
+  notify,
+  pofTreeUpdate,
+  deleteActivityFromBuffer,
+  deleteActivity,
+}
+
 BufferZone.propTypes = {
-  ...PropTypesSchema,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
+  deleteActivity: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  pofTree: PropTypesSchema.pofTreeShape.isRequired,
+  notify: PropTypes.func.isRequired,
+  classes: PropTypesSchema.classesShape.isRequired,
 }
 
 BufferZone.defaultProps = {}
 
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    pofTreeUpdate,
-    deleteActivityFromBufferOnlyLocally,
-    deleteActivityFromBuffer,
-  }
+  mapDispatchToProps
 )(withStyles(styles)(BufferZone))

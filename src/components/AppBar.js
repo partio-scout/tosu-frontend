@@ -5,7 +5,8 @@ import { connect } from 'react-redux'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import AccountIcon from './AccountIcon'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypes from 'prop-types'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 const styles = theme => ({
   label: {
@@ -14,6 +15,8 @@ const styles = theme => ({
 })
 
 export class AppBar extends React.Component {
+  static propTypes = {}
+
   state = { sidebarVisible: true }
 
   /**
@@ -58,7 +61,9 @@ export class AppBar extends React.Component {
 }
 
 AppBar.propTypes = {
-  ...PropTypesSchema,
+  toggleSideBar: PropTypes.func.isRequired,
+  scout: PropTypesSchema.scoutShape,
+  classes: PropTypesSchema.classesShape,
 }
 
 AppBar.defaultProps = {}
@@ -67,7 +72,4 @@ const mapStateToProps = state => ({
   scout: state.scout,
 })
 
-export default connect(
-  mapStateToProps,
-  {}
-)(withStyles(styles)(AppBar))
+export default connect(mapStateToProps)(withStyles(styles)(AppBar))

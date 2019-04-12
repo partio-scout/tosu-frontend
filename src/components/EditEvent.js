@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
@@ -12,7 +13,7 @@ import EventForm from './EventForm'
 import { notify } from '../reducers/notificationReducer'
 import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 const styles = theme => ({
   button: {
@@ -78,7 +79,6 @@ class EditEvent extends React.Component {
     }
     try {
       this.props.editEvent(moddedEvent)
-      this.props.bufferZoneInitialization(0)
       // await eventService.edit(data);
       this.setState({ open: false })
       this.props.notify('Tapahtuman muokkaus onnistui!', 'success')
@@ -171,13 +171,20 @@ class EditEvent extends React.Component {
   }
 }
 
+const mapDispatchToProps = {
+  editEvent,
+  bufferZoneInitialization,
+  notify,
+}
+
 EditEvent.propTypes = {
-  ...PropTypesSchema,
+  editEvent: PropTypes.func.isRequired,
+  bufferZoneInitialization: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
 }
 
 EditEvent.defaultProps = {}
-
 export default connect(
   null,
-  { editEvent, bufferZoneInitialization, notify }
+  mapDispatchToProps
 )(withStyles(styles)(EditEvent))

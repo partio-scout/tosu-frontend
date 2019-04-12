@@ -63,6 +63,7 @@ const convertToBackendActivity = pofActivity => {
         return suggs
       })
     } catch (exception) {
+      console.log("failed conversion")
       activity.suggestions = []
     }
   }
