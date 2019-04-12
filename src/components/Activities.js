@@ -7,12 +7,14 @@ import convertToSimpleActivity from '../functions/activityConverter'
 import activityService from '../services/activities'
 import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import { deleteActivityFromBuffer, postActivityToBuffer } from '../reducers/bufferZoneReducer'
+import {
+  deleteActivityFromBuffer,
+  postActivityToBuffer,
+} from '../reducers/bufferZoneReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { getTask } from '../functions/denormalizations'
-import { deleteActivity } from '../reducers/activityReducer'
+import { deleteActivity, updateActivity } from '../reducers/activityReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
-
 
 export class Activities extends React.Component {
   /**
@@ -21,12 +23,19 @@ export class Activities extends React.Component {
    */
   deleteActivity = async activity => {
     try {
-      const deleteActivityFromParent = this.props.bufferzone
-        ? this.props.deleteActivityFromBuffer
-        : this.props.deleteActivityFromEvent
-      await deleteActivityFromParent(activity.id, activity.eventId)
-      this.props.deleteActivity(activity.id)
-      this.props.pofTreeUpdate(this.props.stateActivities)
+      if (this.props.bufferzone) {
+        this.props.deleteActivityFromBuffer(activity.id)
+        this.props.deleteActivity(activity.id)
+        this.props.pofTreeUpdate(this.props.stateActivities)
+      } else {
+        this.props.deleteActivityFromEvent(activity.id, activity.eventId)
+        this.props.postActivityToBuffer(activity)
+        const res = await activityService.moveActivityFromEventToBufferZone(
+          activity.id,
+          activity.eventId
+        )
+        this.props.updateActivity(res)
+      }
       this.props.notify('Aktiviteetti poistettu!', 'success')
     } catch (exception) {
       console.log(exception)
@@ -100,6 +109,7 @@ const mapDispatchToProps = {
   deleteActivityFromEvent,
   deleteActivity,
   postActivityToBuffer,
+  updateActivity,
 }
 
 export default connect(

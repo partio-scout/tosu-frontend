@@ -1,0 +1,30 @@
+version: '3.5'
+
+services:
+        frontend:
+                image: tosu-frontend
+                build: ./
+                ports:
+                  - 3000:3000
+                networks:
+                  - tosu-net
+        backend:
+                image: tosu-backend
+                build: ../tosu-backend-node
+                ports:
+                  - 3001:3001
+                networks:
+                  - tosu-net
+                depends_on:
+                  - postgres
+
+        postgres:
+                image: postgres
+                environment:
+                        POSTGRES_PASSWORD: docker
+                        POSTGRES_USER: postgres
+                networks:
+                   - tosu-net
+networks:
+        tosu-net:
+          name: tosu-network
