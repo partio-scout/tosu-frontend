@@ -56,8 +56,16 @@ describe('After logging in', function() {
       force: true,
     })
     cy.contains('Tallenna').click({ multiple: true, force: true })
+    cy.wait(4000)
     cy.get('ul[class="event-list"] > li').should($lis => {
       expect($lis).to.have.length(4)
     })
+  })
+  it('user adds a new kuksa-event', function() {
+    cy.contains('Kuksa').click()
+    cy.contains('Lisää omaan suunnitelmaan').click()
+    cy.contains('Lisää suunnitelmaan').click()
+    cy.contains('Omat').click()
+    cy.contains('Mall_Åldersgruppsevenemang')
   })
 })
