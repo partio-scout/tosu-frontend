@@ -9,8 +9,7 @@ services:
                 networks:
                   - tosu-net
         backend:
-                image: tosu-backend
-                build: ../tosu-backend-node
+                image: tosuapp/tosu-backend
                 ports:
                   - 3001:3001
                 networks:

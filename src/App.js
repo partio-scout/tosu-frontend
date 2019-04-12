@@ -31,7 +31,8 @@ import ButtonRow from './components/ButtonRow'
 import FeedbackButton from './components/FeedbackButton'
 import Login from './components/Login'
 import DeleteTosuButton from './components/DeleteTosuButton'
-// Utils 
+import EventList from './components/EventList'
+// Utils
 import PropTypesSchema from './utils/PropTypesSchema'
 import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
@@ -221,44 +222,10 @@ class App extends Component {
         headerVisible={this.state.headerVisible}
       />
     )
-
-    const eventsToList = (
-      <div className="event-list-container">
-        {view === 'KUKSA'}
-        <ul
-          className={
-            isTouchDevice() ? 'mobile-event-list event-list' : 'event-list'
-          }
-        >
-          {filterEvents(
-            view,
-            eventList(this.props.events),
-            startDate,
-            endDate
-          ).map(event => {
-            odd = !odd
-            return (
-              <li className="event-list-item" key={event.id ? event.id : 0}>
-                {event.kuksaEvent ? (
-                  <KuksaEventCard event={event} />
-                ) : (
-                  <EventCard event={event} odd={odd} />
-                )}
-              </li>
-            )
-          })}
-          <li>
-            <DeleteTosuButton initialization={this.initialization} />
-          </li>
-        </ul>
-      </div>
-    )
-
     const dndMenu = () => <AppBar toggleSideBar={this.toggleDrawer} />
     const calendar = (
       <Calendar events={this.props.events} mobile={isTouchDevice()} />
     )
-
     return (
       <MuiThemeProvider theme={theme}>
         <div>
@@ -287,7 +254,14 @@ class App extends Component {
                     <LinearProgress />
                   </div>
                 ) : null}
-                {this.props.view === 'CALENDAR' ? calendar : eventsToList}
+                {this.props.view === 'CALENDAR' ? (
+                  calendar
+                ) : (<EventList
+                      startDate={this.state.startDate}
+                      endDate={this.state.endDate}
+                      initialization={this.initialization}
+                    />
+                )}
                 <Dialog
                   open={this.state.newEventVisible}
                   onClose={this.handleClose}
