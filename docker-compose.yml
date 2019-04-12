@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
         frontend:
-                image: tosu-frontend
+                image: tosuapp/tosu-frontend
                 build: ./
                 ports:
                   - 3000:3000
