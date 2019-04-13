@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
   Card,
   CardActions,
@@ -15,7 +16,6 @@ import { Parser } from 'html-to-react'
 
 import AddToPlan from './AddToPlan'
 import { notify } from '../reducers/notificationReducer'
-import PropTypesSchema from './PropTypesSchema'
 
 const styles = {
   arrowUp: {
@@ -107,14 +107,16 @@ class KuksaEventCard extends React.Component {
 }
 
 KuksaEventCard.propTypes = {
-  ...PropTypesSchema,
+  notify: PropTypes.func.isRequired,
 }
 
 KuksaEventCard.defaultProps = {}
 
+const mapDispatchToProps = {
+  notify,
+}
+
 export default connect(
   null,
-  {
-    notify,
-  }
+  mapDispatchToProps
 )(withStyles(styles)(KuksaEventCard))

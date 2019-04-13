@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
   Card,
   CardHeader,
@@ -15,7 +16,8 @@ import planService from '../services/plan'
 import convertToSimpleActivity from '../functions/activityConverter.js'
 import findActivity from '../functions/findActivity'
 import { notify } from '../reducers/notificationReducer'
-import PropTypesSchema from './PropTypesSchema'
+import { updateActivity } from '../reducers/activityReducer'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 class SuggestionCard extends React.Component {
   constructor(props) {
@@ -27,12 +29,14 @@ class SuggestionCard extends React.Component {
     convertToSimpleActivity(findActivity(activity, pofTree))
 
   deleteClick = async e => {
-    const { plan, event, editEvent, deletePlan, notify } = this.props
+    const { plan, notify, activity } = this.props
     e.preventDefault()
     try {
       await planService.deletePlan(plan.id)
-      deletePlan(plan.id, plan.activityId)
-      editEvent(event)
+      this.props.deletePlan(plan.id, plan.activityId)
+      const updatedActivity = { ...activity }
+      updatedActivity.plans = activity.plans.filter(p => p.id !== plan.id)
+      this.props.updateActivity(updatedActivity)
     } catch (exception) {
       notify('Toteutusvinkin poistaminen ei onnistunut')
     }
@@ -43,10 +47,7 @@ class SuggestionCard extends React.Component {
 
     return (
       <div key={plan.id}>
-        <Card
-          className="suggestion"
-          style={{ backgroundColor: '#fafafa', marginTop: '10px' }}
-        >
+        <Card style={{ backgroundColor: '#fafafa', marginTop: '10px' }}>
           <CardHeader
             action={
               <IconButton onClick={this.deleteClick}>
@@ -73,7 +74,12 @@ class SuggestionCard extends React.Component {
 }
 
 SuggestionCard.propTypes = {
-  ...PropTypesSchema,
+  pofTree: PropTypesSchema.pofTreeShape.isRequired,
+  plans: PropTypes.arrayOf(PropTypes.object).isRequired,
+  notify: PropTypes.func.isRequired,
+  editEvent: PropTypes.func.isRequired,
+  deletePlan: PropTypes.func.isRequired,
+  updateActivity: PropTypes.func.isRequired,
 }
 
 SuggestionCard.defaultProps = {}
@@ -83,7 +89,14 @@ const mapStateToProps = state => ({
   plans: state.plans,
 })
 
+const mapDispatchToProps = {
+  notify,
+  editEvent,
+  deletePlan,
+  updateActivity,
+}
+
 export default connect(
   mapStateToProps,
-  { notify, editEvent, deletePlan }
+  mapDispatchToProps
 )(SuggestionCard)

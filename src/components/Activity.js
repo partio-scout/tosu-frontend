@@ -5,12 +5,13 @@ import Chip from '@material-ui/core/Chip'
 import Icon from '@material-ui/core/Icon'
 import { DragSource } from 'react-dnd'
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { notify } from '../reducers/notificationReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 import { withStyles } from '@material-ui/core'
 
 const styles = {
@@ -110,12 +111,6 @@ class Activity extends Component {
       classes,
     } = this.props
 
-    let lastGuid = 0
-    if (pofActivity) {
-      const lastParentIndex = pofActivity.parents.length - 1
-      lastGuid = pofActivity.parents[lastParentIndex].guid
-    }
-
     if (activity && pofActivity) {
       return connectDragSource(
         <div
@@ -173,7 +168,19 @@ const mapStateToProps = state => ({
 })
 
 Activity.propTypes = {
-  ...PropTypesSchema,
+  notify: PropTypes.func.isRequired,
+  notification: PropTypes.string.isRequired,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  events: PropTypes.shape({}).isRequired,
+  connectDragSource: PropTypes.func.isRequired,
+  activity: PropTypes.shape({}).isRequired,
+  pofActivity: PropTypes.shape({}).isRequired,
+  parentId: PropTypes.number.isRequired,
+  minimal: PropTypes.bool.isRequired,
+  deleteActivity: PropTypes.func.isRequired,
+  deleteActivityFromEvent: PropTypes.func.isRequired,
+  deleteActivityFromActivity: PropTypes.func.isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
 }
 
 Activity.defaultProps = {}

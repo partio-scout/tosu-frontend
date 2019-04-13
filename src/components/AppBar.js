@@ -6,7 +6,8 @@ import MenuIcon from '@material-ui/icons/Menu'
 
 import { setSideBar } from '../reducers/uiReducer'
 import AccountIcon from './AccountIcon'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypes from 'prop-types'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 const styles = theme => ({
   appBar: {
@@ -47,7 +48,9 @@ function TopBar(props) {
 }
 
 AppBar.propTypes = {
-  ...PropTypesSchema,
+  toggleSideBar: PropTypes.func.isRequired,
+  scout: PropTypesSchema.scoutShape,
+  classes: PropTypesSchema.classesShape,
 }
 
 AppBar.defaultProps = {}

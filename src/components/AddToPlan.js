@@ -4,7 +4,8 @@ import Button from '@material-ui/core/Button'
 import { DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypes from 'prop-types'
+import PropTypesSchema from '../utils/PropTypesSchema'
 
 import { addEventFromKuksa } from '../reducers/eventReducer'
 
@@ -72,20 +73,26 @@ class AddToPlan extends React.Component {
   }
 }
 
-AddToPlan.propTypes = {
-  ...PropTypesSchema,
+const mapDispatchToProps = {
+  notify,
+  addEventFromKuksa,
 }
-
-AddToPlan.defaultProps = {}
 
 const mapStateToProps = state => ({
   tosu: state.tosu,
 })
 
+AddToPlan.propTypes = {
+  event: PropTypesSchema.eventShape.isRequired,
+  addEventFromKuksa: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
+  tosu: PropTypes.func.isRequired,
+  buttonClass: PropTypes.string.isRequired,
+}
+
+AddToPlan.defaultProps = {}
+
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    addEventFromKuksa,
-  }
+  mapDispatchToProps
 )(AddToPlan)

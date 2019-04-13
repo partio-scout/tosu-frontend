@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Popper from '@material-ui/core/Popper'
 import Paper from '@material-ui/core/Paper'
 import Icon from '@material-ui/core/Icon'
@@ -12,7 +13,7 @@ import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
 import AddToPlan from './AddToPlan'
 import { openPopper, closePopper } from '../reducers/calendarReducer'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypesSchema from '../utils/PropTypesSchema'
 import { withStyles } from '@material-ui/core'
 
 const styles = {
@@ -132,6 +133,7 @@ class CalendarEvent extends Component {
       this.closePopper()
     }
   }
+
   openPopper = target => {
     this.setState(state => ({ anchorEl: target }))
     this.props.openPopper(this.props.event.id)
@@ -263,7 +265,13 @@ class CalendarEvent extends Component {
 }
 
 CalendarEvent.propTypes = {
-  ...PropTypesSchema,
+  event: PropTypesSchema.eventShape.isRequired,
+  pofTree: PropTypesSchema.pofTreeShape.isRequired,
+  closePopper: PropTypes.func.isRequired,
+  openPopper: PropTypes.func.isRequired,
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  popperOpen: PropTypes.string.isRequired,
+  popperEventId: PropTypes.number.isRequired,
 }
 
 CalendarEvent.defaultProps = {}
@@ -272,6 +280,7 @@ const mapStateToProps = state => ({
   pofTree: state.pofTree,
   popperOpen: state.calendar.popperOpen,
   popperEventId: state.calendar.popperEventId,
+  activities: state.activities,
 })
 
 export default connect(

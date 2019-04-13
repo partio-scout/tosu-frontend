@@ -1,4 +1,5 @@
 import { createMuiTheme } from '@material-ui/core'
+import red from '@material-ui/core/colors/red'
 
 const theme = createMuiTheme({
   typography: {
@@ -21,6 +22,10 @@ const theme = createMuiTheme({
     background: {
       paper: '#fff',
       default: '#fff',
+    },
+    error: {
+      main: red[500],
+      contrastText: '#ffffff',
     },
   },
   overrides: {

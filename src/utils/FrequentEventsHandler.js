@@ -30,7 +30,6 @@ const handleFrequentEvent = (date, repeatFrequency, i) => {
       newDate = moment(date).add(i, 'months')
     }
   }
-
   return newDate
 }
 

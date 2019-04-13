@@ -11,7 +11,8 @@ import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
 import ActivityPreview from './ActivityPreview'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypes from 'prop-types'
+import PropTypesSchema from '../utils/PropTypesSchema'
 import { withStyles } from '@material-ui/core'
 import { blue, indigo } from '@material-ui/core/colors'
 
@@ -187,7 +188,12 @@ const DraggableActivity = DragSource(
 )(Activity)
 
 Activity.propTypes = {
-  ...PropTypesSchema,
+  notification: PropTypesSchema.string.isRequired,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  deleteActivityFromEvent: PropTypes.func.isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
 }
 
 Activity.defaultProps = {}
@@ -198,11 +204,13 @@ const mapStateToProps = state => ({
   events: state.events,
 })
 
+const mapDispatchToProps = {
+  deleteActivityFromEvent,
+  deleteActivityFromBuffer,
+  notify,
+}
+
 export default connect(
   mapStateToProps,
-  {
-    deleteActivityFromEvent,
-    deleteActivityFromBuffer,
-    notify,
-  }
+  mapDispatchToProps
 )(withStyles(styles)(DraggableActivity))

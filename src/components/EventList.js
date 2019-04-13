@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import {
@@ -10,7 +11,6 @@ import {
 import EventCard from './EventCard'
 import KuksaEventCard from './KuksaEventCard'
 import eventComparer from '../utils/EventCompare'
-import PropTypesSchema from './PropTypesSchema'
 
 /**
  * This class is not used! But it should be.
@@ -24,6 +24,7 @@ class EventList extends React.Component {
 
   render() {
     const { events, filter } = this.props
+    console.log(filter)
     const shouldShowAllKuksaEvents = this.state.shouldShowAllKuksaEvents
 
     /**
@@ -73,11 +74,7 @@ class EventList extends React.Component {
 
     return (
       <div id="event-list-container">
-        {this.state.loading && (
-          <div className="loading-bar">
-            <LinearProgress />
-          </div>
-        )}
+        {this.state.loading && <LinearProgress />}
         {filter === 'KUKSA' && kuksaEventsShowAllSwitch}
         {filter === 'KUKSA' && addKuksaEventsToTosuButton}
         <ul className="event-list">
@@ -97,7 +94,8 @@ class EventList extends React.Component {
 }
 
 EventList.propTypes = {
-  ...PropTypesSchema,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  filter: PropTypes.string.isRequired,
 }
 
 EventList.defaultProps = {}

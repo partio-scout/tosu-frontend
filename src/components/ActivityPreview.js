@@ -2,7 +2,7 @@ import React from 'react'
 import DragLayer from 'react-dnd/lib/DragLayer'
 import { withStyles } from '@material-ui/core'
 import { Avatar, Chip } from '@material-ui/core'
-import PropTypesSchema from './PropTypesSchema'
+import PropTypes from 'prop-types'
 
 const styles = {
   avatar: {
@@ -100,7 +100,10 @@ function ActivityPreview(props) {
 }
 
 ActivityPreview.propTypes = {
-  ...PropTypesSchema,
+  isDragging: PropTypes.bool.isRequired,
+  currentOffset: PropTypes.number.isRequired,
+  startPoint: PropTypes.number.isRequired,
+  pofActivity: PropTypes.shape({}).isRequired,
 }
 
 ActivityPreview.defaultProps = {}

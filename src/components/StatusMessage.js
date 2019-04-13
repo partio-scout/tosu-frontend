@@ -1,15 +1,16 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Done from '@material-ui/icons/Done'
 import Warning from '@material-ui/icons/Warning'
-import PropTypesSchema from './PropTypesSchema'
 import { Paper, Typography } from '@material-ui/core'
 
 // Done icon
-const done = <Done className="done" key="done" />
+const done = <Done key="done" />
 
 // Small done icon for sub-taskgroups (suhteet)
-const smallDone = <Done className="small-done" key="done" />
+// TODO: Make this smaller
+const smallDone = <Done key="done" />
 
 /**
  * Warning icon that returns a tooltiptext with a message
@@ -38,7 +39,7 @@ const warning = message => (
      * }
      */}
     <span
-      className={{
+      style={{
         position: 'absolute',
         visibility: 'hidden',
         minWidth: 200,
@@ -279,7 +280,10 @@ function StatusMessage(props) {
 }
 
 StatusMessage.propTypes = {
-  ...PropTypesSchema,
+  handleClose: PropTypes.func.isRequired,
+  handleOpen: PropTypes.func.isRequired,
+  statusMessage: PropTypes.func.isRequired,
+  taskgroup: PropTypes.func.isRequired,
 }
 
 StatusMessage.defaultProps = {}
@@ -289,7 +293,4 @@ const mapStateToProps = state => ({
   taskgroup: state.taskgroup,
 })
 
-export default connect(
-  mapStateToProps,
-  {}
-)(StatusMessage)
+export default connect(mapStateToProps)(StatusMessage)

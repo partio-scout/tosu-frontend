@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import isTouchDevice from 'is-touch-device'
@@ -8,7 +9,6 @@ import FrequentEventsHandler from '../utils/FrequentEventsHandler'
 import EventForm from './EventForm'
 import { addEvent } from '../reducers/eventReducer'
 import { notify } from '../reducers/notificationReducer'
-import PropTypesSchema from './PropTypesSchema'
 import { withStyles } from '@material-ui/core'
 
 const styles = {
@@ -145,7 +145,7 @@ class NewEvent extends React.Component {
    */
   sendEventPostRequest = async eventData => {
     try {
-      await this.props.addEvent(eventData)
+      this.props.addEvent(eventData)
       if (eventData.eventGroupId === undefined) {
         this.props.notify('Uusi tapahtuma luotu!', 'success')
       } else {
@@ -214,7 +214,9 @@ class NewEvent extends React.Component {
 }
 
 NewEvent.propTypes = {
-  ...PropTypesSchema,
+  addEvent: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired,
+  tosu: PropTypes.string.isRequired,
 }
 
 NewEvent.defaultProps = {}

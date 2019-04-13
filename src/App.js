@@ -15,7 +15,7 @@ import {
 import moment from 'moment'
 import 'react-dates/initialize'
 import { MuiThemeProvider } from '@material-ui/core/styles'
-
+import { normalize } from 'normalizr'
 // CSS
 import './stylesheets/index.css'
 import 'react-dates/lib/css/_datepicker.css'
@@ -35,29 +35,41 @@ import KuksaEventCard from './components/KuksaEventCard'
 import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
 import Login from './components/Login'
-import PropTypesSchema from './components/PropTypesSchema'
+import DeleteTosuButton from './components/DeleteTosuButton'
 // Utils
+import PropTypesSchema from './utils/PropTypesSchema'
 import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
 
 // Services
-import { getGoogleToken, getScout } from './services/googleToken'
+import {
+  getGoogleToken,
+  getScout,
+  removeGoogleToken,
+} from './services/googleToken'
 
 // Reducers
-import { notify } from './reducers/notificationReducer'
 import { pofTreeInitialization, pofTreeUpdate } from './reducers/pofTreeReducer'
 import {
   bufferZoneInitialization,
   deleteActivityFromBuffer,
 } from './reducers/bufferZoneReducer'
-import { eventsInitialization } from './reducers/eventReducer'
+import { eventsInitialization, eventList } from './reducers/eventReducer'
+import { activityInitialization } from './reducers/activityReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutGoogleLogin, readScout } from './reducers/scoutReducer'
 import { viewChange } from './reducers/uiReducer'
 import { setLoading } from './reducers/loadingReducer'
-import { tosuInitialization } from './reducers/tosuReducer'
+import eventService from './services/events'
+import activityService from './services/activities'
+import {
+  tosuInitialization,
+  deleteTosu,
+  selectTosu,
+} from './reducers/tosuReducer'
 
 import { POF_ROOT } from './api-config'
+import { pofTreeSchema, eventSchema } from './pofTreeSchema'
 
 class App extends Component {
   state = {
@@ -69,42 +81,38 @@ class App extends Component {
   }
 
   componentDidMount = async () => {
-    try {
-      // Load pofData and put it in Redux store
-      const pofData = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
-      this.props.pofTreeInitialization(pofData)
+    switch (window.location.pathname) {
+      case '/new-event':
+        this.setState({
+          headerVisible: false,
+          bufferZoneHeight: 0,
+          newEventVisible: false,
+        })
+        break
+      case '/calendar':
+        this.props.viewChange('CALENDAR')
+        break
+      default:
+        break
+    }
+    await this.checkLoggedIn()
+    //let pofData = loadCachedPofData()
+    if (this.props.scout !== null) {
+      await this.initialization()
+      this.props.pofTreeUpdate(this.props.activities)
+    }
 
-      if (getGoogleToken() !== null) {
-        // Create or load existing user based on the googleToken
-        await this.props.scoutGoogleLogin(getGoogleToken())
-
-        // then load user's Tosus
-        const tosuId = await this.props.tosuInitialization()
-
-        // load user's activities which are in buffer
-        // load user's events based on selected Tosu
-        await Promise.all([
-          this.props.eventsInitialization(tosuId),
-          this.props.bufferZoneInitialization(),
-        ])
-
-          // Then update the pofTree with current buffer and loaded events
-          .then(() =>
-            this.props.pofTreeUpdate(this.props.buffer, this.props.events)
-          )
-
-        // then remove activities from buffer if using touch device
-        if (isTouchDevice()) {
-          // Wait for all deletions to finish
-          await Promise.all(
-            this.props.buffer.activities.map(activity =>
-              this.props.deleteActivityFromBuffer(activity.id)
-            )
-          ).catch(error => console.log('Error while emptying buffer', error))
-        }
+    // If touch device is used, empty bufferzone so activities that have been left to bufferzone can be added to events
+    if (isTouchDevice()) {
+      const bufferActivities = this.props.buffer.activities
+      const promises = bufferActivities.map(activity =>
+        this.props.deleteActivityFromBuffer(activity.id)
+      )
+      try {
+        await Promise.all(promises)
+      } catch (exception) {
+        console.log('Error in emptying buffer', exception)
       }
-    } catch (error) {
-      console.log(error)
     }
 
     // PartioID login (BROKEN)
@@ -120,7 +128,8 @@ class App extends Component {
     const status = createStatusMessage(
       this.props.events,
       this.props.pofTree,
-      this.props.taskgroup
+      this.props.taskgroup,
+      this.props.activities
     )
     this.props.addStatusInfo(status)
   }
@@ -128,6 +137,45 @@ class App extends Component {
   setHeaderHeight = height => {
     if (height !== this.state.bufferZoneHeight) {
       this.setState({ bufferZoneHeight: height })
+    }
+  }
+  initialization = async () => {
+    const pofRequest = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
+    const pofData = pofRequest.data
+    const normalizedPof = normalize(pofData, pofTreeSchema)
+    this.props.pofTreeInitialization(normalizedPof)
+    const tosuID = await this.props.tosuInitialization()
+    const buffer = await activityService.getBufferZoneActivities(
+      this.props.scout.id
+    )
+    if (tosuID) {
+      const eventDataRaw = await eventService.getAll(tosuID)
+      const eventData = normalize(eventDataRaw, eventSchema).entities
+      if (!eventData.activities) eventData.activities = {}
+      if (!eventData.events) eventData.events = {}
+      this.props.activityInitialization(
+        Object.keys(eventData.activities).map(key => eventData.activities[key]),
+        buffer.activities
+      )
+      this.props.eventsInitialization(eventData.events)
+    } else {
+      this.props.activityInitialization([], buffer.activities)
+    }
+    this.props.bufferZoneInitialization(buffer)
+  }
+
+  checkLoggedIn = async () => {
+    // Google login
+    if (getGoogleToken() !== null) {
+      try {
+        await this.props.scoutGoogleLogin(getGoogleToken())
+      } catch (exception) {
+        removeGoogleToken()
+      }
+    }
+    // PartioID login
+    if (getScout() !== null) {
+      this.props.readScout() // Reads scout from a cookie. (Has only name)
     }
   }
 
@@ -148,18 +196,17 @@ class App extends Component {
 
   render() {
     const view = this.props.ui.view
-    const { startDate, endDate } = this.state
-    const initialEvents = this.props.events
-
-    const eventsToShow = () =>
-      filterEvents(view, initialEvents, startDate, endDate)
+    const { startDate, endDate } = this.setState
 
     let odd = true
     if (this.props.scout === null) {
       return (
         <MuiThemeProvider theme={theme}>
           <CssBaseline />
-          <Login token="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com" />
+          <Login
+            initialization={this.initialization}
+            token="1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com"
+          />
         </MuiThemeProvider>
       )
     }
@@ -172,7 +219,12 @@ class App extends Component {
             isTouchDevice() ? 'mobile-event-list event-list' : 'event-list'
           }
         >
-          {eventsToShow().map(event => {
+          {filterEvents(
+            view,
+            eventList(this.props.events),
+            startDate,
+            endDate
+          ).map(event => {
             odd = !odd
             return (
               <li className="event-list-item" key={event.id ? event.id : 0}>
@@ -184,6 +236,9 @@ class App extends Component {
               </li>
             )
           })}
+          <li>
+            <DeleteTosuButton initialization={this.initialization} />
+          </li>
         </ul>
       </div>
     )
@@ -228,6 +283,35 @@ class App extends Component {
   }
 }
 
+App.propTypes = {
+  notification: PropTypes.string.isRequired,
+  buffer: PropTypesSchema.bufferShape.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  pofTree: PropTypesSchema.pofTreeShape.isRequired,
+  taskgroup: PropTypesSchema.taskgroupShape.isRequired,
+  scout: PropTypesSchema.scoutShape.isRequired,
+  view: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
+  tosu: PropTypes.string.isRequired,
+  pofTreeInitialization: PropTypes.func.isRequired,
+  pofTreeUpdate: PropTypes.func.isRequired,
+  eventsInitialization: PropTypes.func.isRequired,
+  activityInitialization: PropTypes.func.isRequired,
+  bufferZoneInitialization: PropTypes.func.isRequired,
+  tosuInitialization: PropTypes.func.isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
+  addStatusInfo: PropTypes.func.isRequired,
+  scoutGoogleLogin: PropTypes.func.isRequired,
+  readScout: PropTypes.func.isRequired,
+  viewChange: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
+}
+
+App.defaultProps = {
+  scout: PropTypes.shape({ id: '' }),
+}
+
 const mapStateToProps = state => ({
   notification: state.notification,
   buffer: state.buffer,
@@ -236,15 +320,16 @@ const mapStateToProps = state => ({
   taskgroup: state.taskgroup,
   scout: state.scout,
   loading: state.loading,
+  activities: state.activities,
   tosu: state.tosu,
   ui: state.ui,
 })
 
 const mapDispatchToProps = {
-  notify,
   pofTreeInitialization,
   pofTreeUpdate,
   eventsInitialization,
+  activityInitialization,
   bufferZoneInitialization,
   tosuInitialization,
   deleteActivityFromBuffer,
@@ -253,14 +338,12 @@ const mapDispatchToProps = {
   readScout,
   viewChange,
   setLoading,
+  deleteTosu,
+  selectTosu,
 }
 
 App.propTypes = {
   ...PropTypesSchema,
-}
-
-App.defaultProps = {
-  scout: PropTypes.shape({ id: '' }),
 }
 
 const AppDnD = DragDropContext(HTML5Backend)(App)

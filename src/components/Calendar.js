@@ -4,13 +4,13 @@ import { connect } from 'react-redux'
 import BigCalendar from 'react-big-calendar-like-google'
 import moment from 'moment'
 import 'moment/locale/fi'
-
 import CalendarToolbar from './CalendarToolbar'
 import CalendarEvent from './CalendarEvent'
 import { eventStyleGetter } from './CalendarEvent'
+import { eventList } from '../reducers/eventReducer'
 import { closePopper } from '../reducers/calendarReducer'
-import PropTypesSchema from './PropTypesSchema'
 import { withStyles } from '@material-ui/core'
+import PropTypes from 'prop-types'
 
 const styles = {
   mobileCalendar: {
@@ -38,13 +38,13 @@ const localizer = BigCalendar.momentLocalizer(moment)
  * @returns all events mapped to calendar or just non kuksa events
  */
 function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
-  events = events.filter(event => {
+  const preparedEvents = eventList(events).filter(event => {
     if (event.kuksaEvent) {
       return shouldShowKuksaEventsAlso
     }
     return true
   })
-  return events.map(event => {
+  return preparedEvents.map(event => {
     const startDate = `${event.startDate} ${event.startTime}`
     const endDate = `${event.endDate} ${event.endTime}`
     return {
@@ -109,7 +109,10 @@ const mapStateToProps = state => ({
 })
 
 Calendar.propTypes = {
-  ...PropTypesSchema,
+  closePopper: PropTypes.func.isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  mobile: PropTypes.bool.isRequired,
+  shouldShowKuksaEventsAlso: PropTypes.bool.isRequired,
 }
 
 Calendar.defaultProps = {}

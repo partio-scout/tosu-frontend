@@ -7,21 +7,20 @@ const reducer = (store = null, action) => {
   return store
 }
 
-const showNotification = (text, textType) => {
-  const note = { text, textType }
-  return { type: 'NOTIFY', note }
-}
-const hideNotification = () => ({ type: 'CLEAR_NOTIFICATION' })
-
 export const notify = (
   text,
   textType = 'error',
   timeout = 5
 ) => async dispatch => {
-  dispatch(showNotification(text, textType))
-
+  dispatch({
+    type: 'NOTIFY',
+    note: {
+      text,
+      textType,
+    },
+  })
   setTimeout(() => {
-    dispatch(hideNotification())
+    dispatch({ type: 'CLEAR_NOTIFICATION' })
   }, timeout * 1000)
 }
 

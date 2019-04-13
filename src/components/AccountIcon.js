@@ -9,7 +9,6 @@ import {
   Popper,
 } from '@material-ui/core'
 import AccountCard from './AccountCard'
-import PropTypesSchema from './PropTypesSchema'
 
 const styles = theme => ({
   circleButton: {
@@ -60,11 +59,5 @@ function AccountIcon(props) {
     </div>
   )
 }
-
-AccountIcon.propTypes = {
-  ...PropTypesSchema,
-}
-
-AccountIcon.defaultProps = {}
 
 export default withStyles(styles)(AccountIcon)

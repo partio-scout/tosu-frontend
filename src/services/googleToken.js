@@ -1,4 +1,4 @@
-function getCookie(name) {
+const getCookie = name => {
   const value = '; ' + document.cookie
   const parts = value.split('; ' + name + '=')
   if (parts.length === 2)
@@ -12,13 +12,11 @@ function getCookie(name) {
 
 export const getGoogleToken = () => window.localStorage.getItem('googleLogin')
 
-export const setGoogleToken = token => {
+export const setGoogleToken = token =>
   window.localStorage.setItem('googleLogin', token)
-}
 
-export const removeGoogleToken = () => {
+export const removeGoogleToken = () =>
   window.localStorage.removeItem('googleLogin')
-}
 
 export const getScout = () => {
   const scout = getCookie('scout')

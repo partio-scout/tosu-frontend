@@ -6,8 +6,6 @@ import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
 import StatusMessage from './StatusMessage'
 
-import PropTypesSchema from './PropTypesSchema'
-
 const drawerWidth = 380
 
 const styles = theme => ({
@@ -44,10 +42,6 @@ function ActivitiesSidebar(props) {
       <StatusMessage />
     </Drawer>
   )
-}
-
-ActivitiesSidebar.propTypes = {
-  ...PropTypesSchema,
 }
 
 ActivitiesSidebar.defaultProps = {}
