@@ -41,4 +41,12 @@ describe('After logging in', function() {
     cy.get('span[class=Select-arrow]').click()
     cy.contains('Tervetuloa tarpojaksi')
   })
+  it('user can open the tarppo menu', function() {
+    cy.contains('Tervetuloa tarpojaksi').should('not.exist')
+    cy.contains('Valitse tarppo...').click({ force: true })
+    cy.contains('Kaupunki-tarppo')
+    cy.contains('Kaupunki-tarppo').click({ force: true })
+    cy.contains('Lisää aktiviteetti').click({ force: true })
+    cy.contains('Kotiseutu').click({ force: true })
+  })
 })
