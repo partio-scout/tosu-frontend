@@ -18,7 +18,7 @@ before_script:
   - docker-compose up -d
 script:
     - npm run test
-    - npm run cypress:run
+    - npx cypress run
 after_script:
   - bash .scripts/deploy.sh
   - bash ./docker_push
