@@ -19,7 +19,7 @@ after_script:
   - bash .scripts/deploy.sh
 deploy:
     provider: script
-    script: docker_push
+    script: bash ./docker_push
     on:
         branch: docker
 notifications:
