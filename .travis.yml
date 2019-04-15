@@ -15,7 +15,7 @@ install:
   - npm install
 before_script:
   - export CI=false
-  - docker-compose up
+  - docker-compose up -d
 script:
     - npm run test
     - npm run cypress:run
