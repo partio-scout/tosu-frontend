@@ -4,7 +4,6 @@ import isTouchDevice from 'is-touch-device'
 import TreeSelect /* ,{ TreeNode, SHOW_PARENT } */ from 'rc-tree-select'
 import 'rc-tree-select/assets/index.css'
 import React from 'react'
-import PropTypes from 'prop-types'
 import {
   CardActions,
   CardHeader,
@@ -18,10 +17,16 @@ import {
   DialogTitle,
   Card,
   FormControlLabel,
+  TextField,
+  Typography,
   Switch,
+  Collapse,
 } from '@material-ui/core'
 
+import PropTypes from 'prop-types'
+import ReactTooltip from 'react-tooltip'
 import Warning from '@material-ui/icons/Warning'
+import DeleteIcon from '@material-ui/icons/Delete'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
 import { Parser } from 'html-to-react'
@@ -29,7 +34,6 @@ import Activities from './Activities'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
-import {getRootGroup} from '../functions/denormalizations'
 
 import {
   editEvent,
@@ -45,12 +49,12 @@ import {
   bufferZoneInitialization,
 } from '../reducers/bufferZoneReducer'
 import eventService from '../services/events'
+import planService from '../services/plan'
 import { deletePlan } from '../reducers/planReducer'
-import SuggestionCard from '../components/SuggestionCard'
-import { getTask } from '../functions/denormalizations'
-import { getActivityList, addActivity } from '../reducers/activityReducer'
-import PropTypesSchema from '../utils/PropTypesSchema'
+import findActivity from '../functions/findActivity'
+import convertToSimpleActivity from '../functions/activityConverter'
 
+import SuggestionCard from '../components/SuggestionCard'
 
 const warning = (
   <div className="tooltip">
@@ -82,14 +86,14 @@ class EventCard extends React.Component {
         const res = await eventService.addActivity(this.props.event.id, {
           guid: activityGuid,
         })
-        this.props.addActivity(res)
+
         this.props.addActivityToEventOnlyLocally(this.props.event.id, res)
         this.props.notify('Aktiviteetti on lisätty!', 'success')
       } catch (exception) {
         this.props.notify('Aktiviteetin lisäämisessä tapahtui virhe!')
       }
     }
-    this.props.pofTreeUpdate(this.props.activities)
+    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
   /**
    *  Deletes all activities from the local buffer and updates the pofTree
@@ -98,7 +102,7 @@ class EventCard extends React.Component {
     if (isTouchDevice()) {
       const bufferActivities = this.props.buffer.activities
       const promises = bufferActivities.map(activity =>
-        this.props.deleteActivityFromBuffer(activity)
+        this.props.deleteActivityFromBuffer(activity.id)
       )
       try {
         await Promise.all(promises)
@@ -107,7 +111,7 @@ class EventCard extends React.Component {
       }
     }
 
-    this.props.pofTreeUpdate(this.props.activities)
+    this.props.pofTreeUpdate(this.props.buffer, this.props.events)
   }
   /**
    * Checks whether a given value is part of a pofTree using breath-first-search
@@ -116,10 +120,21 @@ class EventCard extends React.Component {
   isLeaf = value => {
     if (!value) {
       return false
-    } if( value.children) {
-        return false
     }
-    return true
+    let queues = [...this.props.pofTree.taskgroups]
+    while (queues.length) {
+      const item = queues.shift()
+      if (item.value.toString() === value.toString()) {
+        if (!item.children) {
+          return true
+        }
+        return false
+      }
+      if (item.children) {
+        queues = queues.concat(item.children)
+      }
+    }
+    return false
   }
 
   filterTreeNode = (input, child) =>
@@ -144,9 +159,11 @@ class EventCard extends React.Component {
     // TODO
   }
 
-  /* creates a new event with modified information and sends it to eventReducer's editEvent method */
+  /**
+   *  Creates a new event with modified information and sends it to eventReducer's editEvent method */
   changeInfo = async event => {
     event.preventDefault()
+
     const moddedEvent = {
       id: this.props.event.id,
       title: this.props.event.title,
@@ -156,8 +173,8 @@ class EventCard extends React.Component {
       endTime: this.props.event.endTime,
       type: this.props.event.type,
       information: event.target.children[2].value,
-      activities: this.props.event.activities,
     }
+    this.props.bufferZoneInitialization(0)
     this.props.editEvent(moddedEvent)
     this.setState({ editMode: false })
   }
@@ -185,7 +202,8 @@ class EventCard extends React.Component {
       cardClassName = 'kuksa-synced-event-card'
     }
 
-    const taskGroupTree = getRootGroup(this.props.pofTree)
+    const taskGroupTree = this.props.pofTree.taskgroups
+
     let selectedTaskGroupPofData = []
     if (
       this.props.taskgroup !== undefined &&
@@ -241,14 +259,24 @@ class EventCard extends React.Component {
         </Dialog>
       </div>
     )
+    const syncToKuksaSwitch = (
+      <FormControlLabel
+        control={
+          <Switch
+            checked={this.state.syncToKuksa}
+            onClick={this.handleSyncSwitchClick}
+            color="primary"
+          />
+        }
+        label="Synkronoi Kuksaan"
+      />
+    )
 
     const touchDeviceNotExpanded = (
       <CardContent style={this.state.expanded ? {} : { padding: '3px' }}>
         <div className="mobile-event-card-media">
           <Activities
-            activities={this.props.event.activities.map(
-              key => this.props.activities[key]
-            )}
+            activities={this.props.event.activities}
             bufferzone={false}
             parentId={this.props.event.id}
           />
@@ -286,9 +314,7 @@ class EventCard extends React.Component {
       <CardContent style={this.state.expanded ? {} : { padding: '3px 10px' }}>
         <div className="activity-header">
           <Activities
-            activities={this.props.event.activities.map(
-              key => this.props.activities[key]
-            )}
+            activities={this.props.event.activities}
             bufferzone={false}
             parentId={this.props.event.id}
             minimal
@@ -354,6 +380,7 @@ class EventCard extends React.Component {
     }
     const expanded = (
       <CardContent>
+        {syncConfirmDialog}
         <div className="eventTimes">
           <span>{event.type} alkaa:</span>{' '}
           {moment(event.startDate)
@@ -377,28 +404,24 @@ class EventCard extends React.Component {
         <div> {informationContainer()} </div>
         <b>
           <Activities
-            activities={this.props.event.activities.map(
-              key => this.props.activities[key]
-            )}
+            activities={this.props.event.activities}
             bufferzone={false}
             parentId={this.props.event.id}
           />
         </b>
         <br style={{ clear: 'both' }} />{' '}
-        {event.activities.map(key => {
-          const activity = this.props.activities[key]
-          if (activity) {
-            return activity.plans.map(plan => (
-              <div key={plan.id}>
-                <SuggestionCard
-                  plan={plan}
-                  activity={activity}
-                  event={this.props.event}
-                />
-              </div>
-            ))
-          }
-        })}
+        {event.activities.map(activity =>
+          activity.plans.map(plan => (
+            <div key={plan.id}>
+              {' '}
+              <SuggestionCard
+                plan={plan}
+                activity={activity}
+                event={this.props.event}
+              />{' '}
+            </div>
+          ))
+        )}{' '}
       </CardContent>
     )
     return (
@@ -469,26 +492,37 @@ class EventCard extends React.Component {
 }
 
 EventCard.propTypes = {
-  buffer: PropTypesSchema.bufferShape.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  pofTree: PropTypesSchema.pofTreeShape.isRequired,
-  taskgroup: PropTypesSchema.taskgroupShape.isRequired,
-  status: PropTypes.string.isRequired,
-  plans: PropTypes.arrayOf(PropTypes.object).isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  notify: PropTypes.func.isRequired,
-  editEvent: PropTypes.func.isRequired,
-  deletePlan: PropTypes.func.isRequired,
-  deleteActivityFromEvent: PropTypes.func.isRequired,
-  bufferZoneInitialization: PropTypes.func.isRequired,
   addActivityToEventOnlyLocally: PropTypes.func.isRequired,
-  deleteActivityFromEventOnlyLocally: PropTypes.func.isRequired,
-  postActivityToBufferOnlyLocally: PropTypes.func.isRequired,
-  deleteActivityFromBufferOnlyLocally: PropTypes.func.isRequired,
+  buffer: PropTypes.shape({
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  deleteActivityFromBuffer: PropTypes.func.isRequired,
+  editEvent: PropTypes.func.isRequired,
+  event: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    type: PropTypes.object.isRequired,
+    startDate: PropTypes.string.isRequired,
+    startTime: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
+    endTime: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    kuksaEventId: PropTypes.number.isRequired,
+    synced: PropTypes.bool.isRequired,
+    activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  notify: PropTypes.func.isRequired,
+  odd: PropTypes.bool.isRequired,
+  pofTree: PropTypes.shape({
+    taskgroups: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
+  setNotification: PropTypes.func.isRequired,
+  deletePlan: PropTypes.func.isRequired,
+  taskgroup: PropTypes.shape({
+    value: PropTypes.number.isRequired,
+  }).isRequired,
 }
-
-EventCard.defaultProps = {}
 
 const mapStateToProps = state => ({
   events: state.events,
@@ -497,24 +531,20 @@ const mapStateToProps = state => ({
   taskgroup: state.taskgroup,
   status: state.statusMessage.status,
   plans: state.plans,
-  activities: state.activities,
 })
-
-const mapDispatchToProps = {
-  notify,
-  editEvent,
-  deletePlan,
-  deleteActivityFromEvent,
-  bufferZoneInitialization,
-  addActivityToEventOnlyLocally,
-  addActivity,
-  deleteActivityFromEventOnlyLocally,
-  postActivityToBufferOnlyLocally,
-  deleteActivityFromBufferOnlyLocally,
-  pofTreeUpdate,
-}
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  {
+    notify,
+    editEvent,
+    deletePlan,
+    deleteActivityFromEvent,
+    bufferZoneInitialization,
+    addActivityToEventOnlyLocally,
+    deleteActivityFromEventOnlyLocally,
+    postActivityToBufferOnlyLocally,
+    deleteActivityFromBufferOnlyLocally,
+    pofTreeUpdate,
+  }
 )(EventCard)

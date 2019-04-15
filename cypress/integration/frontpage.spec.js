@@ -1,3 +1,8 @@
+import scoutService from '../../src/services/scout'
+const resetDatabase = () => {
+  scoutService.deleteScout('12345')
+}
+
 describe('Front page ', function() {
   it('front page can be opened', function() {
     cy.visit('http://localhost:3000')
@@ -6,6 +11,7 @@ describe('Front page ', function() {
 })
 describe('After logging in', function() {
   beforeEach('user logs in', function() {
+    resetDatabase()
     cy.request('http://localhost:3001/scouts/testuser')
     cy.visit('http://localhost:3000')
   })
@@ -31,7 +37,8 @@ describe('After logging in', function() {
   })
   it('user can open the tarppo menu', function() {
     cy.contains('Tervetuloa tarpojaksi').should('not.exist')
-    cy.contains('Valitse tarppo...').click()
+    cy.wait(2000)
+    cy.get('span[class=Select-arrow]').click()
     cy.contains('Tervetuloa tarpojaksi')
   })
 })
