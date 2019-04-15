@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USER" --password-stdin
-if [[ $TRAVIS_BRANCH = 'docker' ]]
+if [[ $TRAVIS_BRANCH = 'master' ]]
 then
     docker push tosuapp/tosu-frontend
     echo "Done"
