@@ -15,6 +15,10 @@ install:
   - npm install
 before_script:
   - export CI=false
+  - docker-compose up
+script:
+    - npm run test
+    - npm run cypress:run
 after_script:
   - bash .scripts/deploy.sh
   - bash ./docker_push
