@@ -34,4 +34,23 @@ describe('After logging in', function() {
     cy.contains('Valitse tarppo...').click()
     cy.contains('Tervetuloa tarpojaksi')
   })
+  it('user can open the tarppo menu', function() {
+    cy.contains('Tervetuloa tarpojaksi').should('not.exist')
+    cy.contains('Valitse tarppo...').click({ force: true })
+    cy.contains('Kaupunki-tarppo')
+    cy.contains('Kaupunki-tarppo').click({ force: true })
+    cy.contains('Lisää aktiviteetti').click({ force: true })
+    cy.contains('Kotiseutu').click({ force: true })
+  })
+  it('tosu can be created', function() {
+    /*cy.contains('Poista tosu').click()
+    cy.get('button[id=confirm]').click()*/
+    cy.contains('Ei tosuja').click({ multiple: true, force: true })
+    cy.contains('UUSI').click({ multiple: true, force: true })
+    cy.get('input[id="name"').type('omaTosu', {
+      multiple: true,
+      force: true,
+    })
+    cy.contains('luo uusi').click({ multiple: true, force: true })
+  })
 })
