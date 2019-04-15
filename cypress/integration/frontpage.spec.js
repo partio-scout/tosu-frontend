@@ -34,4 +34,5 @@ describe('After logging in', function() {
     cy.contains('Valitse tarppo...').click()
     cy.contains('Tervetuloa tarpojaksi')
   })
+
 })
