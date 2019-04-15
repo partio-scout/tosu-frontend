@@ -21,7 +21,7 @@ deploy:
     provider: script
     script: docker_push
     on:
-        branch: master
+        branch: docker
 notifications:
   slack: ohtupartio:9Fqci61YwcZE8Wj25AzaV2ID
 services:

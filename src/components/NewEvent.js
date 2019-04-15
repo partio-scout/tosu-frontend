@@ -155,6 +155,7 @@ class NewEvent extends React.Component {
     checked,
     repeatCount,
     repeatFrequency,
+    lastDate,
     type,
     information
   ) => {
@@ -167,6 +168,7 @@ class NewEvent extends React.Component {
       checked,
       repeatCount,
       repeatFrequency,
+      lastDate,
       type,
       information,
     })
