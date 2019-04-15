@@ -17,11 +17,6 @@ before_script:
   - export CI=false
 after_script:
   - bash .scripts/deploy.sh
-deploy:
-    provider: script
-    script: docker_push
-    on:
-        branch: master
 notifications:
   slack: ohtupartio:9Fqci61YwcZE8Wj25AzaV2ID
 services:
