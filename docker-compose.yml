@@ -26,4 +26,3 @@ services:
                    - tosu-net
 networks:
         tosu-net:
-          name: tosu-network
