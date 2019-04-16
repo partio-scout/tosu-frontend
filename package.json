@@ -63,7 +63,8 @@
     "test": "react-scripts test",
     "test-local": "react-scripts test --coverage --coverageDirectory=./coverage/jest",
     "eject": "react-scripts eject",
-    "travis": "npm run test"
+    "travis": "npm run test",
+    "cypress:open": "cypress open"
   },
   "devDependencies": {
     "chai": "^4.2.0",
