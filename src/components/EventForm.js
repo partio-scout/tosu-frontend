@@ -267,7 +267,7 @@ export default class EventForm extends React.Component {
             <ValidatedDatePicker
               label="Tapahtuman alkamispäivä"
               onChange={this.handleStartDate}
-              name="startDate"
+              name="formStartDate"
               autoOk
               cancelLabel="Peruuta"
               value={this.state.startDate === '' ? null : this.state.startDate}
@@ -337,7 +337,7 @@ export default class EventForm extends React.Component {
             />
           ) : null}
           {this.props.allowRepeatedEvent ? (
-            <div style={frequentStyle}>
+            <div className="frequent" style={frequentStyle}>
               <SelectValidator
                 name="repeatFrequency"
                 label="Toistumisväli"

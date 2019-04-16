@@ -156,7 +156,7 @@ class TreeSearchBar extends React.Component {
           borderRadius: 3,
         }}
       >
-        <div style={{ marginBottom: 5 }}>
+        <div id="select-tarppo" style={{ float: 'left', marginRight: 10, marginBottom: 5 }}>
           <Select
             menuContainerStyle={{ width: '100%' }}
             name="form-field-name"

@@ -70,6 +70,7 @@ class Toolbar extends React.Component {
     return (
       <div style={{ marginBottom: 10 }}>
         <Button
+          name="tanaan"
           color="primary"
           variant="outlined"
           onClick={this.navigate.bind(null, navigate.TODAY)}
