@@ -31,7 +31,7 @@ import ButtonRow from './components/ButtonRow'
 import FeedbackButton from './components/FeedbackButton'
 import Login from './components/Login'
 import DeleteTosuButton from './components/DeleteTosuButton'
-// Utils 
+// Utils
 import PropTypesSchema from './utils/PropTypesSchema'
 import { createStatusMessage } from './utils/createStatusMessage'
 import filterEvents from './functions/filterEvents'
@@ -292,7 +292,7 @@ class App extends Component {
                   open={this.state.newEventVisible}
                   onClose={this.handleClose}
                 >
-                  <DialogTitle>Luo uusi tapahtuma</DialogTitle>
+                  <DialogTitle name="luo-uusi-tapahtuma">Luo uusi tapahtuma</DialogTitle>
                   <NewEvent closeMe={this.handleClose} />
                 </Dialog>
                 <NotificationFooter />
