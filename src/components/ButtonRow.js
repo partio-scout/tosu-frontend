@@ -58,7 +58,7 @@ class ButtonRow extends React.Component {
     }
   }
 
-  
+
   handleTosuSelectHelper = async tosuId => {
     this.handleTosuMenuClose()
     const {
@@ -149,6 +149,7 @@ class ButtonRow extends React.Component {
       <div>
         <div className="button-row">
           <Button
+            id="omat"
             className={this.props.view === 'OWN' ? 'active button' : 'button'}
             onClick={() => this.selectView('OWN')}
             variant="contained"
@@ -157,6 +158,7 @@ class ButtonRow extends React.Component {
             Omat
           </Button>
           <Button
+            id="kuksa"
             className={this.props.view === 'KUKSA' ? 'active button' : 'button'}
             onClick={() => this.selectView('KUKSA')}
             variant="contained"
@@ -171,6 +173,7 @@ class ButtonRow extends React.Component {
               className={
                 this.props.view === 'CALENDAR' ? 'active button' : 'button'
               }
+              id="kalenteri"
               onClick={() => this.selectView('CALENDAR')}
               variant="contained"
               color="secondary"
@@ -182,6 +185,7 @@ class ButtonRow extends React.Component {
             newEventIcon
           ) : (
             <Button
+              id="uusi"
               className="button"
               onClick={this.props.newEvent}
               variant="contained"

@@ -6,7 +6,7 @@ const resetDatabase = () => {
 describe('Front page ', function() {
   it('front page can be opened', function() {
     cy.visit('http://localhost:3000')
-    cy.contains('Toiminnan suunnittelusovellus')
+    cy.get('p[class="login-text"]')
   })
 })
 describe('After logging in', function() {
@@ -16,24 +16,24 @@ describe('After logging in', function() {
     cy.visit('http://localhost:3000')
   })
   it('login succesful', function() {
-    cy.contains('Teppo Testaaja')
+    cy.get('div[class="account-name-and-button"]')
   })
   it('user can hide the sidebar', function() {
-    cy.contains('Valitse ensimmäisenä suoritettava tarppo.')
-    cy.contains('Piilota suunnittelunäkymä').click()
-    cy.contains('Valitse ensimmäisenä suoritettava tarppo.').should(
+    cy.get('div[id="select-tarppo"]')
+    cy.get('input[type="checkbox"]').click()
+    cy.get('div[id="select-tarppo"]').should(
       'not.be.visible'
     )
   })
   it('user can open the form to add a new event', function() {
-    cy.contains('Luo uusi tapahtuma').should('not.exist')
-    cy.contains('Uusi tapahtuma').click()
-    cy.contains('Luo uusi tapahtuma')
+    cy.get('div[name="luo-uusi-tapahtuma"]').should('not.exist')
+    cy.get('button[id="uusi"]').click()
+    cy.get('div[name="luo-uusi-tapahtuma"]')
   })
   it('user can open the calendar', function() {
-    cy.contains('Tänään').should('not.exist')
-    cy.contains('Kalenteri').click()
-    cy.contains('Tänään')
+    cy.get('button[name="tanaan"]').should('not.exist')
+    cy.get('button[id="kalenteri"]').click()
+    cy.get('button[name="tanaan"]')
   })
   it('user can open the tarppo menu', function() {
     cy.contains('Tervetuloa tarpojaksi').should('not.exist')
@@ -49,4 +49,5 @@ describe('After logging in', function() {
     cy.contains('Lisää aktiviteetti').click({ force: true })
     cy.contains('Kotiseutu').click({ force: true })
   })
+
 })
