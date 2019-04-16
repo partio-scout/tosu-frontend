@@ -1,16 +1,7 @@
-describe('Front page ', function() {
-  it('front page can be opened', function() {
-    cy.visit('http://localhost:3000')
-    cy.contains('Toiminnan suunnittelusovellus')
-  })
-})
 describe('After logging in', function() {
   beforeEach('user logs in', function() {
     cy.request('http://localhost:3001/scouts/testuser')
     cy.visit('http://localhost:3000')
-  })
-  it('login succesful', function() {
-    cy.contains('Teppo Testaaja')
   })
   it('tosu can be removed', function() {
     cy.contains('Poista tosu').click()

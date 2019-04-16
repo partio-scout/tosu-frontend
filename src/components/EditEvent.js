@@ -13,7 +13,6 @@ import EventForm from './EventForm'
 import { notify } from '../reducers/notificationReducer'
 import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
-import PropTypesSchema from '../utils/PropTypesSchema'
 
 const styles = theme => ({
   button: {
@@ -24,6 +23,13 @@ const styles = theme => ({
   },
   iconSmall: {
     fontSize: 14,
+  },
+  eventForm: {
+    maxWidth: 800,
+    margin: '0 auto',
+  },
+  newFormPaper: {
+    padding: 20,
   },
 })
 
@@ -63,6 +69,7 @@ class EditEvent extends React.Component {
   handleClose = () => {
     this.setState({ open: false })
   }
+
   /**
    * Closes the eventform and sends the changes to eventreducer
    */
@@ -142,23 +149,24 @@ class EditEvent extends React.Component {
     const disabled = event.synced || event.kuksaEvent // TODO: Allow editing after Kuksa sync works both ways (remove event.synced check)
     return (
       <div>
-        <Button
-          size={this.props.minimal ? 'small' : 'medium'}
-          onClick={this.handleOpen}
-          disabled={disabled}
-          className={classes.button}
-          variant="contained"
-          color="primary"
-        >
-          Muokkaa
-          <Icon className={classes.rightIcon}>edit_icon</Icon>
-        </Button>
+        {disabled ? null : (
+          <Button
+            size={this.props.minimal ? 'small' : 'medium'}
+            onClick={this.handleOpen}
+            className={classes.button}
+            variant="contained"
+            color="primary"
+          >
+            Muokkaa
+            <Icon className={classes.rightIcon}>edit_icon</Icon>
+          </Button>
+        )}
         <Dialog open={this.state.open} onClose={this.handleClose}>
           <DialogTitle>
             {'Muokataan tapahtumaa'} {this.state.title}
           </DialogTitle>
-          <div className="event-form">
-            <Paper className="new-form-paper">
+          <div className={classes.eventForm}>
+            <Paper className={classes.newFormPaper}>
               <EventForm
                 submitFunction={this.handleCloseAndSend.bind(this)}
                 close={this.handleClose.bind(this)}

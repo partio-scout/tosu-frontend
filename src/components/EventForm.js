@@ -211,6 +211,7 @@ export default class EventForm extends React.Component {
   }
 
   send = async () => {
+    console.log('EventForm:', this.state.information)
     await this.props.update(
       this.state.title,
       this.state.startDate,

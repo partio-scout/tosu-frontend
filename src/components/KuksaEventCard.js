@@ -1,5 +1,4 @@
 import { connect } from 'react-redux'
-import 'rc-tree-select/assets/index.css'
 import React from 'react'
 import PropTypes from 'prop-types'
 import {
@@ -9,6 +8,7 @@ import {
   Collapse,
   IconButton,
   CardContent,
+  withStyles,
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import moment from 'moment-with-locales-es6'
@@ -16,6 +16,16 @@ import { Parser } from 'html-to-react'
 
 import AddToPlan from './AddToPlan'
 import { notify } from '../reducers/notificationReducer'
+
+const styles = {
+  arrowUp: {
+    transform: 'rotate(180deg)',
+  },
+
+  boldedAttribute: {
+    fontWeight: 'bold',
+  },
+}
 
 class KuksaEventCard extends React.Component {
   state = { expanded: false }
@@ -28,7 +38,7 @@ class KuksaEventCard extends React.Component {
   }
 
   render() {
-    const { event } = this.props
+    const { event, classes } = this.props
 
     moment.locale('fi')
     const title = this.state.expanded ? '' : event.title
@@ -60,7 +70,7 @@ class KuksaEventCard extends React.Component {
             action={
               <IconButton
                 onClick={this.handleExpandChange}
-                className={this.state.expanded ? 'arrow-up' : ''}
+                className={this.state.expanded ? classes.arrowUp : ''}
               >
                 <ExpandMoreIcon />
               </IconButton>
@@ -70,16 +80,20 @@ class KuksaEventCard extends React.Component {
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
             <CardContent>
               <h2>{event.title}</h2>
-              <p className="eventTimes">
-                <span>{event.type} alkaa:</span>{' '}
+              <div>
+                <span className={classes.boldedAttribute}>
+                  {event.type} alkaa:
+                </span>{' '}
                 {moment(event.startDate).format('D.M.YYYY')} kello{' '}
                 {event.startTime}
-              </p>
-              <p className="eventTimes">
-                <span>{event.type} päättyy:</span>{' '}
+              </div>
+              <div>
+                <span className={classes.boldedAttribute}>
+                  {event.type} päättyy:
+                </span>{' '}
                 {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
-              </p>
-              <p>{information}</p>
+              </div>
+              {information}
               <br style={{ clear: 'both' }} />
             </CardContent>
           </Collapse>
@@ -105,4 +119,4 @@ const mapDispatchToProps = {
 export default connect(
   null,
   mapDispatchToProps
-)(KuksaEventCard)
+)(withStyles(styles)(KuksaEventCard))

@@ -9,6 +9,17 @@ import FrequentEventsHandler from '../utils/FrequentEventsHandler'
 import EventForm from './EventForm'
 import { addEvent } from '../reducers/eventReducer'
 import { notify } from '../reducers/notificationReducer'
+import { withStyles } from '@material-ui/core'
+
+const styles = {
+  eventForm: {
+    maxWidth: 800,
+    margin: '0 auto',
+  },
+  newFormPaper: {
+    padding: 20,
+  },
+}
 
 class NewEvent extends React.Component {
   state = {
@@ -175,9 +186,10 @@ class NewEvent extends React.Component {
   }
 
   render() {
+    const { classes } = this.props
     if (isTouchDevice()) {
       return (
-        <div className="event-form">
+        <div className={classes.eventForm}>
           <EventForm
             submitFunction={this.handleCloseAndSend.bind(this)}
             close={this.handleClose.bind(this)}
@@ -188,8 +200,8 @@ class NewEvent extends React.Component {
       )
     }
     return (
-      <div className="event-form">
-        <Paper className="new-form-paper">
+      <div className={classes.eventForm}>
+        <Paper className={classes.newFormPaper}>
           <EventForm
             submitFunction={this.handleCloseAndSend.bind(this)}
             close={this.handleClose.bind(this)}
@@ -223,4 +235,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NewEvent)
+)(withStyles(styles)(NewEvent))

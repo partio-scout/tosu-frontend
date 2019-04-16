@@ -1,60 +1,12 @@
-.event-card-title-left {
-  margin-bottom: auto;
-  float: left;
-}
-
-.event-card-title-right {
-  float: right;
-  margin-top: 7px;
-}
-
 .event-list {
-  height: calc(100vh - 170px);
-  overflow-y: auto;
-  overflow-x: hidden;
   list-style: none;
   padding-left: 0;
   min-width: 100%;
-  max-width: 50vw;
-}
-
-.mobile-event-list {
-  height: calc(100vh - 270px) !important;
-}
-
-.empty-event-card {
-  padding: 5px;
-  margin-bottom: 10px;
-  background-color: #f14150;
-  border-radius: 4px;
-}
-
-.kuksa-synced-event-card {
-  padding: 5px;
-  margin-bottom: 10px;
-  background-color: #63bcd1;
-  border-radius: 4px;
-}
-
-.kuksa-event-card {
-  padding: 5px;
-  margin-bottom: 10px;
-  background-color: lightgrey;
-  border-radius: 4px;
-}
-
-.event-card-subheader {
-  margin-top: 7px !important;
 }
 
 .event-card-wrapper {
   padding: 5px;
   margin-bottom: 10px;
-}
-
-.mobile-event-card-media {
-  padding-bottom: 10px;
-  text-align: center;
 }
 
 .event-card-wrapper > div > div:first-child {
@@ -68,32 +20,4 @@
 
 .event-card-wrapper > div > div:last-child {
   padding-top: 0;
-}
-
-.event-card-wrapper .activity-header {
-  margin: 0px;
-  align-content: center;
-}
-
-.event-card-wrapper
-  .activity-header
-  .connect-drag-source
-  .connect-drag-source-minimal {
-  margin: 0px;
-  align-content: center;
-}
-
-.event-card-error {
-  position: absolute;
-  margin-bottom: -22px;
-  color: red;
-}
-
-p.eventTimes::first-letter {
-  text-transform: uppercase;
-}
-
-p.eventTimes > span {
-  font-family: PT Sans, Source Sans Pro Black, sans-serif;
-  font-weight: bold;
 }

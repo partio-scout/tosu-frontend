@@ -13,7 +13,8 @@ export const findOrCreateScout = async token => {
   return response.data
 }
 
-export default {
-  deleteScout,
-  findOrCreateScout,
+const logout = () => {
+  window.location = `${API_ROOT}/scouts/logout`
 }
+
+export default { findOrCreateScout, deleteScout, logout }

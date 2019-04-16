@@ -1,12 +1,19 @@
 import React from 'react'
 import Tabs from '@material-ui/core/Tabs'
-import PropTypes from 'prop-types'
 import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import PlanCard from './PlanCard'
+import { withStyles } from '@material-ui/core'
 
-// Use Typography v2: https://material-ui.com/style/typography/#strategies
-window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
+const styles = {
+  headline: {
+    width: 600,
+    fontSize: 24,
+    paddingTop: 16,
+    marginBottom: 12,
+    fontWeight: 400,
+  },
+}
 
 function TabContainer(props) {
   return (
@@ -15,35 +22,27 @@ function TabContainer(props) {
     </Typography>
   )
 }
-TabContainer.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.object).isRequired,
-}
-export default class PlanForm extends React.Component {
-  static propTypes = {
-    children: PropTypes.arrayOf(PropTypes.object).isRequired,
-    activity: PropTypes.shape({}).isRequired,
-    savedActivity: PropTypes.shape({}).isRequired,
-    parentId: PropTypes.number.isRequired,
-  }
 
+class PlanForm extends React.Component {
   state = { value: 0 }
 
   handleChange = (event, value) => {
     this.setState({ value })
   }
 
+  /**
+   *  Creates a new div element, set the HTML content with the providen and retrieves the text property of the element. Provides cross-browser support.
+   * @param html html code that is stripped
+   */
   stripHtml = html => {
-    // Create a new div element
     const temporalDivElement = document.createElement('div')
-    // Set the HTML content with the providen
     temporalDivElement.innerHTML = html
-    // Retrieve the text property of the element (cross-browser support)
     return temporalDivElement.textContent || temporalDivElement.innerText || ''
   }
 
   render() {
     const { value } = this.state
-    const { activity, savedActivity, parentId } = this.props
+    const { activity, savedActivity, parentId, classes } = this.props
 
     const suggestionDetails = activity.suggestions.map(suggestion => (
       <PlanCard
@@ -63,24 +62,27 @@ export default class PlanForm extends React.Component {
           <TabContainer>
             <div>
               <p>
-                <strong>Paikka:</strong> {activity.place.join(', ')}
+                <strong>Paikka: </strong>
+                {activity.place.join(', ')}
                 <br />
-                <strong>Kesto:</strong> {activity.duration}
+                <strong>Kesto: </strong>
+                {activity.duration}
                 <br />
-                <strong>Taitoalueet:</strong> {activity.taitoalueet.join(', ')}
+                <strong>Taitoalueet: </strong>
+                {activity.taitoalueet.join(', ')}
                 <br />
-                <strong>Kasvatustavoitteet:</strong>{' '}
+                <strong>Kasvatustavoitteet: </strong>
                 {activity.kasvatustavoitteet.join(', ')}
                 <br />
-                <strong>Johtamistaidot:</strong>{' '}
+                <strong>Johtamistaidot: </strong>
                 {activity.johtamistaito.join(', ')}
                 <br />
-                <strong>Pakollisuus:</strong>{' '}
+                <strong>Pakollisuus: </strong>
                 {activity.mandatory ? 'Pakollinen ' : 'Ei pakollinen '}
                 <img
                   src={activity.mandatoryIconUrl}
-                  alt="mandatoryIcon"
-                  height="15px"
+                  alt="Pakollinen"
+                  height="16px"
                 />
               </p>
               <p>
@@ -90,7 +92,7 @@ export default class PlanForm extends React.Component {
                 <strong>Kuvaus: </strong> {this.stripHtml(activity.content)}
               </p>
               <p>
-                <strong>Johtajan tehtävät: </strong>{' '}
+                <strong>Johtajan tehtävät: </strong>
                 {this.stripHtml(activity.leader_tasks)}
               </p>
             </div>
@@ -99,7 +101,7 @@ export default class PlanForm extends React.Component {
         {value === 1 && (
           <TabContainer>
             <div>
-              <h2 className="headline">Toteutusvinkit</h2>
+              <h2 className={classes.headline}>Toteutusvinkit</h2>
               {suggestionDetails.length !== 0
                 ? suggestionDetails
                 : 'Ei toteutusvinkkejä'}
@@ -110,3 +112,5 @@ export default class PlanForm extends React.Component {
     )
   }
 }
+
+export default withStyles(styles)(PlanForm)
