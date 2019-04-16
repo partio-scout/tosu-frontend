@@ -21,7 +21,7 @@ describe('After logging in', function() {
   })
   it('user can open the form to add a new event', function() {
     cy.get('div[name="luo-uusi-tapahtuma"]').should('not.exist')
-    cy.get('button[id="uusi"]').click()
+    cy.get('button[id="uusi-event"]').click()
     cy.get('div[name="luo-uusi-tapahtuma"]')
   })
   it('user can open the calendar', function() {

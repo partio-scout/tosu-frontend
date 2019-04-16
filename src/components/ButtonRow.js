@@ -185,7 +185,7 @@ class ButtonRow extends React.Component {
             newEventIcon
           ) : (
             <Button
-              id="uusi"
+              id="uusi-event"
               className="button"
               onClick={this.props.newEvent}
               variant="contained"
