@@ -21,7 +21,7 @@ const createEvent = () => {
   })
   cy.contains('Tallenna').click({ multiple: true, force: true })
 }
-describe('Testing functionalities', function() {
+describe('Creating and deleting events', function() {
   beforeEach('user logs in', function() {
     resetDatabase()
     cy.request('http://localhost:3001/scouts/testuser')
