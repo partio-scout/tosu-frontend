@@ -15,6 +15,8 @@ import {
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally,
 } from '../reducers/eventReducer'
+import { updateActivity } from '../reducers/activityReducer'
+import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 import { withStyles } from '@material-ui/core'
 
@@ -64,6 +66,7 @@ const DroppableActivityDragAndDropTarget = DropTarget(
 const mapStateToProps = state => ({
   buffer: state.buffer,
   events: state.events,
+  activities: state.activities,
 })
 
 const mapDispatchToProps = {
@@ -72,8 +75,10 @@ const mapDispatchToProps = {
   addActivityToEventOnlyLocally,
   deleteActivityFromBufferOnlyLocally,
   postActivityToBufferOnlyLocally,
+  pofTreeUpdate,
   deleteActivityFromBuffer,
   deleteActivityFromEvent,
+  updateActivity,
 }
 
 ActivityDragAndDropTarget.propTypes = {
