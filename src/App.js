@@ -30,16 +30,13 @@ import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
 import ActivitiesSidebar from './components/ActivitiesSidebar'
 import Notification from './components/Notification'
-import EventCard from './components/EventCard'
-import KuksaEventCard from './components/KuksaEventCard'
 import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
 import Login from './components/Login'
-import DeleteTosuButton from './components/DeleteTosuButton'
+import EventList from './components/EventList'
 // Utils
 import PropTypesSchema from './utils/PropTypesSchema'
 import { createStatusMessage } from './utils/createStatusMessage'
-import filterEvents from './functions/filterEvents'
 
 // Services
 import {
@@ -54,7 +51,7 @@ import {
   bufferZoneInitialization,
   deleteActivityFromBuffer,
 } from './reducers/bufferZoneReducer'
-import { eventsInitialization, eventList } from './reducers/eventReducer'
+import { eventsInitialization } from './reducers/eventReducer'
 import { activityInitialization } from './reducers/activityReducer'
 import { addStatusInfo } from './reducers/statusMessageReducer'
 import { scoutGoogleLogin, readScout } from './reducers/scoutReducer'
@@ -196,9 +193,6 @@ class App extends Component {
 
   render() {
     const view = this.props.ui.view
-    const { startDate, endDate } = this.setState
-
-    let odd = true
     if (this.props.scout === null) {
       return (
         <MuiThemeProvider theme={theme}>
@@ -211,49 +205,23 @@ class App extends Component {
       )
     }
 
-    const eventsToList = (
-      <div id="event-list-container">
-        {view === 'KUKSA'}
-        <ul
-          className={
-            isTouchDevice() ? 'mobile-event-list event-list' : 'event-list'
-          }
-        >
-          {filterEvents(
-            view,
-            eventList(this.props.events),
-            startDate,
-            endDate
-          ).map(event => {
-            odd = !odd
-            return (
-              <li className="event-list-item" key={event.id ? event.id : 0}>
-                {event.kuksaEvent ? (
-                  <KuksaEventCard event={event} />
-                ) : (
-                  <EventCard event={event} odd={odd} />
-                )}
-              </li>
-            )
-          })}
-          <li>
-            <DeleteTosuButton initialization={this.initialization} />
-          </li>
-        </ul>
-      </div>
-    )
-
     const calendar = (
       <Calendar events={this.props.events} mobile={isTouchDevice()} />
     )
-
     return (
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
         <div style={{ display: 'flex' }}>
           <AppBar />
           <ActivitiesSidebar />
-          <div style={{ width: '100%' }}>
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              flexFlow: 'column',
+              height: '100vh',
+            }}
+          >
             <div style={theme.mixins.toolbar} />
             <div style={{ padding: theme.spacing.unit * 2 }}>
               <ButtonRow
@@ -265,8 +233,24 @@ class App extends Component {
               {this.props.loading ? (
                 <LinearProgress style={{ marginTop: 5 }} />
               ) : null}
-              {view === 'CALENDAR' ? calendar : eventsToList}
-
+            </div>
+            <div
+              style={{
+                paddingLeft: theme.spacing.unit * 2,
+                paddingRight: theme.spacing.unit * 2,
+                flexGrow: 1,
+                overflowY: 'auto',
+              }}
+            >
+              {view === 'CALENDAR' ? (
+                calendar
+              ) : (
+                <EventList
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
+                  initialization={this.initialization}
+                />
+              )}
               <Dialog
                 open={this.state.newEventVisible}
                 onClose={this.handleClose}

@@ -80,13 +80,11 @@ const styles = {
     float: 'right',
   },
   emptyEventCard: {
-    padding: 5,
     marginBottom: 10,
     backgroundColor: '#f14150',
     borderRadius: 4,
   },
   kuksaSyncedEventCard: {
-    padding: 5,
     marginBottom: 10,
     backgroundColor: '#63bcd1',
     borderRadius: 4,
