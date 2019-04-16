@@ -211,6 +211,7 @@ export default class EventForm extends React.Component {
   }
 
   send = async () => {
+    console.log('EventForm:', this.state.information)
     await this.props.update(
       this.state.title,
       this.state.startDate,
@@ -266,7 +267,7 @@ export default class EventForm extends React.Component {
             <ValidatedDatePicker
               label="Tapahtuman alkamispäivä"
               onChange={this.handleStartDate}
-              name="startDate"
+              name="formStartDate"
               autoOk
               cancelLabel="Peruuta"
               value={this.state.startDate === '' ? null : this.state.startDate}

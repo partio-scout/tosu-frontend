@@ -29,15 +29,7 @@ class SuggestionCard extends React.Component {
     convertToSimpleActivity(findActivity(activity, pofTree))
 
   deleteClick = async e => {
-    const {
-      plan,
-      event,
-      editEvent,
-      deletePlan,
-      notify,
-      updateActivityInEvents,
-      activity,
-    } = this.props
+    const { plan, notify, activity } = this.props
     e.preventDefault()
     try {
       await planService.deletePlan(plan.id)
@@ -55,15 +47,11 @@ class SuggestionCard extends React.Component {
 
     return (
       <div key={plan.id}>
-        <Card
-          className="suggestion"
-          style={{ backgroundColor: '#fafafa', marginTop: '10px' }}
-        >
+        <Card style={{ backgroundColor: '#fafafa', marginTop: '10px' }}>
           <CardHeader
             action={
               <IconButton onClick={this.deleteClick}>
-                {' '}
-                <DeleteIcon />{' '}
+                <DeleteIcon />
               </IconButton>
             }
             title={plan.title}

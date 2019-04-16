@@ -1,41 +1,28 @@
 import { connect } from 'react-redux'
 import React from 'react'
-import Divider from '@material-ui/core/Divider/Divider'
-import Button from '@material-ui/core/Button'
-import Icon from '@material-ui/core/Icon'
-import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
-import Activities from './Activities'
+import { Typography, Button, withStyles } from '@material-ui/core'
+import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import { notify } from '../reducers/notificationReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import { deleteActivity } from '../reducers/activityReducer'
-import {
-  deleteActivityFromBufferOnlyLocally,
-  deleteActivityFromBuffer,
-} from '../reducers/bufferZoneReducer'
+import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
+import Activities from './Activities'
 import PropTypesSchema from '../utils/PropTypesSchema'
+import PropTypes from 'prop-types'
+import { deleteActivity } from '../reducers/activityReducer'
 
-/**
- * Determines the style used in the element
- * @param theme props that contains the styles
- */
-const styles = theme => ({
-  button: {
-    marginRight: theme.spacing.unit,
+const styles = {
+  bufferZone: {
+    marginLeft: 14,
+    marginRight: 14,
+    display: 'flex',
+    flexFlow: 'row wrap',
   },
-  rightIcon: {
-    marginLeft: theme.spacing.unit,
+  bufferTitle: {
+    width: '100%',
+    padding: '0 4px 0',
+    marginBottom: 10,
   },
-  iconSmall: {
-    fontSize: 14,
-  },
-  divider: {
-    height: 4,
-    backgroundColor: '#243265',
-    margin: '20px 14px',
-  },
-})
+}
 
 export class BufferZone extends React.Component {
   /**
@@ -71,24 +58,33 @@ export class BufferZone extends React.Component {
       return <div />
     }
     return (
-      <div>
-        <ActivityDragAndDropTarget bufferzone parentId={this.props.buffer.id}>
-          <div id="bufferzone">
-            <Activities
-              activities={this.props.buffer.activities.map(
-                id => this.props.activities[id]
-              )}
-              bufferzone
-              parentId={this.props.buffer.id}
-            />
-          </div>
-          <Button id="empty-button" color="primary" onClick={this.clear}>
+      <ActivityDragAndDropTarget
+        bufferzone
+        parentId={this.props.buffer.id}
+        className={classes.bufferZone}
+      >
+        <div className={classes.bufferTitle}>
+          <Typography variant="h6" inline gutterBottom>
+            Aktiviteetit
+          </Typography>
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            onClick={this.clear}
+            style={{ float: 'right' }}
+          >
             Tyhjennä
-            <Icon>clear</Icon>
           </Button>
-        </ActivityDragAndDropTarget>
-        <Divider variant="middle" className={classes.divider} />
-      </div>
+        </div>
+        <Activities
+          activities={this.props.buffer.activities.map(
+            id => this.props.activities[id]
+          )}
+          bufferzone
+          parentId={this.props.buffer.id}
+        />
+      </ActivityDragAndDropTarget>
     )
   }
 }

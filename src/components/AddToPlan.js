@@ -94,8 +94,5 @@ AddToPlan.defaultProps = {}
 
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    addEventFromKuksa,
-  }
+  mapDispatchToProps
 )(AddToPlan)

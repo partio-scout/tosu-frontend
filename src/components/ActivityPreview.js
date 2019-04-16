@@ -1,14 +1,10 @@
 import React from 'react'
 import DragLayer from 'react-dnd/lib/DragLayer'
-import Chip from '@material-ui/core/Chip/Chip'
-import Avatar from '@material-ui/core/Avatar'
+import { withStyles } from '@material-ui/core'
+import { Avatar, Chip } from '@material-ui/core'
 import PropTypes from 'prop-types'
 
 const styles = {
-  chip: {
-    margin: 4,
-    backgroundColor: '#90CAF9',
-  },
   avatar: {
     size: 28,
     color: '#1A237E',
@@ -25,7 +21,21 @@ const styles = {
     backgroundColor: '#2196F3',
     margin: 4,
   },
+  activityTitle: {
+    display: 'block',
+    maxWidth: 175,
+    wordWrap: 'break-all',
+    whiteSpace: 'normal',
+    fontWeight: 'bold',
+    lineHeight: '26px',
+    padding: 3,
+  },
+  previewChip: {
+    zIndex: 999,
+    opacity: 0.99,
+  },
 }
+
 /**
  * Collects the draggable element
  * @param monitor allows user to update the props of the components in response to the drag and drop state changes. Imported from react-dnd
@@ -65,35 +75,28 @@ function getItemStyles(currentOffset, startPoint, mandatory) {
   }
 }
 
-export class ActivityPreview extends React.Component {
-  render() {
-    const { isDragging, currentOffset, startPoint, pofActivity } = this.props
-    if (!isDragging) {
-      return ''
-    }
-    const img = pofActivity.mandatoryIconUrl
-    /* if (pofActivity.mandatory) {
-      img = 'https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3538.png'
-    } else {
-      img = 'https://pof-backend.partio.fi/wp-content/uploads/2015/03/g3562.png'
-    } */
-    return (
-      <Chip
-        style={getItemStyles(currentOffset, startPoint, pofActivity.mandatory)}
-        className="previewChip"
-        label={<span className="activityTitle">{pofActivity.title}</span>}
-        avatar={
-          <Avatar
-            style={
-              pofActivity.mandatory ? styles.avatarMandatory : styles.avatar
-            }
-          >
-            src={img}
-          </Avatar>
-        }
-      />
-    )
+function ActivityPreview(props) {
+  const { isDragging, currentOffset, startPoint, pofActivity, classes } = props
+  if (!isDragging) {
+    return ''
   }
+  const img = pofActivity.mandatoryIconUrl
+  return (
+    <Chip
+      style={getItemStyles(currentOffset, startPoint, pofActivity.mandatory)}
+      className={classes.previewChip}
+      label={<span className={classes.activityTitle}>{pofActivity.title}</span>}
+      avatar={
+        <Avatar
+          style={
+            pofActivity.mandatory ? classes.avatarMandatory : classes.avatar
+          }
+        >
+          src={img}
+        </Avatar>
+      }
+    />
+  )
 }
 
 ActivityPreview.propTypes = {
@@ -105,4 +108,4 @@ ActivityPreview.propTypes = {
 
 ActivityPreview.defaultProps = {}
 
-export default DragLayer(collect)(ActivityPreview)
+export default DragLayer(collect)(withStyles(styles)(ActivityPreview))

@@ -2,9 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import Select from 'react-select'
-import 'react-select/dist/react-select.css'
-import TreeSelect /* , { TreeNode, SHOW_PARENT } */ from 'rc-tree-select'
-import 'rc-tree-select/assets/index.css'
+import TreeSelect from 'rc-tree-select'
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
@@ -12,11 +10,7 @@ import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import { createStatusMessage } from '../utils/createStatusMessage'
-import {
-  getTask,
-  getTaskGroup,
-  getRootGroup,
-} from '../functions/denormalizations'
+import { getTaskGroup, getRootGroup } from '../functions/denormalizations'
 import { eventList } from '../reducers/eventReducer'
 import { addActivity } from '../reducers/activityReducer'
 import { addActivityToRelevantReducers } from '../functions/activityFunctions'
@@ -156,16 +150,15 @@ class TreeSearchBar extends React.Component {
     return (
       <div
         style={{
-          margin: 10,
+          margin: 14,
           padding: 10,
           backgroundColor: '#d6e8f7',
           borderRadius: 3,
         }}
       >
-        <div style={{ float: 'left', marginRight: 10, marginBottom: 5 }}>
+        <div id="select-tarppo" style={{ float: 'left', marginRight: 10, marginBottom: 5 }}>
           <Select
             menuContainerStyle={{ width: '100%' }}
-            style={{ width: 200 }}
             name="form-field-name"
             value={this.props.taskgroup}
             placeholder="Valitse tarppo..."
@@ -194,9 +187,7 @@ class TreeSearchBar extends React.Component {
             })}
           />
         </div>
-        <div style={{ width: '80%' }}>
-          {this.props.taskgroup ? treeSearchBar() : null}
-        </div>
+        {this.props.taskgroup ? treeSearchBar() : null}
       </div>
     )
   }

@@ -1,6 +1,5 @@
 import eventService from '../services/events'
 import eventGroupService from '../services/eventgroups'
-import activityService from '../services/activities'
 
 /**
  * Add activity to a state event
@@ -220,11 +219,12 @@ export const addEventFromKuksa = event => dispatch => {
   })
 }
 
-/*
+/**
  * Edit event in state hashmap
- * @Param {Object} event
+ * @param {Object} event
  */
 export const editEvent = event => dispatch => {
+  console.log(event)
   eventService.edit(event).then(modded =>
     dispatch({
       type: 'UPDATE_EVENT',

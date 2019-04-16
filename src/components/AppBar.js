@@ -1,63 +1,50 @@
 import React from 'react'
-import AccountCircle from '@material-ui/icons/AccountCircle'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Switch from '@material-ui/core/Switch'
+import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core'
+import MenuIcon from '@material-ui/icons/Menu'
+
+import { setSideBar } from '../reducers/uiReducer'
 import AccountIcon from './AccountIcon'
 import PropTypes from 'prop-types'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
 const styles = theme => ({
-  label: {
-    color: 'white',
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
   },
 })
 
-export class AppBar extends React.Component {
-  static propTypes = {}
-
-  state = { sidebarVisible: true }
-
-  /**
-   * Opens the Tarppo sidebar
-   */
-  toggleSideBar = () => {
-    this.setState({ sidebarVisible: !this.state.sidebarVisible })
-    this.props.toggleSideBar()
-  }
-
-  render() {
-    const { classes } = this.props
-    return (
-      <div className="top-search" id="top-bar-header">
-        <div className="account-name-and-button">
-          {this.props.scout ? this.props.scout.name : '<no name>'}
-          <AccountIcon accountIcon={<AccountCircle />} />
-        </div>
-        <div className="Header_root" id="header_root">
-          <FormControlLabel
-            classes={{
-              label: classes.label,
-            }}
-            control={
-              <Switch
-                className="toggle-sidebar"
-                checked={this.state.sidebarVisible}
-                onClick={this.toggleSideBar}
-                color="secondary"
-              />
-            }
-            label={
-              this.state.sidebarVisible
-                ? 'Piilota suunnittelunäkymä'
-                : 'Näytä suunnittelunäkymä'
-            }
-          />
-        </div>
-      </div>
-    )
-  }
+function TopBar(props) {
+  const { tosu, scout, classes } = props
+  return (
+    <AppBar className={classes.appBar}>
+      <Toolbar>
+        <IconButton
+          color="inherit"
+          aria-label="Menu"
+          className={classes.menuButton}
+          onClick={() => props.setSideBar(!props.ui.sideBarVisible)}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" color="inherit" className={classes.grow}>
+          {/* Placeholder untill Tosus are loaded or if there is none */
+          Object.entries(tosu).length === 0
+            ? 'Toiminnansuunnittelusovellus'
+            : tosu[tosu.selected].name}
+        </Typography>
+        <AccountIcon scout={scout} />
+      </Toolbar>
+    </AppBar>
+  )
 }
 
 AppBar.propTypes = {
@@ -69,7 +56,16 @@ AppBar.propTypes = {
 AppBar.defaultProps = {}
 
 const mapStateToProps = state => ({
+  tosu: state.tosu,
   scout: state.scout,
+  ui: state.ui,
 })
 
-export default connect(mapStateToProps)(withStyles(styles)(AppBar))
+const mapDispatchToProps = {
+  setSideBar,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(TopBar))

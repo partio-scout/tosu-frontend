@@ -13,12 +13,15 @@ import { Parser } from 'html-to-react'
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
 import { notify } from '../reducers/notificationReducer'
-import {
-  editEvent,
-  addActivityToEventOnlyLocally,
-  deleteActivityFromEventOnlyLocally,
-} from '../reducers/eventReducer'
+import { editEvent } from '../reducers/eventReducer'
 import { updateActivity } from '../reducers/activityReducer'
+import { withStyles } from '@material-ui/core'
+
+const styles = {
+  arrowUp: {
+    transform: 'rotate(180deg)',
+  },
+}
 
 class PlanCard extends React.Component {
   state = { expanded: false }
@@ -99,7 +102,7 @@ class PlanCard extends React.Component {
   }
 
   render() {
-    const { suggestion, savedActivity, plans, parentId } = this.props
+    const { suggestion, savedActivity, plans, parentId, classes } = this.props
     // Find plans for current activity from store
     const activityPlans = plans.filter(plan => plan.id === savedActivity.id)
     let selectedPlan = []
@@ -158,7 +161,7 @@ class PlanCard extends React.Component {
         <CardActions>
           <IconButton
             onClick={this.handleExpandChange}
-            className={this.state.expanded ? 'arrow-up' : ''}
+            className={this.state.expanded ? classes.arrowUp : ''}
           >
             <ExpandMoreIcon />
           </IconButton>
@@ -185,23 +188,21 @@ PlanCard.propTypes = {
   editEvent: PropTypes.func.isRequired,
   notify: PropTypes.func.isRequired,
   deleteActivityFromEventOnlyLocall: PropTypes.func.isRequired,
-  addActivityToEventOnlyLocally: PropTypes.func.isRequired,
   updateActivity: PropTypes.func.isRequired,
 }
 
 PlanCard.defaultProps = {}
+
 const mapDispatchToProps = {
   initPlans,
   savePlan,
   deletePlan,
   editEvent,
   notify,
-  deleteActivityFromEventOnlyLocally,
-  addActivityToEventOnlyLocally,
   updateActivity,
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PlanCard)
+)(withStyles(styles)(PlanCard))

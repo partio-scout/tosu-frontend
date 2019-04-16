@@ -1,0 +1,6 @@
+{
+  "env": {
+    "test": "test"
+  },
+  "chromeWebSecurity": false
+}

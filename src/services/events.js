@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { API_ROOT } from '../api-config'
-import { normalize } from 'normalizr'
 
 const baseUrl = `${API_ROOT}/events`
 

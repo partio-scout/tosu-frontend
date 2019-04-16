@@ -14,21 +14,63 @@ import EditEvent from './EditEvent'
 import AddToPlan from './AddToPlan'
 import { openPopper, closePopper } from '../reducers/calendarReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
+import { withStyles } from '@material-ui/core'
 
-/**
- * Intializes the activitynmarkers for rendering
- * @param activities activities shown on the calendar
- * @returns markers that contain the activities
- */
-function createActivityMarkers(activities) {
-  const markers = [' ']
-  for (let i = 0; i < activities.length; i += 1) {
-    markers.push(
-      <span className="calendar-activity-marker" key={activities[i].id} />
-    )
-  }
-  return markers
+const styles = {
+  calendarActivityMarker: {
+    height: 8,
+    width: 8,
+    backgroundColor: 'white',
+    borderRadius: '50%',
+    display: 'inline-block',
+  },
+  calendarEventPopper: {
+    minWidth: 200,
+    padding: 10,
+    borderRadius: 4,
+  },
+  calendarEventButtonWrapper: {
+    display: 'flex',
+    width: '100%',
+  },
+  calendarEventActivityWrapper: {
+    paddingBottom: 10,
+    maxWidth: 500,
+    display: 'flex',
+    flexFlow: 'row wrap',
+  },
+  calendarEventTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  calendarPopoverLeft: {
+    marginBottom: 'auto',
+    display: 'inline-block',
+  },
+  calendarPopoverRight: {
+    float: 'right',
+    marginTop: 7,
+  },
+  emptyEventCard: {
+    padding: 5,
+    marginBottom: 10,
+    backgroundColor: '#f14150',
+    borderRadius: 4,
+  },
+  kuksaSyncedEventCard: {
+    padding: 5,
+    marginBottom: 10,
+    backgroundColor: '#63bcd1',
+    borderRadius: 4,
+  },
+  kuksaEventCard: {
+    padding: 5,
+    marginBottom: 10,
+    backgroundColor: 'lightgrey',
+    borderRadius: 4,
+  },
 }
+
 /**
  * Function to handle the styles of the event
  * @param event event that is modified
@@ -48,6 +90,24 @@ export function eventStyleGetter(event) {
 class CalendarEvent extends Component {
   state = {
     anchorEl: null,
+  }
+
+  /**
+   * Intializes the activitynmarkers for rendering
+   * @param activities activities shown on the calendar
+   * @returns markers that contain the activities
+   */
+  createActivityMarkers(activities) {
+    const markers = [' ']
+    for (let i = 0; i < activities.length; i += 1) {
+      markers.push(
+        <span
+          className={this.props.classes.calendarActivityMarker}
+          key={activities[i].id}
+        />
+      )
+    }
+    return markers
   }
 
   /**
@@ -99,10 +159,10 @@ class CalendarEvent extends Component {
 
   render() {
     const { anchorEl } = this.state
+    const { classes, event } = this.props
     const open = Boolean(anchorEl)
     const id = open ? 'no-transition-popper' : null
 
-    const event = this.props.event
     const startTime = event.start.toLocaleTimeString('fi-FI', {
       hour: 'numeric',
       minute: 'numeric',
@@ -115,31 +175,28 @@ class CalendarEvent extends Component {
 
     let popoverContentClassName // Style: Normal
     if (event.activities.length === 0) {
-      popoverContentClassName = 'empty-event-card' // Style: No activities
+      popoverContentClassName = classes.emptyEventCard // Style: No activities
     }
     if (event.synced) {
-      popoverContentClassName = 'kuksa-synced-event-card' // Style: Synced to Kuksa
+      popoverContentClassName = classes.kuksaSyncedEventCard // Style: Synced to Kuksa
     }
     if (event.kuksaEvent) {
-      popoverContentClassName = 'kuksa-event-card' // Style: Kuksa event
+      popoverContentClassName = classes.kuksaEventCard // Style: Kuksa event
     }
 
     const activities = (
-      <div>
+      <div className={classes.calendarEventActivityWrapper}>
         <Activities
-          activities={this.props.event.activities.map(
-            key => this.props.activities[key]
-          )}
+          activities={event.activities}
           bufferzone={false}
-          parentId={this.props.event.id}
-          className="calendar-event-activity-wrapper"
+          parentId={event.id}
         />
       </div>
     )
 
     const editDeleteButtons = (
       <div>
-        <div className="calendar-event-button-wrapper">
+        <div className={classes.calendarEventButtonWrapper}>
           <EditEvent
             buttonClass="calendar-button"
             data={event.originalData}
@@ -159,10 +216,10 @@ class CalendarEvent extends Component {
     const popoverContent = (
       <div>
         <div>
-          <div className="calendar-popover-left">
-            <p className="calendar-event-title">{event.title}</p>
+          <div className={classes.calendarPopoverLeft}>
+            <p className={classes.calendarEventTitle}>{event.title}</p>
           </div>
-          <div className="calendar-popover-right">
+          <div className={classes.calendarPopoverRight}>
             <IconButton onClick={this.closePopper}>
               <Icon>close</Icon>
             </IconButton>
@@ -178,18 +235,16 @@ class CalendarEvent extends Component {
 
     // Don't allow dragging activities to kuksa events
     const paperContent = event.kuksaEvent ? (
-      <div className="calendar-event-popper">
+      <div className={classes.calendarEventPopper}>
         {popoverContent}
         <br />
       </div>
     ) : (
-      <ActivityDragAndDropTarget
-        bufferzone={false}
-        parentId={this.props.event.id}
-        className="calendar-event-popper"
-      >
-        {popoverContent}
-      </ActivityDragAndDropTarget>
+      <div className={classes.calendarEventPopper}>
+        <ActivityDragAndDropTarget bufferzone={false} parentId={event.id}>
+          {popoverContent}
+        </ActivityDragAndDropTarget>
+      </div>
     )
 
     return (
@@ -197,7 +252,7 @@ class CalendarEvent extends Component {
         <div aria-describedby={id} onClick={this.handleClick}>
           <span>{event.title}</span>
           <br />
-          {createActivityMarkers(event.activities)}
+          {this.createActivityMarkers(event.activities)}
         </div>
         <Popper id={id} open={open} anchorEl={anchorEl} style={{ zIndex: 999 }}>
           <div className={popoverContentClassName}>
@@ -228,12 +283,10 @@ const mapStateToProps = state => ({
   activities: state.activities,
 })
 
-const mapDispatchToProps = {
-  openPopper,
-  closePopper,
-}
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(CalendarEvent)
+  {
+    openPopper,
+    closePopper,
+  }
+)(withStyles(styles)(CalendarEvent))
