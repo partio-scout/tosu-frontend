@@ -11,11 +11,16 @@ import PropTypes from 'prop-types'
 import { deleteActivity } from '../reducers/activityReducer'
 
 const styles = {
-  bufferzone: {
+  bufferZone: {
     marginLeft: 14,
     marginRight: 14,
     display: 'flex',
     flexFlow: 'row wrap',
+  },
+  bufferTitle: {
+    width: '100%',
+    padding: '0 4px 0',
+    marginBottom: 10,
   },
 }
 
@@ -53,8 +58,12 @@ export class BufferZone extends React.Component {
       return <div />
     }
     return (
-      <div className={classes.bufferzone}>
-        <div style={{ width: '100%', padding: '0 4px 0', marginBottom: 10 }}>
+      <ActivityDragAndDropTarget
+        bufferzone
+        parentId={this.props.buffer.id}
+        className={classes.bufferZone}
+      >
+        <div className={classes.bufferTitle}>
           <Typography variant="h6" inline gutterBottom>
             Aktiviteetit
           </Typography>
@@ -68,18 +77,14 @@ export class BufferZone extends React.Component {
             Tyhjennä
           </Button>
         </div>
-        <ActivityDragAndDropTarget bufferzone parentId={this.props.buffer.id}>
-          <div>
-            <Activities
-              activities={this.props.buffer.activities.map(
-                id => this.props.activities[id]
-              )}
-              bufferzone
-              parentId={this.props.buffer.id}
-            />
-          </div>
-        </ActivityDragAndDropTarget>
-      </div>
+        <Activities
+          activities={this.props.buffer.activities.map(
+            id => this.props.activities[id]
+          )}
+          bufferzone
+          parentId={this.props.buffer.id}
+        />
+      </ActivityDragAndDropTarget>
     )
   }
 }
