@@ -1,6 +1,4 @@
 import React from 'react'
-import isTouchDevice from 'is-touch-device'
-import { eventList } from './eventReducer'
 import { getActivityList } from './activityReducer'
 // helpers
 /*

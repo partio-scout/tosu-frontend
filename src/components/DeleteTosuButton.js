@@ -110,7 +110,6 @@ class DeleteTosuButton extends Component {
             <DialogActions>
               <Button
                 onClick={this.handleClose}
-                color="primary"
                 variant="contained"
               >
                 Peruuta

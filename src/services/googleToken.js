@@ -24,5 +24,5 @@ export const getScout = () => {
 }
 
 export const removeScout = () => {
-  document.cookie = `${'scout'}=; Max-Age=-99999999;`
+  document.cookie = 'scout=; Max-Age=-99999999;'
 }

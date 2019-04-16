@@ -11,8 +11,48 @@ import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
+import { withStyles } from '@material-ui/core'
+
+const styles = {
+  connectDragSource: {
+    float: 'left',
+    margin: 4,
+  },
+  connectDragSourceMinimal: {
+    float: 'left',
+    margin: 1,
+  },
+  dialogCloseButton: {
+    backgroundColor: '#ccc',
+    color: '#fff',
+    float: 'right',
+    fontSize: '1.2rem',
+    lineHeight: '1.2rem',
+    borderRadius: '100%',
+    boxShadow: '1px 1px 3px',
+  },
+  mandatory: {
+    cursor: 'pointer',
+    backgroundColor: '#97bcd7 !important',
+  },
+  nonMandatory: {
+    cursor: 'pointer',
+    backgroundColor: '#aed3eb !important',
+  },
+  avatar: {
+    height: 26,
+    width: 26,
+    marginLeft: 3,
+    color: '#1a237e',
+  },
+  minimalAvatar: {
+    height: 20,
+    width: 20,
+    marginLeft: 3,
+    color: '#1a237e',
+  },
+}
 
 /**
  * Methods that handle the dragging of an activity
@@ -60,75 +100,48 @@ class Activity extends Component {
   /**
    *  Opens the activity
    */
-  handleClick = () => {
-    this.setState({ open: !this.state.open })
-  }
+  handleClick = () => this.setState({ open: !this.state.open })
 
   render() {
-    const { activity, pofActivity, connectDragSource, parentId } = this.props
-    let lastGuid = 0
-    if (pofActivity) {
-      const lastParentIndex = pofActivity.parents.length - 1
-      lastGuid = pofActivity.parents[lastParentIndex].guid
-    }
-    const chipClass = `${pofActivity.mandatory ? '' : 'non-'}mandatory-chip${
-      this.props.minimal ? '-minimal' : ''
-    }`
-    const avatarClass = `${
-      pofActivity.mandatory ? '' : 'non-'
-    }mandatory-chip-avatar${this.props.minimal ? '-minimal' : ''}`
+    const {
+      activity,
+      pofActivity,
+      connectDragSource,
+      parentId,
+      classes,
+    } = this.props
 
     if (activity && pofActivity) {
       return connectDragSource(
         <div
           className={
             this.props.minimal
-              ? 'connect-drag-source-minimal'
-              : 'connect-drag-source'
+              ? classes.connectDragSourceMinimal
+              : classes.connectDragSource
           }
-          style={{ visibility: 'visible' }}
         >
           <Chip
             onDelete={() => this.props.deleteActivity(activity)}
-            className={chipClass}
+            className={
+              pofActivity.mandatory ? classes.mandatory : classes.nonMandatory
+            }
             key={activity.id}
             onClick={this.handleClick}
             deleteIcon={<Icon color="primary">clear</Icon>}
-            style={this.props.minimal ? { height: '25px' } : {}}
+            style={this.props.minimal ? { height: 26 } : {}}
             avatar={
-              <Avatar
-                alt="Mandatory Icon"
-                src={pofActivity.mandatoryIconUrl}
-                className={avatarClass}
-                style={this.props.minimal ? { height: '25px' } : {}}
-              />
+              pofActivity.mandatory ? (
+                <Avatar
+                  src={pofActivity.mandatoryIconUrl}
+                  className={
+                    this.props.minimal ? classes.minimalAvatar : classes.avatar
+                  }
+                />
+              ) : null
             }
             label={pofActivity.title}
           />
-          <Dialog
-            title={
-              <div>
-                {pofActivity.title}
-
-                <button
-                  className="dialog-close-button"
-                  onClick={this.handleClick}
-                >
-                  x
-                </button>
-
-                <br />
-
-                {pofActivity.parents.map(parent => (
-                  <span style={{ fontSize: '0.9rem' }} key={parent.guid}>
-                    {parent.title} {parent.guid === lastGuid ? null : ' - '}
-                  </span>
-                ))}
-              </div>
-            }
-            open={this.state.open}
-            onClose={this.handleClick}
-          >
+          <Dialog open={this.state.open} onClose={this.handleClick}>
             <PlanForm
               activity={pofActivity}
               savedActivity={activity}
@@ -154,13 +167,6 @@ const mapStateToProps = state => ({
   events: state.events,
 })
 
-const mapDispatchToProps = {
-  deleteActivityFromEvent,
-  deleteActivityFromBuffer,
-  notify,
-  pofTreeUpdate,
-}
-
 Activity.propTypes = {
   notify: PropTypes.func.isRequired,
   notification: PropTypes.string.isRequired,
@@ -168,7 +174,6 @@ Activity.propTypes = {
   events: PropTypes.shape({}).isRequired,
   connectDragSource: PropTypes.func.isRequired,
   activity: PropTypes.shape({}).isRequired,
-  pofTreeUpdate: PropTypes.func.isRequired,
   pofActivity: PropTypes.shape({}).isRequired,
   parentId: PropTypes.number.isRequired,
   minimal: PropTypes.bool.isRequired,
@@ -182,5 +187,9 @@ Activity.defaultProps = {}
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(DraggableActivity)
+  {
+    deleteActivityFromEvent,
+    deleteActivityFromBuffer,
+    notify,
+  }
+)(withStyles(styles)(DraggableActivity))

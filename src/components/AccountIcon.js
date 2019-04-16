@@ -1,94 +1,63 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import MenuItem from '@material-ui/core/MenuItem'
-import Menu from '@material-ui/core/Menu'
-import IconButton from '@material-ui/core/IconButton'
-import { scoutLogout } from '../reducers/scoutReducer'
-import { API_ROOT } from '../api-config'
-import PropTypes from 'prop-types'
-import PropTypesSchema from '../utils/PropTypesSchema'
+import React, { useState } from 'react'
+import { withStyles } from '@material-ui/core/styles'
+import lightBlue from '@material-ui/core/colors/lightBlue'
+import {
+  Avatar,
+  ButtonBase,
+  ClickAwayListener,
+  Fade,
+  Popper,
+} from '@material-ui/core'
+import AccountCard from './AccountCard'
 
-export class AccountIcon extends React.Component {
-  state = {
-    anchorEl: null,
-    accountIcon: this.props.accountIcon,
-    mobileFeedback: this.props.mobileFeedback,
-  }
-  /**
-   * Logs out the current user and redirects to the login page
-   */
-  forceMyOwnLogout = () => {
-    this.props.scoutLogout()
-    window.location = `${API_ROOT}/scouts/logout`
-  }
-  /**
-   * Opens the user menu
-   * @param event event that contains the user
-   */
-  handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget })
-  }
-  /**
-   * Closes the user menu
-   */
-  handleClose = () => {
-    this.setState({ anchorEl: null })
-  }
-
-  render() {
-    const open = Boolean(this.state.anchorEl)
-    return (
-      <span>
-        <IconButton
-          aria-owns={open ? 'menu-appbar' : null}
-          aria-haspopup="true"
-          onClick={this.handleMenu}
-          color="inherit"
-        >
-          {this.state.accountIcon}
-        </IconButton>
-        <Menu
-          id="menu-appbar"
-          anchorEl={this.state.anchorEl}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          open={open}
-          onClose={this.handleClose}
-        >
-          {this.state.mobileFeedback}
-          <MenuItem onClick={this.forceMyOwnLogout}>Kirjaudu ulos</MenuItem>
-        </Menu>
-      </span>
-    )
-  }
-}
-
-AccountIcon.propTypes = {
-  scout: PropTypesSchema.scoutShape.isRequired,
-  buffer: PropTypesSchema.bufferShape.isRequired,
-  scoutLogout: PropTypes.func.isRequired,
-  mobileFeedback: PropTypes.func.isRequired,
-  accountIcon: PropTypes.shape({}).isRequired,
-}
-
-AccountIcon.defaultProps = {}
-
-const mapStateToProps = state => ({
-  scout: state.scout,
-  buffer: state.buffer,
+const styles = theme => ({
+  circleButton: {
+    borderRadius: '50%',
+  },
+  userAvatar: {
+    backgroundColor: lightBlue[300],
+  },
 })
 
-const mapDispatchToProps = {
-  scoutLogout,
+function AccountIcon(props) {
+  const { scout, classes } = props
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [open, setOpen] = useState(false)
+
+  const handleOpen = event => {
+    setAnchorEl(event.currentTarget)
+    setOpen(true)
+  }
+
+  const handleClickAway = () => {
+    setOpen(false)
+    setAnchorEl(null)
+  }
+
+  return (
+    <div>
+      <ButtonBase className={classes.circleButton} onClick={handleOpen}>
+        <Avatar className={classes.userAvatar}>
+          {scout.name.substring(0, 1)}
+        </Avatar>
+      </ButtonBase>
+      <Popper
+        open={open}
+        anchorEl={anchorEl}
+        modifiers={{
+          offset: {
+            offset: '0, 20%',
+          },
+        }}
+      >
+        <Fade>
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <AccountCard scout={scout} />
+          </ClickAwayListener>
+        </Fade>
+      </Popper>
+    </div>
+  )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AccountIcon)
+export default withStyles(styles)(AccountIcon)

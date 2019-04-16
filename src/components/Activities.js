@@ -2,7 +2,6 @@ import { connect } from 'react-redux'
 import React from 'react'
 import PropTypes from 'prop-types'
 import Activity from './Activity'
-import findActivity from '../functions/findActivity'
 import convertToSimpleActivity from '../functions/activityConverter'
 import activityService from '../services/activities'
 import { notify } from '../reducers/notificationReducer'
@@ -67,12 +66,7 @@ export class Activities extends React.Component {
         )
       })
     }
-    return (
-      <div>
-        {rows.length > 0 && !this.props.minimal && <p>Aktiviteetit:</p>}
-        <div className={this.props.className}>{rows}</div>
-      </div>
-    )
+    return <div>{rows}</div>
   }
 }
 
