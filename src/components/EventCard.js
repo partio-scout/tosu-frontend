@@ -2,7 +2,6 @@ import { connect } from 'react-redux'
 import ReactDOM from 'react-dom'
 import isTouchDevice from 'is-touch-device'
 import TreeSelect /* ,{ TreeNode, SHOW_PARENT } */ from 'rc-tree-select'
-import 'rc-tree-select/assets/index.css'
 import React from 'react'
 import PropTypes from 'prop-types'
 import {
@@ -17,8 +16,9 @@ import {
   DialogContentText,
   DialogTitle,
   Card,
-  FormControlLabel,
-  Switch,
+  withStyles,
+  Tooltip,
+  TextField,
 } from '@material-ui/core'
 
 import Warning from '@material-ui/icons/Warning'
@@ -29,7 +29,7 @@ import Activities from './Activities'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import DeleteEvent from './DeleteEvent'
 import EditEvent from './EditEvent'
-import {getRootGroup} from '../functions/denormalizations'
+import { getRootGroup } from '../functions/denormalizations'
 
 import {
   editEvent,
@@ -47,17 +47,49 @@ import {
 import eventService from '../services/events'
 import { deletePlan } from '../reducers/planReducer'
 import SuggestionCard from '../components/SuggestionCard'
-import { getTask } from '../functions/denormalizations'
-import { getActivityList, addActivity } from '../reducers/activityReducer'
+import { addActivity } from '../reducers/activityReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
-
-const warning = (
-  <div className="tooltip">
-    <Warning className="warning" />
-    <span className="tooltiptext"> Tapahtumasta puuttuu aktiviteetti!</span>
-  </div>
-)
+const styles = {
+  activityHeader: {
+    margin: 0,
+    minHeight: 0,
+    borderRadius: 8,
+    display: 'flex',
+    flexFlow: 'row wrap',
+  },
+  warning: {
+    width: 15,
+    height: 15,
+    padding: 0,
+    marginRight: 7,
+    color: '#f14150',
+  },
+  arrowUp: {
+    transform: 'rotate(180deg)',
+  },
+  boldedAttribute: {
+    fontWeight: 'bold',
+  },
+  eventCardTitleLeft: {
+    marginBottom: 'auto',
+    float: 'left',
+  },
+  eventCardTitleRight: {
+    marginTop: 3,
+    float: 'right',
+  },
+  emptyEventCard: {
+    marginBottom: 10,
+    backgroundColor: '#f14150',
+    borderRadius: 4,
+  },
+  kuksaSyncedEventCard: {
+    marginBottom: 10,
+    backgroundColor: '#63bcd1',
+    borderRadius: 4,
+  },
+}
 
 class EventCard extends React.Component {
   constructor(props) {
@@ -66,12 +98,19 @@ class EventCard extends React.Component {
       expanded: false,
       syncToKuksa: Boolean(props.event.synced), // Initial state of sync or no sync from backend
       syncDialogOpen: false,
-      editMode: false,
       newPlans: false,
+      information: props.event.information,
     }
     this.changeInfo = this.changeInfo.bind(this)
-    this.renderEdit = this.renderEdit.bind(this)
   }
+
+  componentDidUpdate(oldProps) {
+    const newProps = this.props
+    if (oldProps.event.information !== newProps.event.information) {
+      this.setState({ information: newProps.event.information })
+    }
+  }
+
   /**
    *  Adds the activity to local storage and updates the guid. Also updates the pofTree.
    *  @param activityGuid the global identifier of the activity
@@ -91,6 +130,7 @@ class EventCard extends React.Component {
     }
     this.props.pofTreeUpdate(this.props.activities)
   }
+
   /**
    *  Deletes all activities from the local buffer and updates the pofTree
    */
@@ -109,6 +149,7 @@ class EventCard extends React.Component {
 
     this.props.pofTreeUpdate(this.props.activities)
   }
+
   /**
    * Checks whether a given value is part of a pofTree using breath-first-search
    * @param value value that is searched
@@ -116,8 +157,9 @@ class EventCard extends React.Component {
   isLeaf = value => {
     if (!value) {
       return false
-    } if( value.children) {
-        return false
+    }
+    if (value.children) {
+      return false
     }
     return true
   }
@@ -144,9 +186,11 @@ class EventCard extends React.Component {
     // TODO
   }
 
-  /* creates a new event with modified information and sends it to eventReducer's editEvent method */
-  changeInfo = async event => {
-    event.preventDefault()
+  /**
+   * Creates a new event with modified information and sends it to
+   * eventReducer's editEvent method.
+   */
+  changeInfo = async () => {
     const moddedEvent = {
       id: this.props.event.id,
       title: this.props.event.title,
@@ -155,20 +199,25 @@ class EventCard extends React.Component {
       startTime: this.props.event.startTime,
       endTime: this.props.event.endTime,
       type: this.props.event.type,
-      information: event.target.children[2].value,
+      information: this.state.information,
       activities: this.props.event.activities,
     }
     this.props.editEvent(moddedEvent)
-    this.setState({ editMode: false })
-  }
-
-  renderEdit = () => {
-    this.setState({ editMode: !this.state.editMode })
   }
 
   render() {
-    const { event, odd } = this.props
-    let editButton = <div />
+    const { event, odd, classes } = this.props
+
+    const warning = (
+      <Tooltip
+        title="Tapahtumasta puuttuu aktiviteetti!"
+        placement="right"
+        disableFocusListener
+      >
+        <Warning className={classes.warning} />
+      </Tooltip>
+    )
+
     moment.locale('fi')
     const { title } = event
     const subtitle = this.state.expanded
@@ -177,12 +226,12 @@ class EventCard extends React.Component {
           .locale('fi')
           .format('ddd D.M.YYYY')} ${event.startTime.substring(0, 5)}`
     let cardClassName = 'event-card-wrapper'
-    if (this.props.event.activities.length === 0) {
-      cardClassName = 'empty-event-card'
+    if (event.activities.length === 0) {
+      cardClassName = classes.emptyEventCard
     }
     // Prioritize kuksa sync color over emptiness warning color (warning icon still visible)
-    if (this.props.event.synced) {
-      cardClassName = 'kuksa-synced-event-card'
+    if (event.synced) {
+      cardClassName = classes.kuksaSyncedEventCard
     }
 
     const taskGroupTree = getRootGroup(this.props.pofTree)
@@ -219,7 +268,7 @@ class EventCard extends React.Component {
 
       dialogConfirmHandler = this.startSyncingWithKuksa
     }
-    const information = new Parser().parse(event.information)
+
     const syncConfirmDialog = (
       <div>
         <Dialog
@@ -244,196 +293,168 @@ class EventCard extends React.Component {
 
     const touchDeviceNotExpanded = (
       <CardContent style={this.state.expanded ? {} : { padding: '3px' }}>
-        <div className="mobile-event-card-media">
-          <Activities
-            activities={this.props.event.activities.map(
-              key => this.props.activities[key]
-            )}
-            bufferzone={false}
-            parentId={this.props.event.id}
-          />
-          {this.props.taskgroup ? (
-            <div>
-              <TreeSelect
-                style={{ width: '90%' }}
-                transitionName="rc-tree-select-dropdown-slide-up"
-                choiceTransitionName="rc-tree-select-selection__choice-zoom"
-                dropdownStyle={{
-                  position: 'absolute',
-                  maxHeight: 400,
-                  overflow: 'auto',
-                }}
-                placeholder="Valitse aktiviteetti"
-                searchPlaceholder="Hae aktiviteettia"
-                showSearch
-                allowClear
-                treeLine
-                getPopupContainer={() => ReactDOM.findDOMNode(this).parentNode}
-                value={this.state.value}
-                treeData={selectedTaskGroupPofData}
-                treeNodeFilterProp="label"
-                filterTreeNode={this.filterTreeNode}
-                onChange={this.onChangeChildren}
-              />
-            </div>
-          ) : (
-            <div style={{ clear: 'both' }}>&nbsp;</div>
-          )}
-        </div>
+        <Activities
+          activities={event.activities.map(key => this.props.activities[key])}
+          bufferzone={false}
+          parentId={event.id}
+        />
+        {this.props.taskgroup ? (
+          <div>
+            <TreeSelect
+              style={{ width: '90%' }}
+              transitionName="rc-tree-select-dropdown-slide-up"
+              choiceTransitionName="rc-tree-select-selection__choice-zoom"
+              dropdownStyle={{
+                position: 'absolute',
+                maxHeight: 400,
+                overflow: 'auto',
+              }}
+              placeholder="Valitse aktiviteetti"
+              searchPlaceholder="Hae aktiviteettia"
+              showSearch
+              allowClear
+              treeLine
+              getPopupContainer={() => ReactDOM.findDOMNode(this).parentNode}
+              value={this.state.value}
+              treeData={selectedTaskGroupPofData}
+              treeNodeFilterProp="label"
+              filterTreeNode={this.filterTreeNode}
+              onChange={this.onChangeChildren}
+            />
+          </div>
+        ) : (
+          <div style={{ clear: 'both' }}>&nbsp;</div>
+        )}
       </CardContent>
     )
     const notExpanded = (
       <CardContent style={this.state.expanded ? {} : { padding: '3px 10px' }}>
-        <div className="activity-header">
+        <div className={classes.activityHeader}>
           <Activities
-            activities={this.props.event.activities.map(
-              key => this.props.activities[key]
-            )}
+            activities={event.activities.map(key => this.props.activities[key])}
             bufferzone={false}
-            parentId={this.props.event.id}
+            parentId={event.id}
             minimal
           />
         </div>
       </CardContent>
     )
 
-    /** Creates a new event with modified information and sends it to eventReducer's editEvent method
-     * @param event Click event that has to be forwarded to this function so it can be prevented
+    /**
+     * Returns a component depending on if this is a Kuksa event
+     * or a user created event.
      */
-    const changeInfo = event => {
-      event.preventDefault()
-      const moddedEvent = {
-        id: this.props.event.id,
-        title: this.props.event.title,
-        startDate: this.props.event.startDate,
-        endDate: this.props.event.endDate,
-        startTime: this.props.event.startTime,
-        endTime: this.props.event.endTime,
-        type: this.props.event.type,
-        information: event.target.children[2].value,
-      }
-      this.props.editEvent(moddedEvent)
-      this.setState({ editMode: false })
-    }
-    /** Enables/disables edit mode, used in editButton */
-    const renderEdit = () => {
-      this.setState({ editMode: !this.state.editMode })
-    }
+    const informationContainer = event.kuksaEventId ? (
+      new Parser().parse(event.information)
+    ) : (
+      <form autoComplete="off">
+        <TextField
+          id="info-edit-area"
+          label="Lisätiedot"
+          fullWidth
+          multiline
+          margin="normal"
+          variant="outlined"
+          value={this.state.information}
+          onChange={e =>
+            this.setState({
+              information: e.target.value,
+            })
+          }
+        />
+        <Button
+          size="small"
+          variant="contained"
+          color="primary"
+          onClick={this.changeInfo}
+        >
+          PÄIVITÄ
+        </Button>
+      </form>
+    )
 
-    /** Returns a component with a form to input new information if editMode is true, otherwise returns the information in text form */
+    /**
+     * Helper function to capitalize first letter of a string.
+     * @param string - A string to capitalize
+     */
+    const capitalize = string =>
+      string.charAt(0).toUpperCase() + string.slice(1)
 
-    const informationContainer = () => {
-      if (this.state.editMode) {
-        return (
-          <form onSubmit={this.changeInfo}>
-            <span>
-              <b>Lisätiedot </b>
-              <input
-                type="submit"
-                value="TALLENNA"
-                align="top"
-                className="information"
-              />
-              {editButton}
-            </span>
-            <br />
-            <textarea defaultValue={information} rows="4" cols="80" />
-          </form>
-        )
-      }
-      return <p>{information}</p>
-    }
-    if (!this.props.event.kuksaEventId) {
-      editButton = (
-        <button onClick={this.renderEdit} className="information">
-          {this.state.editMode ? 'PERUUTA' : 'MUOKKAA'}
-        </button>
-      )
-    } else {
-      editButton = ''
-    }
+    /**
+     * Expanded information of an event.
+     */
     const expanded = (
       <CardContent>
-        <div className="eventTimes">
-          <span>{event.type} alkaa:</span>{' '}
+        <div>
+          <span className={classes.boldedAttribute}>
+            {capitalize(event.type)} alkaa:
+          </span>{' '}
           {moment(event.startDate)
             .locale('fi')
             .format('ddd D.M.YYYY')}{' '}
           kello {event.startTime.substring(0, 5)}
         </div>
-        <div className="eventTimes">
-          <span>{event.type} päättyy:</span>{' '}
+        <div>
+          <span className={classes.boldedAttribute}>
+            {capitalize(event.type)} päättyy:
+          </span>{' '}
           {moment(event.endDate)
             .locale('fi')
             .format('ddd D.M.YYYY')}{' '}
           kello {event.endTime.substring(0, 5)}
         </div>
-        {this.state.editMode ? null : (
-          <div>
-            <b>Lisätiedot </b>
-            {editButton}
-          </div>
-        )}
-        <div> {informationContainer()} </div>
-        <b>
-          <Activities
-            activities={this.props.event.activities.map(
-              key => this.props.activities[key]
-            )}
-            bufferzone={false}
-            parentId={this.props.event.id}
-          />
-        </b>
-        <br style={{ clear: 'both' }} />{' '}
+        {informationContainer}
+        <br style={{ clear: 'both' }} />
+        <Activities
+          activities={event.activities.map(key => this.props.activities[key])}
+          bufferzone={false}
+          parentId={event.id}
+        />
+        <br style={{ clear: 'both' }} />
         {event.activities.map(key => {
           const activity = this.props.activities[key]
           if (activity) {
             return activity.plans.map(plan => (
               <div key={plan.id}>
-                <SuggestionCard
-                  plan={plan}
-                  activity={activity}
-                  event={this.props.event}
-                />
+                <SuggestionCard plan={plan} activity={activity} event={event} />
               </div>
             ))
           }
+          return null
         })}
       </CardContent>
     )
+
     return (
       <div className={cardClassName}>
-        <Card style={{ boxShadow: 'none' }}>
+        <Card>
           <ActivityDragAndDropTarget
             odd={odd}
             event
             bufferzone={false}
-            parentId={this.props.event.id}
+            parentId={event.id}
           >
             <CardHeader
-              style={this.state.expanded ? {} : { paddingBottom: '5px' }}
               title={
-                <div>
+                <React.Fragment>
                   {title}
                   &nbsp;
-                  {this.props.event.activities.length === 0 ? warning : ''}
-                </div>
+                  {event.activities.length === 0 ? warning : null}
+                </React.Fragment>
               }
               subheader={subtitle}
               titleTypographyProps={{
-                classes: { root: 'event-card-title-left' },
+                classes: { root: classes.eventCardTitleLeft },
                 variant: 'title',
               }}
               subheaderTypographyProps={{
-                classes: {
-                  root: 'event-card-title-right event-card-subheader',
-                },
+                classes: { root: classes.eventCardTitleRight },
                 variant: 'subtitle2',
               }}
               action={
                 <IconButton
                   onClick={this.handleExpandChange}
-                  className={this.state.expanded ? 'arrow-up' : ''}
+                  className={this.state.expanded ? classes.arrowUp : ''}
                 >
                   <ExpandMoreIcon />
                 </IconButton>
@@ -445,18 +466,14 @@ class EventCard extends React.Component {
             {!isTouchDevice() && !this.state.expanded ? notExpanded : null}
             {this.state.expanded ? expanded : null}
 
-            <CardActions
-              style={this.state.expanded ? {} : { paddingTop: '5px' }}
-            >
+            <CardActions>
               <EditEvent
-                buttonClass="buttonRight"
-                data={this.props.event}
+                data={event}
                 setNotification={this.props.setNotification}
                 minimal={!this.state.expanded}
               />
               <DeleteEvent
-                buttonClass="buttonRight"
-                data={this.props.event}
+                data={event}
                 setNotification={this.props.setNotification}
                 minimal={!this.state.expanded}
               />
@@ -517,4 +534,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(EventCard)
+)(withStyles(styles)(EventCard))
