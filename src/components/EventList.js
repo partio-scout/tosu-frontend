@@ -20,7 +20,6 @@ const styles = theme => ({
 class EventList extends React.Component {
   render() {
     const view = this.props.ui.view
-    console.log(view)
     const { startDate, endDate, events, initialization, classes } = this.props
 
     const eventsToShow = () =>

@@ -1,5 +1,3 @@
-import activityService from '../services/activities'
-
 /**
  * Adds an activity to the buffer
  */
@@ -9,10 +7,9 @@ const addToBuffer = (action, state) => {
   newBuffer.activities = newActivities
   return newBuffer
 }
+
 /**
- *
  * Deletes the activity from the buffer
- *
  */
 const deleteFromBuffer = (action, state) => {
   const leActivities = state.activities.filter(

@@ -224,7 +224,6 @@ export const addEventFromKuksa = event => dispatch => {
  * @param {Object} event
  */
 export const editEvent = event => dispatch => {
-  console.log(event)
   eventService.edit(event).then(modded =>
     dispatch({
       type: 'UPDATE_EVENT',
@@ -232,6 +231,7 @@ export const editEvent = event => dispatch => {
     })
   )
 }
+
 /**
  * Add activity to an event in the state hashmap and backend.
  * @param eventId - id of the target event
