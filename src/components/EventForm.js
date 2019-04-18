@@ -211,7 +211,6 @@ export default class EventForm extends React.Component {
   }
 
   send = async () => {
-    console.log('EventForm:', this.state.information)
     await this.props.update(
       this.state.title,
       this.state.startDate,
@@ -366,7 +365,6 @@ export default class EventForm extends React.Component {
                 name="repeatCount"
                 value={this.state.repeatCount}
                 onChange={this.handleNewEventFormChange}
-                onChange={this.handleRepeatCount}
                 disabled={!this.state.checked}
                 validators={['minNumber:2', 'maxNumber:55']}
                 errorMessages={[
