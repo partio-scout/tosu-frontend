@@ -10,6 +10,7 @@ addons:
   ssh_known_hosts: 18.197.93.24
 before_install:
   - bash .scripts/install.sh
+  - docker build -t tosuapp/tosu-frontend .
 install:
   - npm install
 before_script:
@@ -18,6 +19,8 @@ after_script:
   - bash .scripts/deploy.sh
 notifications:
   slack: ohtupartio:9Fqci61YwcZE8Wj25AzaV2ID
+services:
+    - docker
 env:
   global:
     - REACT_APP_GOOGLE_LOGIN_TOKEN=1059818174105-9p207ggii6rt2mld491mdbhqfvor2poc.apps.googleusercontent.com

@@ -2,33 +2,42 @@ import React from 'react'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { DateRangePicker } from 'react-dates'
-import AddIcon from '@material-ui/icons/Add'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
-import CalendarToday from '@material-ui/icons/CalendarToday'
 import PropTypes from 'prop-types'
-import ListIcon from '@material-ui/icons/List'
-import { normalize } from 'normalizr'
 import {
   Button,
   Icon,
   IconButton,
+  withStyles,
+  Typography,
   Menu,
   MenuItem,
-  ListItemIcon,
   ListItemText,
+  ListItemIcon,
 } from '@material-ui/core'
 import TosuDialog from './TosuDialog'
-import { viewChange } from '../reducers/viewReducer'
+import { viewChange } from '../reducers/uiReducer'
 import { selectTosu } from '../reducers/tosuReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
 import { activityInitialization } from '../reducers/activityReducer'
 import { setLoading } from '../reducers/loadingReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import activityService from '../services/activities'
-import eventService from '../services/events'
 import PropTypesSchema from '../utils/PropTypesSchema'
-import { eventSchema } from '../pofTreeSchema'
 import tosuChange from '../functions/tosuChange'
+
+const styles = {
+  button: {
+    margin: 4,
+    color: 'white',
+  },
+  dateRangeContainer: {
+    marginTop: 5,
+  },
+  hidden: {
+    display: 'none',
+  },
+}
+
 class ButtonRow extends React.Component {
   constructor(props) {
     super(props)
@@ -39,7 +48,6 @@ class ButtonRow extends React.Component {
       anchorEl: null,
     }
   }
-
   /**
    * Closes the Tosu select menu
    */
@@ -57,7 +65,6 @@ class ButtonRow extends React.Component {
       this.tosuDialog.current.handleClose()
     }
   }
-
 
   handleTosuSelectHelper = async tosuId => {
     this.handleTosuMenuClose()
@@ -95,6 +102,7 @@ class ButtonRow extends React.Component {
    * @param value new value
    */
   selectView = value => this.props.viewChange(value)
+
   /**
    * Clears the calendar daterange so that it shows all events
    */
@@ -102,6 +110,7 @@ class ButtonRow extends React.Component {
     this.setState({ startDate: null, endDate: null })
     this.props.dateRangeUpdate({ startDate: null, endDate: null })
   }
+
   /**
    * Sets the calendar daterange with a new start and end value
    * @param startDate where to start
@@ -124,101 +133,62 @@ class ButtonRow extends React.Component {
 
   render() {
     const { anchorEl, startDate, endDate } = this.state
-    const { tosuMap } = this.props
-    const calendarIcon = (
-      <IconButton
-        className={
-          this.props.view === 'CALENDAR'
-            ? 'active-mobile-button button'
-            : 'mobile-button button'
-        }
-        onClick={() => this.selectView('CALENDAR')}
-      >
-        <CalendarToday />
-      </IconButton>
-    )
-    const newEventIcon = (
-      <IconButton
-        className="mobile-button button"
-        onClick={this.props.newEvent}
-      >
-        <AddIcon />
-      </IconButton>
-    )
+    const { ui, classes, tosuMap } = this.props
+
     return (
       <div>
-        <div className="button-row">
+        <div>
           <Button
-            id="omat"
-            className={this.props.view === 'OWN' ? 'active button' : 'button'}
+            className={classes.button}
             onClick={() => this.selectView('OWN')}
             variant="contained"
-            color="secondary"
+            color={ui.view === 'OWN' ? 'primary' : 'secondary'}
           >
             Omat
           </Button>
           <Button
-            id="kuksa"
-            className={this.props.view === 'KUKSA' ? 'active button' : 'button'}
+            className={classes.button}
             onClick={() => this.selectView('KUKSA')}
             variant="contained"
-            color="secondary"
+            color={ui.view === 'KUKSA' ? 'primary' : 'secondary'}
           >
             Kuksa
           </Button>
-          {this.props.mobile ? (
-            calendarIcon
-          ) : (
-            <Button
-              className={
-                this.props.view === 'CALENDAR' ? 'active button' : 'button'
-              }
-              id="kalenteri"
-              onClick={() => this.selectView('CALENDAR')}
-              variant="contained"
-              color="secondary"
-            >
-              Kalenteri
-            </Button>
-          )}
-          {this.props.mobile ? (
-            newEventIcon
-          ) : (
-            <Button
-              id="uusi-event"
-              className="button"
-              onClick={this.props.newEvent}
-              variant="contained"
-              color="secondary"
-              disabled={!this.canCreateEvent(tosuMap)}
-            >
-              Uusi tapahtuma
-            </Button>
-          )}
-          {this.props.mobile ? (
-            <IconButton
-              className="mobile-button button"
-              onClick={e => this.setState({ anchorEl: e.currentTarget })}
-            >
-              <ListIcon />
-            </IconButton>
-          ) : (
-            <Button
-              id="tosu-button"
-              className="button"
-              onClick={e => this.setState({ anchorEl: e.currentTarget })}
-              variant="contained"
-              color="secondary"
-              disabled={this.props.loading}
-            >
-              {/* Placeholder untill Tosus are loaded */
-              this.props.loading
-                ? 'Ladataan...'
-                : Object.entries(tosuMap).length === 0
-                ? 'Ei tosuja'
-                : tosuMap[tosuMap.selected].name}
-            </Button>
-          )}
+          <Button
+            id="kalenteri"
+            className={classes.button}
+            onClick={() => this.selectView('CALENDAR')}
+            variant="contained"
+            color={ui.view === 'CALENDAR' ? 'primary' : 'secondary'}
+          >
+            Kalenteri
+          </Button>
+          <Button
+            id="uusi-event"
+            className={classes.button}
+            onClick={this.props.newEvent}
+            variant="contained"
+            color="secondary"
+            disabled={!this.canCreateEvent(tosuMap)}
+          >
+            Uusi tapahtuma
+          </Button>
+          <Button
+            id="tosu-button"
+            className={classes.button}
+            onClick={e => this.setState({ anchorEl: e.currentTarget })}
+            variant="contained"
+            color="secondary"
+            disabled={this.props.loading}
+          >
+            {/* Placeholder untill Tosus are loaded */
+            this.props.loading
+              ? 'Ladataan...'
+              : Object.entries(tosuMap).length === 0
+              ? 'Ei tosuja'
+              : tosuMap[tosuMap.selected].name}
+          </Button>
+
           <Menu
             id="tosu-menu"
             open={Boolean(anchorEl)}
@@ -249,10 +219,12 @@ class ButtonRow extends React.Component {
           />
         </div>
         <div
-          className="date-range-container"
-          style={this.props.view === 'CALENDAR' ? { display: 'none' } : {}}
+          className={classes.dateRangeContainer}
+          style={ui.view === 'CALENDAR' ? { display: 'none' } : {}}
         >
-          Rajaa tapahtumia:
+          <Typography inline style={{ margin: '0 10px 0 4px' }}>
+            Rajaa tapahtumia
+          </Typography>
           <DateRangePicker
             startDateId="startDate"
             endDateId="endDate"
@@ -260,15 +232,13 @@ class ButtonRow extends React.Component {
             endDate={endDate}
             onDatesChange={this.dateRangeUpdate}
             focusedInput={this.state.focusedInput}
-            onFocusChange={focusedInput => {
-              this.setState({ focusedInput })
-            }}
+            onFocusChange={focusedInput => this.setState({ focusedInput })}
             startDatePlaceholderText="alku pvm"
             endDatePlaceholderText="loppu pvm"
             isOutsideRange={() => false}
           />
           <IconButton
-            className={this.props.filter !== 'NONE' ? '' : 'hidden'}
+            className={this.props.filter !== 'NONE' ? '' : classes.hidden}
             color="primary"
             onClick={this.clearRange}
             style={{ marginLeft: 5 }}
@@ -294,8 +264,6 @@ ButtonRow.propTypes = {
   activities: PropTypes.arrayOf(PropTypes.object).isRequired,
   buffer: PropTypesSchema.bufferShape.isRequired,
   scout: PropTypesSchema.scoutShape.isRequired,
-  mobile: PropTypes.bool.isRequired,
-  viewChange: PropTypes.func.isRequired,
   selectTosu: PropTypes.func.isRequired,
   eventsInitialization: PropTypes.func.isRequired,
   activityInitialization: PropTypes.func.isRequired,
@@ -306,7 +274,7 @@ ButtonRow.propTypes = {
 ButtonRow.defaultProps = {}
 
 const mapStateToProps = state => ({
-  view: state.view,
+  ui: state.ui,
   filter: state.filter,
   startDate: state.startDate,
   endDate: state.endDate,
@@ -329,4 +297,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ButtonRow)
+)(withStyles(styles)(ButtonRow))

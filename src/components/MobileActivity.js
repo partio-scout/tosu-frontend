@@ -11,30 +11,46 @@ import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
 import PlanForm from './PlanForm'
 import ActivityPreview from './ActivityPreview'
+import PropTypes from 'prop-types'
 import PropTypesSchema from '../utils/PropTypesSchema'
+import { withStyles } from '@material-ui/core'
+import { blue, indigo } from '@material-ui/core/colors'
 
 const styles = {
   chip: {
     margin: 4,
-    backgroundColor: blue200,
+    backgroundColor: blue[200],
     cursor: 'move',
   },
   avatar: {
     size: 28,
-    color: indigo900,
-    backgroundColor: blue200,
+    color: indigo[900],
+    backgroundColor: blue[200],
     margin: 4,
   },
   chipMandatory: {
     margin: 4,
     width: '100%',
-    backgroundColor: blue500,
+    backgroundColor: blue[500],
     cursor: 'move',
   },
   avatarMandatory: {
     size: 28,
-    color: indigo900,
-    backgroundColor: blue500,
+    color: indigo[900],
+    backgroundColor: blue[500],
+    margin: 4,
+  },
+  activityTitle: {
+    display: 'block',
+    maxWidth: 175,
+    wordWrap: 'break-all',
+    whiteSpace: 'normal',
+    fontWeight: 'bold',
+    lineHeight: '26px',
+    padding: 3,
+  },
+  connectDragSource: {
+    float: 'left',
     margin: 4,
   },
 }
@@ -88,7 +104,13 @@ class Activity extends React.Component {
   }
 
   render() {
-    const { activity, pofActivity, connectDragSource, isDragging } = this.props
+    const {
+      activity,
+      pofActivity,
+      connectDragSource,
+      isDragging,
+      classes,
+    } = this.props
     const visibility = isDragging ? 'hidden' : 'visible'
 
     let lastGuid = 0
@@ -104,17 +126,21 @@ class Activity extends React.Component {
             style={{
               visibility: { visibility },
             }}
-            className="connect-drag-source"
+            className={classes.connectDragSource}
           >
             <Chip
               onRequestDelete={() => this.props.deleteActivity(activity)}
-              style={pofActivity.mandatory ? styles.chipMandatory : styles.chip}
+              style={
+                pofActivity.mandatory ? classes.chipMandatory : classes.chip
+              }
               key={activity.id}
               onClick={this.handleClick}
             >
               <Avatar
                 style={
-                  pofActivity.mandatory ? styles.avatarMandatory : styles.avatar
+                  pofActivity.mandatory
+                    ? classes.avatarMandatory
+                    : classes.avatar
                 }
               >
                 <img
@@ -123,28 +149,8 @@ class Activity extends React.Component {
                   alt="Mandatory Icon"
                 />
               </Avatar>
-              <span className="activityTitle">{pofActivity.title}</span>
+              <span className={classes.activityTitle}>{pofActivity.title}</span>
               <Dialog
-                title={
-                  <div>
-                    {pofActivity.title}
-
-                    <button
-                      className="dialog-close-button"
-                      onClick={this.handleClick}
-                    >
-                      x
-                    </button>
-
-                    <br />
-
-                    {pofActivity.parents.map(parent => (
-                      <span style={{ fontSize: '0.9rem' }} key={parent.guid}>
-                        {parent.title} {parent.guid === lastGuid ? null : ' - '}
-                      </span>
-                    ))}
-                  </div>
-                }
                 modal={false}
                 open={this.state.open}
                 onRequestClose={this.handleClick}
@@ -188,7 +194,6 @@ Activity.propTypes = {
   deleteActivityFromEvent: PropTypes.func.isRequired,
   deleteActivityFromBuffer: PropTypes.func.isRequired,
   notify: PropTypes.func.isRequired,
-  pofTreeUpdate: PropTypes.func.isRequired,
 }
 
 Activity.defaultProps = {}
@@ -203,10 +208,9 @@ const mapDispatchToProps = {
   deleteActivityFromEvent,
   deleteActivityFromBuffer,
   notify,
-  pofTreeUpdate,
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DraggableActivity)
+)(withStyles(styles)(DraggableActivity))

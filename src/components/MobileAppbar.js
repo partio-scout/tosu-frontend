@@ -12,7 +12,7 @@ import StatusMessage from './StatusMessage'
 import { createStatusMessage } from '../utils/createStatusMessage'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
-import { getTask, getTaskGroup, getRootGroup } from '../functions/denormalizations'
+import { getTaskGroup, getRootGroup } from '../functions/denormalizations'
 
 class MobileAppbar extends React.Component {
   state = { showStatusBox: true }
@@ -70,69 +70,58 @@ class MobileAppbar extends React.Component {
 
   render() {
     let taskgroups = []
-    if(!this.props.pofTree) {
-        return (<div />)
+    if (!this.props.pofTree) {
+      return <div />
     }
     taskgroups = getRootGroup(this.props.pofTree)
-    if(!taskgroups) return (<div id="top-bar-header"/>)
+    if (!taskgroups) return <div id="top-bar-header" />
     return (
-      <div
-        className="top-search"
-        id="top-bar-header"
-        style={{ background: '#5DBCD2', padding: 1 }}
-      >
-        <div className="Header_root" id="header_root">
-          <div className="mobile-select">
-            <Select
-              menuContainerStyle={{ width: '100%' }}
-              style={{ width: 200 }}
-              name="form-field-name"
-              value={this.props.taskgroup}
-              placeholder="Valitse tarppo..."
-              onChange={this.onChangeTaskgroup}
-              options={taskgroups.map(taskgroup => {
-                const status = createStatusMessage(
-                  this.props.events,
-                  this.props.pofTree,
-                  taskgroup,
-                  this.props.activities,
+      <div id="top-bar-header" style={{ background: '#5DBCD2', padding: 1 }}>
+        <div id="header_root">
+          <Select
+            menuContainerStyle={{ width: '100%' }}
+            style={{ width: 200 }}
+            name="form-field-name"
+            value={this.props.taskgroup}
+            placeholder="Valitse tarppo..."
+            onChange={this.onChangeTaskgroup}
+            options={taskgroups.map(taskgroup => {
+              const status = createStatusMessage(
+                this.props.events,
+                this.props.pofTree,
+                taskgroup,
+                this.props.activities
+              )
+              let labelText = taskgroup.label
+
+              if (status.taskgroupDone) {
+                labelText = (
+                  <span style={{ textDecoration: 'line-through' }}>
+                    {labelText}
+                  </span>
                 )
-                let labelText = taskgroup.label
-
-                if (status.taskgroupDone) {
-                  labelText = (
-                    <span style={{ textDecoration: 'line-through' }}>
-                      {labelText}
-                    </span>
-                  )
-                }
-                return {
-                  value: taskgroup.guid,
-                  label: labelText,
-                }
-              })}
-            />
-          </div>
-          <div className="account-name-and-button">
-            <AccountIcon
-              accountIcon={<List />}
-              mobileFeedback={
-                <MenuItem onClick={this.openUrl}>Anna palautetta</MenuItem>
               }
-            />
-          </div>
-
+              return {
+                value: taskgroup.guid,
+                label: labelText,
+              }
+            })}
+          />
+          <AccountIcon
+            accountIcon={<List />}
+            mobileFeedback={
+              <MenuItem onClick={this.openUrl}>Anna palautetta</MenuItem>
+            }
+          />
           <div style={{ clear: 'both' }} />
         </div>
 
         {this.props.headerVisible ? (
-          <div className="mobile-status-message-box">
-            <StatusMessage
-              showStatusBox={this.state.showStatusBox}
-              handleClose={this.handleClose}
-              handleOpen={this.handleOpen}
-            />
-          </div>
+          <StatusMessage
+            showStatusBox={this.state.showStatusBox}
+            handleClose={this.handleClose}
+            handleOpen={this.handleOpen}
+          />
         ) : null}
       </div>
     )

@@ -87,7 +87,7 @@ class DeleteTosuButton extends Component {
       <div>
         <StyledButton
           id="tosu-delete"
-          classes={{ label: 'deleteTosuButton' }}
+          classes={{ label: 'deleteTosuButton', name: 'tosu-delete' }}
           variant="contained"
           onClick={() => this.handleClickOpen()}
         >
@@ -110,7 +110,6 @@ class DeleteTosuButton extends Component {
             <DialogActions>
               <Button
                 onClick={this.handleClose}
-                color="primary"
                 variant="contained"
               >
                 Peruuta

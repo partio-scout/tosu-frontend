@@ -211,6 +211,7 @@ export default class EventForm extends React.Component {
   }
 
   send = async () => {
+    console.log('EventForm:', this.state.information)
     await this.props.update(
       this.state.title,
       this.state.startDate,
@@ -220,7 +221,6 @@ export default class EventForm extends React.Component {
       this.state.checked,
       this.state.repeatCount,
       this.state.repeatFrequency,
-      this.state.lastDate,
       this.state.type,
       this.state.information
     )
@@ -337,7 +337,7 @@ export default class EventForm extends React.Component {
             />
           ) : null}
           {this.props.allowRepeatedEvent ? (
-            <div className="frequent" style={frequentStyle}>
+            <div style={frequentStyle}>
               <SelectValidator
                 name="repeatFrequency"
                 label="Toistumisväli"

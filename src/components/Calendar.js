@@ -4,15 +4,29 @@ import { connect } from 'react-redux'
 import BigCalendar from 'react-big-calendar-like-google'
 import moment from 'moment'
 import 'moment/locale/fi'
-import 'react-big-calendar-like-google/lib/css/react-big-calendar.css'
-import PropTypes from 'prop-types'
 import CalendarToolbar from './CalendarToolbar'
 import CalendarEvent from './CalendarEvent'
 import { eventStyleGetter } from './CalendarEvent'
-import { closePopper } from '../reducers/calendarReducer'
 import { eventList } from '../reducers/eventReducer'
+import { closePopper } from '../reducers/calendarReducer'
+import { withStyles } from '@material-ui/core'
+import PropTypes from 'prop-types'
 
-import PropTypesSchema from '../utils/PropTypesSchema'
+const styles = {
+  mobileCalendar: {
+    height: 100,
+    minHeight: 'calc(100vh - 350px)',
+    width: '80vmin',
+    marginBottom: 'calc(100vh - 500px)',
+  },
+  calendar: {
+    height: '70vmin',
+    minHeight: 500,
+    width: '80vmin',
+    paddingTop: 20,
+    marginBottom: 'calc(100vh - 500px)',
+  },
+}
 
 const localizer = BigCalendar.momentLocalizer(moment)
 
@@ -60,14 +74,18 @@ export class Calendar extends Component {
   }
 
   render() {
-    const { events } = this.props
+    const { events, classes } = this.props
     const eventsToShow = prepareEventsToCalendarEvents(
       events,
       this.props.shouldShowKuksaEventsAlso
     )
 
     return (
-      <div className={this.props.mobile ? 'mobile-calendar' : 'calendar'}>
+      <div
+        className={
+          this.props.mobile ? classes.mobileCalendar : classes.calendar
+        }
+      >
         <BigCalendar
           localizer={localizer}
           events={eventsToShow}
@@ -90,8 +108,6 @@ const mapStateToProps = state => ({
   shouldShowKuksaEventsAlso: state.calendar.showKuksa,
 })
 
-const mapDispatchToProps = { closePopper }
-
 Calendar.propTypes = {
   closePopper: PropTypes.func.isRequired,
   events: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -103,5 +119,5 @@ Calendar.defaultProps = {}
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(Calendar)
+  { closePopper }
+)(withStyles(styles)(Calendar))

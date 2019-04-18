@@ -62,7 +62,7 @@ describe('After logging in', function() {
     })
   })
   it('user adds a new kuksa-event', function() {
-    cy.contains('Kuksa').click()
+    cy.get('button[id="kuksa"]').click()
     cy.contains('Lisää omaan suunnitelmaan').click()
     cy.contains('Lisää suunnitelmaan').click()
     cy.contains('Omat').click()

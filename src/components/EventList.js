@@ -1,96 +1,51 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import moment from 'moment'
-import {
-  Button,
-  FormControlLabel,
-  LinearProgress,
-  Switch,
-} from '@material-ui/core'
 import EventCard from './EventCard'
+import DeleteTosuButton from './DeleteTosuButton'
 import KuksaEventCard from './KuksaEventCard'
-import eventComparer from '../utils/EventCompare'
+import filterEvents from '../functions/filterEvents'
+import { eventList } from '../reducers/eventReducer'
+import { withStyles } from '@material-ui/core'
+
+const styles = theme => ({
+  eventList: {
+    marginBlockEnd: 0,
+    marginBlockStart: 0,
+    overflowX: 'hidden',
+    paddingLeft: 0,
+  },
+})
 
 class EventList extends React.Component {
-  state = {
-    shouldShowAllKuksaEvents: false,
-    loading: true,
-  }
-
   render() {
-    const { events, filter } = this.props
-    console.log(filter)
-    const shouldShowAllKuksaEvents = this.state.shouldShowAllKuksaEvents
-    /**
-     * Determines which events are shown. If filter is set to FUTURE, show all events with end date equal
-     * or greater than today otherwise show events with end date less than today
-     * @returns events that are filtered with given filters
-     */
-    const eventsToShow = () => {
-      const currentDate = moment().format('YYYY-MM-DD')
-      switch (filter) {
-        case 'FUTURE':
-          return events
-            .filter(event => event.endDate >= currentDate && !event.kuksaEvent)
-            .sort(eventComparer)
-        case 'ALL':
-          return events.filter(event => !event.kuksaEvent).sort(eventComparer)
-        case 'KUKSA':
-          if (shouldShowAllKuksaEvents) {
-            return events.filter(event => event.kuksaEvent).sort(eventComparer)
-          }
-          return events
-            .filter(event => event.endDate >= currentDate && event.kuksaEvent)
-            .sort(eventComparer)
-        default:
-          return events.sort(eventComparer)
-      }
-    }
+    const view = this.props.ui.view
+    console.log(view)
+    const { startDate, endDate, events, initialization, classes } = this.props
 
-    const kuksaEventsShowAllSwitch = (
-      <FormControlLabel
-        control={
-          <Switch
-            checked={shouldShowAllKuksaEvents}
-            onClick={this.handleKuksaEventSwitchChange}
-            color="primary"
-          />
-        }
-        label="Näytä myös menneet tapahtumat"
-      />
-    )
+    const eventsToShow = () =>
+      filterEvents(view, eventList(events), startDate, endDate)
 
-    const addKuksaEventsToTosuButton = (
-      <Button onClick={this.handleAddToTosuButtonClick} variant="contained">
-        Lisää omaan suunnitelmaan
-      </Button>
-    )
-
-    const eventsToList = (
-      <div className="event-list-container">
-        {this.state.loading && (
-          <div className="loading-bar">
-            <LinearProgress />
-          </div>
-        )}
-        {filter === 'KUKSA' && kuksaEventsShowAllSwitch}
-        {filter === 'KUKSA' && addKuksaEventsToTosuButton}
-        <ul className="event-list">
-          {eventsToShow().map(event => (
-            <li className="event-list-item" key={event.id ? event.id : 0}>
-              {event.kuksaEvent ? (
-                <KuksaEventCard event={event} />
-              ) : (
-                <EventCard event={event} />
-              )}
-            </li>
-          ))}
+    let odd = true
+    return (
+      <React.Fragment>
+        <ul className={classes.eventList}>
+          {eventsToShow().map(event => {
+            odd = !odd
+            return (
+              <li key={event.id ? event.id : 0}>
+                {event.kuksaEvent ? (
+                  <KuksaEventCard event={event} />
+                ) : (
+                  <EventCard event={event} odd={odd} />
+                )}
+              </li>
+            )
+          })}
         </ul>
-      </div>
+        <DeleteTosuButton initialization={initialization} />
+      </React.Fragment>
     )
-
-    return <div>{eventsToList}</div>
   }
 }
 
@@ -104,6 +59,7 @@ EventList.defaultProps = {}
 const mapStateToProps = state => ({
   events: state.events,
   filter: state.filter,
+  ui: state.ui,
 })
 
-export default connect(mapStateToProps)(EventList)
+export default connect(mapStateToProps)(withStyles(styles)(EventList))

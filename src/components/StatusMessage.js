@@ -3,24 +3,57 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Done from '@material-ui/icons/Done'
 import Warning from '@material-ui/icons/Warning'
-import 'react-select/dist/react-select.css'
-import 'rc-tree-select/assets/index.css'
 import { Paper, Typography } from '@material-ui/core'
 
 // Done icon
-const done = <Done className="done" key="done" />
+const done = <Done key="done" />
 
 // Small done icon for sub-taskgroups (suhteet)
-const smallDone = <Done className="small-done" key="done" />
+// TODO: Make this smaller
+const smallDone = <Done key="done" />
 
 /**
  * Warning icon that returns a tooltiptext with a message
  * @param message Message that shows in the tooltip
  */
 const warning = message => (
-  <div className="tooltip" key="warning">
-    <Warning className="warning" />
-    <span className="tooltiptext">{message}</span>
+  <div
+    style={{
+      position: 'relative',
+      display: 'inline-block',
+    }}
+    key="warning"
+  >
+    <Warning
+      style={{
+        width: 15,
+        height: 15,
+        padding: 0,
+        marginRight: 7,
+        color: '#f14150',
+      }}
+    />
+    {/* TODO: add this:
+     * .tooltip:hover .tooltiptext {
+     *   visibility: visible;
+     * }
+     */}
+    <span
+      style={{
+        position: 'absolute',
+        visibility: 'hidden',
+        minWidth: 200,
+        fontSize: 14,
+        backgroundColor: 'black',
+        color: '#fff',
+        textAlign: 'center',
+        borderRadius: 6,
+        padding: 5,
+        zIndex: 1,
+      }}
+    >
+      {message}
+    </span>
   </div>
 )
 
@@ -35,7 +68,7 @@ const Instruction = ({ statusMessage, taskgroup }) => {
     <div style={{ fontSize: '0.8rem', lineHeight: '1.6rem' }}>
       <p>
         <h2>
-          {taskgroup.title}{' '}
+          {taskgroup.title}
           {statusMessage.status.taskgroupDone ? <span>(valmis)</span> : null}
         </h2>
 
@@ -61,7 +94,7 @@ const Instruction = ({ statusMessage, taskgroup }) => {
     <div style={{ fontSize: '0.8rem', lineHeight: '1.4rem' }}>
       <div style={{ marginBottom: 0 }}>
         <h2>
-          {taskgroup.title}{' '}
+          {taskgroup.title}
           {statusMessage.status.taskgroupDone ? <span>(valmis)</span> : null}
         </h2>
 
@@ -191,11 +224,11 @@ const Instruction = ({ statusMessage, taskgroup }) => {
         <br />
         Suhde toiseen, valittu {statusMessage.status.extraTask.suhdeToiseen}
         <br />
-        Suhde yhteiskuntaan, valittu{' '}
+        Suhde yhteiskuntaan, valittu
         {statusMessage.status.extraTask.suhdeYhteiskuntaan}
         <br />
-        Suhde ympäristöön, valittu{' '}
-        {statusMessage.status.extraTask.suhdeYmparistoon}{' '}
+        Suhde ympäristöön, valittu
+        {statusMessage.status.extraTask.suhdeYmparistoon}
       </p>
     </div>
   )
@@ -236,16 +269,14 @@ const Instruction = ({ statusMessage, taskgroup }) => {
   )
 }
 
-class StatusMessage extends React.Component {
-  render() {
-    return (
-      <Instruction
-        statusMessage={this.props.statusMessage}
-        taskgroup={this.props.taskgroup}
-        style={{ marginTop: 30 }}
-      />
-    )
-  }
+function StatusMessage(props) {
+  return (
+    <Instruction
+      statusMessage={props.statusMessage}
+      taskgroup={props.taskgroup}
+      style={{ marginTop: 30 }}
+    />
+  )
 }
 
 StatusMessage.propTypes = {
@@ -258,8 +289,6 @@ StatusMessage.propTypes = {
 StatusMessage.defaultProps = {}
 
 const mapStateToProps = state => ({
-  handleClose: state.handleClose,
-  handleOpen: state.handleOpen,
   statusMessage: state.statusMessage,
   taskgroup: state.taskgroup,
 })

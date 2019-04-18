@@ -64,8 +64,8 @@ class AddToPlan extends React.Component {
           </DialogTitle>
           <DialogContent>Tapahtuma synkronoidaan Kuksaan.</DialogContent>
           <DialogActions>
-            <Button onClick={this.handleButtonDialogClose}>peruuta</Button>
-            <Button onClick={this.addEventToTosu}>Lisää suunnitelmaan</Button>
+            <Button variant="contained" onClick={this.handleButtonDialogClose}>peruuta</Button>
+            <Button variant='contained' color='primary' onClick={this.addEventToTosu}>Lisää suunnitelmaan</Button>
           </DialogActions>
         </Dialog>
       </div>
@@ -94,8 +94,5 @@ AddToPlan.defaultProps = {}
 
 export default connect(
   mapStateToProps,
-  {
-    notify,
-    addEventFromKuksa,
-  }
+  mapDispatchToProps
 )(AddToPlan)
