@@ -31,7 +31,7 @@ describe('Creating and deleting events', function() {
   })
   it('initiate tosu', function() {})
   it('user adds a new repeating event', function() {
-    cy.contains('Uusi tapahtuma').click()
+    cy.get('button[id="uusi-event"]').click()
     cy.get('input[name="title"').type('testMultipleEvent', {
       multiple: true,
       force: true,
@@ -46,7 +46,7 @@ describe('Creating and deleting events', function() {
       multiple: true,
       force: true,
     })
-    cy.contains('Kokous').click({ multiple: true, force: true })
+    cy.get('li[id="tyyppi-kokous"]').click({ multiple: true, force: true })
     cy.get('input[name="information"').type('testtesttest', {
       multiple: true,
       force: true,
@@ -59,7 +59,7 @@ describe('Creating and deleting events', function() {
     cy.contains('testMultipleEvent')
   })
   it('user adds a new kuksa-event', function() {
-    cy.contains('Kuksa').click()
+    cy.get('button[id="kuksa"]').click()
     cy.contains('Lisää omaan suunnitelmaan').click()
     cy.contains('Lisää suunnitelmaan').click()
     cy.contains('Omat').click()

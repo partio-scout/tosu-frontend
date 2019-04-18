@@ -155,6 +155,7 @@ class ButtonRow extends React.Component {
             Kuksa
           </Button>
           <Button
+            id="kalenteri"
             className={classes.button}
             onClick={() => this.selectView('CALENDAR')}
             variant="contained"
@@ -163,6 +164,7 @@ class ButtonRow extends React.Component {
             Kalenteri
           </Button>
           <Button
+            id="uusi-event"
             className={classes.button}
             id="new-event-button"
             onClick={this.props.newEvent}
@@ -173,6 +175,7 @@ class ButtonRow extends React.Component {
             Uusi tapahtuma
           </Button>
           <Button
+            id="tosu-button"
             className={classes.button}
             onClick={e => this.setState({ anchorEl: e.currentTarget })}
             variant="contained"
@@ -186,6 +189,7 @@ class ButtonRow extends React.Component {
               ? 'Ei tosuja'
               : tosuMap[tosuMap.selected].name}
           </Button>
+
           <Menu
             id="tosu-menu"
             open={Boolean(anchorEl)}
