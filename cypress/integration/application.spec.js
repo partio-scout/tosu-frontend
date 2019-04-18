@@ -12,7 +12,7 @@ describe('After logging in', function() {
   })
 /*
   it('tosu can be deleted', function() {
-    cy.get('button[id="tosu-delete"]', {timeout: 10000}).click()
+    cy.get('button[id="tosu-delete"]').click()
     cy.get('button[id="confirm"]').click()
     cy.get('button[id="tosu-button"]').contains('Ei tosuja')
   })*/
@@ -37,7 +37,7 @@ describe('After logging in', function() {
     cy.get('div[id="event-name"]').contains('testEvent')
   })
   it('user adds a new repeating event', function() {
-    cy.get('button[id="uusi-event"]', {timeout: 10000}).click()
+    cy.get('button[id="uusi-event"]').click()
     cy.get('input[name="title"').type('testMultipleEvent', {
       multiple: true,
       force: true,
@@ -64,7 +64,7 @@ describe('After logging in', function() {
     })
   })
   it('user adds a new kuksa-event', function() {
-    cy.get('button[id="kuksa"]', {timeout: 10000}).click()
+    cy.get('button[id="kuksa"]').click()
     cy.get('button[id="add-kuksa"]').first().click()
     cy.get('button[id="verify-add-kuksa"]').click()
     cy.get('button[id="omat"]').click()
