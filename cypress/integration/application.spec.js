@@ -9,6 +9,10 @@ describe('After logging in', function() {
     resetDatabase()
     cy.request('http://localhost:3001/scouts/testuser')
     cy.visit('http://localhost:3000')
+
+  })
+  it('', function() {
+    cy.visit('http://localhost:3000')
   })
 /*
   it('tosu can be deleted', function() {
@@ -18,7 +22,8 @@ describe('After logging in', function() {
   })*/
 
   it('user adds a new single event', function() {
-    cy.get('button[id="uusi-event"]').click()
+    //cy.wait(15000)
+    cy.get('button[id="uusi-event"]', {timeout: 90000}).click()
     cy.get('input[name="title"').type('testEvent', {
       multiple: true,
       force: true,
@@ -37,6 +42,7 @@ describe('After logging in', function() {
     cy.get('div[id="event-name"]').contains('testEvent')
   })
   it('user adds a new repeating event', function() {
+    //cy.wait(15000)
     cy.get('button[id="uusi-event"]').click()
     cy.get('input[name="title"').type('testMultipleEvent', {
       multiple: true,
@@ -64,6 +70,7 @@ describe('After logging in', function() {
     })
   })
   it('user adds a new kuksa-event', function() {
+    //cy.wait(15000)
     cy.get('button[id="kuksa"]').click()
     cy.get('button[id="add-kuksa"]').first().click()
     cy.get('button[id="verify-add-kuksa"]').click()
