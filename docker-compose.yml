@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.3'
 
 services:
         frontend:
@@ -26,4 +26,3 @@ services:
                    - tosu-net
 networks:
         tosu-net:
-          name: tosu-network
