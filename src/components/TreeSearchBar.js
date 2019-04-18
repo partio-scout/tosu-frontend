@@ -195,10 +195,10 @@ class TreeSearchBar extends React.Component {
 
 TreeSearchBar.propTypes = {
   buffer: PropTypesSchema.bufferShape.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.object.isRequired,
   pofTree: PropTypesSchema.pofTreeShape.isRequired,
-  taskgroup: PropTypesSchema.taskgroupShape.isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  taskgroup: PropTypesSchema.taskgroupShape,
+  activities: PropTypes.object.isRequired,
   notify: PropTypes.func.isRequired,
   postActivityToBuffer: PropTypes.func.isRequired,
   addActivity: PropTypes.func.isRequired,
@@ -208,7 +208,9 @@ TreeSearchBar.propTypes = {
   emptyTaskgroup: PropTypes.func.isRequired,
 }
 
-TreeSearchBar.defaultProps = {}
+TreeSearchBar.defaultProps = {
+    taskgroup: null,
+}
 
 const mapStateToProps = state => ({
   events: state.events,

@@ -72,9 +72,9 @@ export class Activities extends React.Component {
 
 Activities.propTypes = {
   buffer: PropTypesSchema.bufferShape.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.object.isRequired,
   activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  stateActivities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  stateActivities: PropTypes.object.isRequired,
   bufferzone: PropTypes.bool.isRequired,
   parentId: PropTypes.number.isRequired,
   notify: PropTypes.func.isRequired,
@@ -82,12 +82,13 @@ Activities.propTypes = {
   deleteActivityFromBuffer: PropTypes.func.isRequired,
   deleteActivityFromEvent: PropTypes.func.isRequired,
   deleteActivity: PropTypes.func.isRequired,
-  minimal: PropTypes.bool.isRequired,
-  className: PropTypes.string.isRequired,
+  minimal: PropTypes.bool,
   pofTree: PropTypesSchema.pofTreeShape.isRequired,
 }
 
-Activities.defaultProps = {}
+Activities.defaultProps = {
+  minimal: false,
+}
 
 const mapStateToProps = state => ({
   buffer: state.buffer,

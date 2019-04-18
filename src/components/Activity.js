@@ -169,7 +169,7 @@ const mapStateToProps = state => ({
 
 Activity.propTypes = {
   notify: PropTypes.func.isRequired,
-  notification: PropTypes.string.isRequired,
+  notification: PropTypes.string,
   buffer: PropTypesSchema.bufferShape.isRequired,
   events: PropTypes.shape({}).isRequired,
   connectDragSource: PropTypes.func.isRequired,
@@ -179,11 +179,12 @@ Activity.propTypes = {
   minimal: PropTypes.bool.isRequired,
   deleteActivity: PropTypes.func.isRequired,
   deleteActivityFromEvent: PropTypes.func.isRequired,
-  deleteActivityFromActivity: PropTypes.func.isRequired,
   deleteActivityFromBuffer: PropTypes.func.isRequired,
 }
 
-Activity.defaultProps = {}
+Activity.defaultProps = {
+    notification: '',
+}
 
 export default connect(
   mapStateToProps,

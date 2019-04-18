@@ -14,10 +14,9 @@ export const eventShape = PropTypes.shape({
   activities: PropTypes.arrayOf(PropTypes.string).isRequired,
 })
 
-export const pofTreeShape = PropTypes.shape({
-  taskgroups: PropTypes.arrayOf(PropTypes.object).isRequired,
-  children: PropTypes.arrayOf(PropTypes.object).isRequired,
-})
+export const pofTreeShape = PropTypes.shape({})
+
+export const eventStoreShape = PropTypes.shape({})
 
 export const scoutShape = PropTypes.shape({
   id: PropTypes.number.isRequired,
@@ -25,7 +24,7 @@ export const scoutShape = PropTypes.shape({
 })
 
 export const bufferShape = PropTypes.shape({
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activities: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
   id: PropTypes.number.isRequired,
 })
 
@@ -34,7 +33,7 @@ export const taskgroupShape = PropTypes.shape({
 })
 
 export const classesShape = PropTypes.shape({
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
 })
 
 export const dataShape = PropTypes.shape({

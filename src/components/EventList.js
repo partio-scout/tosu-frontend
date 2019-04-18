@@ -50,15 +50,13 @@ class EventList extends React.Component {
 }
 
 EventList.propTypes = {
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filter: PropTypes.string.isRequired,
+  events: PropTypes.object.isRequired,
 }
 
 EventList.defaultProps = {}
 
 const mapStateToProps = state => ({
   events: state.events,
-  filter: state.filter,
   ui: state.ui,
 })
 

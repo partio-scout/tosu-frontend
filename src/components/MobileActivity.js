@@ -113,7 +113,7 @@ class Activity extends React.Component {
     } = this.props
     const visibility = isDragging ? 'hidden' : 'visible'
 
-    let lastGuid = 0
+    let lastGuid
     if (pofActivity) {
       const lastParentIndex = pofActivity.parents.length - 1
       lastGuid = pofActivity.parents[lastParentIndex].guid

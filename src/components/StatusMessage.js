@@ -280,13 +280,17 @@ function StatusMessage(props) {
 }
 
 StatusMessage.propTypes = {
-  handleClose: PropTypes.func.isRequired,
-  handleOpen: PropTypes.func.isRequired,
-  statusMessage: PropTypes.func.isRequired,
-  taskgroup: PropTypes.func.isRequired,
+  handleClose: PropTypes.func,
+  handleOpen: PropTypes.func,
+  statusMessage: PropTypes.object.isRequired,
+  taskgroup: PropTypes.object,
 }
 
-StatusMessage.defaultProps = {}
+StatusMessage.defaultProps = {
+    taskgroup: undefined,
+    handleClose: function(){},
+    handleOpen: function(){},
+}
 
 const mapStateToProps = state => ({
   statusMessage: state.statusMessage,

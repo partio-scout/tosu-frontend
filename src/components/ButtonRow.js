@@ -255,13 +255,12 @@ ButtonRow.propTypes = {
   viewChange: PropTypes.func.isRequired,
   dateRangeUpdate: PropTypes.func.isRequired,
   view: PropTypes.string.isRequired,
-  filter: PropTypes.string.isRequired,
   newEvent: PropTypes.func.isRequired,
   mobile: PropTypes.bool.isRequired,
-  startDate: PropTypes.string.isRequired,
-  endDate: PropTypes.string.isRequired,
-  tosuMap: PropTypes.string.isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  startDate: PropTypes.string,
+  endDate: PropTypes.string,
+  tosuMap: PropTypes.object.isRequired,
+  activities: PropTypes.object.isRequired,
   buffer: PropTypesSchema.bufferShape.isRequired,
   scout: PropTypesSchema.scoutShape.isRequired,
   selectTosu: PropTypes.func.isRequired,
@@ -271,11 +270,13 @@ ButtonRow.propTypes = {
   pofTreeUpdate: PropTypes.func.isRequired,
 }
 
-ButtonRow.defaultProps = {}
+ButtonRow.defaultProps = {
+  endDate: undefined,
+  startDate: undefined,
+}
 
 const mapStateToProps = state => ({
   ui: state.ui,
-  filter: state.filter,
   startDate: state.startDate,
   endDate: state.endDate,
   tosuMap: state.tosu,

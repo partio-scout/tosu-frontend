@@ -437,11 +437,11 @@ class EventCard extends React.Component {
             <CardHeader
               title={
                 <div id="event-name">
-                <React.Fragment>
-                  {title}
-                  &nbsp;
-                  {event.activities.length === 0 ? warning : null}
-                </React.Fragment>
+                  <React.Fragment>
+                    {title}
+                    &nbsp;
+                    {event.activities.length === 0 ? warning : null}
+                  </React.Fragment>
                 </div>
               }
               subheader={subtitle}
@@ -489,12 +489,12 @@ class EventCard extends React.Component {
 
 EventCard.propTypes = {
   buffer: PropTypesSchema.bufferShape.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.object.isRequired,
   pofTree: PropTypesSchema.pofTreeShape.isRequired,
-  taskgroup: PropTypesSchema.taskgroupShape.isRequired,
-  status: PropTypes.string.isRequired,
+  taskgroup: PropTypesSchema.taskgroupShape,
+  status: PropTypes.object.isRequired,
   plans: PropTypes.arrayOf(PropTypes.object).isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activities: PropTypes.object.isRequired,
   notify: PropTypes.func.isRequired,
   editEvent: PropTypes.func.isRequired,
   deletePlan: PropTypes.func.isRequired,
@@ -507,7 +507,9 @@ EventCard.propTypes = {
   pofTreeUpdate: PropTypes.func.isRequired,
 }
 
-EventCard.defaultProps = {}
+EventCard.defaultProps = {
+  taskgroup: undefined,
+}
 
 const mapStateToProps = state => ({
   events: state.events,

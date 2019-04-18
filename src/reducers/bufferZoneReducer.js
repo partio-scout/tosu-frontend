@@ -1,4 +1,3 @@
-import activityService from '../services/activities'
 
 /**
  * Adds an activity to the buffer

@@ -55,9 +55,11 @@ const mapStateToProps = state => ({
 })
 
 Notification.propTypes = {
-  notification: PropTypes.string.isRequired,
+  notification: PropTypes.string,
 }
 
-Notification.defaultProps = {}
+Notification.defaultProps = {
+  notification: null,
+}
 
 export default connect(mapStateToProps)(withStyles(styles)(Notification))

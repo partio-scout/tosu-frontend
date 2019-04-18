@@ -105,8 +105,8 @@ const mapDispatchToProps = {
 
 BufferZone.propTypes = {
   buffer: PropTypesSchema.bufferShape.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.object.isRequired,
+  activities: PropTypes.object.isRequired,
   deleteActivityFromBuffer: PropTypes.func.isRequired,
   deleteActivity: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,

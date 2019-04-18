@@ -93,16 +93,16 @@ ActivityDragAndDropTarget.propTypes = {
   updateActivity: PropTypes.func.isRequired,
   notify: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
-  odd: PropTypes.bool.isRequired,
+  odd: PropTypes.bool,
   isOver: PropTypes.bool.isRequired,
   canDrop: PropTypes.bool.isRequired,
-  event: PropTypesSchema.eventShape.isRequired,
-  className: PropTypes.string.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   children: PropTypes.arrayOf(PropTypes.object).isRequired,
 }
 
-ActivityDragAndDropTarget.defaultProps = {}
+ActivityDragAndDropTarget.defaultProps = {
+    odd: false,
+}
 
 export default connect(
   mapStateToProps,

@@ -99,17 +99,16 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  scout: PropTypesSchema.scoutShape.isRequired,
+  scout: PropTypesSchema.scoutShape,
   buffer: PropTypesSchema.bufferShape.isRequired,
-  store: PropTypesSchema.storeShape.isRequired,
   scoutGoogleLogin: PropTypes.func.isRequired,
   eventsInitialization: PropTypes.func.isRequired,
   bufferZoneInitialization: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  tosu: PropTypes.string.isRequired,
+  events: PropTypes.object.isRequired,
+  activities: PropTypes.object.isRequired,
+  tosu: PropTypes.object.isRequired,
   notify: PropTypes.func.isRequired,
   pofTreeInitialization: PropTypes.func.isRequired,
   activityInitialization: PropTypes.func.isRequired,
@@ -119,7 +118,7 @@ Login.propTypes = {
 }
 
 Login.defaultProps = {
-  scout: PropTypes.shape({ id: '' }),
+  scout: null,
 }
 const mapStateToProps = state => ({
   scout: state.scout,
