@@ -148,6 +148,7 @@ class ButtonRow extends React.Component {
           </Button>
           <Button
             className={classes.button}
+            id="kuksa"
             onClick={() => this.selectView('KUKSA')}
             variant="contained"
             color={ui.view === 'KUKSA' ? 'primary' : 'secondary'}
@@ -166,7 +167,6 @@ class ButtonRow extends React.Component {
           <Button
             id="uusi-event"
             className={classes.button}
-            id="new-event-button"
             onClick={this.props.newEvent}
             variant="contained"
             color="secondary"
