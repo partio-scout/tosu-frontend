@@ -139,6 +139,7 @@ class ButtonRow extends React.Component {
       <div>
         <div>
           <Button
+            id="omat"
             className={classes.button}
             onClick={() => this.selectView('OWN')}
             variant="contained"
@@ -147,6 +148,7 @@ class ButtonRow extends React.Component {
             Omat
           </Button>
           <Button
+            id="kuksa"
             className={classes.button}
             onClick={() => this.selectView('KUKSA')}
             variant="contained"

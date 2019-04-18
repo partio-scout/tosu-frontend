@@ -48,6 +48,7 @@ class AddToPlan extends React.Component {
     return (
       <div>
         <Button
+          id="add-kuksa"
           onClick={this.handleButtonDialogOpen}
           className={this.props.buttonClass}
           variant="contained"
@@ -65,7 +66,7 @@ class AddToPlan extends React.Component {
           <DialogContent>Tapahtuma synkronoidaan Kuksaan.</DialogContent>
           <DialogActions>
             <Button variant="contained" onClick={this.handleButtonDialogClose}>peruuta</Button>
-            <Button variant='contained' color='primary' onClick={this.addEventToTosu}>Lisää suunnitelmaan</Button>
+            <Button id="verify-add-kuksa" variant='contained' color='primary' onClick={this.addEventToTosu}>Lisää suunnitelmaan</Button>
           </DialogActions>
         </Dialog>
       </div>
