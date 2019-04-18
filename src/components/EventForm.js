@@ -337,7 +337,7 @@ export default class EventForm extends React.Component {
             />
           ) : null}
           {this.props.allowRepeatedEvent ? (
-            <div className="frequent" style={frequentStyle}>
+            <div style={frequentStyle}>
               <SelectValidator
                 name="repeatFrequency"
                 label="Toistumisväli"
