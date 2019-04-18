@@ -12,7 +12,8 @@ before_install:
   - bash .scripts/install.sh
   - docker build -t tosuapp/tosu-frontend .
 install:
-  - npm install && npm install cypress -g
+  - npm install
+  - npm install cypress
 before_script:
   - export CI=false
   - docker-compose up -d
