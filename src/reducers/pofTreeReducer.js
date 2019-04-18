@@ -53,6 +53,7 @@ const fillWithNeededVariable = root => {
     task.title = (
       <span
         name={task.title}
+        className="tree-search-title"
         style={{ backgroundColor: task.isMandatory ? '#2196f3' : '#E3F2FD' }}
       >
         {task.title}
