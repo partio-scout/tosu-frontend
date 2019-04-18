@@ -241,7 +241,6 @@ class EventCard extends React.Component {
       this.props.taskgroup !== null &&
       isTouchDevice()
     ) {
-      console.log('Counting selectedTaskGroupPofData')
       const groupfound = taskGroupTree.find(
         group => group.guid === this.props.taskgroup.value
       )
