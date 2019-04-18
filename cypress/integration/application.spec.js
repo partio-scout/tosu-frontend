@@ -4,7 +4,9 @@ const resetDatabase = () => {
   scoutService.deleteScout('12345')
 }
 const createEvent = () => {
-  cy.get('button[id=new-event-button]').should("be.visible").click()
+  cy.get('button[id=new-event-button]')
+    .should('be.visible')
+    .click()
   cy.get('input[name="title"').type('testEvent', {
     multiple: true,
     force: true,
@@ -26,12 +28,8 @@ describe('Creating and deleting events', function() {
     resetDatabase()
     cy.request('http://localhost:3001/scouts/testuser')
     cy.visit('http://localhost:3000')
-    cy.wait(4000)
   })
-  it('user adds a new single event', function() {
-    createEvent()
-    cy.contains('testEvent')
-  })
+  it('initiate tosu', function() {})
   it('user adds a new repeating event', function() {
     cy.contains('Uusi tapahtuma').click()
     cy.get('input[name="title"').type('testMultipleEvent', {
@@ -58,7 +56,7 @@ describe('Creating and deleting events', function() {
     /* cy.get('ul[class="event-list"] > li').should($lis => {
       expect($lis).to.have.length(5)
     })*/
-    cy.contains("testMultipleEvent")
+    cy.contains('testMultipleEvent')
   })
   it('user adds a new kuksa-event', function() {
     cy.contains('Kuksa').click()
@@ -78,7 +76,6 @@ describe('Creating and deleting events', function() {
     cy.contains('new tosu').click()
     cy.contains('Yleinen').click()
     cy.contains('testEvent').should('not.exist')*/
-
     // Ei toimi koska nyt yleinen lukee myös appbarissa
   })
   it('tosu can be deleted', function() {
