@@ -238,7 +238,7 @@ class App extends Component {
           ).map(event => {
             odd = !odd
             return (
-              <li className="event-list-item" key={event.id ? event.id : 0}>
+              <li id="event-card-in-list" className="event-list-item" key={event.id ? event.id : 0}>
                 {event.kuksaEvent ? (
                   <KuksaEventCard event={event} />
                 ) : (

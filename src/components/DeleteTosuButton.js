@@ -86,6 +86,7 @@ class DeleteTosuButton extends Component {
     return (
       <div>
         <StyledButton
+          id="tosu-delete"
           classes={{ label: 'deleteTosuButton' }}
           variant="contained"
           onClick={() => this.handleClickOpen()}

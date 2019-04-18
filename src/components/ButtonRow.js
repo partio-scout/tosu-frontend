@@ -204,6 +204,7 @@ class ButtonRow extends React.Component {
             </IconButton>
           ) : (
             <Button
+              id="tosu-button"
               className="button"
               onClick={e => this.setState({ anchorEl: e.currentTarget })}
               variant="contained"

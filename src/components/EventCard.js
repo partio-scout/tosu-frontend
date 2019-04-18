@@ -413,7 +413,7 @@ class EventCard extends React.Component {
             <CardHeader
               style={this.state.expanded ? {} : { paddingBottom: '5px' }}
               title={
-                <div>
+                <div id="event-name">
                   {title}
                   &nbsp;
                   {this.props.event.activities.length === 0 ? warning : ''}

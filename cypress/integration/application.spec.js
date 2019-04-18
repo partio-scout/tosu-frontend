@@ -11,12 +11,12 @@ describe('After logging in', function() {
     cy.visit('http://localhost:3000')
   })
   it('tosu can be deleted', function() {
-    cy.contains('Poista tosu').click()
-    cy.get('button[id=confirm]').click()
-    cy.contains('Ei tosuja')
+    cy.get('button[id="tosu-delete"]').click()
+    cy.get('button[id="confirm"]').click()
+    cy.get('button[id="tosu-button"]').contains('Ei tosuja')
   })
   it('user adds a new single event', function() {
-    cy.contains('Uusi tapahtuma').click()
+    cy.get('button[id="uusi-event"]').click()
     cy.get('input[name="title"').type('testEvent', {
       multiple: true,
       force: true,
@@ -26,16 +26,16 @@ describe('After logging in', function() {
     cy.get('input[name="startTime"]').click({ multiple: true })
     cy.contains('OK').click({ multiple: true, force: true })
     cy.get('div[id="select-type"]').click({ multiple: true, force: true })
-    cy.contains('Kokous').click({ multiple: true, force: true })
+    cy.get('li[id="tyyppi-kokous"]').click({ multiple: true, force: true })
     cy.get('input[name="information"').type('testtest', {
       multiple: true,
       force: true,
     })
-    cy.contains('Tallenna').click({ multiple: true, force: true })
-    cy.contains('testEvent')
+    cy.get('button[id="tallenna-event"]').click({ multiple: true, force: true })
+    cy.get('div[id="event-name"]').contains('testEvent')
   })
   it('user adds a new repeating event', function() {
-    cy.contains('Uusi tapahtuma').click()
+    cy.get('button[id="uusi-event"]').click()
     cy.get('input[name="title"').type('testMultipleEvent', {
       multiple: true,
       force: true,
@@ -50,14 +50,14 @@ describe('After logging in', function() {
       multiple: true,
       force: true,
     })
-    cy.contains('Kokous').click({ multiple: true, force: true })
+    cy.get('li[id="tyyppi-kokous"]').click({ multiple: true, force: true })
     cy.get('input[name="information"').type('testtesttest', {
       multiple: true,
       force: true,
     })
-    cy.contains('Tallenna').click({ multiple: true, force: true })
+    cy.get('button[id="tallenna-event"]').click({ multiple: true, force: true })
     cy.wait(4000)
-    cy.get('ul[class="event-list"] > li').should($lis => {
+    cy.get('li[id="event-card-in-list"]').should($lis => {
       expect($lis).to.have.length(4)
     })
   })
