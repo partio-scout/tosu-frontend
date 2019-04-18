@@ -17,8 +17,7 @@ describe('After logging in', function() {
   })
   it('login succesful', function() {
     //cy.get('div[class="account-name-and-button"]')
-
-    // Ei toimi koska tuo tunniste ei löydy. 
+    // Ei toimi koska tuo tunniste ei löydy.
   })
   it('user can hide the sidebar', function() {
     /*cy.get('div[id="select-tarppo"]')

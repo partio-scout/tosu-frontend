@@ -4,7 +4,7 @@ const resetDatabase = () => {
   scoutService.deleteScout('12345')
 }
 const createEvent = () => {
-  cy.contains('Uusi tapahtuma').click()
+  cy.get('button[id=new-event-button]').should("be.visible").click()
   cy.get('input[name="title"').type('testEvent', {
     multiple: true,
     force: true,

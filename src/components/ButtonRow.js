@@ -164,6 +164,7 @@ class ButtonRow extends React.Component {
           </Button>
           <Button
             className={classes.button}
+            id="new-event-button"
             onClick={this.props.newEvent}
             variant="contained"
             color="secondary"
