@@ -10,50 +10,44 @@ import { withStyles } from '@material-ui/core'
 
 const styles = theme => ({
   eventList: {
-    marginBlockEnd: 0,
-    marginBlockStart: 0,
-    overflowX: 'hidden',
-    paddingLeft: 0,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
 })
 
-class EventList extends React.Component {
-  render() {
-    const view = this.props.ui.view
-    const { startDate, endDate, events, initialization, classes } = this.props
+function EventList(props) {
+  const view = props.ui.view
+  const { startDate, endDate, events, initialization, classes } = props
 
-    const eventsToShow = () =>
-      filterEvents(view, eventList(events), startDate, endDate)
+  const eventsToShow = () =>
+    filterEvents(view, eventList(events), startDate, endDate)
 
-    let odd = true
-    return (
-      <React.Fragment>
-        <ul className={classes.eventList}>
-          {eventsToShow().map(event => {
-            odd = !odd
-            return (
-              <li key={event.id ? event.id : 0}>
-                {event.kuksaEvent ? (
-                  <KuksaEventCard event={event} />
-                ) : (
-                  <EventCard event={event} odd={odd} />
-                )}
-              </li>
-            )
-          })}
-        </ul>
-        <DeleteTosuButton initialization={initialization} />
-      </React.Fragment>
-    )
-  }
+  let odd = true
+  return (
+    <React.Fragment>
+      <div className={classes.eventList}>
+        {eventsToShow().map(event => {
+          odd = !odd
+          return (
+            <div key={event.id ? event.id : 0}>
+              {event.kuksaEvent ? (
+                <KuksaEventCard event={event} />
+              ) : (
+                <EventCard event={event} odd={odd} />
+              )}
+            </div>
+          )
+        })}
+      </div>
+      <DeleteTosuButton initialization={initialization} />
+    </React.Fragment>
+  )
 }
 
 EventList.propTypes = {
   events: PropTypes.arrayOf(PropTypes.object).isRequired,
   filter: PropTypes.string.isRequired,
 }
-
-EventList.defaultProps = {}
 
 const mapStateToProps = state => ({
   events: state.events,
