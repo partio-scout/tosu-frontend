@@ -12,7 +12,7 @@ const styles = theme => ({
   divider: {
     height: 4,
     backgroundColor: '#243265',
-    margin: '20px 14px',
+    margin: '14px 0',
   },
   toolbar: theme.mixins.toolbar,
   drawer: {
@@ -21,6 +21,7 @@ const styles = theme => ({
   },
   drawerPaper: {
     width: drawerWidth,
+    padding: 14,
   },
 })
 
