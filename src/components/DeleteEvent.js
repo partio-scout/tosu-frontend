@@ -86,10 +86,10 @@ class DeleteEvent extends React.Component {
       actions = (
         <div>
           <Button className={classes.button} variant='contained' onClick={this.handleClose}>peruuta</Button>
-          <Button className={classes.button} variant='contained' color='secondary' onClick={this.deleteEvent} disabled={disabled}>
+          <Button id="delete-one-recurrent-event" className={classes.button} variant='contained' color='secondary' onClick={this.deleteEvent} disabled={disabled}>
             Poista tämä tapahtuma
           </Button>
-          <Button className={classes.redbutton} onClick={this.deleteEventGroup}>
+          <Button id="delete-recurrent-events" className={classes.redbutton} onClick={this.deleteEventGroup}>
             Poista toistuvat tapahtumat
           </Button>
         </div>
@@ -111,6 +111,7 @@ class DeleteEvent extends React.Component {
     return (
       <div>
         <Button
+          id="delete-event"
           size={this.props.minimal ? 'small' : 'medium'}
           className={classes.button}
           onClick={this.handleDelete}
