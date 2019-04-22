@@ -1,6 +1,7 @@
 import tosuService from '../services/tosu'
 
 const reducer = (state = {}, action) => {
+  var newState = { ...state }
   switch (action.type) {
     case 'INIT_TOSU':
       var selectedTosu = action.tosuList.find(tosu => tosu.selected)
@@ -18,29 +19,25 @@ const reducer = (state = {}, action) => {
         selected: selectedTosu.id,
         ...tosuMap,
       }
+
     case 'SELECT_TOSU':
-      // Get previously selected and set its state to false
-      var oldSelected = state[state.selected]
-      oldSelected.selected = false
+      // Deleselect old Tosu
+      newState[newState.selected].selected = false
 
-      // Get newly selected and set its state to true
-      var newSelected = state[action.tosuId]
-      newSelected.selected = true
+      // Select new Tosu
+      newState[action.tosuId].selected = true
 
-      // Return new state with updated objects for oldSelected and newSelected,
-      // and selected set to new ID.
-      return {
-        ...state,
-        [oldSelected.id]: oldSelected,
-        [newSelected.id]: newSelected,
-        selected: action.tosuId,
-      }
+      // Set selected to new Tosu id
+      newState.selected = action.tosuId
+
+      return newState
+
     case 'CREATE_TOSU':
       if (state.selected) {
         return {
           ...state,
           [action.newTosu.id]: { ...action.newTosu, selected: true },
-          [state.selected]: {...state[state.selected], selected:false},
+          [state.selected]: { ...state[state.selected], selected: false },
           selected: action.newTosu.id,
         }
       } else {
@@ -50,24 +47,27 @@ const reducer = (state = {}, action) => {
           selected: action.newTosu.id,
         }
       }
+
     case 'DELETE_TOSU':
-      const newState = { ...state }
+      // Delete the Tosu
       delete newState[action.tosuId]
-      const selected = {
-        ...Object.keys(newState)
-          .map(key => newState[key])
-          .find(tosu => !tosu.selected),
+
+      // If deleted Tosu was selected, select new Tosu
+      if (newState.selected === action.tosuId) {
+        const newSelected = Object.keys(newState).find(
+          key => key !== 'selected'
+        )
+        newState[newSelected].selected = true
+        newState.selected = newSelected
       }
-      if (!selected.id) {
-        return {}
-      }
-      selected.selected = true
-      newState.selected = selected.id
+
       return newState
+
     default:
       return state
   }
 }
+
 /**
  * Fetch list of Tosus belonging to the scout and save it in the store
  * @returns id of the currently selected Tosu
@@ -120,9 +120,19 @@ export const createTosu = tosuName => async dispatch => {
   }
 }
 
-export const deleteTosu = tosuId => dispatch => {
-  tosuService.deleteTosu(tosuId)
-  dispatch({ type: 'DELETE_TOSU', tosuId })
-}
+/**
+ * Deletes specified Tosu.
+ * @param {*} tosuId - ID of the Tosu to be deleted
+ */
+export const deleteTosu = tosuId => dispatch =>
+  tosuService
+    .deleteTosu(tosuId)
+    .then(
+      dispatch({
+        type: 'DELETE_TOSU',
+        tosuId,
+      })
+    )
+    .catch(error => console.log(error))
 
 export default reducer
