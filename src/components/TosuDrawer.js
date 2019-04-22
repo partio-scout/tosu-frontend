@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
@@ -64,39 +64,44 @@ const styles = theme => ({
   },
 })
 
-function TosuDrawer(props) {
-  const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
-  const { ui, tosus, loading, classes } = props
-
-  const [newTosuName, updateNewTosuName] = useState('')
+class TosuDrawer extends React.Component {
+  state = { newTosuName: '' }
 
   /**
-   * Closes the menu and dispatches 'Tosu view change' -action
-   * @param tosuId - ID of the selected Tosu
+   * Just a helper function to remove copy & paste
+   * @param tosuId - ID of the Tosu to change to
    */
-  const handleTosuSelect = async tosuId => {
-    if (tosus.selected !== tosuId) {
-      props.setSideBar(false)
-      await tosuChange(
-        tosuId,
-        props.setLoading,
-        props.selectTosu,
-        props.eventsInitialization,
-        props.activityInitialization,
-        props.pofTreeUpdate,
-        props.activities,
-        props.buffer
-      )
-    }
+  changeTosu = tosuId =>
+    tosuChange(
+      tosuId,
+      this.props.setLoading,
+      this.props.selectTosu,
+      this.props.eventsInitialization,
+      this.props.activityInitialization,
+      this.props.pofTreeUpdate,
+      this.props.activities,
+      this.props.buffer
+    )
+
+  /**
+   * Creates new Tosu and selects it.
+   */
+  handleTosuCreate = async () => {
+    const created = await this.props.createTosu(this.state.newTosuName)
+    this.props.setSideBar(false)
+    this.setState({ newTosuName: '' })
+    await this.changeTosu(created.id)
   }
 
   /**
-   * Creates new Tosu and selects it
+   * Closes the menu and dispatches 'Tosu view change' -action.
+   * @param tosuId - ID of the selected Tosu
    */
-  const handleTosuCreate = async () => {
-    const created = await props.createTosu(newTosuName)
-    handleTosuSelect(created.id)
-    updateNewTosuName('')
+  handleTosuSelect = async tosuId => {
+    if (this.props.tosus.selected !== tosuId) {
+      this.props.setSideBar(false)
+      await this.changeTosu(tosuId)
+    }
   }
 
   /**
@@ -104,113 +109,126 @@ function TosuDrawer(props) {
    * if the deleted Tosu was currently selected.
    * @param tosuId - ID of the selected Tosu
    */
-  const handledTosuDelete = async tosuId => {
-    await props.deleteTosu(tosuId)
-    if (tosus.selected === tosuId) {
-      await tosuChange(
-        tosus.selected,
-        props.setLoading,
-        props.selectTosu,
-        props.eventsInitialization,
-        props.activityInitialization,
-        props.pofTreeUpdate,
-        props.activities,
-        props.buffer
-      )
+  handledTosuDelete = async tosuId => {
+    // Has to be done this (duplicate 'deleteTosu()') way
+    // because we need tosus' state before calling deleteTosu().
+    // Could be fixed by removing Tosu selection from 'DELETE_TOSU' reducer action,
+    // but we still need to call 'selectTosu' API endpoint somewhere.
+
+    if (this.props.tosus.selected === tosuId) {
+      await this.props.deleteTosu(tosuId)
+
+      // Check that after deleting there are Tosus left
+      if (Object.keys(this.props.tosus).length <= 1) {
+        // Clear events, activity buffer, etc.
+        this.props.eventsInitialization({})
+        this.props.initialization()
+      } else {
+        // Change to newly selected Tosu
+        await this.changeTosu(this.props.tosus.selected)
+      }
+    } else {
+      // Just delete the Tosu because it's not currently selected
+      await this.props.deleteTosu(tosuId)
     }
-    props.notify('Tosu poistettu', 'success')
+    this.props.notify('Tosu poistettu', 'success')
   }
 
-  const tosuList = (
-    <div className={classes.tosuList}>
-      <List>
-        {Object.entries(tosus).map(([property, tosu]) =>
-          property === 'selected' ? null : (
-            <ListItem
-              key={tosu.id}
-              selected={tosu.selected}
-              onClick={() => handleTosuSelect(tosu.id)}
-              button
-            >
-              <Avatar>
-                <AssignmentIcon />
-              </Avatar>
-              <ListItemText
-                primary={tosu.name}
-                secondary={
-                  <React.Fragment>
-                    <b>Luotu: </b>
-                    {moment(tosu.createdAt).format('l')}
-                  </React.Fragment>
-                }
-              />
-              <ListItemSecondaryAction>
-                <IconButton onClick={() => handledTosuDelete(tosu.id)}>
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          )
-        )}
-      </List>
-    </div>
-  )
+  render() {
+    const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
+    const { ui, tosus, loading, classes } = this.props
 
-  const tosuInput = (
-    <Paper className={classes.root} elevation={1}>
-      <InputBase
-        className={classes.input}
-        placeholder="Uusi toimintasuunnitelma"
-        value={newTosuName}
-        onChange={event => updateNewTosuName(event.target.value)}
-      />
-      <IconButton
-        className={classes.iconButton}
-        onClick={() => handleTosuCreate()}
-      >
-        <AddIcon />
-      </IconButton>
-    </Paper>
-  )
-
-  return (
-    <SwipeableDrawer
-      disableBackdropTransition={!iOS}
-      disableDiscovery={iOS}
-      open={ui.sideBarVisible}
-      onClose={() => props.setSideBar(false)}
-      onOpen={() => props.setSideBar(true)}
-      classes={{ paper: classes.drawerPaper }}
-    >
-      <div className={classes.title}>
-        <Typography
-          style={{ flexGrow: 1 }}
-          align="center"
-          color="inherit"
-          variant="h5"
-        >
-          TOIMINTASUUNNITELMAT
-        </Typography>
+    const tosuList = (
+      <div className={classes.tosuList}>
+        <List>
+          {Object.entries(tosus).map(([property, tosu]) =>
+            property === 'selected' ? null : (
+              <ListItem
+                key={tosu.id}
+                selected={tosu.selected}
+                onClick={() => this.handleTosuSelect(tosu.id)}
+                button
+              >
+                <Avatar>
+                  <AssignmentIcon />
+                </Avatar>
+                <ListItemText
+                  primary={tosu.name}
+                  secondary={
+                    <React.Fragment>
+                      <b>Luotu: </b>
+                      {moment(tosu.createdAt).format('l')}
+                    </React.Fragment>
+                  }
+                />
+                <ListItemSecondaryAction>
+                  <IconButton onClick={() => this.handledTosuDelete(tosu.id)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            )
+          )}
+        </List>
       </div>
-      {loading ? (
-        <div className={classes.centered}>
-          <CircularProgress />
-        </div>
-      ) : Object.entries(tosus).length === 0 ? (
-        <Typography
-          variant="overline"
-          align="center"
-          gutterBottom
-          style={{ marginTop: 14 }}
+    )
+
+    const tosuInput = (
+      <Paper className={classes.root} elevation={1}>
+        <InputBase
+          className={classes.input}
+          placeholder="Uusi toimintasuunnitelma"
+          value={this.state.newTosuName}
+          onChange={event => this.setState({ newTosuName: event.target.value })}
+        />
+        <IconButton
+          className={classes.iconButton}
+          onClick={() => this.handleTosuCreate()}
         >
-          Ei toimintasuunnitelmia
-        </Typography>
-      ) : (
-        tosuList
-      )}
-      {loading ? null : tosuInput}
-    </SwipeableDrawer>
-  )
+          <AddIcon />
+        </IconButton>
+      </Paper>
+    )
+
+    return (
+      <SwipeableDrawer
+        disableBackdropTransition={!iOS}
+        disableDiscovery={iOS}
+        open={ui.sideBarVisible}
+        onClose={() => this.props.setSideBar(false)}
+        onOpen={() => this.props.setSideBar(true)}
+        classes={{ paper: classes.drawerPaper }}
+      >
+        <div className={classes.title}>
+          <Typography
+            style={{ flexGrow: 1 }}
+            align="center"
+            color="inherit"
+            variant="h5"
+          >
+            TOIMINTASUUNNITELMAT
+          </Typography>
+        </div>
+        {loading ? (
+          <div className={classes.centered}>
+            <CircularProgress />
+          </div>
+        ) : Object.entries(tosus).length === 0 ? (
+          <Typography
+            variant="overline"
+            align="center"
+            gutterBottom
+            style={{ marginTop: 14 }}
+          >
+            Ei toimintasuunnitelmia
+          </Typography>
+        ) : (
+          tosuList
+        )}
+        {loading ? null : tosuInput}
+      </SwipeableDrawer>
+    )
+  }
 }
 
 const mapStateToProps = state => ({

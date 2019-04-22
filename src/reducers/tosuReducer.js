@@ -21,7 +21,7 @@ const reducer = (state = {}, action) => {
       }
 
     case 'SELECT_TOSU':
-      // Deleselect old Tosu
+      // Deselect old Tosu
       newState[newState.selected].selected = false
 
       // Select new Tosu
@@ -33,20 +33,22 @@ const reducer = (state = {}, action) => {
       return newState
 
     case 'CREATE_TOSU':
-      if (state.selected) {
-        return {
-          ...state,
-          [action.newTosu.id]: { ...action.newTosu, selected: true },
-          [state.selected]: { ...state[state.selected], selected: false },
-          selected: action.newTosu.id,
-        }
-      } else {
-        return {
-          ...state,
-          [action.newTosu.id]: { ...action.newTosu, selected: true },
-          selected: action.newTosu.id,
+      // Unselect old Tosu if such exists
+      if (newState.selected) {
+        newState[newState.selected] = {
+          ...newState[newState.selected],
+          selected: false,
         }
       }
+
+      // Select newly created Tosu
+      newState[action.newTosu.id] = {
+        ...action.newTosu,
+        selected: true,
+      }
+      newState.selected = action.newTosu.id
+
+      return newState
 
     case 'DELETE_TOSU':
       // Delete the Tosu
