@@ -28,15 +28,23 @@ describe('After logging in', function() {
       .click({ multiple: true, force: true })
   })
 
-  it('closes additional info by pressing the escape key', () => {
+ it('closes additional info by pressing the escape key', () => {
     cy.get('body').type('{esc}', { force: true })
   })
+  
   // updates the screen and shows the activities
   it('', function() {
     cy.visit('http://localhost:3000')
-  })
+ })
 
-  it('user can empty buffer', function() {
+ it('user can remove one activity', function() {
+    cy.get('div[role="button"]')
+      .first()
+      .contains('clear')
+      .click({ force: true })
+ })
+
+ it('user can empty buffer', function() {
     cy.contains('Tyhjennä')
     cy.contains('Tyhjennä').click({ force: true })
   })
