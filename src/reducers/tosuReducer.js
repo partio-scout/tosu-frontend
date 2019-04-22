@@ -52,6 +52,11 @@ const reducer = (state = {}, action) => {
       // Delete the Tosu
       delete newState[action.tosuId]
 
+      // Clear the state if the deleted Tosu was a last one
+      if (Object.keys(newState).length <= 1) {
+        return {}
+      }
+
       // If deleted Tosu was selected, select new Tosu
       if (newState.selected === action.tosuId) {
         const newSelected = Object.keys(newState).find(
