@@ -26,7 +26,11 @@ describe('After logging in', function() {
     cy.get('div[role="button"]')
       .first()
       .click({ multiple: true, force: true })
-  })
+      cy.get('div[role="tablist"]')
+      .contains('Vinkit')
+      .click({ force: true })
+    cy.wait(4000)
+})
 
  it('closes additional info by pressing the escape key', () => {
     cy.get('body').type('{esc}', { force: true })
