@@ -16,6 +16,7 @@ import moment from 'moment'
 import 'react-dates/initialize'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import { normalize } from 'normalizr'
+
 // CSS
 import './stylesheets/index.css'
 import 'react-dates/lib/css/_datepicker.css'
@@ -34,6 +35,8 @@ import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
 import Login from './components/Login'
 import EventList from './components/EventList'
+import TosuDrawer from './components/TosuDrawer'
+
 // Utils
 import PropTypesSchema from './utils/PropTypesSchema'
 import { createStatusMessage } from './utils/createStatusMessage'
@@ -211,6 +214,7 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
+        <TosuDrawer initialization={this.initialization} />
         <div style={{ display: 'flex' }}>
           <AppBar />
           <ActivitiesSidebar />
@@ -248,7 +252,6 @@ class App extends Component {
                 <EventList
                   startDate={this.state.startDate}
                   endDate={this.state.endDate}
-                  initialization={this.initialization}
                 />
               )}
               <Dialog

@@ -6,7 +6,7 @@ import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
 import StatusMessage from './StatusMessage'
 
-const drawerWidth = 380
+const drawerWidth = 400
 
 const styles = theme => ({
   divider: {
