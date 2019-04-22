@@ -23,11 +23,6 @@ const styles = {
     backgroundColor: '#d6e8f7',
     borderRadius: 3,
   },
-  dropDown: {
-    position: 'absolute',
-    maxHeight: 400,
-    overflow: 'auto',
-  },
   treeSelect: {
     width: '100%',
     marginTop: 5,
@@ -149,7 +144,11 @@ class TreeSearchBar extends React.Component {
     const treeSearchBar = () => (
       <TreeSelect
         className={classes.treeSelect}
-        dropdownStyle={classes.dropDown}
+        dropdownStyle={{
+          position: 'absolute',
+          maxHeight: 400,
+          overflow: 'auto',
+        }}
         placeholder={this.state.treePlaceHolder}
         searchPlaceholder="Hae aktiviteettia"
         showSearch
