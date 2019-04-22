@@ -41,7 +41,9 @@ function TopBar(props) {
             ? 'Toiminnansuunnittelusovellus'
             : tosu[tosu.selected].name}
         </Typography>
-        <AccountIcon scout={scout} />
+        <div id="scout-name">
+          <AccountIcon scout={scout} />
+        </div>
       </Toolbar>
     </AppBar>
   )

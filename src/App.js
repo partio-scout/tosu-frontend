@@ -255,7 +255,7 @@ class App extends Component {
                 open={this.state.newEventVisible}
                 onClose={this.handleClose}
               >
-                <DialogTitle>Luo uusi tapahtuma</DialogTitle>
+                <DialogTitle id="event-form-title">Luo uusi tapahtuma</DialogTitle>
                 <NewEvent closeMe={this.handleClose} />
               </Dialog>
             </div>
