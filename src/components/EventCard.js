@@ -38,7 +38,6 @@ import {
   addActivityToEventOnlyLocally,
 } from '../reducers/eventReducer'
 import { notify } from '../reducers/notificationReducer'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   deleteActivityFromBufferOnlyLocally,
   postActivityToBufferOnlyLocally,
@@ -122,26 +121,6 @@ class EventCard extends React.Component {
         this.props.notify('Aktiviteetin lisäämisessä tapahtui virhe!')
       }
     }
-    this.props.pofTreeUpdate(this.props.activities)
-  }
-
-  /**
-   *  Deletes all activities from the local buffer and updates the pofTree
-   */
-  emptyBuffer = async () => {
-    if (isTouchDevice()) {
-      const bufferActivities = this.props.buffer.activities
-      const promises = bufferActivities.map(activity =>
-        this.props.deleteActivityFromBuffer(activity)
-      )
-      try {
-        await Promise.all(promises)
-      } catch (exception) {
-        console.log('Error in emptying buffer', exception)
-      }
-    }
-
-    this.props.pofTreeUpdate(this.props.activities)
   }
 
   /**
@@ -481,7 +460,6 @@ EventCard.propTypes = {
   deleteActivityFromEventOnlyLocally: PropTypes.func.isRequired,
   postActivityToBufferOnlyLocally: PropTypes.func.isRequired,
   deleteActivityFromBufferOnlyLocally: PropTypes.func.isRequired,
-  pofTreeUpdate: PropTypes.func.isRequired,
 }
 
 EventCard.defaultProps = {}
@@ -507,7 +485,6 @@ const mapDispatchToProps = {
   deleteActivityFromEventOnlyLocally,
   postActivityToBufferOnlyLocally,
   deleteActivityFromBufferOnlyLocally,
-  pofTreeUpdate,
 }
 
 export default connect(

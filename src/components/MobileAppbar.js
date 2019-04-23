@@ -10,7 +10,6 @@ import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import StatusMessage from './StatusMessage'
 import { createStatusMessage } from '../utils/createStatusMessage'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 import { getTaskGroup, getRootGroup } from '../functions/denormalizations'
 
@@ -148,7 +147,6 @@ MobileAppbar.propTypes = {
   notify: PropTypes.func.isRequired,
   addStatusMessage: PropTypes.func.isRequired,
   selectTaskgroup: PropTypes.func.isRequired,
-  pofTreeUpdate: PropTypes.func.isRequired,
   emptyTaskgroup: PropTypes.func.isRequired,
 }
 
@@ -156,7 +154,6 @@ const mapDispatchToProps = {
   notify,
   addStatusMessage,
   selectTaskgroup,
-  pofTreeUpdate,
   emptyTaskgroup,
 }
 

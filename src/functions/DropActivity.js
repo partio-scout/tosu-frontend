@@ -25,7 +25,6 @@ const moveActivityFromEventToBuffer = async (props, activity, parentId) => {
     console.log(exception)
     props.notify('Aktiviteettialue on täynnä!')
   }
-  props.pofTreeUpdate(props.activities)
 }
 
 const moveActivityFromBufferToEvent = async (props, activity, targetId) => {
@@ -45,7 +44,6 @@ const moveActivityFromBufferToEvent = async (props, activity, targetId) => {
     props.postActivityToBufferOnlyLocally({ ...activity, canDrag: true })
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
-  props.pofTreeUpdate(props.activities)
   return { error: 'cant move activity' }
 }
 
@@ -75,7 +73,6 @@ const moveActivityFromEventToEvent = async (
     })
     props.notify('Aktiviteetin siirrossa tuli virhe. Yritä uudestaan!')
   }
-  props.pofTreeUpdate(props.activities)
   return { error: 'cant move activity' }
 }
 
