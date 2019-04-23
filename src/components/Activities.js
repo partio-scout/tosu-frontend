@@ -24,7 +24,7 @@ export class Activities extends React.Component {
     try {
       if (this.props.bufferzone) {
         this.props.deleteActivityFromBuffer(activity.id)
-        this.props.deleteActivity(activity.id)
+        await this.props.deleteActivity(activity.id)
         this.props.pofTreeUpdate(this.props.stateActivities)
       } else {
         this.props.deleteActivityFromEvent(activity.id, activity.eventId)
