@@ -10,14 +10,22 @@ import {
   withStyles,
   Typography,
 } from '@material-ui/core'
+import CalendarIcon from '@material-ui/icons/CalendarToday'
+import AddIcon from '@material-ui/icons/Add'
 import { viewChange } from '../reducers/uiReducer'
 import { setLoading } from '../reducers/loadingReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
-const styles = {
+const styles = theme => ({
   button: {
-    margin: 4,
+    marginRight: theme.spacing.unit,
     color: 'white',
+  },
+  iconButton: {
+    backgroundColor: theme.palette.secondary.main,
+  },
+  iconButtonSelected: {
+    backgroundColor: theme.palette.primary.main + ' !important',
   },
   dateRangeContainer: {
     marginTop: 5,
@@ -25,7 +33,7 @@ const styles = {
   hidden: {
     display: 'none',
   },
-}
+})
 
 class ButtonRow extends React.Component {
   state = {
@@ -69,7 +77,7 @@ class ButtonRow extends React.Component {
 
   render() {
     const { startDate, endDate } = this.state
-    const { ui, classes, tosuMap } = this.props
+    const { ui, classes, tosuMap, mobile } = this.props
 
     return (
       <div>
@@ -90,23 +98,48 @@ class ButtonRow extends React.Component {
           >
             Kuksa
           </Button>
-          <Button
-            className={classes.button}
-            onClick={() => this.selectView('CALENDAR')}
-            variant="contained"
-            color={ui.view === 'CALENDAR' ? 'primary' : 'secondary'}
-          >
-            Kalenteri
-          </Button>
-          <Button
-            className={classes.button}
-            onClick={this.props.newEvent}
-            variant="contained"
-            color="secondary"
-            disabled={!this.canCreateEvent(tosuMap)}
-          >
-            Uusi tapahtuma
-          </Button>
+
+          {mobile ? (
+            <IconButton
+              className={
+                classes.button +
+                ' ' +
+                (ui.view === 'CALENDAR'
+                  ? classes.iconButtonSelected
+                  : classes.iconButton)
+              }
+              onClick={() => this.selectView('CALENDAR')}
+            >
+              <CalendarIcon fontSize="small" />
+            </IconButton>
+          ) : (
+            <Button
+              className={classes.button}
+              onClick={() => this.selectView('CALENDAR')}
+              variant="contained"
+              color={ui.view === 'CALENDAR' ? 'primary' : 'secondary'}
+            >
+              Kalenteri
+            </Button>
+          )}
+
+          {!this.canCreateEvent(tosuMap) ? null : mobile ? (
+            <IconButton
+              className={classes.button + ' ' + classes.iconButton}
+              onClick={this.props.newEvent}
+            >
+              <AddIcon fontSize="small" />
+            </IconButton>
+          ) : (
+            <Button
+              className={classes.button}
+              onClick={this.props.newEvent}
+              variant="contained"
+              color="secondary"
+            >
+              Uusi tapahtuma
+            </Button>
+          )}
         </div>
         <div
           className={classes.dateRangeContainer}
