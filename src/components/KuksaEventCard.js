@@ -58,12 +58,7 @@ class KuksaEventCard extends React.Component {
     return (
       <Card className={classes.eventCard}>
         <CardHeader
-          title={
-            <div>
-              {title}
-              &nbsp;
-            </div>
-          }
+          title={title}
           subheader={subtitle}
           action={
             <IconButton

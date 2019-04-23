@@ -52,7 +52,7 @@ import SuggestionCard from '../components/SuggestionCard'
 import { addActivity } from '../reducers/activityReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
-const styles = {
+const styles = theme => ({
   activityHeader: {
     margin: 0,
     minHeight: 0,
@@ -61,10 +61,9 @@ const styles = {
     flexFlow: 'row wrap',
   },
   warning: {
-    width: 15,
-    height: 15,
-    padding: 0,
-    marginRight: 7,
+    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing.unit,
+    marginBottom: -3,
     color: '#f14150',
   },
   arrowUp: {
@@ -85,7 +84,7 @@ const styles = {
     marginBottom: 14,
     borderRadius: 4,
   },
-}
+})
 
 class EventCard extends React.Component {
   constructor(props) {
@@ -235,7 +234,7 @@ class EventCard extends React.Component {
     const { event, odd, classes } = this.props
 
     const warning = (
-      <Tooltip title="Tapahtumasta puuttuu aktiviteetti!" disableFocusListener>
+      <Tooltip disableFocusListener title="Tapahtumasta puuttuu aktiviteetti!">
         <Warning className={classes.warning} />
       </Tooltip>
     )
@@ -305,7 +304,7 @@ class EventCard extends React.Component {
     )
 
     const touchDeviceNotExpanded = (
-      <CardContent style={this.state.expanded ? {} : { padding: '3px' }}>
+      <CardContent style={this.state.expanded ? {} : { padding: '0 12px' }}>
         <Activities
           activities={event.activities.map(key => this.props.activities[key])}
           bufferzone={false}
@@ -336,12 +335,14 @@ class EventCard extends React.Component {
             />
           </div>
         ) : (
-          <div style={{ clear: 'both' }}>&nbsp;</div>
+          <div style={{ clear: 'both' }} />
         )}
       </CardContent>
     )
     const notExpanded = (
-      <CardContent style={this.state.expanded ? {} : { padding: '3px 10px' }}>
+      <CardContent
+        style={this.state.expanded ? {} : { padding: '0 12px 12px' }}
+      >
         <div className={classes.activityHeader}>
           <Activities
             activities={event.activities.map(key => this.props.activities[key])}
@@ -445,7 +446,6 @@ class EventCard extends React.Component {
             title={
               <React.Fragment>
                 {title}
-                &nbsp;
                 {event.activities.length === 0 ? warning : null}
               </React.Fragment>
             }
