@@ -413,7 +413,6 @@ class EventCard extends React.Component {
           kello {event.endTime.substring(0, 5)}
         </div>
         {informationContainer}
-        <br style={{ clear: 'both' }} />
         <Activities
           activities={event.activities.map(key => this.props.activities[key])}
           bufferzone={false}
@@ -477,12 +476,12 @@ class EventCard extends React.Component {
             <EditEvent
               data={event}
               setNotification={this.props.setNotification}
-              minimal={!this.state.expanded}
+              minimal={true}
             />
             <DeleteEvent
               data={event}
               setNotification={this.props.setNotification}
-              minimal={!this.state.expanded}
+              minimal={true}
             />
           </CardActions>
         </ActivityDragAndDropTarget>
