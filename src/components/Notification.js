@@ -1,63 +1,88 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { withStyles } from '@material-ui/core'
+import { Snackbar, IconButton, SnackbarContent } from '@material-ui/core'
+import CloseIcon from '@material-ui/icons/Close'
+import green from '@material-ui/core/colors/green'
+import amber from '@material-ui/core/colors/amber'
+import { withStyles } from '@material-ui/core/styles'
+import { resetNotify } from '../reducers/notificationReducer'
 
 const styles = theme => ({
-  footer: {
-    padding: 10,
-    textAlign: 'center',
-    fontSize: '1.1rem',
-    position: 'fixed',
-    bottom: 0,
-    left: 0,
-    height: 'auto',
-    width: '100%',
-    zIndex: theme.zIndex.drawer + 1,
+  success: {
+    backgroundColor: green[600],
   },
-  footerError: {
-    color: '#f44336',
-    backgroundColor: '#ffebee',
-    borderTop: '2px solid #f44336',
+  error: {
+    backgroundColor: theme.palette.error.dark,
   },
-  footerSuccess: {
-    color: '#4caf50',
-    backgroundColor: '#e8f5e9',
-    borderTop: '2px solid #4caf50',
+  info: {
+    backgroundColor: theme.palette.primary.dark,
+  },
+  warning: {
+    backgroundColor: amber[700],
+  },
+  close: {
+    padding: theme.spacing.unit / 2,
   },
 })
 
-/**
- * Notification that is used in the footer element
- * @param props contains the message that is added to the notification
- */
-function Notification(props) {
-  const { notification, classes } = props
-  if (notification === null) {
-    return null
-  }
-  if (notification.textType === 'error') {
+class Notification extends React.Component {
+  /**
+   * Prevents closing by clicking outside the notification.
+   */
+  handleClose = (event, reason) =>
+    reason === 'clickaway' ? null : this.props.resetNotify()
+
+  render() {
+    const { notification, classes } = this.props
+
     return (
-      <div className={classes.footer + ' ' + classes.footerError}>
-        {notification.text}
-      </div>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={notification}
+        autoHideDuration={6000}
+        onClose={this.handleClose}
+      >
+        <SnackbarContent
+          className={notification ? classes[notification.type] : null}
+          message={
+            <span id="message-id">
+              {notification ? notification.text : null}
+            </span>
+          }
+          action={[
+            <IconButton
+              key="close"
+              color="inherit"
+              className={classes.close}
+              onClick={this.handleClose}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>,
+          ]}
+        />
+      </Snackbar>
     )
   }
-  return (
-    <div className={classes.footer + ' ' + classes.footerSuccess}>
-      {notification.text}
-    </div>
-  )
 }
 
 const mapStateToProps = state => ({
   notification: state.notification,
 })
 
-Notification.propTypes = {
-  notification: PropTypes.string.isRequired,
+const mapDispatchToProps = {
+  resetNotify,
 }
 
-Notification.defaultProps = {}
+Notification.propTypes = {
+  notification: PropTypes.isRequired,
+  classes: PropTypes.object.isRequired,
+}
 
-export default connect(mapStateToProps)(withStyles(styles)(Notification))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(Notification))

@@ -263,8 +263,8 @@ class App extends Component {
               </Dialog>
             </div>
           </div>
-          <Notification />
         </div>
+        <Notification />
       </MuiThemeProvider>
     )
   }
