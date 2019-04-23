@@ -12,81 +12,75 @@ import { deleteActivity } from '../reducers/activityReducer'
 
 const styles = {
   bufferZone: {
-    marginLeft: 14,
-    marginRight: 14,
+    paddingTop: 4,
+    paddingBottom: 4,
+    marginTop: 10,
     display: 'flex',
     flexFlow: 'row wrap',
   },
   bufferTitle: {
     width: '100%',
-    padding: '0 4px 0',
+    padding: '0 4px',
     marginBottom: 10,
   },
 }
 
-export class BufferZone extends React.Component {
+function BufferZone(props) {
+  const { buffer, activities, classes } = props
+
   /**
    * Clears the activities from the buffer
    */
-  clear = async () => {
-    if (this.props.buffer.activities) {
-      let promises = this.props.buffer.activities.map(activity =>
-        this.props.deleteActivityFromBuffer(activity)
+  const clear = async () => {
+    if (buffer.activities) {
+      let promises = buffer.activities.map(activity =>
+        props.deleteActivityFromBuffer(activity)
       )
       promises = promises.concat(
-        this.props.buffer.activities.map(activity =>
-          this.props.deleteActivity(activity)
-        )
+        buffer.activities.map(activity => props.deleteActivity(activity))
       )
       try {
         await Promise.all(promises)
-        this.props.pofTreeUpdate(this.props.activities)
-        this.props.notify('Aktiviteetit poistettu!', 'success')
+        props.pofTreeUpdate(activities)
+        props.notify('Aktiviteetit poistettu!', 'success')
       } catch (exception) {
         console.log(exception)
-        this.props.notify('Kaikkia aktiviteetteja ei voitu poistaa!')
+        props.notify('Kaikkia aktiviteetteja ei voitu poistaa!')
       }
     }
   }
 
-  render() {
-    const { classes } = this.props
-    if (!this.props.buffer.id) {
-      return <div />
-    }
-    if (this.props.buffer.activities.length === 0) {
-      return <div />
-    }
-    return (
-      <ActivityDragAndDropTarget
-        bufferzone
-        parentId={this.props.buffer.id}
-        className={classes.bufferZone}
-      >
-        <div className={classes.bufferTitle}>
-          <Typography variant="h6" inline gutterBottom>
-            Aktiviteetit
-          </Typography>
-          <Button
-            variant="outlined"
-            size="small"
-            color="primary"
-            onClick={this.clear}
-            style={{ float: 'right' }}
-          >
-            Tyhjennä
-          </Button>
-        </div>
-        <Activities
-          activities={this.props.buffer.activities.map(
-            id => this.props.activities[id]
-          )}
-          bufferzone
-          parentId={this.props.buffer.id}
-        />
-      </ActivityDragAndDropTarget>
-    )
+  if (!buffer.id || buffer.activities.length === 0) {
+    return <div />
   }
+
+  return (
+    <ActivityDragAndDropTarget
+      bufferzone
+      parentId={buffer.id}
+      className={classes.bufferZone}
+    >
+      <div className={classes.bufferTitle}>
+        <Typography variant="h6" inline gutterBottom>
+          Aktiviteetit
+        </Typography>
+        <Button
+          variant="outlined"
+          size="small"
+          color="primary"
+          onClick={clear}
+          style={{ float: 'right' }}
+        >
+          Tyhjennä
+        </Button>
+      </div>
+      <Activities
+        activities={buffer.activities.map(id => activities[id])}
+        bufferzone
+        parentId={buffer.id}
+      />
+    </ActivityDragAndDropTarget>
+  )
 }
 
 const mapStateToProps = state => ({

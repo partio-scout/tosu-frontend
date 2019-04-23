@@ -12,7 +12,6 @@ describe('After logging in', function() {
 
   })
   it('', function() {
-    cy.visit('http://localhost:3000')
   })
 
   /*it('tosu can be deleted', function() {

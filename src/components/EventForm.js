@@ -364,7 +364,7 @@ export default class EventForm extends React.Component {
                 label="Toistuvien tapahtumien määrä"
                 name="repeatCount"
                 value={this.state.repeatCount}
-                onChange={this.handleNewEventFormChange}
+                onChange={this.handleRepeatCount}
                 disabled={!this.state.checked}
                 validators={['minNumber:2', 'maxNumber:55']}
                 errorMessages={[
