@@ -8,25 +8,6 @@ import { getActivityList } from './activityReducer'
 const arrayActivityGuidsFromBufferAndEvents = activities => {
   return getActivityList(activities).map(activity => activity.guid)
 }
-
-/**
- * disable all optional tasks in tarppo(taskgroup) and its subordinate tarppos(taskgroup)
- * @param {string} GUID - GUID for taskgroup
- * @param {object} root - DEEP copy of pofdata
- */
-const setChildrenTasksDisabled = (GUID, root) => {
-  const taskgroup = root.entities.tarppo[GUID]
-  const activityKeys = taskgroup.tasks
-  activityKeys.forEach(key => {
-    const activity = root.entities.activities[key]
-    if (activity.tags.pakollisuus[0].slug !== 'mandatory') {
-      activity.disabled = true
-    }
-  })
-  taskgroup.taskgroups.forEach(key => setChildrenTasksDisabled(key, root))
-  return root
-}
-
 /**
  * Add variables used by TreeSearch component to the pofData
  * @param {object} root - DEEP copy of pofData
@@ -81,36 +62,6 @@ const disableTasksInFilterIfExists = (root, existingActivityGuids) => {
   })
   return root
 }
-
-/**
- * disable optional tasks in tarppo and its child tarppos if all mandatory tasks are not selected
- *  @param {object} root - pofData
- *  @param {string[]} existingActivityGuids - GUID:s of the activities in use
- *  @return pofData
- */
-const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (
-  root,
-  existingActivityGuids
-) => {
-  if (!root) return root
-  const taskgroupKeys = Object.keys(root.entities.tarppo)
-  taskgroupKeys.forEach(key => {
-    const majorTaskGroup = root.entities.tarppo[key]
-    const mandatoryTaskGuids = majorTaskGroup.mandatory_tasks.split(',') // mandatory tasks are listed in major group
-    if (mandatoryTaskGuids[0] === '') {
-      // empty split return and array with only value as ''
-      return
-    }
-    // if existing activities do not contain all mandatory tasks -> disable all optional
-    mandatoryTaskGuids.forEach(mandatoryTaskGuid => {
-      if (existingActivityGuids.includes(mandatoryTaskGuid) === false) {
-        setChildrenTasksDisabled(key, root)
-      }
-    })
-  })
-  return root
-}
-
 const deepStateCopy = state => {
   const stateCopy = { ...state }
   stateCopy.entities = { ...state.entities }
@@ -134,10 +85,6 @@ const deepStateCopy = state => {
 const updateState = (state, existingActivityGuids) => {
   let updatedState = deepStateCopy(state)
   updatedState = disableTasksInFilterIfExists(
-    updatedState,
-    existingActivityGuids
-  )
-  updatedState = lockOptionalTasksIfMandatoryLeftToPickInAGroup(
     updatedState,
     existingActivityGuids
   )
