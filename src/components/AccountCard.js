@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { scoutLogout } from '../reducers/scoutReducer'
 import { Avatar, Button, Grid, Paper, Typography } from '@material-ui/core'
+import lightBlue from '@material-ui/core/colors/lightBlue'
 
 const styles = theme => ({
   root: {
@@ -29,7 +30,8 @@ const styles = theme => ({
   bigAvatar: {
     width: 96,
     height: 96,
-    fontSize: 24,
+    fontSize: 36,
+    backgroundColor: lightBlue[200],
   },
 })
 
@@ -40,16 +42,12 @@ function AccountCard(props) {
     <Paper className={classes.paper}>
       <Grid container spacing={16} className={classes.accountInfo}>
         <Grid item>
-          <Avatar
-            className={classes.bigAvatar}
-            src="http://placekitten.com/g/200/200"
-          >
+          <Avatar className={classes.bigAvatar}>
             {scout.name.substring(0, 1)}
           </Avatar>
         </Grid>
         <Grid item>
           <Typography variant="button">{scout.name}</Typography>
-          <Typography>email@example.com</Typography>
         </Grid>
       </Grid>
       <Grid

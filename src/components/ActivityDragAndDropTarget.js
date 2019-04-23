@@ -48,7 +48,8 @@ function ActivityDragAndDropTarget(props) {
   const { isOver, canDrop, connectDropTarget, odd, event, classes } = props
   const baseColor = event ? (odd ? '#EFEEEE' : '#D6E8F7') : '#FFF'
   const background = { backgroundColor: canDrop ? '#C8E6C9' : baseColor }
-  const className = (props.className || '') + (isOver ? classes.pattern : '')
+  const className =
+    (props.className || '') + ' ' + (isOver ? classes.pattern : '')
 
   return connectDropTarget(
     <div style={background} className={className}>

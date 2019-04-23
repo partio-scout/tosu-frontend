@@ -15,6 +15,19 @@ import { eventList } from '../reducers/eventReducer'
 import { addActivity } from '../reducers/activityReducer'
 import { addActivityToRelevantReducers } from '../functions/activityFunctions'
 import PropTypesSchema from '../utils/PropTypesSchema'
+import { withStyles } from '@material-ui/core'
+
+const styles = {
+  treeSearchBar: {
+    padding: 10,
+    backgroundColor: '#d6e8f7',
+    borderRadius: 3,
+  },
+  treeSelect: {
+    width: '100%',
+    marginTop: 5,
+  },
+}
 
 class TreeSearchBar extends React.Component {
   state = { treePlaceHolder: 'Valitse ensin tarppo' }
@@ -109,6 +122,8 @@ class TreeSearchBar extends React.Component {
   }
 
   render() {
+    const { classes } = this.props
+
     if (!this.props.pofTree) return <div />
     const taskGroupTree = getRootGroup(this.props.pofTree)
     if (!taskGroupTree) return <div />
@@ -128,7 +143,7 @@ class TreeSearchBar extends React.Component {
     }
     const treeSearchBar = () => (
       <TreeSelect
-        style={{ width: '100%' }}
+        className={classes.treeSelect}
         dropdownStyle={{
           position: 'absolute',
           maxHeight: 400,
@@ -148,15 +163,8 @@ class TreeSearchBar extends React.Component {
       />
     )
     return (
-      <div
-        style={{
-          margin: 14,
-          padding: 10,
-          backgroundColor: '#d6e8f7',
-          borderRadius: 3,
-        }}
-      >
-        <div id="select-tarppo" style={{ marginBottom: 5 }}>
+      <div className={classes.treeSearchBar}>
+        <div id="select-tarppo">
           <Select
             menuContainerStyle={{ width: '100%' }}
             name="form-field-name"
@@ -233,4 +241,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TreeSearchBar)
+)(withStyles(styles)(TreeSearchBar))

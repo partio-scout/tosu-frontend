@@ -1,4 +1,4 @@
-import { normalize, schema } from 'normalizr'
+import { schema } from 'normalizr'
 
 const suggestion = new schema.Entity('suggestions', {}, { idAttribute: 'guid' })
 
@@ -36,6 +36,7 @@ export const pofTreeSchema = new schema.Entity(
   {
     taskgroups: [tarppo],
   },
-  { idAttribute: 'guid' })
+  { idAttribute: 'guid' }
+)
 
 export default pofTreeSchema

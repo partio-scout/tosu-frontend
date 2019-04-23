@@ -25,6 +25,11 @@ const styles = {
   boldedAttribute: {
     fontWeight: 'bold',
   },
+  eventCard: {
+    marginBottom: 14,
+    borderRadius: 4,
+    backgroundColor: '#D6E8F6',
+  },
 }
 
 class KuksaEventCard extends React.Component {
@@ -51,57 +56,49 @@ class KuksaEventCard extends React.Component {
     const information = new Parser().parse(event.information)
 
     return (
-      <div className="event-card-wrapper">
-        <Card
-          style={{
-            backgroundColor: '#D6E8F6',
-            boxShadow: 'none',
-            borderRadius: '4px',
-          }}
-        >
-          <CardHeader
-            title={
-              <div>
-                {title}
-                &nbsp;
-              </div>
-            }
-            subheader={subtitle}
-            action={
-              <IconButton
-                onClick={this.handleExpandChange}
-                className={this.state.expanded ? classes.arrowUp : ''}
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            }
-          />
+      <Card className={classes.eventCard}>
+        <CardHeader
+          title={
+            <div>
+              {title}
+              &nbsp;
+            </div>
+          }
+          subheader={subtitle}
+          action={
+            <IconButton
+              onClick={this.handleExpandChange}
+              className={this.state.expanded ? classes.arrowUp : ''}
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          }
+        />
 
-          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <h2>{event.title}</h2>
-              <div>
-                <span className={classes.boldedAttribute}>
-                  {event.type} alkaa:
-                </span>{' '}
-                {moment(event.startDate).format('D.M.YYYY')} kello{' '}
-                {event.startTime}
-              </div>
-              <div>
-                <span className={classes.boldedAttribute}>
-                  {event.type} päättyy:
-                </span>{' '}
-                {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
-              </div>
-              {information}
-              <br style={{ clear: 'both' }} />
-            </CardContent>
-          </Collapse>
-          <CardActions>
-            <AddToPlan event={event} />
-          </CardActions>
-        </Card>
-      </div>
+        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <h2>{event.title}</h2>
+            <div>
+              <span className={classes.boldedAttribute}>
+                {event.type} alkaa:
+              </span>{' '}
+              {moment(event.startDate).format('D.M.YYYY')} kello{' '}
+              {event.startTime}
+            </div>
+            <div>
+              <span className={classes.boldedAttribute}>
+                {event.type} päättyy:
+              </span>{' '}
+              {moment(event.endDate).format('D.M.YYYY')} kello {event.endTime}
+            </div>
+            {information}
+            <br style={{ clear: 'both' }} />
+          </CardContent>
+        </Collapse>
+        <CardActions>
+          <AddToPlan event={event} />
+        </CardActions>
+      </Card>
     )
   }
 }

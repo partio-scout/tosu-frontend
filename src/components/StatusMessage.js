@@ -3,27 +3,20 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Done from '@material-ui/icons/Done'
 import Warning from '@material-ui/icons/Warning'
-import { Paper, Typography } from '@material-ui/core'
+import { Paper, Typography, Tooltip } from '@material-ui/core'
 
 // Done icon
-const done = <Done key="done" />
+const done = <Done />
 
 // Small done icon for sub-taskgroups (suhteet)
-// TODO: Make this smaller
-const smallDone = <Done key="done" />
+const smallDone = <Done style={{ width: 15, height: 15, marginRight: 7 }} />
 
 /**
  * Warning icon that returns a tooltiptext with a message
  * @param message Message that shows in the tooltip
  */
 const warning = message => (
-  <div
-    style={{
-      position: 'relative',
-      display: 'inline-block',
-    }}
-    key="warning"
-  >
+  <Tooltip title={message} disableFocusListener>
     <Warning
       style={{
         width: 15,
@@ -31,30 +24,10 @@ const warning = message => (
         padding: 0,
         marginRight: 7,
         color: '#f14150',
+        display: 'inline-block',
       }}
     />
-    {/* TODO: add this:
-     * .tooltip:hover .tooltiptext {
-     *   visibility: visible;
-     * }
-     */}
-    <span
-      style={{
-        position: 'absolute',
-        visibility: 'hidden',
-        minWidth: 200,
-        fontSize: 14,
-        backgroundColor: 'black',
-        color: '#fff',
-        textAlign: 'center',
-        borderRadius: 6,
-        padding: 5,
-        zIndex: 1,
-      }}
-    >
-      {message}
-    </span>
-  </div>
+  </Tooltip>
 )
 
 /**
@@ -252,13 +225,7 @@ const Instruction = ({ statusMessage, taskgroup }) => {
   )
 
   return (
-    <Paper
-      style={{
-        margin: '14px',
-        padding: '14px',
-        marginBottom: '8rem',
-      }}
-    >
+    <Paper style={{ padding: '14px' }}>
       <Typography>{statusMessage.text}</Typography>
       <Typography>
         {statusMessage.status && statusMessage.status.nonMandatory
@@ -274,7 +241,6 @@ function StatusMessage(props) {
     <Instruction
       statusMessage={props.statusMessage}
       taskgroup={props.taskgroup}
-      style={{ marginTop: 30 }}
     />
   )
 }
