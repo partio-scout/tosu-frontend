@@ -3,7 +3,6 @@ import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
-
 import { setSideBar } from '../reducers/uiReducer'
 import AccountIcon from './AccountIcon'
 import PropTypes from 'prop-types'
@@ -29,9 +28,8 @@ function TopBar(props) {
       <Toolbar>
         <IconButton
           color="inherit"
-          aria-label="Menu"
           className={classes.menuButton}
-          onClick={() => props.setSideBar(!props.ui.sideBarVisible)}
+          onClick={() => props.setSideBar(true)}
         >
           <MenuIcon />
         </IconButton>
@@ -58,7 +56,6 @@ AppBar.defaultProps = {}
 const mapStateToProps = state => ({
   tosu: state.tosu,
   scout: state.scout,
-  ui: state.ui,
 })
 
 const mapDispatchToProps = {
