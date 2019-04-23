@@ -46,8 +46,12 @@ const reducer = (state = {}, action) => {
         ...action.newTosu,
         selected: true,
       }
-      newState.selected = action.newTosu.id
 
+      newState.selected = action.newTosu.id
+      return newState
+
+    case 'UPDATE_TOSU':
+      newState[action.tosu.id] = action.tosu
       return newState
 
     case 'DELETE_TOSU':
@@ -128,8 +132,23 @@ export const createTosu = tosuName => async dispatch => {
 }
 
 /**
+ * Update a Tosu
+ * @param tosu - Tosu object with new values
+ */
+export const updateTosu = tosu => dispatch =>
+  tosuService
+    .updateTosu(tosu)
+    .then(newTosu =>
+      dispatch({
+        type: 'UPDATE_TOSU',
+        tosu: newTosu,
+      })
+    )
+    .catch(error => console.log(error))
+
+/**
  * Deletes specified Tosu.
- * @param {*} tosuId - ID of the Tosu to be deleted
+ * @param tosuId - ID of the Tosu to be deleted
  */
 export const deleteTosu = tosuId => dispatch =>
   tosuService

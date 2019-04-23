@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import {
   Avatar,
+  Divider,
   SwipeableDrawer,
   IconButton,
   Paper,
@@ -14,13 +15,25 @@ import {
   ListItemSecondaryAction,
   Typography,
   CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
 } from '@material-ui/core'
 import AssignmentIcon from '@material-ui/icons/Assignment'
 import DeleteIcon from '@material-ui/icons/Delete'
+import CreateIcon from '@material-ui/icons/Create'
 import AddIcon from '@material-ui/icons/Add'
 
 import { setSideBar } from '../reducers/uiReducer'
-import { selectTosu, createTosu, deleteTosu } from '../reducers/tosuReducer'
+import {
+  selectTosu,
+  createTosu,
+  updateTosu,
+  deleteTosu,
+} from '../reducers/tosuReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
 import { activityInitialization } from '../reducers/activityReducer'
 import { setLoading } from '../reducers/loadingReducer'
@@ -46,6 +59,9 @@ const styles = theme => ({
   tosuList: {
     overflowY: 'auto',
   },
+  avatar: {
+    backgroundColor: theme.palette.primary.main,
+  },
   root: {
     padding: '2px 4px',
     margin: 10,
@@ -56,8 +72,17 @@ const styles = theme => ({
     marginLeft: 8,
     flex: 1,
   },
+  actionButtons: {
+    display: 'flex',
+    alignItems: 'center',
+  },
   iconButton: {
     padding: 10,
+  },
+  divider: {
+    width: 1,
+    height: 30,
+    margin: 4,
   },
   centered: {
     margin: 'auto',
@@ -65,7 +90,10 @@ const styles = theme => ({
 })
 
 class TosuDrawer extends React.Component {
-  state = { newTosuName: '' }
+  state = {
+    newTosuName: '',
+    nameChange: null,
+  }
 
   /**
    * Just a helper function to remove copy & paste
@@ -91,6 +119,14 @@ class TosuDrawer extends React.Component {
     this.props.setSideBar(false)
     this.setState({ newTosuName: '' })
     await this.changeTosu(created.id)
+  }
+
+  /**
+   * Updates the given Tosu in nameChange state variable and resets the variable.
+   */
+  handleTosuUpdate = async () => {
+    this.props.updateTosu(this.state.nameChange)
+    this.setState({ nameChange: null })
   }
 
   /**
@@ -137,6 +173,7 @@ class TosuDrawer extends React.Component {
   render() {
     const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
     const { ui, tosus, loading, classes } = this.props
+    const { newTosuName, nameChange } = this.state
 
     const tosuList = (
       <div className={classes.tosuList}>
@@ -149,7 +186,7 @@ class TosuDrawer extends React.Component {
                 onClick={() => this.handleTosuSelect(tosu.id)}
                 button
               >
-                <Avatar>
+                <Avatar className={classes.avatar}>
                   <AssignmentIcon />
                 </Avatar>
                 <ListItemText
@@ -161,9 +198,15 @@ class TosuDrawer extends React.Component {
                     </React.Fragment>
                   }
                 />
-                <ListItemSecondaryAction>
+                <ListItemSecondaryAction className={classes.actionButtons}>
+                  <IconButton
+                    onClick={() => this.setState({ nameChange: tosu })}
+                  >
+                    <CreateIcon color="primary" />
+                  </IconButton>
+                  <Divider className={classes.divider} />
                   <IconButton onClick={() => this.handledTosuDelete(tosu.id)}>
-                    <DeleteIcon />
+                    <DeleteIcon color="error" />
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
@@ -178,7 +221,7 @@ class TosuDrawer extends React.Component {
         <InputBase
           className={classes.input}
           placeholder="Uusi toimintasuunnitelma"
-          value={this.state.newTosuName}
+          value={newTosuName}
           onChange={event => this.setState({ newTosuName: event.target.value })}
         />
         <IconButton
@@ -188,6 +231,40 @@ class TosuDrawer extends React.Component {
           <AddIcon />
         </IconButton>
       </Paper>
+    )
+
+    const nameChangeDialog = (
+      <Dialog
+        open={nameChange}
+        onClose={() => this.setState({ nameChange: null })}
+      >
+        <DialogTitle>Muokkaa nimeä</DialogTitle>
+        <DialogContent>
+          <TextField
+            id="name"
+            margin="none"
+            label="Toimintasuunnitema"
+            value={nameChange ? nameChange.name : ''}
+            onChange={event =>
+              this.setState({
+                nameChange: { ...nameChange, name: event.target.value },
+              })
+            }
+            autoFocus
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            color="secondary"
+            onClick={() => this.setState({ nameChange: null })}
+          >
+            peruuta
+          </Button>
+          <Button color="primary" onClick={() => this.handleTosuUpdate()}>
+            päivitä
+          </Button>
+        </DialogActions>
+      </Dialog>
     )
 
     return (
@@ -226,6 +303,7 @@ class TosuDrawer extends React.Component {
           tosuList
         )}
         {loading ? null : tosuInput}
+        {nameChangeDialog}
       </SwipeableDrawer>
     )
   }
@@ -244,6 +322,7 @@ const mapDispatchToProps = {
   setLoading,
   selectTosu,
   createTosu,
+  updateTosu,
   deleteTosu,
   eventsInitialization,
   activityInitialization,
