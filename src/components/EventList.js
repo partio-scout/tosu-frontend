@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import EventCard from './EventCard'
-import DeleteTosuButton from './DeleteTosuButton'
 import KuksaEventCard from './KuksaEventCard'
 import filterEvents from '../functions/filterEvents'
 import { eventList } from '../reducers/eventReducer'
@@ -15,16 +14,16 @@ const styles = theme => ({
   },
 })
 
-function EventList(props) {
-  const view = props.ui.view
-  const { startDate, endDate, events, initialization, classes } = props
+class EventList extends React.Component {
+  render() {
+    const view = this.props.ui.view
+    const { startDate, endDate, events, classes } = this.props
 
-  const eventsToShow = () =>
-    filterEvents(view, eventList(events), startDate, endDate)
+    const eventsToShow = () =>
+      filterEvents(view, eventList(events), startDate, endDate)
 
-  let odd = true
-  return (
-    <React.Fragment>
+    let odd = true
+    return (
       <div className={classes.eventList}>
         {eventsToShow().map(event => {
           odd = !odd
@@ -39,9 +38,8 @@ function EventList(props) {
           )
         })}
       </div>
-      <DeleteTosuButton initialization={initialization} />
-    </React.Fragment>
-  )
+    )
+  }
 }
 
 EventList.propTypes = {

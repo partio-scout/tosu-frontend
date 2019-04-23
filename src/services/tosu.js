@@ -27,9 +27,14 @@ const create = async tosuName => {
   return selected.data
 }
 
-const deleteTosu = async tosuId => {
-    const response = await axios.delete(`${baseUrl}/${tosuId}`)
-    return response.data
+const updateTosu = async newTosu => {
+  const response = await axios.put(`${baseUrl}/${newTosu.id}`, newTosu)
+  return response.data
 }
 
-export default { getAll, select, create, deleteTosu }
+const deleteTosu = async tosuId => {
+  const response = await axios.delete(`${baseUrl}/${tosuId}`)
+  return response.data
+}
+
+export default { getAll, select, create, deleteTosu, updateTosu }

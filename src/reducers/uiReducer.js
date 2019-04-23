@@ -10,7 +10,7 @@ const reducer = (state = initialState, action) => {
 }
 
 const initialState = {
-  sideBarVisible: true,
+  sideBarVisible: false,
   view: 'OWN',
 }
 
