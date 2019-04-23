@@ -43,19 +43,22 @@ import { notify } from '../reducers/notificationReducer'
 
 import tosuChange from '../functions/tosuChange'
 
-const drawerWidth = 400
-
 const styles = theme => ({
   drawerPaper: {
-    width: drawerWidth,
+    width: '90vw',
+    maxWidth: 400,
   },
-  title: {
+  titleContainer: {
     ...theme.mixins.toolbar,
     display: 'flex',
     position: 'relative',
     alignItems: 'center',
     color: theme.palette.primary.contrastText,
     backgroundColor: theme.palette.primary.main,
+  },
+  title: {
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
   },
   tosuList: {
     overflowY: 'auto',
@@ -311,12 +314,13 @@ class TosuDrawer extends React.Component {
         onOpen={() => this.props.setSideBar(true)}
         classes={{ paper: classes.drawerPaper }}
       >
-        <div className={classes.title}>
+        <div className={classes.titleContainer}>
           <Typography
             style={{ flexGrow: 1 }}
+            className={classes.title}
             align="center"
             color="inherit"
-            variant="h5"
+            variant="h6"
           >
             TOIMINTASUUNNITELMAT
           </Typography>
