@@ -15,6 +15,7 @@ describe('After logging in', function() {
     cy.contains('Kaupunki-tarppo').click({ force: true })
     cy.contains('Lisää aktiviteetti').click({ force: true })
     cy.contains('Kotiseutu').click({ force: true })
+    cy.contains('Kotiseutu')
   })
 
   // updates the screen and shows the activities
@@ -23,33 +24,44 @@ describe('After logging in', function() {
   })
 
   it('user can get additional information', function() {
+    cy.wait(4000)
     cy.get('div[role="button"]')
       .first()
       .click({ multiple: true, force: true })
-      cy.get('div[role="tablist"]')
+    cy.get('div[role="tablist"]')
       .contains('Vinkit')
       .click({ force: true })
-    cy.wait(4000)
-})
-
- it('closes additional info by pressing the escape key', () => {
-    cy.get('body').type('{esc}', { force: true })
+    cy.contains('Toteutusvinkit')
   })
-  
+
+  it('closes additional info by pressing the escape key', () => {
+    cy.wait(4000)
+    cy.get('body').type('{esc}', { force: true })
+    cy.get('div[role="tablist"]').should('not.exist')
+  })
+
   // updates the screen and shows the activities
   it('', function() {
     cy.visit('http://localhost:3000')
- })
+  })
 
- it('user can remove one activity', function() {
+  it('user can remove one activity', function() {
     cy.get('div[role="button"]')
       .first()
       .contains('clear')
       .click({ force: true })
- })
+    cy.get('div[role="button"]')
+      .first()
+      .contains('clear')
+      .should('not.exist')
+  })
 
- it('user can empty buffer', function() {
+  it('user can empty buffer', function() {
     cy.contains('Tyhjennä')
     cy.contains('Tyhjennä').click({ force: true })
+    cy.get('div[role="button"]')
+      .first()
+      .should('not.exist')
   })
 })
+
