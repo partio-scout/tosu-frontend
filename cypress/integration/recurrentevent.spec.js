@@ -74,7 +74,7 @@ describe('After logging in', function() {
       .first()
       .click()
     cy.get('button[id="delete-one-recurrent-event"]').click()
-    cy.get('li[id="event-list-element"]').should($lis => {
+    cy.get('div[id="event-list-element"]').should($lis => {
       expect($lis).to.have.length(6)
     })
   })
