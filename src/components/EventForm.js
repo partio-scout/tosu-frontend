@@ -211,7 +211,6 @@ export default class EventForm extends React.Component {
   }
 
   send = async () => {
-    console.log('EventForm:', this.state.information)
     await this.props.update(
       this.state.title,
       this.state.startDate,
@@ -365,7 +364,6 @@ export default class EventForm extends React.Component {
                 label="Toistuvien tapahtumien määrä"
                 name="repeatCount"
                 value={this.state.repeatCount}
-                onChange={this.handleNewEventFormChange}
                 onChange={this.handleRepeatCount}
                 disabled={!this.state.checked}
                 validators={['minNumber:2', 'maxNumber:55']}
@@ -411,10 +409,10 @@ export default class EventForm extends React.Component {
             fullWidth
           >
             <MenuItem id="tyyppi-kokous" value="kokous">Kokous</MenuItem>
-            <MenuItem value="leiri">Leiri</MenuItem>
-            <MenuItem value="retki">Retki</MenuItem>
-            <MenuItem value="vaellus">Vaellus</MenuItem>
-            <MenuItem value="muu tapahtuma">Muu tapahtuma</MenuItem>
+            <MenuItem id="tyyppi-leiri" value="leiri">Leiri</MenuItem>
+            <MenuItem id="tyyppi-retki" value="retki">Retki</MenuItem>
+            <MenuItem id="tyyppi-vaellus" value="vaellus">Vaellus</MenuItem>
+            <MenuItem id="tyyppi-muu-tapahtuma" value="muu tapahtuma">Muu tapahtuma</MenuItem>
           </SelectValidator>
           <br />
 

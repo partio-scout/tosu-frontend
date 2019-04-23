@@ -79,14 +79,8 @@ const styles = {
     marginTop: 3,
     float: 'right',
   },
-  emptyEventCard: {
-    marginBottom: 10,
-    backgroundColor: '#f14150',
-    borderRadius: 4,
-  },
-  kuksaSyncedEventCard: {
-    marginBottom: 10,
-    backgroundColor: '#63bcd1',
+  eventCard: {
+    marginBottom: 14,
     borderRadius: 4,
   },
 }
@@ -209,11 +203,7 @@ class EventCard extends React.Component {
     const { event, odd, classes } = this.props
 
     const warning = (
-      <Tooltip
-        title="Tapahtumasta puuttuu aktiviteetti!"
-        placement="right"
-        disableFocusListener
-      >
+      <Tooltip title="Tapahtumasta puuttuu aktiviteetti!" disableFocusListener>
         <Warning className={classes.warning} />
       </Tooltip>
     )
@@ -225,14 +215,6 @@ class EventCard extends React.Component {
       : `${moment(event.startDate, 'YYYY-MM-DD')
           .locale('fi')
           .format('ddd D.M.YYYY')} ${event.startTime.substring(0, 5)}`
-    let cardClassName = 'event-card-wrapper'
-    if (event.activities.length === 0) {
-      cardClassName = classes.emptyEventCard
-    }
-    // Prioritize kuksa sync color over emptiness warning color (warning icon still visible)
-    if (event.synced) {
-      cardClassName = classes.kuksaSyncedEventCard
-    }
 
     const taskGroupTree = getRootGroup(this.props.pofTree)
     let selectedTaskGroupPofData = []
@@ -241,7 +223,6 @@ class EventCard extends React.Component {
       this.props.taskgroup !== null &&
       isTouchDevice()
     ) {
-      console.log('Counting selectedTaskGroupPofData')
       const groupfound = taskGroupTree.find(
         group => group.guid === this.props.taskgroup.value
       )
@@ -426,63 +407,61 @@ class EventCard extends React.Component {
     )
 
     return (
-      <div className={cardClassName}>
-        <Card>
-          <ActivityDragAndDropTarget
-            odd={odd}
-            event
-            bufferzone={false}
-            parentId={event.id}
-          >
-            <CardHeader
-              title={
-                <div id="event-name">
+      <Card className={classes.eventCard}>
+        <ActivityDragAndDropTarget
+          odd={odd}
+          event
+          bufferzone={false}
+          parentId={event.id}
+        >
+          <CardHeader
+            title={
+              <div id="event-name">
                 <React.Fragment>
                   {title}
                   &nbsp;
                   {event.activities.length === 0 ? warning : null}
                 </React.Fragment>
-                </div>
-              }
-              subheader={subtitle}
-              titleTypographyProps={{
-                classes: { root: classes.eventCardTitleLeft },
-                variant: 'title',
-              }}
-              subheaderTypographyProps={{
-                classes: { root: classes.eventCardTitleRight },
-                variant: 'subtitle2',
-              }}
-              action={
-                <IconButton
-                  onClick={this.handleExpandChange}
-                  className={this.state.expanded ? classes.arrowUp : ''}
-                >
-                  <ExpandMoreIcon />
-                </IconButton>
-              }
-            />
-            {isTouchDevice() && !this.state.expanded
-              ? touchDeviceNotExpanded
-              : null}
-            {!isTouchDevice() && !this.state.expanded ? notExpanded : null}
-            {this.state.expanded ? expanded : null}
+              </div>
+            }
+            subheader={subtitle}
+            titleTypographyProps={{
+              classes: { root: classes.eventCardTitleLeft },
+              variant: 'title',
+            }}
+            subheaderTypographyProps={{
+              classes: { root: classes.eventCardTitleRight },
+              variant: 'subtitle2',
+            }}
+            action={
+              <IconButton
+                onClick={this.handleExpandChange}
+                className={this.state.expanded ? classes.arrowUp : ''}
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            }
+          />
+          {isTouchDevice() && !this.state.expanded
+            ? touchDeviceNotExpanded
+            : null}
+          {!isTouchDevice() && !this.state.expanded ? notExpanded : null}
+          {this.state.expanded ? expanded : null}
 
-            <CardActions>
-              <EditEvent
-                data={event}
-                setNotification={this.props.setNotification}
-                minimal={!this.state.expanded}
-              />
-              <DeleteEvent
-                data={event}
-                setNotification={this.props.setNotification}
-                minimal={!this.state.expanded}
-              />
-            </CardActions>
-          </ActivityDragAndDropTarget>
-        </Card>
-      </div>
+          <CardActions>
+            <EditEvent
+              data={event}
+              setNotification={this.props.setNotification}
+              minimal={!this.state.expanded}
+            />
+            <DeleteEvent
+              data={event}
+              setNotification={this.props.setNotification}
+              minimal={!this.state.expanded}
+            />
+          </CardActions>
+        </ActivityDragAndDropTarget>
+      </Card>
     )
   }
 }

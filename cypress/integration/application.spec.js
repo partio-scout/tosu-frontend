@@ -28,6 +28,7 @@ describe('Creating and deleting events', function() {
     resetDatabase()
     cy.request('http://localhost:3001/scouts/testuser')
     cy.visit('http://localhost:3000')
+
   })
   it('initiate tosu', function() {})
   it('user adds a new repeating event', function() {
@@ -51,36 +52,17 @@ describe('Creating and deleting events', function() {
       multiple: true,
       force: true,
     })
-    cy.contains('Tallenna').click({ multiple: true, force: true })
-    cy.wait(3000)
-    /* cy.get('ul[class="event-list"] > li').should($lis => {
-      expect($lis).to.have.length(5)
-    })*/
-    cy.contains('testMultipleEvent')
+    cy.get('button[id="tallenna-event"]').click({ multiple: true, force: true })
+    cy.wait(4000)
+    cy.get('li[id="event-list-element"]').should($lis => {
+      expect($lis).to.have.length(4)
+    })
   })
   it('user adds a new kuksa-event', function() {
     cy.get('button[id="kuksa"]').click()
-    cy.contains('Lisää omaan suunnitelmaan').click()
-    cy.contains('Lisää suunnitelmaan').click()
-    cy.contains('Omat').click()
-    //cy.get('div[class=kuksa-synced-event-card]').should('exist')
-  })
-  it('event created in a tosu does not show in an other tosu', function() {
-    /* cy.wait(4000)
-    cy.contains('Yleinen').click()
-    cy.contains('UUSI').click()
-    cy.get('input[id=name]').type('new tosu')
-    cy.contains('luo uusi').click()
-    createEvent()
-    cy.contains('testEvent')
-    cy.contains('new tosu').click()
-    cy.contains('Yleinen').click()
-    cy.contains('testEvent').should('not.exist')*/
-    // Ei toimi koska nyt yleinen lukee myös appbarissa
-  })
-  it('tosu can be deleted', function() {
-    cy.contains('Poista tosu').click()
-    cy.get('button[id=confirm]').click()
-    cy.contains('Ei tosuja')
+    cy.get('button[id="add-kuksa"]').first().click()
+    cy.get('button[id="verify-add-kuksa"]').click()
+    cy.get('button[id="omat"]').click()
+    cy.get('button[id="edit-event"]').should('not.exist')
   })
 })
