@@ -9,10 +9,8 @@ import { withStyles } from '@material-ui/core'
 
 const styles = theme => ({
   eventList: {
-    marginBlockEnd: 0,
-    marginBlockStart: 0,
-    overflowX: 'hidden',
-    paddingLeft: 0,
+    paddingTop: 10,
+    paddingBottom: 10,
   },
 })
 
@@ -26,20 +24,20 @@ class EventList extends React.Component {
 
     let odd = true
     return (
-      <ul className={classes.eventList}>
+      <div className={classes.eventList}>
         {eventsToShow().map(event => {
           odd = !odd
           return (
-            <li key={event.id ? event.id : 0}>
+            <div key={event.id ? event.id : 0}>
               {event.kuksaEvent ? (
                 <KuksaEventCard event={event} />
               ) : (
                 <EventCard event={event} odd={odd} />
               )}
-            </li>
+            </div>
           )
         })}
-      </ul>
+      </div>
     )
   }
 }
@@ -48,8 +46,6 @@ EventList.propTypes = {
   events: PropTypes.arrayOf(PropTypes.object).isRequired,
   filter: PropTypes.string.isRequired,
 }
-
-EventList.defaultProps = {}
 
 const mapStateToProps = state => ({
   events: state.events,
