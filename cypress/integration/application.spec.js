@@ -62,7 +62,7 @@ describe('After logging in', function() {
     })
     cy.get('button[id="tallenna-event"]').click({ multiple: true, force: true })
     cy.wait(4000)
-    cy.get('li[id="event-list-element"]').should($lis => {
+    cy.get('div[id="event-list-element"]').should($lis => {
       expect($lis).to.have.length(4)
     })
   })
