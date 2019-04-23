@@ -3,7 +3,7 @@ describe('After logging in', function() {
     cy.request('http://localhost:3001/scouts/testuser')
     cy.visit('http://localhost:3000')
   })
-  it('tosu can be removed', function() {
+  /*it('tosu can be removed', function() {
     cy.contains('Poista tosu').click()
     cy.get('button[id=confirm]').click()
   })
@@ -15,5 +15,5 @@ describe('After logging in', function() {
       force: true,
     })
     cy.contains('luo uusi').click({ multiple: true, force: true })
-  })
+  })*/
 })

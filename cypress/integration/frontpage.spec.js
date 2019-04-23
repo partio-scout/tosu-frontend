@@ -12,13 +12,13 @@ describe('Front page ', function() {
 describe('After logging in', function() {
   beforeEach('user logs in', function() {
     resetDatabase()
+    cy.server()
     cy.request('http://localhost:3001/scouts/testuser')
     cy.visit('http://localhost:3000')
   })
   it('login succesful', function() {
     //cy.get('div[class="account-name-and-button"]')
-
-    // Ei toimi koska tuo tunniste ei löydy. 
+    // Ei toimi koska tuo tunniste ei löydy.
   })
   it('user can hide the sidebar', function() {
     /*cy.get('div[id="select-tarppo"]')
@@ -26,7 +26,6 @@ describe('After logging in', function() {
     cy.get('div[id="select-tarppo"]').should(
       'not.be.visible'
     )*/
-
     // Ei toimi koska noi tunnisteet puuttuu
   })
   it('user can open the form to add a new event', function() {
