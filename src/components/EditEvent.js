@@ -15,6 +15,9 @@ import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
 
 const styles = theme => ({
+  button: {
+    marginRight: theme.spacing.unit,
+  },
   rightIcon: {
     marginLeft: theme.spacing.unit,
   },
@@ -148,6 +151,7 @@ class EditEvent extends React.Component {
           <Button
             size={this.props.minimal ? 'small' : 'medium'}
             onClick={this.handleOpen}
+            className={classes.button}
             variant="contained"
             color="primary"
           >

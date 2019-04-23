@@ -14,10 +14,9 @@ import PropTypesSchema from '../utils/PropTypesSchema'
 
 const styles = theme => ({
   button: {
-    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
   },
   redbutton: {
-    marginLeft: theme.spacing.unit,
     background: '#FE6B8B',
     color: 'white',
   },
@@ -85,8 +84,20 @@ class DeleteEvent extends React.Component {
     if (event.eventGroupId) {
       actions = (
         <div>
-          <Button className={classes.button} variant='contained' onClick={this.handleClose}>peruuta</Button>
-          <Button className={classes.button} variant='contained' color='secondary' onClick={this.deleteEvent} disabled={disabled}>
+          <Button
+            className={classes.button}
+            variant="contained"
+            onClick={this.handleClose}
+          >
+            peruuta
+          </Button>
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="secondary"
+            onClick={this.deleteEvent}
+            disabled={disabled}
+          >
             Poista tämä tapahtuma
           </Button>
           <Button className={classes.redbutton} onClick={this.deleteEventGroup}>
@@ -100,8 +111,19 @@ class DeleteEvent extends React.Component {
           {event.synced && (
             <p>Tapahtuma poistetaan suunnitelmastasi, mutta ei Kuksasta.</p>
           )}
-          <Button className={classes.button} variant='contained' onClick={this.handleClose}>peruuta</Button>
-          <Button className={classes.redbutton} variant='contained' onClick={this.deleteEvent} disabled={disabled}>
+          <Button
+            className={classes.button}
+            variant="contained"
+            onClick={this.handleClose}
+          >
+            peruuta
+          </Button>
+          <Button
+            className={classes.redbutton}
+            variant="contained"
+            onClick={this.deleteEvent}
+            disabled={disabled}
+          >
             Poista tapahtuma
           </Button>
         </div>
