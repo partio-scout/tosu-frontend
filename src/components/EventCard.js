@@ -19,6 +19,8 @@ import {
   withStyles,
   Tooltip,
   TextField,
+  InputAdornment,
+  CircularProgress,
 } from '@material-ui/core'
 
 import Warning from '@material-ui/icons/Warning'
@@ -94,6 +96,8 @@ class EventCard extends React.Component {
       syncDialogOpen: false,
       newPlans: false,
       information: props.event.information,
+      timeout: null,
+      saving: false,
     }
     this.changeInfo = this.changeInfo.bind(this)
   }
@@ -178,6 +182,34 @@ class EventCard extends React.Component {
 
   stopSyncingWithKuksa = async () => {
     // TODO
+  }
+
+  /**
+   * Sets a timeout after which it saves the new information.
+   * If called too early, it resets the timeout.
+   * @param value - New value for event information
+   */
+  editInformation = value =>
+    this.setState({
+      timeout: this.resetTimeout(
+        this.state.timeout,
+        setTimeout(this.saveValue, 1000)
+      ),
+      information: value,
+    })
+
+  /**
+   * Helper function for the above function.
+   */
+  resetTimeout = (id, newID) => {
+    clearTimeout(id)
+    return newID
+  }
+
+  saveValue = () => {
+    this.setState({ saving: true })
+    this.changeInfo()
+    setTimeout(() => this.setState({ saving: false }), 1250)
   }
 
   /**
@@ -337,20 +369,15 @@ class EventCard extends React.Component {
           margin="normal"
           variant="outlined"
           value={this.state.information}
-          onChange={e =>
-            this.setState({
-              information: e.target.value,
-            })
-          }
+          onChange={e => this.editInformation(e.target.value)}
+          InputProps={{
+            endAdornment: this.state.saving ? (
+              <InputAdornment position="end">
+                {<CircularProgress size={20} thickness={3} />}
+              </InputAdornment>
+            ) : null,
+          }}
         />
-        <Button
-          size="small"
-          variant="contained"
-          color="primary"
-          onClick={this.changeInfo}
-        >
-          PÄIVITÄ
-        </Button>
       </form>
     )
 
