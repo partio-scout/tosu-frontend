@@ -217,7 +217,7 @@ class App extends Component {
         <TosuDrawer initialization={this.initialization} />
         <div style={{ display: 'flex' }}>
           <AppBar />
-          <ActivitiesSidebar />
+          {isTouchDevice() ? null : <ActivitiesSidebar />}
           <div
             style={{
               width: '100%',
