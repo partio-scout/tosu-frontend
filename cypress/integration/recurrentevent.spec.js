@@ -35,13 +35,15 @@ describe('After logging in', function() {
     })
     cy.get('button[id="tallenna-event"]').click({ multiple: true, force: true })
     cy.wait(4000)
-    cy.get('li[id="event-list-element"]').should($lis => {
+    cy.get('div[id="event-list-element"]').should($lis => {
       expect($lis).to.have.length(3)
     })
     //delete all same recurrent events
-    cy.get('button[id="delete-event"]').first().click()
+    cy.get('button[id="delete-event"]')
+      .first()
+      .click()
     cy.get('button[id="delete-recurrent-events"]').click()
-    cy.get('li[id="event-list-element"]').should('not.exist')
+    cy.get('div[id="event-list-element"]').should('not.exist')
   })
   it('user can delete only one of recurring events', function() {
     //create recurrent event
@@ -68,7 +70,9 @@ describe('After logging in', function() {
     cy.get('button[id="tallenna-event"]').click({ multiple: true, force: true })
     cy.wait(4000)
     //delete only one event
-    cy.get('button[id="delete-event"]').first().click()
+    cy.get('button[id="delete-event"]')
+      .first()
+      .click()
     cy.get('button[id="delete-one-recurrent-event"]').click()
     cy.get('li[id="event-list-element"]').should($lis => {
       expect($lis).to.have.length(6)
