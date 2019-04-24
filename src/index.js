@@ -10,13 +10,7 @@ axios.defaults.withCredentials = true
 
 ReactDOM.render(
   <Provider store={store}>
-    <SnackbarProvider
-      maxSnack="3"
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
-      }}
-    >
+    <SnackbarProvider>
       <App />
     </SnackbarProvider>
   </Provider>,
