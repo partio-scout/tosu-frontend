@@ -6,8 +6,6 @@ import {
   FormControlLabel,
   MenuItem,
   TextField,
-  IconButton,
-  Icon,
 } from '@material-ui/core/'
 import {
   TextValidator,
@@ -239,197 +237,182 @@ export default class EventForm extends React.Component {
     const frequentStyle = { display: this.state.checked ? '' : 'none' }
 
     return (
-      <div>
-        <IconButton
-          style={{
-            marginRight: 0,
-            marginTop: -100,
-            marginBottom: 0,
-            float: 'right',
-          }}
-          onClick={this.props.close}
-        >
-          <Icon color="primary">clear</Icon>
-        </IconButton>
-        <ValidatorForm ref="form" onSubmit={this.send}>
-          <TextValidator
-            label="Tapahtuman nimi"
-            name="title"
-            value={this.state.title}
-            onChange={this.handleNewEventFormChange}
+      <ValidatorForm ref="form" onSubmit={this.send}>
+        <TextValidator
+          label="Tapahtuman nimi"
+          name="title"
+          value={this.state.title}
+          onChange={this.handleNewEventFormChange}
+          validators={['required']}
+          errorMessages={['Tapahtuman nimi vaaditaan']}
+          fullWidth
+          margin="normal"
+        />
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <ValidatedDatePicker
+            label="Tapahtuman alkamispäivä"
+            onChange={this.handleStartDate}
+            name="formStartDate"
+            autoOk
+            cancelLabel="Peruuta"
+            value={this.state.startDate === '' ? null : this.state.startDate}
             validators={['required']}
-            errorMessages={['Tapahtuman nimi vaaditaan']}
+            errorMessages={['Päivämäärä vaaditaan']}
             fullWidth
             margin="normal"
           />
-          <MuiPickersUtilsProvider utils={MomentUtils}>
-            <ValidatedDatePicker
-              label="Tapahtuman alkamispäivä"
-              onChange={this.handleStartDate}
-              name="formStartDate"
-              autoOk
-              cancelLabel="Peruuta"
-              value={this.state.startDate === '' ? null : this.state.startDate}
-              validators={['required']}
-              errorMessages={['Päivämäärä vaaditaan']}
-              fullWidth
-              margin="normal"
-            />
 
-            <ValidatedTimePicker
-              label="Tapahtuman alkamisaika"
-              ampm={false}
-              name="startTime"
-              cancelLabel="Peruuta"
-              autoOk
-              value={this.state.startTime === '' ? null : this.state.startTime}
-              onChange={this.handleStartTime}
-              validators={['required']}
-              errorMessages={['Aloitusaika vaaditaan']}
+          <ValidatedTimePicker
+            label="Tapahtuman alkamisaika"
+            ampm={false}
+            name="startTime"
+            cancelLabel="Peruuta"
+            autoOk
+            value={this.state.startTime === '' ? null : this.state.startTime}
+            onChange={this.handleStartTime}
+            validators={['required']}
+            errorMessages={['Aloitusaika vaaditaan']}
+            fullWidth
+            disabled={this.state.startDate === ''}
+            margin="normal"
+          />
+          <ValidatedDatePicker
+            label="Tapahtuman loppumispäivä"
+            onChange={this.handleEndDate}
+            name="endDate"
+            autoOk
+            value={this.state.endDate === '' ? null : this.state.endDate}
+            validators={['dateIsLater']}
+            errorMessages={[
+              'Päättymishetki ei voi olla aiemmin kuin alkamishetki!',
+            ]}
+            fullWidth
+            margin="normal"
+          />
+
+          <ValidatedTimePicker
+            label="Tapahtuman loppumisaika"
+            ampm={false}
+            name="endTime"
+            cancelLabel="Peruuta"
+            autoOk
+            value={this.state.endTime === '' ? null : this.state.endTime}
+            onChange={this.handleEndTime}
+            validators={['timeIsLater']}
+            errorMessages={[
+              'Päättymishetki ei voi olla aiemmin kuin alkamishetki!',
+            ]}
+            fullWidth
+            disabled={this.state.endDate === ''}
+            margin="normal"
+          />
+        </MuiPickersUtilsProvider>
+        <br />
+        {this.props.allowRepeatedEvent ? (
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={this.state.checked}
+                onChange={this.updateCheck.bind(this)}
+                color="primary"
+              />
+            }
+            label="Luo toistuva tapahtuma"
+            margin="normal"
+          />
+        ) : null}
+        {this.props.allowRepeatedEvent ? (
+          <div style={frequentStyle}>
+            <SelectValidator
+              name="repeatFrequency"
+              label="Toistumisväli"
+              value={this.state.repeatFrequency}
+              onChange={this.handleFrequency}
+              disabled={!this.state.checked}
               fullWidth
-              disabled={this.state.startDate === ''}
-              margin="normal"
-            />
-            <ValidatedDatePicker
-              label="Tapahtuman loppumispäivä"
-              onChange={this.handleEndDate}
-              name="endDate"
-              autoOk
-              value={this.state.endDate === '' ? null : this.state.endDate}
-              validators={['dateIsLater']}
+            >
+              <MenuItem value={1}>Päivittäin</MenuItem>
+              <MenuItem value={2}>Viikottain</MenuItem>
+              <MenuItem value={3}>Joka toinen viikko</MenuItem>
+              <MenuItem value={4}>Kuukausittain (esim. 12. pvä)</MenuItem>
+            </SelectValidator>
+
+            <div>
+              <p>
+                <font color="green">
+                  Valitse toistumien lukumäärä tai viimeinen päivämäärä
+                  toistumiselle.
+                </font>
+              </p>
+            </div>
+
+            <TextValidator
+              label="Toistuvien tapahtumien määrä"
+              name="repeatCount"
+              value={this.state.repeatCount}
+              onChange={this.handleRepeatCount}
+              disabled={!this.state.checked}
+              validators={['minNumber:2', 'maxNumber:55']}
               errorMessages={[
-                'Päättymishetki ei voi olla aiemmin kuin alkamishetki!',
+                'Toistuvien tapahtumien määrän pitää olla väliltä 2 - 55!',
+                'Toistuvien tapahtumien määrän pitää olla väliltä 2 - 55!',
               ]}
               fullWidth
               margin="normal"
             />
+            <br />
 
-            <ValidatedTimePicker
-              label="Tapahtuman loppumisaika"
-              ampm={false}
-              name="endTime"
-              cancelLabel="Peruuta"
-              autoOk
-              value={this.state.endTime === '' ? null : this.state.endTime}
-              onChange={this.handleEndTime}
-              validators={['timeIsLater']}
-              errorMessages={[
-                'Päättymishetki ei voi olla aiemmin kuin alkamishetki!',
-              ]}
-              fullWidth
-              disabled={this.state.endDate === ''}
-              margin="normal"
-            />
-          </MuiPickersUtilsProvider>
-          <br />
-          {this.props.allowRepeatedEvent ? (
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={this.state.checked}
-                  onChange={this.updateCheck.bind(this)}
-                  color="primary"
-                />
-              }
-              label="Luo toistuva tapahtuma"
-              margin="normal"
-            />
-          ) : null}
-          {this.props.allowRepeatedEvent ? (
-            <div style={frequentStyle}>
-              <SelectValidator
-                name="repeatFrequency"
-                label="Toistumisväli"
-                value={this.state.repeatFrequency}
-                onChange={this.handleFrequency}
-                disabled={!this.state.checked}
-                fullWidth
-              >
-                <MenuItem value={1}>Päivittäin</MenuItem>
-                <MenuItem value={2}>Viikottain</MenuItem>
-                <MenuItem value={3}>Joka toinen viikko</MenuItem>
-                <MenuItem value={4}>Kuukausittain (esim. 12. pvä)</MenuItem>
-              </SelectValidator>
-
-              <div>
-                <p>
-                  <font color="green">
-                    Valitse toistumien lukumäärä tai viimeinen päivämäärä
-                    toistumiselle.
-                  </font>
-                </p>
-              </div>
-
-              <TextValidator
-                label="Toistuvien tapahtumien määrä"
-                name="repeatCount"
-                value={this.state.repeatCount}
-                onChange={this.handleRepeatCount}
-                disabled={!this.state.checked}
-                validators={['minNumber:2', 'maxNumber:55']}
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <ValidatedDatePicker
+                label="Viimeinen toistumispäivä"
+                onChange={this.handleLastDate}
+                name="startDate"
+                autoOk
+                cancelLabel="Peruuta"
+                value={this.state.lastDate === '' ? null : this.state.lastDate}
+                validators={['dateIsLater']}
                 errorMessages={[
-                  'Toistuvien tapahtumien määrän pitää olla väliltä 2 - 55!',
-                  'Toistuvien tapahtumien määrän pitää olla väliltä 2 - 55!',
+                  'Tarvittavia tietoja puuttuu tai ne ovat virheellisiä. (Alkamispäivä ja tapahtumien määrä.)',
                 ]}
                 fullWidth
                 margin="normal"
               />
-              <br />
+            </MuiPickersUtilsProvider>
+            <br />
+          </div>
+        ) : null}
+        <br />
 
-              <MuiPickersUtilsProvider utils={MomentUtils}>
-                <ValidatedDatePicker
-                  label="Viimeinen toistumispäivä"
-                  onChange={this.handleLastDate}
-                  name="startDate"
-                  autoOk
-                  cancelLabel="Peruuta"
-                  value={
-                    this.state.lastDate === '' ? null : this.state.lastDate
-                  }
-                  validators={['dateIsLater']}
-                  errorMessages={[
-                    'Tarvittavia tietoja puuttuu tai ne ovat virheellisiä. (Alkamispäivä ja tapahtumien määrä.)',
-                  ]}
-                  fullWidth
-                  margin="normal"
-                />
-              </MuiPickersUtilsProvider>
-              <br />
-            </div>
-          ) : null}
-          <br />
+        <SelectValidator
+          name="type"
+          label="Tapahtuman tyyppi"
+          value={this.state.type}
+          onChange={this.handleType}
+          validators={['required']}
+          errorMessages={['Tapahtuman tyyppi vaaditaan']}
+          fullWidth
+        >
+          <MenuItem value="kokous">Kokous</MenuItem>
+          <MenuItem value="leiri">Leiri</MenuItem>
+          <MenuItem value="retki">Retki</MenuItem>
+          <MenuItem value="vaellus">Vaellus</MenuItem>
+          <MenuItem value="muu tapahtuma">Muu tapahtuma</MenuItem>
+        </SelectValidator>
+        <br />
 
-          <SelectValidator
-            name="type"
-            label="Tapahtuman tyyppi"
-            value={this.state.type}
-            onChange={this.handleType}
-            validators={['required']}
-            errorMessages={['Tapahtuman tyyppi vaaditaan']}
-            fullWidth
-          >
-            <MenuItem value="kokous">Kokous</MenuItem>
-            <MenuItem value="leiri">Leiri</MenuItem>
-            <MenuItem value="retki">Retki</MenuItem>
-            <MenuItem value="vaellus">Vaellus</MenuItem>
-            <MenuItem value="muu tapahtuma">Muu tapahtuma</MenuItem>
-          </SelectValidator>
-          <br />
+        <TextField
+          label="Lisätietoja"
+          name="information"
+          value={this.state.information}
+          onChange={this.handleNewEventFormChange}
+          rowsMax="2"
+          fullWidth
+          margin="normal"
+        />
+        <br />
 
-          <TextField
-            label="Lisätietoja"
-            name="information"
-            value={this.state.information}
-            onChange={this.handleNewEventFormChange}
-            rowsMax="2"
-            fullWidth
-            margin="normal"
-          />
-          <br />
-
-          {actions}
-        </ValidatorForm>
-      </div>
+        {actions}
+      </ValidatorForm>
     )
   }
 }

@@ -2,24 +2,27 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import isTouchDevice from 'is-touch-device'
-import Paper from '@material-ui/core/Paper'
 import eventgroupService from '../services/eventgroups'
 import FrequentEventsHandler from '../utils/FrequentEventsHandler'
 import EventForm from './EventForm'
 import { addEvent } from '../reducers/eventReducer'
 import { withSnackbar } from 'notistack'
-import { withStyles } from '@material-ui/core'
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  IconButton,
+  withStyles,
+} from '@material-ui/core'
+import CloseIcon from '@material-ui/icons/Close'
 
-const styles = {
-  eventForm: {
-    maxWidth: 800,
-    margin: '0 auto',
+const styles = theme => ({
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing.unit * 2,
+    top: theme.spacing.unit * 2,
   },
-  newFormPaper: {
-    padding: 20,
-  },
-}
+})
 
 class NewEvent extends React.Component {
   state = {
@@ -191,21 +194,18 @@ class NewEvent extends React.Component {
 
   render() {
     const { classes } = this.props
-    if (isTouchDevice()) {
-      return (
-        <div className={classes.eventForm}>
-          <EventForm
-            submitFunction={this.handleCloseAndSend.bind(this)}
-            close={this.handleClose.bind(this)}
-            update={this.update.bind(this)}
-            data={this.state}
-          />
-        </div>
-      )
-    }
     return (
-      <div className={classes.eventForm}>
-        <Paper className={classes.newFormPaper}>
+      <Dialog open={this.props.open} onClose={this.handleClose} scroll="body">
+        <DialogTitle>
+          Luo uusi tapahtuma
+          <IconButton
+            onClick={this.handleClose}
+            className={classes.closeButton}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
           <EventForm
             submitFunction={this.handleCloseAndSend.bind(this)}
             close={this.handleClose.bind(this)}
@@ -213,8 +213,8 @@ class NewEvent extends React.Component {
             data={this.state}
             allowRepeatedEvent
           />
-        </Paper>
-      </div>
+        </DialogContent>
+      </Dialog>
     )
   }
 }

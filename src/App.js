@@ -6,12 +6,7 @@ import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import isTouchDevice from 'is-touch-device'
 import React, { Component } from 'react'
-import {
-  Dialog,
-  DialogTitle,
-  LinearProgress,
-  CssBaseline,
-} from '@material-ui/core'
+import { LinearProgress, CssBaseline } from '@material-ui/core'
 import moment from 'moment'
 import 'react-dates/initialize'
 import { MuiThemeProvider } from '@material-ui/core/styles'
@@ -80,20 +75,6 @@ class App extends Component {
   }
 
   componentDidMount = async () => {
-    switch (window.location.pathname) {
-      case '/new-event':
-        this.setState({
-          headerVisible: false,
-          bufferZoneHeight: 0,
-          newEventVisible: false,
-        })
-        break
-      case '/calendar':
-        this.props.viewChange('CALENDAR')
-        break
-      default:
-        break
-    }
     await this.checkLoggedIn()
     //let pofData = loadCachedPofData()
     if (this.props.scout !== null) {
@@ -253,13 +234,10 @@ class App extends Component {
                   endDate={this.state.endDate}
                 />
               )}
-              <Dialog
+              <NewEvent
                 open={this.state.newEventVisible}
-                onClose={this.handleClose}
-              >
-                <DialogTitle>Luo uusi tapahtuma</DialogTitle>
-                <NewEvent closeMe={this.handleClose} />
-              </Dialog>
+                closeMe={this.handleClose}
+              />
             </div>
           </div>
         </div>
