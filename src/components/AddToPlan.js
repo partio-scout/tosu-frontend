@@ -3,7 +3,7 @@ import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
 import { DialogTitle, DialogActions, DialogContent } from '@material-ui/core'
 import { connect } from 'react-redux'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import PropTypes from 'prop-types'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
@@ -23,10 +23,14 @@ class AddToPlan extends React.Component {
         ...this.props.event,
         tosuId: this.props.tosu.selected,
       })
-      this.props.notify('Tapahtuma lisätty suunnitelmaan!', 'success')
+      this.props.enqueueSnackbar('Tapahtuma lisätty suunnitelmaan!', {
+        variant: 'success',
+      })
     } catch (exception) {
       console.error('Error in adding event to tosu:', exception)
-      this.props.notify('Tapahtuman lisäämisessä tuli virhe. Yritä uudestaan!')
+      this.props.enqueueSnackbar('Tapahtuman lisäämisessä tuli virhe.', {
+        variant: 'error',
+      })
     }
   }
   /**
@@ -64,8 +68,16 @@ class AddToPlan extends React.Component {
           </DialogTitle>
           <DialogContent>Tapahtuma synkronoidaan Kuksaan.</DialogContent>
           <DialogActions>
-            <Button variant="contained" onClick={this.handleButtonDialogClose}>peruuta</Button>
-            <Button variant='contained' color='primary' onClick={this.addEventToTosu}>Lisää suunnitelmaan</Button>
+            <Button variant="contained" onClick={this.handleButtonDialogClose}>
+              peruuta
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.addEventToTosu}
+            >
+              Lisää suunnitelmaan
+            </Button>
           </DialogActions>
         </Dialog>
       </div>
@@ -74,7 +86,6 @@ class AddToPlan extends React.Component {
 }
 
 const mapDispatchToProps = {
-  notify,
   addEventFromKuksa,
 }
 
@@ -85,14 +96,12 @@ const mapStateToProps = state => ({
 AddToPlan.propTypes = {
   event: PropTypesSchema.eventShape.isRequired,
   addEventFromKuksa: PropTypes.func.isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   tosu: PropTypes.func.isRequired,
   buttonClass: PropTypes.string.isRequired,
 }
 
-AddToPlan.defaultProps = {}
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddToPlan)
+)(withSnackbar(AddToPlan))

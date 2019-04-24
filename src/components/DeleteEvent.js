@@ -9,7 +9,7 @@ import {
   deleteEventGroup,
   deleteSyncedEvent,
 } from '../reducers/eventReducer'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
 const styles = theme => ({
@@ -42,10 +42,12 @@ class DeleteEvent extends React.Component {
       } else {
         this.props.deleteEvent(this.props.data.id)
       }
-      this.props.notify('Tapahtuma poistettu!', 'success')
+      this.props.enqueueSnackbar('Tapahtuma poistettu', { variant: 'info' })
     } catch (exception) {
       console.error('Error in deleting event:', exception)
-      this.props.notify('Tapahtuman poistamisessa tuli virhe. Yritä uudestaan!')
+      this.props.enqueueSnackbar('Tapahtuman poistamisessa tuli virhe.', {
+        variant: 'error',
+      })
     }
   }
   /**
@@ -55,11 +57,14 @@ class DeleteEvent extends React.Component {
     this.handleClose()
     try {
       this.props.deleteEventGroup(this.props.data.eventGroupId)
-      this.props.notify('Toistuva tapahtuma poistettu!', 'success')
+      this.props.enqueueSnackbar('Toistuva tapahtuma poistettu', {
+        variant: 'info',
+      })
     } catch (exception) {
       console.error('Error in deleting event:', exception)
-      this.props.notify(
-        'Toistuvan tapahtuman poistamisessa tuli virhe. Yritä uudestaan!'
+      this.props.enqueueSnackbar(
+        'Toistuvan tapahtuman poistamisessa tuli virhe.',
+        { variant: 'error' }
       )
     }
   }
@@ -155,7 +160,6 @@ class DeleteEvent extends React.Component {
 
 const mapDispatchToProps = {
   deleteEvent,
-  notify,
   deleteEventGroup,
   deleteSyncedEvent,
 }
@@ -169,14 +173,12 @@ DeleteEvent.propTypes = {
   deleteSyncedEvent: PropTypes.func.isRequired,
   deleteEvent: PropTypes.func.isRequired,
   deleteEventGroup: PropTypes.func.isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   minimal: PropTypes.bool.isRequired,
   classes: PropTypesSchema.classesShape.isRequired,
 }
 
-DeleteEvent.defaultProps = {}
-
 export default connect(
   null,
   mapDispatchToProps
-)(withStyles(styles)(DeleteEvent))
+)(withStyles(styles)(withSnackbar(DeleteEvent)))

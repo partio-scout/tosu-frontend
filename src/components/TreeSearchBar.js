@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import Select from 'react-select'
 import TreeSelect from 'rc-tree-select'
 import { connect } from 'react-redux'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
@@ -45,9 +45,11 @@ class TreeSearchBar extends React.Component {
       try {
         await addActivityToRelevantReducers(this.props, { guid: activityGuid })
         this.props.pofTreeUpdate(this.props.activities)
-        this.props.notify('Aktiviteetti on lisätty!', 'success')
+        this.props.enqueueSnackbar('Aktiviteetti lisätty', { variant: 'info' })
       } catch (exception) {
-        this.props.notify('Aktiviteettialue on täynnä!!')
+        this.props.enqueueSnackbar('Aktiviteettialue on täynnä!', {
+          variant: 'warning',
+        })
       }
     }
   }
@@ -85,14 +87,14 @@ class TreeSearchBar extends React.Component {
       try {
         await Promise.all(promises)
 
-        this.props.notify(
-          'Pakolliset aktiviteetit lisätty tai olemassa!',
-          'success'
-        )
+        this.props.enqueueSnackbar('Pakolliset aktiviteetit lisätty', {
+          variant: 'info',
+        })
         this.props.pofTreeUpdate(this.props.activities)
       } catch (exception) {
-        this.props.notify(
-          'Kaikki pakolliset aktiviiteetit eivät mahtuneet alueelle tai ovat jo lisätty!'
+        this.props.enqueueSnackbar(
+          'Kaikki pakolliset aktiviiteetit eivät mahtuneet alueelle!',
+          { variant: 'warning' }
         )
       }
     }
@@ -207,7 +209,7 @@ TreeSearchBar.propTypes = {
   pofTree: PropTypesSchema.pofTreeShape.isRequired,
   taskgroup: PropTypesSchema.taskgroupShape.isRequired,
   activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   postActivityToBuffer: PropTypes.func.isRequired,
   addActivity: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
@@ -215,8 +217,6 @@ TreeSearchBar.propTypes = {
   selectTaskgroup: PropTypes.func.isRequired,
   emptyTaskgroup: PropTypes.func.isRequired,
 }
-
-TreeSearchBar.defaultProps = {}
 
 const mapStateToProps = state => ({
   events: state.events,
@@ -227,7 +227,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  notify,
   postActivityToBuffer,
   addActivity,
   pofTreeUpdate,
@@ -239,4 +238,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(TreeSearchBar))
+)(withStyles(styles)(withSnackbar(TreeSearchBar)))

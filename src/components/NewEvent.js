@@ -8,7 +8,7 @@ import eventgroupService from '../services/eventgroups'
 import FrequentEventsHandler from '../utils/FrequentEventsHandler'
 import EventForm from './EventForm'
 import { addEvent } from '../reducers/eventReducer'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import { withStyles } from '@material-ui/core'
 
 const styles = {
@@ -147,13 +147,19 @@ class NewEvent extends React.Component {
     try {
       this.props.addEvent(eventData)
       if (eventData.eventGroupId === undefined) {
-        this.props.notify('Uusi tapahtuma luotu!', 'success')
+        this.props.enqueueSnackbar('Uusi tapahtuma luotu', {
+          variant: 'success',
+        })
       } else {
-        this.props.notify('Uusi toistuva tapahtuma luotu!', 'success')
+        this.props.enqueueSnackbar('Uusi toistuva tapahtuma luotu', {
+          variant: 'success',
+        })
       }
     } catch (exception) {
       console.error('Error in event POST:', exception)
-      this.props.notify('Tapahtumaa ei voitu luoda!')
+      this.props.enqueueSnackbar('Tapahtuman luomisessa tapahtui virhe', {
+        variant: 'error',
+      })
     }
   }
 
@@ -215,11 +221,9 @@ class NewEvent extends React.Component {
 
 NewEvent.propTypes = {
   addEvent: PropTypes.func.isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   tosu: PropTypes.string.isRequired,
 }
-
-NewEvent.defaultProps = {}
 
 const mapStateToProps = state => ({
   tosu: state.tosu,
@@ -227,10 +231,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   addEvent,
-  notify,
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(NewEvent))
+)(withStyles(styles)(withSnackbar(NewEvent)))

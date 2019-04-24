@@ -12,7 +12,7 @@ import Collapse from '@material-ui/core/Collapse/Collapse'
 import { Parser } from 'html-to-react'
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import { editEvent } from '../reducers/eventReducer'
 import { updateActivity } from '../reducers/activityReducer'
 import { withStyles } from '@material-ui/core'
@@ -67,7 +67,9 @@ class PlanCard extends React.Component {
       parentActivity.plans.push(data)
       this.props.updateActivity(parentActivity)
     } catch (exception) {
-      this.props.notify('Toteutusvinkin tallentaminen ei onnistunut')
+      this.props.enqueueSnackbar('Toteutusvinkin tallentaminen epäonnistui', {
+        variant: 'error',
+      })
     }
   }
   /**
@@ -87,7 +89,9 @@ class PlanCard extends React.Component {
       this.props.updateActivity(activity)
     } catch (exception) {
       console.log(exception)
-      this.props.notify('Toteutusvinkin poistaminen ei onnistunut')
+      this.props.enqueueSnackbar('Toteutusvinkin poistaminen epäonnistui', {
+        variant: 'error',
+      })
     }
   }
   /**
@@ -186,23 +190,20 @@ PlanCard.propTypes = {
   savePlan: PropTypes.func.isRequired,
   deletePlan: PropTypes.func.isRequired,
   editEvent: PropTypes.func.isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   deleteActivityFromEventOnlyLocall: PropTypes.func.isRequired,
   updateActivity: PropTypes.func.isRequired,
 }
-
-PlanCard.defaultProps = {}
 
 const mapDispatchToProps = {
   initPlans,
   savePlan,
   deletePlan,
   editEvent,
-  notify,
   updateActivity,
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(PlanCard))
+)(withStyles(styles)(withSnackbar(PlanCard)))

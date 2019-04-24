@@ -38,6 +38,7 @@
     "moment": "^2.22.2",
     "moment-with-locales-es6": "^1.0.1",
     "normalizr": "^3.2.4",
+    "notistack": "^0.7.0",
     "prop-types": "^15.6.2",
     "rc-tree-select": "^1.12.13",
     "react": "^16.8.5",

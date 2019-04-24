@@ -1,4 +1,3 @@
-import { connect } from 'react-redux'
 import React from 'react'
 import PropTypes from 'prop-types'
 import {
@@ -15,7 +14,6 @@ import moment from 'moment-with-locales-es6'
 import { Parser } from 'html-to-react'
 
 import AddToPlan from './AddToPlan'
-import { notify } from '../reducers/notificationReducer'
 
 const styles = {
   arrowUp: {
@@ -99,16 +97,7 @@ class KuksaEventCard extends React.Component {
 }
 
 KuksaEventCard.propTypes = {
-  notify: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
 }
 
-KuksaEventCard.defaultProps = {}
-
-const mapDispatchToProps = {
-  notify,
-}
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(withStyles(styles)(KuksaEventCard))
+export default withStyles(styles)(KuksaEventCard)

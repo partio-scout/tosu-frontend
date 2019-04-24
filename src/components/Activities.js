@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import Activity from './Activity'
 import convertToSimpleActivity from '../functions/activityConverter'
 import activityService from '../services/activities'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   deleteActivityFromBuffer,
@@ -35,12 +35,12 @@ export class Activities extends React.Component {
         )
         this.props.updateActivity(res)
       }
-      this.props.notify('Aktiviteetti poistettu!', 'success')
+      this.props.enqueueSnackbar('Aktiviteetti poistettu', { variant: 'info' })
     } catch (exception) {
       console.log(exception)
-      this.props.notify(
-        'Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!'
-      )
+      this.props.enqueueSnackbar('Aktiviteetin poistossa tapahtui virhe!', {
+        variant: 'error',
+      })
     }
   }
 
@@ -77,7 +77,7 @@ Activities.propTypes = {
   stateActivities: PropTypes.arrayOf(PropTypes.object).isRequired,
   bufferzone: PropTypes.bool.isRequired,
   parentId: PropTypes.number.isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
   deleteActivityFromBuffer: PropTypes.func.isRequired,
   deleteActivityFromEvent: PropTypes.func.isRequired,
@@ -87,8 +87,6 @@ Activities.propTypes = {
   pofTree: PropTypesSchema.pofTreeShape.isRequired,
 }
 
-Activities.defaultProps = {}
-
 const mapStateToProps = state => ({
   buffer: state.buffer,
   events: state.events,
@@ -97,7 +95,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  notify,
   pofTreeUpdate,
   deleteActivityFromBuffer,
   deleteActivityFromEvent,
@@ -109,4 +106,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Activities)
+)(withSnackbar(Activities))

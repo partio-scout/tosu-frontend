@@ -15,7 +15,7 @@ import { editEvent } from '../reducers/eventReducer'
 import planService from '../services/plan'
 import convertToSimpleActivity from '../functions/activityConverter.js'
 import findActivity from '../functions/findActivity'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import { updateActivity } from '../reducers/activityReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
@@ -29,7 +29,7 @@ class SuggestionCard extends React.Component {
     convertToSimpleActivity(findActivity(activity, pofTree))
 
   deleteClick = async e => {
-    const { plan, notify, activity } = this.props
+    const { plan, activity } = this.props
     e.preventDefault()
     try {
       await planService.deletePlan(plan.id)
@@ -38,7 +38,9 @@ class SuggestionCard extends React.Component {
       updatedActivity.plans = activity.plans.filter(p => p.id !== plan.id)
       this.props.updateActivity(updatedActivity)
     } catch (exception) {
-      notify('Toteutusvinkin poistaminen ei onnistunut')
+      this.props.enqueueSnackbar('Toteutusvinkin poistaminen epäonnistui', {
+        variant: 'error',
+      })
     }
   }
 
@@ -76,7 +78,7 @@ class SuggestionCard extends React.Component {
 SuggestionCard.propTypes = {
   pofTree: PropTypesSchema.pofTreeShape.isRequired,
   plans: PropTypes.arrayOf(PropTypes.object).isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   editEvent: PropTypes.func.isRequired,
   deletePlan: PropTypes.func.isRequired,
   updateActivity: PropTypes.func.isRequired,
@@ -90,7 +92,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  notify,
   editEvent,
   deletePlan,
   updateActivity,
@@ -99,4 +100,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SuggestionCard)
+)(withSnackbar(SuggestionCard))

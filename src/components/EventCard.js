@@ -39,7 +39,7 @@ import {
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally,
 } from '../reducers/eventReducer'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   deleteActivityFromBufferOnlyLocally,
@@ -120,9 +120,14 @@ class EventCard extends React.Component {
         })
         this.props.addActivity(res)
         this.props.addActivityToEventOnlyLocally(this.props.event.id, res)
-        this.props.notify('Aktiviteetti on lisätty!', 'success')
+        this.props.enqueueSnackbar('Aktiviteetti on lisätty', {
+          variant: 'info',
+        })
       } catch (exception) {
-        this.props.notify('Aktiviteetin lisäämisessä tapahtui virhe!')
+        this.props.enqueueSnackbar(
+          'Aktiviteetin lisäämisessä tapahtui virhe!',
+          { variant: 'error' }
+        )
       }
     }
     this.props.pofTreeUpdate(this.props.activities)
@@ -498,7 +503,7 @@ EventCard.propTypes = {
   status: PropTypes.string.isRequired,
   plans: PropTypes.arrayOf(PropTypes.object).isRequired,
   activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   editEvent: PropTypes.func.isRequired,
   deletePlan: PropTypes.func.isRequired,
   deleteActivityFromEvent: PropTypes.func.isRequired,
@@ -509,8 +514,6 @@ EventCard.propTypes = {
   deleteActivityFromBufferOnlyLocally: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
 }
-
-EventCard.defaultProps = {}
 
 const mapStateToProps = state => ({
   events: state.events,
@@ -523,7 +526,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  notify,
   editEvent,
   deletePlan,
   deleteActivityFromEvent,
@@ -539,4 +541,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(EventCard))
+)(withStyles(styles)(withSnackbar(EventCard)))

@@ -10,7 +10,7 @@ import { withStyles } from '@material-ui/core/styles'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import EventForm from './EventForm'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
 
@@ -88,10 +88,14 @@ class EditEvent extends React.Component {
       this.props.editEvent(moddedEvent)
       // await eventService.edit(data);
       this.setState({ open: false })
-      this.props.notify('Tapahtuman muokkaus onnistui!', 'success')
+      this.props.enqueueSnackbar('Tapahtuman muokkaus onnistui', {
+        variant: 'info',
+      })
     } catch (exception) {
       console.error('Error in event PUT:', exception)
-      this.props.notify('Tapahtuman muokkaus epäonnistui!')
+      this.props.enqueueSnackbar('Tapahtuman muokkaus epäonnistui!', {
+        variant: 'error',
+      })
     }
   }
 
@@ -182,17 +186,15 @@ class EditEvent extends React.Component {
 const mapDispatchToProps = {
   editEvent,
   bufferZoneInitialization,
-  notify,
 }
 
 EditEvent.propTypes = {
   editEvent: PropTypes.func.isRequired,
   bufferZoneInitialization: PropTypes.func.isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
 }
 
-EditEvent.defaultProps = {}
 export default connect(
   null,
   mapDispatchToProps
-)(withStyles(styles)(EditEvent))
+)(withStyles(styles)(withSnackbar(EditEvent)))

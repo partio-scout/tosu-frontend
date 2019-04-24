@@ -1,6 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import {
   Avatar,
@@ -39,7 +40,7 @@ import { eventsInitialization } from '../reducers/eventReducer'
 import { activityInitialization } from '../reducers/activityReducer'
 import { setLoading } from '../reducers/loadingReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 
 import tosuChange from '../functions/tosuChange'
 
@@ -172,7 +173,9 @@ class TosuDrawer extends React.Component {
       // Just delete the Tosu because it's not currently selected
       await this.props.deleteTosu(tosuId)
     }
-    this.props.notify('Tosu poistettu', 'success')
+    this.props.enqueueSnackbar('Toimintasuunnitelma poistettu', {
+      variant: 'info',
+    })
   }
 
   render() {
@@ -367,10 +370,13 @@ const mapDispatchToProps = {
   eventsInitialization,
   activityInitialization,
   pofTreeUpdate,
-  notify,
+}
+
+TosuDrawer.propTypes = {
+  enqueueSnackbar: PropTypes.func.isRequired,
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(TosuDrawer))
+)(withStyles(styles)(withSnackbar(TosuDrawer)))

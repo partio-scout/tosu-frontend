@@ -30,7 +30,6 @@ import theme from './theme'
 import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
 import ActivitiesSidebar from './components/ActivitiesSidebar'
-import Notification from './components/Notification'
 import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
 import Login from './components/Login'
@@ -264,14 +263,12 @@ class App extends Component {
             </div>
           </div>
         </div>
-        <Notification />
       </MuiThemeProvider>
     )
   }
 }
 
 App.propTypes = {
-  notification: PropTypes.string.isRequired,
   buffer: PropTypesSchema.bufferShape.isRequired,
   events: PropTypes.arrayOf(PropTypes.object).isRequired,
   activities: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -300,7 +297,6 @@ App.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-  notification: state.notification,
   buffer: state.buffer,
   events: state.events,
   pofTree: state.pofTree,
