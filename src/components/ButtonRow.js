@@ -19,6 +19,8 @@ import PropTypesSchema from '../utils/PropTypesSchema'
 const styles = theme => ({
   button: {
     marginRight: theme.spacing.unit,
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
     color: 'white',
   },
   iconButton: {
@@ -80,74 +82,66 @@ class ButtonRow extends React.Component {
     const { ui, classes, tosuMap, mobile } = this.props
 
     return (
-      <div>
-        <div>
-          <Button
-            className={classes.button}
-            onClick={() => this.selectView('OWN')}
-            variant="contained"
-            color={ui.view === 'OWN' ? 'primary' : 'secondary'}
-          >
-            Omat
-          </Button>
-          <Button
-            className={classes.button}
-            onClick={() => this.selectView('KUKSA')}
-            variant="contained"
-            color={ui.view === 'KUKSA' ? 'primary' : 'secondary'}
-          >
-            Kuksa
-          </Button>
-
-          {mobile ? (
-            <IconButton
-              className={
-                classes.button +
-                ' ' +
-                (ui.view === 'CALENDAR'
-                  ? classes.iconButtonSelected
-                  : classes.iconButton)
-              }
-              onClick={() => this.selectView('CALENDAR')}
-            >
-              <CalendarIcon fontSize="small" />
-            </IconButton>
-          ) : (
-            <Button
-              className={classes.button}
-              onClick={() => this.selectView('CALENDAR')}
-              variant="contained"
-              color={ui.view === 'CALENDAR' ? 'primary' : 'secondary'}
-            >
-              Kalenteri
-            </Button>
-          )}
-
-          {!this.canCreateEvent(tosuMap) ? null : mobile ? (
-            <IconButton
-              className={classes.button + ' ' + classes.iconButton}
-              onClick={this.props.newEvent}
-            >
-              <AddIcon fontSize="small" />
-            </IconButton>
-          ) : (
-            <Button
-              className={classes.button}
-              onClick={this.props.newEvent}
-              variant="contained"
-              color="secondary"
-            >
-              Uusi tapahtuma
-            </Button>
-          )}
-        </div>
-        <div
-          className={classes.dateRangeContainer}
-          style={ui.view === 'CALENDAR' ? { display: 'none' } : {}}
+      <React.Fragment>
+        <Button
+          className={classes.button}
+          onClick={() => this.selectView('OWN')}
+          variant="contained"
+          color={ui.view === 'OWN' ? 'primary' : 'secondary'}
         >
-          <Typography inline style={{ marginRight: 8 }}>
-            Rajaa tapahtumia
-          </Typography>
+          Omat
+        </Button>
+        <Button
+          className={classes.button}
+          onClick={() => this.selectView('KUKSA')}
+          variant="contained"
+          color={ui.view === 'KUKSA' ? 'primary' : 'secondary'}
+        >
+          Kuksa
+        </Button>
+
+        {mobile ? (
+          <IconButton
+            className={
+              classes.button +
+              ' ' +
+              (ui.view === 'CALENDAR'
+                ? classes.iconButtonSelected
+                : classes.iconButton)
+            }
+            onClick={() => this.selectView('CALENDAR')}
+          >
+            <CalendarIcon fontSize="small" />
+          </IconButton>
+        ) : (
+          <Button
+            className={classes.button}
+            onClick={() => this.selectView('CALENDAR')}
+            variant="contained"
+            color={ui.view === 'CALENDAR' ? 'primary' : 'secondary'}
+          >
+            Kalenteri
+          </Button>
+        )}
+
+        {!this.canCreateEvent(tosuMap) ? null : mobile ? (
+          <IconButton
+            className={classes.button + ' ' + classes.iconButton}
+            onClick={this.props.newEvent}
+          >
+            <AddIcon fontSize="small" />
+          </IconButton>
+        ) : (
+          <Button
+            className={classes.button}
+            onClick={this.props.newEvent}
+            variant="contained"
+            color="secondary"
+          >
+            Uusi tapahtuma
+          </Button>
+        )}
+        {ui.view === 'CALENDAR' ? null : (
           <DateRangePicker
             startDateId="startDate"
             endDateId="endDate"
@@ -159,17 +153,19 @@ class ButtonRow extends React.Component {
             startDatePlaceholderText="alku pvm"
             endDatePlaceholderText="loppu pvm"
             isOutsideRange={() => false}
+            numberOfMonths={mobile ? 1 : 2}
+            hideKeyboardShortcutsPanel
+            showClearDates
+            customCloseIcon={
+              <IconButton color="primary" onClick={this.clearRange}>
+                <Icon color="primary" fontSize="small">
+                  clear
+                </Icon>
+              </IconButton>
+            }
           />
-          <IconButton
-            className={this.props.filter !== 'NONE' ? '' : classes.hidden}
-            color="primary"
-            onClick={this.clearRange}
-            style={{ marginLeft: 5 }}
-          >
-            <Icon color="primary">clear</Icon>
-          </IconButton>
-        </div>
-      </div>
+        )}
+      </React.Fragment>
     )
   }
 }

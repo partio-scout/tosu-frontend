@@ -215,7 +215,7 @@ class App extends Component {
                 mobile={isTouchDevice()}
               />
               {this.props.loading ? (
-                <LinearProgress style={{ marginTop: 5 }} />
+                <LinearProgress style={{ marginTop: theme.spacing.unit }} />
               ) : null}
             </div>
             <div

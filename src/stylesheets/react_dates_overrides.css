@@ -30,13 +30,7 @@
   border-bottom: 2px solid #243264;
 }
 
-.DayPickerKeyboardShortcuts_show__bottomRight:hover::before {
-  border-right: 33px solid #243264;
-}
-
-.DayPickerKeyboardShortcuts_show__bottomRight::before {
-  border-top: 26px solid transparent;
-  border-right: 33px solid #28aae0;
-  bottom: 0;
-  right: 0;
+.DateRangePickerInput_clearDates {
+  margin: 0;
+  padding: 0;
 }
