@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
-import Paper from '@material-ui/core/Paper'
-import { DialogTitle } from '@material-ui/core'
+import { DialogTitle, DialogContent } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 // import eventgroupService from '../services/eventgroups'
 import moment from 'moment'
@@ -20,16 +19,6 @@ const styles = theme => ({
   },
   rightIcon: {
     marginLeft: theme.spacing.unit,
-  },
-  iconSmall: {
-    fontSize: 14,
-  },
-  eventForm: {
-    maxWidth: 800,
-    margin: '0 auto',
-  },
-  newFormPaper: {
-    padding: 20,
   },
 })
 
@@ -150,12 +139,11 @@ class EditEvent extends React.Component {
     // Never allow modifications to kuksaEvents (not synced)
     const disabled = event.synced || event.kuksaEvent // TODO: Allow editing after Kuksa sync works both ways (remove event.synced check)
     return (
-      <div>
+      <div className={classes.button}>
         {disabled ? null : (
           <Button
             size={this.props.minimal ? 'small' : 'medium'}
             onClick={this.handleOpen}
-            className={classes.button}
             variant="contained"
             color="primary"
           >
@@ -163,20 +151,18 @@ class EditEvent extends React.Component {
             <Icon className={classes.rightIcon}>edit_icon</Icon>
           </Button>
         )}
-        <Dialog open={this.state.open} onClose={this.handleClose}>
+        <Dialog open={this.state.open} onClose={this.handleClose} scroll="body">
           <DialogTitle>
             {'Muokataan tapahtumaa'} {this.state.title}
           </DialogTitle>
-          <div className={classes.eventForm}>
-            <Paper className={classes.newFormPaper}>
-              <EventForm
-                submitFunction={this.handleCloseAndSend.bind(this)}
-                close={this.handleClose.bind(this)}
-                update={this.update.bind(this)}
-                data={this.state}
-              />
-            </Paper>
-          </div>
+          <DialogContent>
+            <EventForm
+              submitFunction={this.handleCloseAndSend.bind(this)}
+              close={this.handleClose.bind(this)}
+              update={this.update.bind(this)}
+              data={this.state}
+            />
+          </DialogContent>
         </Dialog>
       </div>
     )
