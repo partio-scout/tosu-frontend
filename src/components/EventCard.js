@@ -84,6 +84,9 @@ const styles = theme => ({
     marginBottom: 14,
     borderRadius: 4,
   },
+  actions: {
+    paddingLeft: theme.spacing.unit,
+  },
 })
 
 class EventCard extends React.Component {
@@ -477,7 +480,7 @@ class EventCard extends React.Component {
           {!isTouchDevice() && !this.state.expanded ? notExpanded : null}
           {this.state.expanded ? expanded : null}
 
-          <CardActions>
+          <CardActions className={classes.actions}>
             <EditEvent
               data={event}
               setNotification={this.props.setNotification}

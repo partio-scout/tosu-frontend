@@ -49,21 +49,21 @@ class SuggestionCard extends React.Component {
     const { plan, activity, pofTree } = this.props
 
     return (
-      <Card key={plan.id} style={{ marginTop: '10px' }}>
+      <Card key={plan.id} style={{ marginTop: 16 }}>
         <CardHeader
           action={
             <IconButton onClick={this.deleteClick}>
               <DeleteIcon />
             </IconButton>
           }
-          title={plan.title}
+          title={<Typography variant="h6">{plan.title}</Typography>}
           subheader={
-            <Typography>
+            <Typography variant="subheading">
               {this.getSimpleActivity(activity, pofTree).title}
             </Typography>
           }
         />
-        <Divider />
+        <Divider variant="middle" />
         <CardContent>
           <Typography component="p">{Parser().parse(plan.content)}</Typography>
         </CardContent>
