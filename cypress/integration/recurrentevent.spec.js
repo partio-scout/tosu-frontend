@@ -6,13 +6,17 @@ const resetDatabase = () => {
 
 describe('After logging in', function() {
   beforeEach('user logs in', function() {
+    cy.wait(2000)
     resetDatabase()
+    cy.wait(2000)
     cy.request('http://localhost:3001/scouts/testuser')
     cy.visit('http://localhost:3000')
+    cy.wait(2000)
   })
   it('initialize tosu', function() {})
   it('user can delete all same recurrent events', function() {
     //create recurrent event
+    cy.reload()
     cy.get('button[id="uusi-event"]').click()
     cy.get('input[name="title"').type('makeMultipleEvents', {
       multiple: true,
@@ -47,6 +51,7 @@ describe('After logging in', function() {
   })
   it('user can delete only one of recurring events', function() {
     //create recurrent event
+    cy.reload()
     cy.get('button[id="uusi-event"]').click()
     cy.get('input[name="title"').type('makeMultipleEvents', {
       multiple: true,

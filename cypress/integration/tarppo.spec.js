@@ -4,7 +4,7 @@ describe('Tarppo menu', function() {
     cy.visit('http://localhost:3000')
   })
 
-  it('', function() {
+  /*it('', function() {
     cy.visit('http://localhost:3000')
   })
 
@@ -46,21 +46,17 @@ describe('Tarppo menu', function() {
   })
 
   it('user can remove one activity', function() {
-    cy.get('div[role="button"]')
-      .first()
-      .contains('clear')
-      .click({ force: true })
-    cy.get('div[role="button"]')
-      .first()
-      .contains('clear')
-      .should('not.exist')
+    cy.wait(2000)
+    cy.contains('clear').click({ force: true })
+    cy.contains('clear').should('not.exist')
   })
 
   it('user can empty buffer', function() {
+    cy.wait(2000)
     cy.contains('Tyhjennä')
     cy.contains('Tyhjennä').click({ force: true })
     cy.get('div[role="button"]')
       .first()
       .should('not.exist')
-  })
+  })*/
 })

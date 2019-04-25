@@ -11,6 +11,7 @@ describe('Creating and deleting kuksa-events', function() {
   })
   it('initiate tosu', function() {})
   it('user adds a new kuksa-event', function() {
+    cy.reload()
     cy.get('button[id="kuksa"]').click()
     cy.get('button[id="add-kuksa"]')
       .first()
