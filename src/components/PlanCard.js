@@ -1,27 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
-import CardActions from '@material-ui/core/CardActions'
-import CardContent from '@material-ui/core/CardContent'
-import IconButton from '@material-ui/core/IconButton'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import Button from '@material-ui/core/Button'
-import Collapse from '@material-ui/core/Collapse/Collapse'
+import DoneIcon from '@material-ui/icons/Done'
 import { Parser } from 'html-to-react'
 import planService from '../services/plan'
 import { initPlans, savePlan, deletePlan } from '../reducers/planReducer'
 import { withSnackbar } from 'notistack'
 import { editEvent } from '../reducers/eventReducer'
 import { updateActivity } from '../reducers/activityReducer'
-import { withStyles } from '@material-ui/core'
-
-const styles = {
-  arrowUp: {
-    transform: 'rotate(180deg)',
-  },
-}
+import {
+  Button,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+  ExpansionPanelActions,
+  Typography,
+  Divider,
+} from '@material-ui/core'
 
 class PlanCard extends React.Component {
   state = { expanded: false }
@@ -46,6 +42,7 @@ class PlanCard extends React.Component {
       this.props.initPlans({ id: savedActivity.id, plans: savedActivity.plans })
     }
   }
+
   /**
    * Saves the suggestions
    * @param suggestion suggestion to be saved
@@ -72,6 +69,7 @@ class PlanCard extends React.Component {
       })
     }
   }
+
   /**
    * Deletes a suggestion from the backend and from frontend
    * @param id id of suggestion that will be deleted
@@ -94,6 +92,7 @@ class PlanCard extends React.Component {
       })
     }
   }
+
   /**
    * Parses the suggestion to string form
    * @param suggestion suggestion in html form
@@ -106,7 +105,8 @@ class PlanCard extends React.Component {
   }
 
   render() {
-    const { suggestion, savedActivity, plans, parentId, classes } = this.props
+    const { suggestion, savedActivity, plans, parentId } = this.props
+
     // Find plans for current activity from store
     const activityPlans = plans.filter(plan => plan.id === savedActivity.id)
     let selectedPlan = []
@@ -123,7 +123,7 @@ class PlanCard extends React.Component {
     let button
 
     if (selectedPlan.length !== 0) {
-      button = () => (
+      button = (
         <Button
           size="small"
           onClick={() =>
@@ -137,10 +137,9 @@ class PlanCard extends React.Component {
           Poista valituista
         </Button>
       )
-
       style = { background: '#C8E6C9' }
     } else {
-      button = () => (
+      button = (
         <Button
           size="small"
           onClick={() =>
@@ -150,28 +149,28 @@ class PlanCard extends React.Component {
           Valitse
         </Button>
       )
-      style = { background: 'none' }
     }
 
     return (
-      <Card>
-        <CardHeader title={suggestion.title} style={style} />
-        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            {this.parseSuggestionContent(suggestion)}
-            <br />
-          </CardContent>
-        </Collapse>
-        <CardActions>
-          <IconButton
-            onClick={this.handleExpandChange}
-            className={this.state.expanded ? classes.arrowUp : ''}
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-          {button()}
-        </CardActions>
-      </Card>
+      <ExpansionPanel>
+        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} style={style}>
+          <Typography variant="subtitle1">
+            {suggestion.title}
+            {selectedPlan.length !== 0 && (
+              <DoneIcon
+                color="primary"
+                fontSize="small"
+                style={{ marginLeft: 8, marginBottom: -4 }}
+              />
+            )}
+          </Typography>
+        </ExpansionPanelSummary>
+        <ExpansionPanelDetails>
+          <Typography>{this.parseSuggestionContent(suggestion)}</Typography>
+        </ExpansionPanelDetails>
+        <Divider />
+        <ExpansionPanelActions>{button}</ExpansionPanelActions>
+      </ExpansionPanel>
     )
   }
 }
@@ -206,4 +205,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(withSnackbar(PlanCard)))
+)(withSnackbar(PlanCard))

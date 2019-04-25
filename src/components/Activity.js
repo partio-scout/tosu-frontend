@@ -1,6 +1,5 @@
 import { connect } from 'react-redux'
 import Avatar from '@material-ui/core/Avatar'
-import Dialog from '@material-ui/core/Dialog'
 import Chip from '@material-ui/core/Chip'
 import Icon from '@material-ui/core/Icon'
 import { DragSource } from 'react-dnd'
@@ -140,17 +139,17 @@ class Activity extends Component {
             }
             label={pofActivity.title}
           />
-          <Dialog open={this.state.open} onClose={this.handleClick}>
-            <PlanForm
-              activity={pofActivity}
-              savedActivity={activity}
-              parentId={parentId}
-            />
-          </Dialog>
+          <PlanForm
+            activity={pofActivity}
+            savedActivity={activity}
+            parentId={parentId}
+            open={this.state.open}
+            onClose={this.handleClick}
+          />
         </div>
       )
     }
-    return ''
+    return null
   }
 }
 
