@@ -10,7 +10,7 @@ axios.defaults.withCredentials = true
 
 ReactDOM.render(
   <Provider store={store}>
-    <SnackbarProvider>
+    <SnackbarProvider preventDuplicate>
       <App />
     </SnackbarProvider>
   </Provider>,

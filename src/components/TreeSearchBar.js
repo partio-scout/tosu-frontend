@@ -119,7 +119,7 @@ class TreeSearchBar extends React.Component {
     ) {
       this.props.addStatusMessage(2)
     } else {
-      this.props.addStatusMessage(3)
+      this.props.addStatusMessage()
     }
   }
 

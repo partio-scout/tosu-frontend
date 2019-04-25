@@ -75,11 +75,14 @@ class PlanForm extends React.Component {
                 <br />
                 <strong>Pakollisuus: </strong>
                 {activity.mandatory ? 'Pakollinen ' : 'Ei pakollinen '}
-                <img
-                  src={activity.mandatoryIconUrl}
-                  alt="Pakollinen"
-                  height="16px"
-                />
+                {activity.mandatory ? (
+                  <img
+                    src={activity.mandatoryIconUrl}
+                    alt="Pakollinen"
+                    height="16px"
+                    style={{ marginBottom: -2 }}
+                  />
+                ) : null}
               </p>
               <p>
                 <strong>Tavoite: </strong> {this.stripHtml(activity.ingress)}

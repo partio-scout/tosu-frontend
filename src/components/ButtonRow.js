@@ -28,7 +28,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.primary.main + ' !important',
   },
   dateRangeContainer: {
-    marginTop: 5,
+    marginTop: theme.spacing.unit,
   },
   hidden: {
     display: 'none',
@@ -145,7 +145,7 @@ class ButtonRow extends React.Component {
           className={classes.dateRangeContainer}
           style={ui.view === 'CALENDAR' ? { display: 'none' } : {}}
         >
-          <Typography inline style={{ margin: '0 10px 0 4px' }}>
+          <Typography inline style={{ marginRight: 8 }}>
             Rajaa tapahtumia
           </Typography>
           <DateRangePicker
