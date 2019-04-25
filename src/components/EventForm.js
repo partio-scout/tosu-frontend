@@ -380,7 +380,7 @@ export default class EventForm extends React.Component {
                 <ValidatedDatePicker
                   label="Viimeinen toistumispäivä"
                   onChange={this.handleLastDate}
-                  name="startDate"
+                  name="lastDate"
                   autoOk
                   cancelLabel="Peruuta"
                   value={
