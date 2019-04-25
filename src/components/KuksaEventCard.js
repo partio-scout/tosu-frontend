@@ -10,7 +10,7 @@ import {
   withStyles,
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import moment from 'moment-with-locales-es6'
+import moment from 'moment'
 import { Parser } from 'html-to-react'
 
 import AddToPlan from './AddToPlan'
@@ -43,13 +43,12 @@ class KuksaEventCard extends React.Component {
   render() {
     const { event, classes } = this.props
 
-    moment.locale('fi')
     const title = this.state.expanded ? '' : event.title
     const subtitle = this.state.expanded
       ? ''
-      : `${moment(event.startDate, 'YYYY-MM-DD')
-          .locale('fi')
-          .format('ddd D. MMMM YYYY')} ${event.startTime}`
+      : `${moment(event.startDate, 'YYYY-MM-DD').format('ddd D. MMMM YYYY')} ${
+          event.startTime
+        }`
 
     const information = new Parser().parse(event.information)
 

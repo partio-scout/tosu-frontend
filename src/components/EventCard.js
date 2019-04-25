@@ -25,7 +25,7 @@ import {
 
 import Warning from '@material-ui/icons/Warning'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import moment from 'moment-with-locales-es6'
+import moment from 'moment'
 import { Parser } from 'html-to-react'
 import Activities from './Activities'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
@@ -247,13 +247,12 @@ class EventCard extends React.Component {
       </Tooltip>
     )
 
-    moment.locale('fi')
     const { title } = event
     const subtitle = this.state.expanded
       ? ''
-      : `${moment(event.startDate, 'YYYY-MM-DD')
-          .locale('fi')
-          .format('ddd D.M.YYYY')} ${event.startTime.substring(0, 5)}`
+      : `${moment(event.startDate, 'YYYY-MM-DD').format(
+          'ddd D.M.YYYY'
+        )} ${event.startTime.substring(0, 5)}`
 
     const taskGroupTree = getRootGroup(this.props.pofTree)
     let selectedTaskGroupPofData = []
@@ -406,19 +405,15 @@ class EventCard extends React.Component {
           <span className={classes.boldedAttribute}>
             {capitalize(event.type)} alkaa:
           </span>{' '}
-          {moment(event.startDate)
-            .locale('fi')
-            .format('ddd D.M.YYYY')}{' '}
-          kello {event.startTime.substring(0, 5)}
+          {moment(event.startDate).format('ddd D.M.YYYY')} kello{' '}
+          {event.startTime.substring(0, 5)}
         </div>
         <div>
           <span className={classes.boldedAttribute}>
             {capitalize(event.type)} päättyy:
           </span>{' '}
-          {moment(event.endDate)
-            .locale('fi')
-            .format('ddd D.M.YYYY')}{' '}
-          kello {event.endTime.substring(0, 5)}
+          {moment(event.endDate).format('ddd D.M.YYYY')} kello{' '}
+          {event.endTime.substring(0, 5)}
         </div>
         {informationContainer}
         <Activities
