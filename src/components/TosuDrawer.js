@@ -28,6 +28,7 @@ import AssignmentIcon from '@material-ui/icons/Assignment'
 import DeleteIcon from '@material-ui/icons/Delete'
 import CreateIcon from '@material-ui/icons/Create'
 import AddIcon from '@material-ui/icons/Add'
+import ClearIcon from '@material-ui/icons/Clear'
 
 import { setSideBar } from '../reducers/uiReducer'
 import {
@@ -81,6 +82,10 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
   },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing.unit,
+  },
   iconButton: {
     padding: 10,
   },
@@ -125,6 +130,9 @@ class TosuDrawer extends React.Component {
     this.props.setSideBar(false)
     this.setState({ newTosuName: '' })
     await this.changeTosu(created.id)
+    this.props.enqueueSnackbar('Uusi toimintasuunnitelma luotu', {
+      variant: 'success',
+    })
   }
 
   /**
@@ -133,6 +141,9 @@ class TosuDrawer extends React.Component {
   handleTosuUpdate = async () => {
     this.props.updateTosu(this.state.nameChange)
     this.setState({ nameChange: null })
+    this.props.enqueueSnackbar('Toimintasuunnitelman nimi päivitetty', {
+      variant: 'success',
+    })
   }
 
   /**
@@ -144,6 +155,9 @@ class TosuDrawer extends React.Component {
       this.props.setSideBar(false)
       await this.changeTosu(tosuId)
     }
+    this.props.enqueueSnackbar('Toimintasuunnitelma vaihdettu', {
+      variant: 'info',
+    })
   }
 
   /**
@@ -233,6 +247,9 @@ class TosuDrawer extends React.Component {
           placeholder="Uusi toimintasuunnitelma"
           value={newTosuName}
           onChange={event => this.setState({ newTosuName: event.target.value })}
+          onKeyPress={event => {
+            if (event.key === 'Enter') this.handleTosuCreate()
+          }}
         />
         <IconButton
           className={classes.iconButton}
@@ -327,6 +344,13 @@ class TosuDrawer extends React.Component {
           >
             TOIMINTASUUNNITELMAT
           </Typography>
+          <IconButton
+            color="inherit"
+            className={classes.closeButton}
+            onClick={() => this.props.setSideBar(false)}
+          >
+            <ClearIcon />
+          </IconButton>
         </div>
         {loading ? (
           <div className={classes.centered}>
