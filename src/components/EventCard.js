@@ -63,7 +63,7 @@ const styles = theme => ({
   warning: {
     marginRight: theme.spacing.unit,
     marginLeft: theme.spacing.unit,
-    marginBottom: -3,
+    marginBottom: -4,
     color: '#f14150',
   },
   arrowUp: {
