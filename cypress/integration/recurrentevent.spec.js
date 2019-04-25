@@ -10,7 +10,7 @@ describe('After logging in', function() {
     cy.request('http://localhost:3001/scouts/testuser')
     cy.visit('http://localhost:3000')
   })
-
+  it('initialize tosu', function() {})
   it('user can delete all same recurrent events', function() {
     //create recurrent event
     cy.get('button[id="uusi-event"]').click()

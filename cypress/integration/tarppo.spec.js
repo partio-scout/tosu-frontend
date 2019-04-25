@@ -1,4 +1,4 @@
-describe('After logging in', function() {
+describe('Tarppo menu', function() {
   beforeEach('user logs in', function() {
     cy.request('http://localhost:3001/scouts/testuser')
     cy.visit('http://localhost:3000')
@@ -64,4 +64,3 @@ describe('After logging in', function() {
       .should('not.exist')
   })
 })
-
