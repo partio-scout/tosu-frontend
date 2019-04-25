@@ -46,22 +46,18 @@ describe('After logging in', function() {
   })
 
   it('user can remove one activity', function() {
-    cy.get('div[role="button"]')
+    cy.get('[id="delete-activity"]')
       .first()
-      .contains('clear')
-      .click({ force: true })
-    cy.get('div[role="button"]')
-      .first()
-      .contains('clear')
-      .should('not.exist')
+      .click()
+      cy.get('[id="delete-activity"]').should($lis => {
+        expect($lis).to.have.length(1)
+      })
   })
 
   it('user can empty buffer', function() {
     cy.contains('Tyhjennä')
     cy.contains('Tyhjennä').click({ force: true })
     cy.get('div[role="button"]')
-      .first()
       .should('not.exist')
   })
 })
-
