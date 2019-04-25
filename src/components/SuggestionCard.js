@@ -7,6 +7,7 @@ import {
   CardContent,
   Typography,
   IconButton,
+  Divider,
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { Parser } from 'html-to-react'
@@ -48,29 +49,25 @@ class SuggestionCard extends React.Component {
     const { plan, activity, pofTree } = this.props
 
     return (
-      <div key={plan.id}>
-        <Card style={{ backgroundColor: '#fafafa', marginTop: '10px' }}>
-          <CardHeader
-            action={
-              <IconButton onClick={this.deleteClick}>
-                <DeleteIcon />
-              </IconButton>
-            }
-            title={plan.title}
-            subheader={
-              <Typography>
-                {this.getSimpleActivity(activity, pofTree).title}
-              </Typography>
-            }
-          />
-
-          <CardContent>
-            <Typography component="p">
-              {Parser().parse(plan.content)}
+      <Card key={plan.id} style={{ marginTop: '10px' }}>
+        <CardHeader
+          action={
+            <IconButton onClick={this.deleteClick}>
+              <DeleteIcon />
+            </IconButton>
+          }
+          title={plan.title}
+          subheader={
+            <Typography>
+              {this.getSimpleActivity(activity, pofTree).title}
             </Typography>
-          </CardContent>
-        </Card>
-      </div>
+          }
+        />
+        <Divider />
+        <CardContent>
+          <Typography component="p">{Parser().parse(plan.content)}</Typography>
+        </CardContent>
+      </Card>
     )
   }
 }
@@ -83,8 +80,6 @@ SuggestionCard.propTypes = {
   deletePlan: PropTypes.func.isRequired,
   updateActivity: PropTypes.func.isRequired,
 }
-
-SuggestionCard.defaultProps = {}
 
 const mapStateToProps = state => ({
   pofTree: state.pofTree,
