@@ -23,7 +23,6 @@ const moveActivityFromEventToBuffer = async (props, activity, parentId) => {
     })
     console.log(exception)
   }
-  props.pofTreeUpdate(props.activities)
 }
 
 const moveActivityFromBufferToEvent = async (props, activity, targetId) => {
@@ -41,7 +40,6 @@ const moveActivityFromBufferToEvent = async (props, activity, targetId) => {
     props.deleteActivityFromEventOnlyLocally(activityId, activity.eventId)
     props.postActivityToBufferOnlyLocally({ ...activity, canDrag: true })
   }
-  props.pofTreeUpdate(props.activities)
   return { error: 'cant move activity' }
 }
 
@@ -69,7 +67,6 @@ const moveActivityFromEventToEvent = async (
       canDrag: true,
     })
   }
-  props.pofTreeUpdate(props.activities)
   return { error: 'cant move activity' }
 }
 
