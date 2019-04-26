@@ -55,8 +55,8 @@ export const updateActivity = activity => dispatch => {
     activity,
   })
 }
-export const deleteActivity = activityId => dispatch => {
-  activityService.deleteActivity(activityId)
+export const deleteActivity = activityId => async dispatch => {
+  await activityService.deleteActivity(activityId)
   dispatch({
     type: 'DELETE_ACTIVITY',
     activityId,

@@ -8,25 +8,6 @@ import { getActivityList } from './activityReducer'
 const arrayActivityGuidsFromBufferAndEvents = activities => {
   return getActivityList(activities).map(activity => activity.guid)
 }
-
-/**
- * disable all optional tasks in tarppo(taskgroup) and its subordinate tarppos(taskgroup)
- * @param {string} GUID - GUID for taskgroup
- * @param {object} root - DEEP copy of pofdata
- */
-const setChildrenTasksDisabled = (GUID, root) => {
-  const taskgroup = root.entities.tarppo[GUID]
-  const activityKeys = taskgroup.tasks
-  activityKeys.forEach(key => {
-    const activity = root.entities.activities[key]
-    if (activity.tags.pakollisuus[0].slug !== 'mandatory') {
-      activity.disabled = true
-    }
-  })
-  taskgroup.taskgroups.forEach(key => setChildrenTasksDisabled(key, root))
-  return root
-}
-
 /**
  * Add variables used by TreeSearch component to the pofData
  * @param {object} root - DEEP copy of pofData
@@ -82,33 +63,18 @@ const disableTasksInFilterIfExists = (root, existingActivityGuids) => {
   return root
 }
 
-/**
- * disable optional tasks in tarppo and its child tarppos if all mandatory tasks are not selected
- *  @param {object} root - pofData
- *  @param {string[]} existingActivityGuids - GUID:s of the activities in use
- *  @return pofData
- */
-const lockOptionalTasksIfMandatoryLeftToPickInAGroup = (
-  root,
-  existingActivityGuids
-) => {
-  if (!root) return root
-  const taskgroupKeys = Object.keys(root.entities.tarppo)
-  taskgroupKeys.forEach(key => {
-    const majorTaskGroup = root.entities.tarppo[key]
-    const mandatoryTaskGuids = majorTaskGroup.mandatory_tasks.split(',') // mandatory tasks are listed in major group
-    if (mandatoryTaskGuids[0] === '') {
-      // empty split return and array with only value as ''
-      return
-    }
-    // if existing activities do not contain all mandatory tasks -> disable all optional
-    mandatoryTaskGuids.forEach(mandatoryTaskGuid => {
-      if (existingActivityGuids.includes(mandatoryTaskGuid) === false) {
-        setChildrenTasksDisabled(key, root)
-      }
-    })
-  })
-  return root
+const disableTask = (root, taskGUID) => {
+  const newActivities = { ...root.entities.activities }
+  const activity = { ...newActivities[taskGUID], disabled: true }
+  newActivities[taskGUID] = activity
+  return { ...root, entities: { ...root.entities, activities: newActivities } }
+}
+
+const enableTask = (root, taskGUID) => {
+  const newActivities = { ...root.entities.activities }
+  const activity = { ...newActivities[taskGUID], disabled: false }
+  newActivities[taskGUID] = activity
+  return { ...root, entities: { ...root.entities, activities: newActivities } }
 }
 
 const deepStateCopy = state => {
@@ -137,10 +103,6 @@ const updateState = (state, existingActivityGuids) => {
     updatedState,
     existingActivityGuids
   )
-  updatedState = lockOptionalTasksIfMandatoryLeftToPickInAGroup(
-    updatedState,
-    existingActivityGuids
-  )
   return updatedState
 }
 
@@ -153,6 +115,12 @@ const reducer = (state = {}, action) => {
     }
     case 'SET_TREE_POF': {
       return updateState(state, action.activities)
+    }
+    case 'DISABLE_ACTIVITY': {
+      return disableTask(state, action.taskGUID)
+    }
+    case 'ENABLE_ACTIVITY': {
+      return enableTask(state, action.taskGUID)
     }
     default: {
       return state
@@ -168,6 +136,16 @@ export const pofTreeInitialization = pofJson => ({
 export const pofTreeUpdate = activities => ({
   type: 'SET_TREE_POF',
   activities: arrayActivityGuidsFromBufferAndEvents(activities),
+})
+
+export const enableActivity = GUID => ({
+  type: 'ENABLE_ACTIVITY',
+  taskGUID: GUID,
+})
+
+export const disableActivity = GUID => ({
+  type: 'DISABLE_ACTIVITY',
+  taskGUID: GUID,
 })
 
 export default reducer

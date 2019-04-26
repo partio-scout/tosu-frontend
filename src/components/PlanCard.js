@@ -86,7 +86,6 @@ class PlanCard extends React.Component {
       })
       this.props.updateActivity(activity)
     } catch (exception) {
-      console.log(exception)
       this.props.enqueueSnackbar('Toteutusvinkin poistaminen epäonnistui', {
         variant: 'error',
       })

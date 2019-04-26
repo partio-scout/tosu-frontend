@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import Activity from './Activity'
 import convertToSimpleActivity from '../functions/activityConverter'
 import activityService from '../services/activities'
+import { pofTreeUpdate, enableActivity } from '../reducers/pofTreeReducer'
 import { withSnackbar } from 'notistack'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   deleteActivityFromBuffer,
   postActivityToBuffer,
@@ -24,8 +24,9 @@ export class Activities extends React.Component {
     try {
       if (this.props.bufferzone) {
         this.props.deleteActivityFromBuffer(activity.id)
-        this.props.deleteActivity(activity.id)
-        this.props.pofTreeUpdate(this.props.stateActivities)
+        this.props.updateActivity({...activity, activityBufferId:null})
+        await this.props.deleteActivity(activity.id)
+        this.props.enableActivity(activity.guid)
       } else {
         this.props.deleteActivityFromEvent(activity.id, activity.eventId)
         this.props.postActivityToBuffer(activity)
@@ -37,7 +38,6 @@ export class Activities extends React.Component {
       }
       this.props.enqueueSnackbar('Aktiviteetti poistettu', { variant: 'info' })
     } catch (exception) {
-      console.log(exception)
       this.props.enqueueSnackbar('Aktiviteetin poistossa tapahtui virhe!', {
         variant: 'error',
       })
@@ -101,6 +101,7 @@ const mapDispatchToProps = {
   deleteActivity,
   postActivityToBuffer,
   updateActivity,
+  enableActivity,
 }
 
 export default connect(
