@@ -3,29 +3,33 @@ import moment from 'moment'
 import { connect } from 'react-redux'
 import { DateRangePicker } from 'react-dates'
 import PropTypes from 'prop-types'
-import {
-  Button,
-  Icon,
-  IconButton,
-  withStyles,
-  Typography,
-} from '@material-ui/core'
+import { Button, Icon, IconButton, withStyles } from '@material-ui/core'
+import CalendarIcon from '@material-ui/icons/CalendarToday'
+import AddIcon from '@material-ui/icons/Add'
 import { viewChange } from '../reducers/uiReducer'
 import { setLoading } from '../reducers/loadingReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
-const styles = {
+const styles = theme => ({
   button: {
-    margin: 4,
+    marginRight: theme.spacing.unit,
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
     color: 'white',
   },
+  iconButton: {
+    backgroundColor: theme.palette.secondary.main,
+  },
+  iconButtonSelected: {
+    backgroundColor: theme.palette.primary.main + ' !important',
+  },
   dateRangeContainer: {
-    marginTop: 5,
+    marginTop: theme.spacing.unit,
   },
   hidden: {
     display: 'none',
   },
-}
+})
 
 class ButtonRow extends React.Component {
   state = {
@@ -69,30 +73,43 @@ class ButtonRow extends React.Component {
 
   render() {
     const { startDate, endDate } = this.state
-    const { ui, classes, tosuMap } = this.props
+    const { ui, classes, tosuMap, mobile } = this.props
 
     return (
-      <div>
-        <div>
-          <Button
-            id="omat"
-            className={classes.button}
-            onClick={() => this.selectView('OWN')}
-            variant="contained"
-            color={ui.view === 'OWN' ? 'primary' : 'secondary'}
+      <React.Fragment>
+        <Button
+          id="omat"
+          className={classes.button}
+          onClick={() => this.selectView('OWN')}
+          variant="contained"
+          color={ui.view === 'OWN' ? 'primary' : 'secondary'}
+        >
+          Omat
+        </Button>
+        <Button
+          id="kuksa"
+          className={classes.button}
+          onClick={() => this.selectView('KUKSA')}
+          variant="contained"
+          color={ui.view === 'KUKSA' ? 'primary' : 'secondary'}
+        >
+          Kuksa
+        </Button>
+
+        {mobile ? (
+          <IconButton
+            className={
+              classes.button +
+              ' ' +
+              (ui.view === 'CALENDAR'
+                ? classes.iconButtonSelected
+                : classes.iconButton)
+            }
+            onClick={() => this.selectView('CALENDAR')}
           >
-            Omat
-          </Button>
-          <Button
-            id="kuksa"
-            className={classes.button}
-            id="kuksa"
-            onClick={() => this.selectView('KUKSA')}
-            variant="contained"
-            color={ui.view === 'KUKSA' ? 'primary' : 'secondary'}
-          >
-            Kuksa
-          </Button>
+            <CalendarIcon fontSize="small" />
+          </IconButton>
+        ) : (
           <Button
             id="kalenteri"
             className={classes.button}
@@ -102,6 +119,17 @@ class ButtonRow extends React.Component {
           >
             Kalenteri
           </Button>
+        )}
+
+        {mobile ? (
+          <IconButton
+            className={classes.button + ' ' + classes.iconButton}
+            onClick={this.props.newEvent}
+            disabled={!this.canCreateEvent(tosuMap)}
+          >
+            <AddIcon fontSize="small" />
+          </IconButton>
+        ) : (
           <Button
             id="uusi-event"
             className={classes.button}
@@ -112,14 +140,8 @@ class ButtonRow extends React.Component {
           >
             Uusi tapahtuma
           </Button>
-        </div>
-        <div
-          className={classes.dateRangeContainer}
-          style={ui.view === 'CALENDAR' ? { display: 'none' } : {}}
-        >
-          <Typography inline style={{ margin: '0 10px 0 4px' }}>
-            Rajaa tapahtumia
-          </Typography>
+        )}
+        {ui.view === 'CALENDAR' ? null : (
           <DateRangePicker
             startDateId="startDate"
             endDateId="endDate"
@@ -131,17 +153,19 @@ class ButtonRow extends React.Component {
             startDatePlaceholderText="alku pvm"
             endDatePlaceholderText="loppu pvm"
             isOutsideRange={() => false}
+            numberOfMonths={mobile ? 1 : 2}
+            hideKeyboardShortcutsPanel
+            showClearDates
+            customCloseIcon={
+              <IconButton color="primary" onClick={this.clearRange}>
+                <Icon color="primary" fontSize="small">
+                  clear
+                </Icon>
+              </IconButton>
+            }
           />
-          <IconButton
-            className={this.props.filter !== 'NONE' ? '' : classes.hidden}
-            color="primary"
-            onClick={this.clearRange}
-            style={{ marginLeft: 5 }}
-          >
-            <Icon color="primary">clear</Icon>
-          </IconButton>
-        </div>
-      </div>
+        )}
+      </React.Fragment>
     )
   }
 }

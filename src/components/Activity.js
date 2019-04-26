@@ -1,12 +1,10 @@
 import { connect } from 'react-redux'
 import Avatar from '@material-ui/core/Avatar'
-import Dialog from '@material-ui/core/Dialog'
 import Chip from '@material-ui/core/Chip'
 import Icon from '@material-ui/core/Icon'
 import { DragSource } from 'react-dnd'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { notify } from '../reducers/notificationReducer'
 import { deleteActivityFromEvent } from '../reducers/eventReducer'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
 import ItemTypes from '../ItemTypes'
@@ -141,17 +139,17 @@ class Activity extends Component {
             }
             label={pofActivity.title}
           />
-          <Dialog open={this.state.open} onClose={this.handleClick}>
-            <PlanForm
-              activity={pofActivity}
-              savedActivity={activity}
-              parentId={parentId}
-            />
-          </Dialog>
+          <PlanForm
+            activity={pofActivity}
+            savedActivity={activity}
+            parentId={parentId}
+            open={this.state.open}
+            onClose={this.handleClick}
+          />
         </div>
       )
     }
-    return ''
+    return null
   }
 }
 
@@ -162,14 +160,11 @@ const DraggableActivity = DragSource(
 )(Activity)
 
 const mapStateToProps = state => ({
-  notification: state.notification,
   buffer: state.buffer,
   events: state.events,
 })
 
 Activity.propTypes = {
-  notify: PropTypes.func.isRequired,
-  notification: PropTypes.string.isRequired,
   buffer: PropTypesSchema.bufferShape.isRequired,
   events: PropTypes.shape({}).isRequired,
   connectDragSource: PropTypes.func.isRequired,
@@ -183,13 +178,10 @@ Activity.propTypes = {
   deleteActivityFromBuffer: PropTypes.func.isRequired,
 }
 
-Activity.defaultProps = {}
-
 export default connect(
   mapStateToProps,
   {
     deleteActivityFromEvent,
     deleteActivityFromBuffer,
-    notify,
   }
 )(withStyles(styles)(DraggableActivity))

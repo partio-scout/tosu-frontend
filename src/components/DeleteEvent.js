@@ -9,15 +9,14 @@ import {
   deleteEventGroup,
   deleteSyncedEvent,
 } from '../reducers/eventReducer'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
 const styles = theme => ({
   button: {
-    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
   },
   redbutton: {
-    marginLeft: theme.spacing.unit,
     background: '#FE6B8B',
     color: 'white',
   },
@@ -43,10 +42,12 @@ class DeleteEvent extends React.Component {
       } else {
         this.props.deleteEvent(this.props.data.id)
       }
-      this.props.notify('Tapahtuma poistettu!', 'success')
+      this.props.enqueueSnackbar('Tapahtuma poistettu', { variant: 'info' })
     } catch (exception) {
       console.error('Error in deleting event:', exception)
-      this.props.notify('Tapahtuman poistamisessa tuli virhe. Yritä uudestaan!')
+      this.props.enqueueSnackbar('Tapahtuman poistamisessa tuli virhe.', {
+        variant: 'error',
+      })
     }
   }
   /**
@@ -56,11 +57,14 @@ class DeleteEvent extends React.Component {
     this.handleClose()
     try {
       this.props.deleteEventGroup(this.props.data.eventGroupId)
-      this.props.notify('Toistuva tapahtuma poistettu!', 'success')
+      this.props.enqueueSnackbar('Toistuva tapahtuma poistettu', {
+        variant: 'info',
+      })
     } catch (exception) {
       console.error('Error in deleting event:', exception)
-      this.props.notify(
-        'Toistuvan tapahtuman poistamisessa tuli virhe. Yritä uudestaan!'
+      this.props.enqueueSnackbar(
+        'Toistuvan tapahtuman poistamisessa tuli virhe.',
+        { variant: 'error' }
       )
     }
   }
@@ -85,8 +89,21 @@ class DeleteEvent extends React.Component {
     if (event.eventGroupId) {
       actions = (
         <div>
-          <Button className={classes.button} variant='contained' onClick={this.handleClose}>peruuta</Button>
-          <Button id="delete-one-recurrent-event" className={classes.button} variant='contained' color='secondary' onClick={this.deleteEvent} disabled={disabled}>
+          <Button
+            className={classes.button}
+            variant="contained"
+            onClick={this.handleClose}
+          >
+            peruuta
+          </Button>
+          <Button
+            id="delete-one-recurrent-event"
+            className={classes.button}
+            variant="contained"
+            color="secondary"
+            onClick={this.deleteEvent}
+            disabled={disabled}
+          >
             Poista tämä tapahtuma
           </Button>
           <Button id="delete-recurrent-events" className={classes.redbutton} onClick={this.deleteEventGroup}>
@@ -100,8 +117,19 @@ class DeleteEvent extends React.Component {
           {event.synced && (
             <p>Tapahtuma poistetaan suunnitelmastasi, mutta ei Kuksasta.</p>
           )}
-          <Button className={classes.button} variant='contained' onClick={this.handleClose}>peruuta</Button>
-          <Button className={classes.redbutton} variant='contained' onClick={this.deleteEvent} disabled={disabled}>
+          <Button
+            className={classes.button}
+            variant="contained"
+            onClick={this.handleClose}
+          >
+            peruuta
+          </Button>
+          <Button
+            className={classes.redbutton}
+            variant="contained"
+            onClick={this.deleteEvent}
+            disabled={disabled}
+          >
             Poista tapahtuma
           </Button>
         </div>
@@ -134,7 +162,6 @@ class DeleteEvent extends React.Component {
 
 const mapDispatchToProps = {
   deleteEvent,
-  notify,
   deleteEventGroup,
   deleteSyncedEvent,
 }
@@ -148,14 +175,12 @@ DeleteEvent.propTypes = {
   deleteSyncedEvent: PropTypes.func.isRequired,
   deleteEvent: PropTypes.func.isRequired,
   deleteEventGroup: PropTypes.func.isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   minimal: PropTypes.bool.isRequired,
   classes: PropTypesSchema.classesShape.isRequired,
 }
 
-DeleteEvent.defaultProps = {}
-
 export default connect(
   null,
   mapDispatchToProps
-)(withStyles(styles)(DeleteEvent))
+)(withStyles(styles)(withSnackbar(DeleteEvent)))

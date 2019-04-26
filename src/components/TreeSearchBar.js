@@ -4,9 +4,9 @@ import ReactDOM from 'react-dom'
 import Select from 'react-select'
 import TreeSelect from 'rc-tree-select'
 import { connect } from 'react-redux'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
+import { pofTreeUpdate, disableActivity } from '../reducers/pofTreeReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import { createStatusMessage } from '../utils/createStatusMessage'
@@ -44,10 +44,12 @@ class TreeSearchBar extends React.Component {
     if (this.isLeaf(activityGuid)) {
       try {
         await addActivityToRelevantReducers(this.props, { guid: activityGuid })
-        this.props.pofTreeUpdate(this.props.activities)
-        this.props.notify('Aktiviteetti on lisätty!', 'success')
+        this.props.disableActivity(activityGuid)
+        this.props.enqueueSnackbar('Aktiviteetti lisätty', { variant: 'info' })
       } catch (exception) {
-        this.props.notify('Aktiviteettialue on täynnä!!')
+        this.props.enqueueSnackbar('Aktiviteettialue on täynnä!', {
+          variant: 'warning',
+        })
       }
     }
   }
@@ -85,14 +87,14 @@ class TreeSearchBar extends React.Component {
       try {
         await Promise.all(promises)
 
-        this.props.notify(
-          'Pakolliset aktiviteetit lisätty tai olemassa!',
-          'success'
-        )
+        this.props.enqueueSnackbar('Pakolliset aktiviteetit lisätty', {
+          variant: 'info',
+        })
         this.props.pofTreeUpdate(this.props.activities)
       } catch (exception) {
-        this.props.notify(
-          'Kaikki pakolliset aktiviiteetit eivät mahtuneet alueelle tai ovat jo lisätty!'
+        this.props.enqueueSnackbar(
+          'Kaikki pakolliset aktiviiteetit eivät mahtuneet alueelle!',
+          { variant: 'warning' }
         )
       }
     }
@@ -117,7 +119,7 @@ class TreeSearchBar extends React.Component {
     ) {
       this.props.addStatusMessage(2)
     } else {
-      this.props.addStatusMessage(3)
+      this.props.addStatusMessage()
     }
   }
 
@@ -207,16 +209,15 @@ TreeSearchBar.propTypes = {
   pofTree: PropTypesSchema.pofTreeShape.isRequired,
   taskgroup: PropTypesSchema.taskgroupShape.isRequired,
   activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   postActivityToBuffer: PropTypes.func.isRequired,
   addActivity: PropTypes.func.isRequired,
+  disableActivity: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
   addStatusMessage: PropTypes.func.isRequired,
   selectTaskgroup: PropTypes.func.isRequired,
   emptyTaskgroup: PropTypes.func.isRequired,
 }
-
-TreeSearchBar.defaultProps = {}
 
 const mapStateToProps = state => ({
   events: state.events,
@@ -227,16 +228,16 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  notify,
   postActivityToBuffer,
   addActivity,
   pofTreeUpdate,
   addStatusMessage,
   selectTaskgroup,
   emptyTaskgroup,
+  disableActivity,
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(TreeSearchBar))
+)(withStyles(styles)(withSnackbar(TreeSearchBar)))

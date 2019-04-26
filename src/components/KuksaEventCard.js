@@ -1,4 +1,3 @@
-import { connect } from 'react-redux'
 import React from 'react'
 import PropTypes from 'prop-types'
 import {
@@ -11,11 +10,10 @@ import {
   withStyles,
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import moment from 'moment-with-locales-es6'
+import moment from 'moment'
 import { Parser } from 'html-to-react'
 
 import AddToPlan from './AddToPlan'
-import { notify } from '../reducers/notificationReducer'
 
 const styles = {
   arrowUp: {
@@ -45,25 +43,19 @@ class KuksaEventCard extends React.Component {
   render() {
     const { event, classes } = this.props
 
-    moment.locale('fi')
     const title = this.state.expanded ? '' : event.title
     const subtitle = this.state.expanded
       ? ''
-      : `${moment(event.startDate, 'YYYY-MM-DD')
-          .locale('fi')
-          .format('ddd D. MMMM YYYY')} ${event.startTime}`
+      : `${moment(event.startDate, 'YYYY-MM-DD').format('ddd D. MMMM YYYY')} ${
+          event.startTime
+        }`
 
     const information = new Parser().parse(event.information)
 
     return (
       <Card className={classes.eventCard}>
         <CardHeader
-          title={
-            <div>
-              {title}
-              &nbsp;
-            </div>
-          }
+          title={title}
           subheader={subtitle}
           action={
             <IconButton
@@ -104,16 +96,7 @@ class KuksaEventCard extends React.Component {
 }
 
 KuksaEventCard.propTypes = {
-  notify: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
 }
 
-KuksaEventCard.defaultProps = {}
-
-const mapDispatchToProps = {
-  notify,
-}
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(withStyles(styles)(KuksaEventCard))
+export default withStyles(styles)(KuksaEventCard)

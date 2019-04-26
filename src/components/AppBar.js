@@ -14,15 +14,16 @@ const styles = theme => ({
   },
   grow: {
     flexGrow: 1,
+    marginRight: theme.spacing.unit * 2,
   },
   menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
+    marginLeft: theme.spacing.unit * -1,
+    marginRight: theme.spacing.unit * 2,
   },
 })
 
 function TopBar(props) {
-  const { tosu, scout, classes } = props
+  const { tosu, scout, loading, classes } = props
   return (
     <AppBar className={classes.appBar}>
       <Toolbar>
@@ -33,10 +34,16 @@ function TopBar(props) {
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" color="inherit" className={classes.grow}>
-          {/* Placeholder untill Tosus are loaded or if there is none */
-          Object.entries(tosu).length === 0
-            ? 'Toiminnansuunnittelusovellus'
+        <Typography
+          variant="h6"
+          color="inherit"
+          className={classes.grow}
+          noWrap
+        >
+          {loading
+            ? null
+            : Object.entries(tosu).length === 0
+            ? null
             : tosu[tosu.selected].name}
         </Typography>
         <div id="scout-name">
@@ -50,14 +57,14 @@ function TopBar(props) {
 AppBar.propTypes = {
   toggleSideBar: PropTypes.func.isRequired,
   scout: PropTypesSchema.scoutShape,
+  loading: PropTypes.bool.isRequired,
   classes: PropTypesSchema.classesShape,
 }
-
-AppBar.defaultProps = {}
 
 const mapStateToProps = state => ({
   tosu: state.tosu,
   scout: state.scout,
+  loading: state.loading,
 })
 
 const mapDispatchToProps = {

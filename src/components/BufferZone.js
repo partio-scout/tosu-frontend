@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import React from 'react'
 import { Typography, Button, withStyles } from '@material-ui/core'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import Activities from './Activities'
@@ -25,62 +25,71 @@ const styles = {
   },
 }
 
-function BufferZone(props) {
-  const { buffer, activities, classes } = props
-
+export class BufferZone extends React.Component {
   /**
    * Clears the activities from the buffer
    */
-  const clear = async () => {
-    if (buffer.activities) {
-      let promises = buffer.activities.map(activity =>
-        props.deleteActivityFromBuffer(activity)
+  clear = async () => {
+    if (this.props.buffer.activities) {
+      let promises = this.props.buffer.activities.map(activity =>
+        this.props.deleteActivityFromBuffer(activity)
       )
       promises = promises.concat(
-        buffer.activities.map(activity => props.deleteActivity(activity))
+        this.props.buffer.activities.map(activity =>
+          this.props.deleteActivity(activity)
+        )
       )
       try {
         await Promise.all(promises)
-        props.pofTreeUpdate(activities)
-        props.notify('Aktiviteetit poistettu!', 'success')
+        this.props.pofTreeUpdate(this.props.activities)
+        this.props.enqueueSnackbar('Aktiviteetit poistettu', { variant: 'info' })
       } catch (exception) {
         console.log(exception)
-        props.notify('Kaikkia aktiviteetteja ei voitu poistaa!')
+        this.props.enqueueSnackbar('Kaikkia aktiviteetteja ei voitu poistaa!', {
+          variant: 'error',
+        })
       }
     }
   }
 
-  if (!buffer.id || buffer.activities.length === 0) {
-    return <div />
-  }
-
-  return (
-    <ActivityDragAndDropTarget
-      bufferzone
-      parentId={buffer.id}
-      className={classes.bufferZone}
-    >
-      <div className={classes.bufferTitle}>
-        <Typography variant="h6" inline gutterBottom>
-          Aktiviteetit
-        </Typography>
-        <Button
-          variant="outlined"
-          size="small"
-          color="primary"
-          onClick={clear}
-          style={{ float: 'right' }}
-        >
-          Tyhjennä
-        </Button>
-      </div>
-      <Activities
-        activities={buffer.activities.map(id => activities[id])}
+  render() {
+    const { classes } = this.props
+    if (!this.props.buffer.id) {
+      return <div />
+    }
+    if (this.props.buffer.activities.length === 0) {
+      return <div />
+    }
+    return (
+      <ActivityDragAndDropTarget
         bufferzone
-        parentId={buffer.id}
-      />
-    </ActivityDragAndDropTarget>
-  )
+        parentId={this.props.buffer.id}
+        className={classes.bufferZone}
+      >
+        <div className={classes.bufferTitle}>
+          <Typography variant="h6" inline gutterBottom>
+            Aktiviteetit
+          </Typography>
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            onClick={this.clear}
+            style={{ float: 'right' }}
+          >
+            Tyhjennä
+          </Button>
+        </div>
+        <Activities
+          activities={this.props.buffer.activities.map(
+            id => this.props.activities[id]
+          )}
+          bufferzone
+          parentId={this.props.buffer.id}
+        />
+      </ActivityDragAndDropTarget>
+    )
+  }
 }
 
 const mapStateToProps = state => ({
@@ -91,7 +100,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  notify,
   pofTreeUpdate,
   deleteActivityFromBuffer,
   deleteActivity,
@@ -105,13 +113,11 @@ BufferZone.propTypes = {
   deleteActivity: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
   pofTree: PropTypesSchema.pofTreeShape.isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   classes: PropTypesSchema.classesShape.isRequired,
 }
-
-BufferZone.defaultProps = {}
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(BufferZone))
+)(withStyles(styles)(withSnackbar(BufferZone)))

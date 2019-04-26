@@ -9,8 +9,8 @@ import { withStyles } from '@material-ui/core'
 
 const styles = theme => ({
   eventList: {
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit,
   },
 })
 

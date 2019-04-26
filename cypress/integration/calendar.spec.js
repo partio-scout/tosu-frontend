@@ -39,7 +39,7 @@ describe('Testing calendar view', function() {
   })
   it('when pressing radio-button kuksa-events are shown in the calendar', function() {
     cy.get('button[id=kalenteri]').click()
-    cy.contains('Näytä myös Kuksan tapahtumat').click()
+    cy.contains('Kuksa tapahtumat').click()
     cy.contains('KITT kevät 2018')
   })
 })

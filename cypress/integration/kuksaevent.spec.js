@@ -18,6 +18,6 @@ describe('Creating and deleting kuksa-events', function() {
       .click()
     cy.get('button[id="verify-add-kuksa"]').click()
     cy.get('button[id="omat"]').click()
-    cy.get('button[id="edit-event"]').should('not.exist')
+    cy.get('button[id="edit-event"]').should('be.disabled')
   })
 })

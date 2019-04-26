@@ -6,12 +6,7 @@ import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import isTouchDevice from 'is-touch-device'
 import React, { Component } from 'react'
-import {
-  Dialog,
-  DialogTitle,
-  LinearProgress,
-  CssBaseline,
-} from '@material-ui/core'
+import { LinearProgress, CssBaseline } from '@material-ui/core'
 import moment from 'moment'
 import 'react-dates/initialize'
 import { MuiThemeProvider } from '@material-ui/core/styles'
@@ -30,7 +25,6 @@ import theme from './theme'
 import NewEvent from './components/NewEvent'
 import AppBar from './components/AppBar'
 import ActivitiesSidebar from './components/ActivitiesSidebar'
-import Notification from './components/Notification'
 import Calendar from './components/Calendar'
 import ButtonRow from './components/ButtonRow'
 import Login from './components/Login'
@@ -81,20 +75,6 @@ class App extends Component {
   }
 
   componentDidMount = async () => {
-    switch (window.location.pathname) {
-      case '/new-event':
-        this.setState({
-          headerVisible: false,
-          bufferZoneHeight: 0,
-          newEventVisible: false,
-        })
-        break
-      case '/calendar':
-        this.props.viewChange('CALENDAR')
-        break
-      default:
-        break
-    }
     await this.checkLoggedIn()
     //let pofData = loadCachedPofData()
     if (this.props.scout !== null) {
@@ -217,7 +197,7 @@ class App extends Component {
         <TosuDrawer initialization={this.initialization} />
         <div style={{ display: 'flex' }}>
           <AppBar />
-          <ActivitiesSidebar />
+          {isTouchDevice() ? null : <ActivitiesSidebar />}
           <div
             style={{
               width: '100%',
@@ -235,7 +215,7 @@ class App extends Component {
                 mobile={isTouchDevice()}
               />
               {this.props.loading ? (
-                <LinearProgress style={{ marginTop: 5 }} />
+                <LinearProgress style={{ marginTop: theme.spacing.unit }} />
               ) : null}
             </div>
             <div
@@ -254,16 +234,12 @@ class App extends Component {
                   endDate={this.state.endDate}
                 />
               )}
-              <Dialog
+              <NewEvent
                 open={this.state.newEventVisible}
-                onClose={this.handleClose}
-              >
-                <DialogTitle id="event-form-title">Luo uusi tapahtuma</DialogTitle>
-                <NewEvent closeMe={this.handleClose} />
-              </Dialog>
+                closeMe={this.handleClose}
+              />
             </div>
           </div>
-          <Notification />
         </div>
       </MuiThemeProvider>
     )
@@ -271,7 +247,6 @@ class App extends Component {
 }
 
 App.propTypes = {
-  notification: PropTypes.string.isRequired,
   buffer: PropTypesSchema.bufferShape.isRequired,
   events: PropTypes.arrayOf(PropTypes.object).isRequired,
   activities: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -300,7 +275,6 @@ App.defaultProps = {
 }
 
 const mapStateToProps = state => ({
-  notification: state.notification,
   buffer: state.buffer,
   events: state.events,
   pofTree: state.pofTree,
