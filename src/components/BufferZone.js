@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import React from 'react'
 import { Typography, Button, withStyles } from '@material-ui/core'
 import { deleteActivityFromBuffer } from '../reducers/bufferZoneReducer'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
 import Activities from './Activities'
@@ -42,10 +42,12 @@ export class BufferZone extends React.Component {
       try {
         await Promise.all(promises)
         this.props.pofTreeUpdate(this.props.activities)
-        this.props.notify('Aktiviteetit poistettu!', 'success')
+        this.props.enqueueSnackbar('Aktiviteetit poistettu', { variant: 'info' })
       } catch (exception) {
         console.log(exception)
-        this.props.notify('Kaikkia aktiviteetteja ei voitu poistaa!')
+        this.props.enqueueSnackbar('Kaikkia aktiviteetteja ei voitu poistaa!', {
+          variant: 'error',
+        })
       }
     }
   }
@@ -98,7 +100,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  notify,
   pofTreeUpdate,
   deleteActivityFromBuffer,
   deleteActivity,
@@ -112,13 +113,11 @@ BufferZone.propTypes = {
   deleteActivity: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
   pofTree: PropTypesSchema.pofTreeShape.isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   classes: PropTypesSchema.classesShape.isRequired,
 }
-
-BufferZone.defaultProps = {}
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(BufferZone))
+)(withStyles(styles)(withSnackbar(BufferZone)))

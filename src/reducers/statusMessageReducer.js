@@ -18,8 +18,11 @@ export const addStatusMessage = id => {
     case 2:
       text = 'Valitse aktiviteetteja ja raahaa ne haluamiisi tapahtumiin.'
       break
+    case 3:
+      text = 'Luo ensin toimintasuunnitelma vasemmasta valikosta.'
+      break
     default:
-      text = 'Valitse aktiviteetteja'
+      text = 'Valitse aktiviteetteja.'
       break
   }
 

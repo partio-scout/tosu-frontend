@@ -2,24 +2,27 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import isTouchDevice from 'is-touch-device'
-import Paper from '@material-ui/core/Paper'
 import eventgroupService from '../services/eventgroups'
 import FrequentEventsHandler from '../utils/FrequentEventsHandler'
 import EventForm from './EventForm'
 import { addEvent } from '../reducers/eventReducer'
-import { notify } from '../reducers/notificationReducer'
-import { withStyles } from '@material-ui/core'
+import { withSnackbar } from 'notistack'
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  IconButton,
+  withStyles,
+} from '@material-ui/core'
+import CloseIcon from '@material-ui/icons/Close'
 
-const styles = {
-  eventForm: {
-    maxWidth: 800,
-    margin: '0 auto',
+const styles = theme => ({
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing.unit * 2,
+    top: theme.spacing.unit * 2,
   },
-  newFormPaper: {
-    padding: 20,
-  },
-}
+})
 
 class NewEvent extends React.Component {
   state = {
@@ -147,13 +150,19 @@ class NewEvent extends React.Component {
     try {
       this.props.addEvent(eventData)
       if (eventData.eventGroupId === undefined) {
-        this.props.notify('Uusi tapahtuma luotu!', 'success')
+        this.props.enqueueSnackbar('Uusi tapahtuma luotu', {
+          variant: 'success',
+        })
       } else {
-        this.props.notify('Uusi toistuva tapahtuma luotu!', 'success')
+        this.props.enqueueSnackbar('Uusi toistuva tapahtuma luotu', {
+          variant: 'success',
+        })
       }
     } catch (exception) {
       console.error('Error in event POST:', exception)
-      this.props.notify('Tapahtumaa ei voitu luoda!')
+      this.props.enqueueSnackbar('Tapahtuman luomisessa tapahtui virhe', {
+        variant: 'error',
+      })
     }
   }
 
@@ -185,21 +194,18 @@ class NewEvent extends React.Component {
 
   render() {
     const { classes } = this.props
-    if (isTouchDevice()) {
-      return (
-        <div className={classes.eventForm}>
-          <EventForm
-            submitFunction={this.handleCloseAndSend.bind(this)}
-            close={this.handleClose.bind(this)}
-            update={this.update.bind(this)}
-            data={this.state}
-          />
-        </div>
-      )
-    }
     return (
-      <div className={classes.eventForm}>
-        <Paper className={classes.newFormPaper}>
+      <Dialog open={this.props.open} onClose={this.handleClose} scroll="body">
+        <DialogTitle>
+          Luo uusi tapahtuma
+          <IconButton
+            onClick={this.handleClose}
+            className={classes.closeButton}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
           <EventForm
             submitFunction={this.handleCloseAndSend.bind(this)}
             close={this.handleClose.bind(this)}
@@ -207,19 +213,17 @@ class NewEvent extends React.Component {
             data={this.state}
             allowRepeatedEvent
           />
-        </Paper>
-      </div>
+        </DialogContent>
+      </Dialog>
     )
   }
 }
 
 NewEvent.propTypes = {
   addEvent: PropTypes.func.isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   tosu: PropTypes.string.isRequired,
 }
-
-NewEvent.defaultProps = {}
 
 const mapStateToProps = state => ({
   tosu: state.tosu,
@@ -227,10 +231,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   addEvent,
-  notify,
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(NewEvent))
+)(withStyles(styles)(withSnackbar(NewEvent)))

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Switch, FormControlLabel } from '@material-ui/core'
+import { Switch, FormControlLabel, Typography } from '@material-ui/core'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button'
@@ -91,11 +91,11 @@ class Toolbar extends React.Component {
         >
           <ChevronRight />
         </IconButton>
-
-        <span style={{ margin: '0 35px' }}>{label}</span>
-
+        <span className="rbc-btn-group">{this.viewNamesGroup(messages)}</span>
+        <Typography inline variant="overline" style={{ margin: '0 35px' }}>
+          {label}
+        </Typography>
         <FormControlLabel
-          style={{ color: '00000', marginRight: 35 }}
           control={
             <Switch
               checked={switchState}
@@ -103,10 +103,8 @@ class Toolbar extends React.Component {
               color="primary"
             />
           }
-          label="Näytä myös Kuksan tapahtumat"
+          label="Kuksa tapahtumat"
         />
-
-        <span className="rbc-btn-group">{this.viewNamesGroup(messages)}</span>
       </div>
     )
   }
