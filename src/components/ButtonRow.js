@@ -3,13 +3,7 @@ import moment from 'moment'
 import { connect } from 'react-redux'
 import { DateRangePicker } from 'react-dates'
 import PropTypes from 'prop-types'
-import {
-  Button,
-  Icon,
-  IconButton,
-  withStyles,
-  Typography,
-} from '@material-ui/core'
+import { Button, Icon, IconButton, withStyles } from '@material-ui/core'
 import CalendarIcon from '@material-ui/icons/CalendarToday'
 import AddIcon from '@material-ui/icons/Add'
 import { viewChange } from '../reducers/uiReducer'
@@ -124,10 +118,11 @@ class ButtonRow extends React.Component {
           </Button>
         )}
 
-        {!this.canCreateEvent(tosuMap) ? null : mobile ? (
+        {mobile ? (
           <IconButton
             className={classes.button + ' ' + classes.iconButton}
             onClick={this.props.newEvent}
+            disabled={!this.canCreateEvent(tosuMap)}
           >
             <AddIcon fontSize="small" />
           </IconButton>
@@ -137,6 +132,7 @@ class ButtonRow extends React.Component {
             onClick={this.props.newEvent}
             variant="contained"
             color="secondary"
+            disabled={!this.canCreateEvent(tosuMap)}
           >
             Uusi tapahtuma
           </Button>
