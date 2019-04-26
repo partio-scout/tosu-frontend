@@ -21,6 +21,7 @@ import {
   DialogActions,
   Button,
   TextField,
+  DialogContentText,
 } from '@material-ui/core'
 import AssignmentIcon from '@material-ui/icons/Assignment'
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -93,6 +94,7 @@ class TosuDrawer extends React.Component {
   state = {
     newTosuName: '',
     nameChange: null,
+    tosuDelete: null,
   }
 
   /**
@@ -173,7 +175,7 @@ class TosuDrawer extends React.Component {
   render() {
     const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
     const { ui, tosus, loading, classes } = this.props
-    const { newTosuName, nameChange } = this.state
+    const { newTosuName, nameChange, tosuDelete } = this.state
 
     const tosuList = (
       <div className={classes.tosuList}>
@@ -205,7 +207,9 @@ class TosuDrawer extends React.Component {
                     <CreateIcon color="primary" />
                   </IconButton>
                   <Divider className={classes.divider} />
-                  <IconButton onClick={() => this.handledTosuDelete(tosu.id)}>
+                  <IconButton
+                    onClick={() => this.setState({ tosuDelete: tosu })}
+                  >
                     <DeleteIcon color="error" />
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -267,6 +271,37 @@ class TosuDrawer extends React.Component {
       </Dialog>
     )
 
+    const tosuDeleteDialog = (
+      <Dialog
+        open={tosuDelete}
+        onClose={() => this.setState({ tosuDelete: null })}
+      >
+        <DialogTitle>Vahvistus</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Haluatko varmasti poistaa kyseisen toimintasuunnitelman?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            color="secondary"
+            onClick={() => this.setState({ tosuDelete: null })}
+          >
+            peruuta
+          </Button>
+          <Button
+            color="primary"
+            onClick={() => {
+              this.handledTosuDelete(tosuDelete.id)
+              this.setState({ tosuDelete: null })
+            }}
+          >
+            poista
+          </Button>
+        </DialogActions>
+      </Dialog>
+    )
+
     return (
       <SwipeableDrawer
         disableBackdropTransition={!iOS}
@@ -304,6 +339,7 @@ class TosuDrawer extends React.Component {
         )}
         {loading ? null : tosuInput}
         {nameChangeDialog}
+        {tosuDeleteDialog}
       </SwipeableDrawer>
     )
   }
