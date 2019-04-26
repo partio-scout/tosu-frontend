@@ -4,7 +4,7 @@ const resetDatabase = () => {
   scoutService.deleteScout('12345')
 }
 const createEvent = () => {
-  cy.get('button[id=new-event-button]')
+  cy.get('button[id="uusi-event"]')
     .should('be.visible')
     .click()
   cy.get('input[name="title"').type('testEvent', {
