@@ -86,6 +86,9 @@ const styles = theme => ({
     position: 'absolute',
     right: theme.spacing.unit,
   },
+  confirmDelete: {
+    color: theme.palette.error.main,
+  },
   iconButton: {
     padding: 10,
   },
@@ -281,10 +284,7 @@ class TosuDrawer extends React.Component {
           />
         </DialogContent>
         <DialogActions>
-          <Button
-            color="secondary"
-            onClick={() => this.setState({ nameChange: null })}
-          >
+          <Button onClick={() => this.setState({ nameChange: null })}>
             peruuta
           </Button>
           <Button color="primary" onClick={() => this.handleTosuUpdate()}>
@@ -306,14 +306,11 @@ class TosuDrawer extends React.Component {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
-            color="secondary"
-            onClick={() => this.setState({ tosuDelete: null })}
-          >
+          <Button onClick={() => this.setState({ tosuDelete: null })}>
             peruuta
           </Button>
           <Button
-            color="primary"
+            className={classes.confirmDelete}
             onClick={() => {
               this.handledTosuDelete(tosuDelete.id)
               this.setState({ tosuDelete: null })
