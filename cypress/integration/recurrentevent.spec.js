@@ -49,6 +49,7 @@ describe('After logging in', function() {
     cy.get('button[id="delete-recurrent-events"]').click()
     cy.get('div[id="event-list-element"]').should('not.exist')
   })
+
   it('user can delete only one of recurring events', function() {
     //create recurrent event
     cy.reload()
@@ -81,6 +82,35 @@ describe('After logging in', function() {
     cy.get('button[id="delete-one-recurrent-event"]').click()
     cy.get('div[id="event-list-element"]').should($lis => {
       expect($lis).to.have.length(6)
+    })
+  })
+
+  it('eventgroup can be created when last date is given', function() {
+    cy.get('button[id="uusi-event"]').click()
+    cy.get('input[name="title"').type('manyEvents', {
+      multiple: true,
+      force: true,
+    })
+    cy.get('input[name="formStartDate"]').click()
+    cy.contains('OK').click({ multiple: true, force: true })
+    cy.get('input[name="startTime"]').click({ multiple: true, force: true })
+    cy.contains('OK').click({ multiple: true, force: true })
+    cy.get('input[type="checkbox"]').click({ multiple: true, force: true })
+    cy.get('[name="lastDate"]').type(
+      '{rightarrow}{rightarrow}{rightarrow}{rightarrow}{rightarrow}{rightarrow}{rightarrow}'
+    )
+    cy.contains('OK').click()
+    cy.get('input[name="repeatCount"]').should('have.value', '3')
+    cy.get('div[id="select-type"]').click({ multiple: true, force: true })
+    cy.get('li[id="tyyppi-leiri"]').click({ multiple: true, force: true })
+    cy.get('input[name="information"').type('recurrentevent', {
+      multiple: true,
+      force: true,
+    })
+    cy.get('button[id="tallenna-event"]').click({ multiple: true, force: true })
+    cy.wait(4000)
+    cy.get('div[id="event-list-element"]').should($lis => {
+      expect($lis).to.have.length(3)
     })
   })
 })

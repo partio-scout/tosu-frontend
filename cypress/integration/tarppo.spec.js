@@ -49,14 +49,15 @@ describe('After logging in', function() {
     cy.get('[id="delete-activity"]')
       .first()
       .click()
-    cy.get('[id="delete-activity"]').should($lis => {
-      expect($lis).to.have.length(1)
-    })
+      cy.get('[id="delete-activity"]').should($lis => {
+        expect($lis).to.have.length(1)
+      })
   })
 
   it('user can empty buffer', function() {
     cy.contains('Tyhjennä')
     cy.contains('Tyhjennä').click({ force: true })
-    cy.get('div[role="button"]').should('not.exist')
+    cy.get('div[role="button"]')
+      .should('not.exist')
   })
 })
