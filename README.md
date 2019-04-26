@@ -74,7 +74,7 @@ rm -rf tosu-frontend
 
 [Spring 2018 product & sprint backlogs](https://docs.google.com/spreadsheets/d/1cA-ldx-M_ppxSicxjL06BmAjhoNi5I55M5BugoUBD98/edit?usp=drivesdk)
 
-[ Sprign 2019 end demo](https://docs.google.com/presentation/d/1gM9LLixv0au1nOW7uaX4Pt0axo0ZnNi-yr2oWLkl0lQ/edit?usp=sharing)
+[ Spring 2019 end demo](https://docs.google.com/presentation/d/1gM9LLixv0au1nOW7uaX4Pt0axo0ZnNi-yr2oWLkl0lQ/edit?usp=sharing)
 
 ## License
 
