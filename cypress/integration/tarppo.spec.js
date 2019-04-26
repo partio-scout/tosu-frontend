@@ -1,10 +1,10 @@
-describe('Tarppo menu', function() {
+describe('After logging in', function() {
   beforeEach('user logs in', function() {
     cy.request('http://localhost:3001/scouts/testuser')
     cy.visit('http://localhost:3000')
   })
 
-  /*it('', function() {
+  it('', function() {
     cy.visit('http://localhost:3000')
   })
 
@@ -46,17 +46,17 @@ describe('Tarppo menu', function() {
   })
 
   it('user can remove one activity', function() {
-    cy.wait(2000)
-    cy.contains('clear').click({ force: true })
-    cy.contains('clear').should('not.exist')
+    cy.get('[id="delete-activity"]')
+      .first()
+      .click()
+    cy.get('[id="delete-activity"]').should($lis => {
+      expect($lis).to.have.length(1)
+    })
   })
 
   it('user can empty buffer', function() {
-    cy.wait(2000)
     cy.contains('Tyhjennä')
     cy.contains('Tyhjennä').click({ force: true })
-    cy.get('div[role="button"]')
-      .first()
-      .should('not.exist')
-  })*/
+    cy.get('div[role="button"]').should('not.exist')
+  })
 })

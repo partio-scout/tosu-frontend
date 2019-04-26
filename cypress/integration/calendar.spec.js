@@ -7,7 +7,7 @@ describe('Testing calendar view', function() {
   beforeEach('user logs in', function() {
     resetDatabase()
     cy.wait(2000)
-    // February first 2018 BUG: Should be January first 2018
+    // April first 2018 BUG: Should be March first 2018
     cy.clock(new Date(2018, 3, 1).getTime())
     cy.request('http://localhost:3001/scouts/testuser')
     cy.visit('http://localhost:3000')
