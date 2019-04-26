@@ -1,4 +1,4 @@
-describe('After logging in', function() {
+describe('Creating and deleting tosus', function() {
   beforeEach('user logs in', function() {
     cy.request('http://localhost:3001/scouts/testuser')
     cy.visit('http://localhost:3000')

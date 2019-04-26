@@ -3,8 +3,32 @@ import scoutService from '../../src/services/scout'
 const resetDatabase = () => {
   scoutService.deleteScout('12345')
 }
-
-describe('After logging in', function() {
+const createMultipleEvent = () => {
+  cy.get('button[id=uusi-event]')
+    .should('be.visible')
+    .click()
+  cy.get('input[name="title"').type('testMultiple', {
+    multiple: true,
+    force: true,
+  })
+  cy.get('input[name="formStartDate"').click()
+  cy.contains('OK').click({ multiple: true, force: true })
+  cy.get('input[name="startTime"]').click({ multiple: true })
+  cy.contains('OK').click({ multiple: true, force: true })
+  cy.get('input[type="checkbox"]').click({ multiple: true, force: true })
+  cy.get('input[name="repeatCount"]').type('{backspace}3', {
+    multiple: true,
+    force: true,
+  })
+  cy.get('div[id="select-type"]').click({ multiple: true, force: true })
+  cy.contains('Kokous').click({ multiple: true, force: true })
+  cy.get('input[name="information"').type('recurrentevent', {
+    multiple: true,
+    force: true,
+  })
+  cy.contains('Tallenna').click({ multiple: true, force: true })
+}
+describe('Creating and deleting recurrent events', function() {
   beforeEach('user logs in', function() {
     cy.wait(2000)
     resetDatabase()
@@ -15,29 +39,7 @@ describe('After logging in', function() {
   })
   it('initialize tosu', function() {})
   it('user can delete all same recurrent events', function() {
-    //create recurrent event
-    cy.reload()
-    cy.get('button[id="uusi-event"]').click()
-    cy.get('input[name="title"').type('makeMultipleEvents', {
-      multiple: true,
-      force: true,
-    })
-    cy.get('input[name="formStartDate"]').click()
-    cy.contains('OK').click({ multiple: true, force: true })
-    cy.get('input[name="startTime"]').click({ multiple: true, force: true })
-    cy.contains('OK').click({ multiple: true, force: true })
-    cy.get('div[id="select-type"]').click({ multiple: true, force: true })
-    cy.get('input[type="checkbox"]').click({ multiple: true, force: true })
-    cy.get('input[name="repeatCount"]').type('{backspace}3', {
-      multiple: true,
-      force: true,
-    })
-    cy.get('li[id="tyyppi-leiri"]').click({ multiple: true, force: true })
-    cy.get('input[name="information"').type('recurrentevent', {
-      multiple: true,
-      force: true,
-    })
-    cy.get('button[id="tallenna-event"]').click({ multiple: true, force: true })
+    createMultipleEvent()
     cy.wait(4000)
     cy.get('div[id="event-list-element"]').should($lis => {
       expect($lis).to.have.length(3)
@@ -52,28 +54,7 @@ describe('After logging in', function() {
 
   it('user can delete only one of recurring events', function() {
     //create recurrent event
-    cy.reload()
-    cy.get('button[id="uusi-event"]').click()
-    cy.get('input[name="title"').type('makeMultipleEvents', {
-      multiple: true,
-      force: true,
-    })
-    cy.get('input[name="formStartDate"]').click()
-    cy.contains('OK').click({ multiple: true, force: true })
-    cy.get('input[name="startTime"]').click({ multiple: true, force: true })
-    cy.contains('OK').click({ multiple: true, force: true })
-    cy.get('div[id="select-type"]').click({ multiple: true, force: true })
-    cy.get('input[type="checkbox"]').click({ multiple: true, force: true })
-    cy.get('input[name="repeatCount"]').type('{backspace}7', {
-      multiple: true,
-      force: true,
-    })
-    cy.get('li[id="tyyppi-vaellus"]').click({ multiple: true, force: true })
-    cy.get('input[name="information"').type('recurrentevent', {
-      multiple: true,
-      force: true,
-    })
-    cy.get('button[id="tallenna-event"]').click({ multiple: true, force: true })
+    createMultipleEvent()
     cy.wait(4000)
     //delete only one event
     cy.get('button[id="delete-event"]')
@@ -81,33 +62,34 @@ describe('After logging in', function() {
       .click()
     cy.get('button[id="delete-one-recurrent-event"]').click()
     cy.get('div[id="event-list-element"]').should($lis => {
-      expect($lis).to.have.length(6)
+      expect($lis).to.have.length(2)
     })
   })
 
   it('eventgroup can be created when last date is given', function() {
-    cy.get('button[id="uusi-event"]').click()
-    cy.get('input[name="title"').type('manyEvents', {
+    cy.get('button[id=uusi-event]')
+      .should('be.visible')
+      .click()
+    cy.get('input[name="title"').type('testMultiple', {
       multiple: true,
       force: true,
     })
-    cy.get('input[name="formStartDate"]').click()
+    cy.get('input[name="formStartDate"').click()
     cy.contains('OK').click({ multiple: true, force: true })
-    cy.get('input[name="startTime"]').click({ multiple: true, force: true })
+    cy.get('input[name="startTime"]').click({ multiple: true })
     cy.contains('OK').click({ multiple: true, force: true })
     cy.get('input[type="checkbox"]').click({ multiple: true, force: true })
     cy.get('[name="lastDate"]').type(
-      '{rightarrow}{rightarrow}{rightarrow}{rightarrow}{rightarrow}{rightarrow}{rightarrow}'
+      '{rightarrow}{rightarrow}{rightarrow}{rightarrow}{rightarrow}{rightarrow}{rightarrow}{rightarrow}'
     )
-    cy.contains('OK').click()
-    cy.get('input[name="repeatCount"]').should('have.value', '3')
+    cy.contains('OK').click({ multiple: true, force: true })
     cy.get('div[id="select-type"]').click({ multiple: true, force: true })
-    cy.get('li[id="tyyppi-leiri"]').click({ multiple: true, force: true })
+    cy.contains('Kokous').click({ multiple: true, force: true })
     cy.get('input[name="information"').type('recurrentevent', {
       multiple: true,
       force: true,
     })
-    cy.get('button[id="tallenna-event"]').click({ multiple: true, force: true })
+    cy.contains('Tallenna').click({ multiple: true, force: true })
     cy.wait(4000)
     cy.get('div[id="event-list-element"]').should($lis => {
       expect($lis).to.have.length(3)
