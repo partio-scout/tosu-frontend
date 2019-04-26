@@ -65,7 +65,8 @@
     "eject": "react-scripts eject",
     "travis": "npm run test",
     "testmode": "REACT_APP_TEST=test npm start",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "devDependencies": {
     "chai": "^4.2.0",

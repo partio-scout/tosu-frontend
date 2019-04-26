@@ -125,7 +125,7 @@ class Activity extends Component {
             }
             key={activity.id}
             onClick={this.handleClick}
-            deleteIcon={<Icon color="primary">clear</Icon>}
+            deleteIcon={<Icon id="delete-activity" color="primary">clear</Icon>}
             style={this.props.minimal ? { height: 26 } : {}}
             avatar={
               pofActivity.mandatory ? (

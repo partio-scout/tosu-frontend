@@ -52,6 +52,7 @@ class AddToPlan extends React.Component {
     return (
       <div>
         <Button
+          id="add-kuksa"
           onClick={this.handleButtonDialogOpen}
           className={this.props.buttonClass}
           variant="contained"
@@ -72,6 +73,7 @@ class AddToPlan extends React.Component {
               peruuta
             </Button>
             <Button
+              id="verify-add-kuksa" 
               variant="contained"
               color="primary"
               onClick={this.addEventToTosu}

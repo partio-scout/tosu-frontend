@@ -228,7 +228,7 @@ export default class EventForm extends React.Component {
   render() {
     const actions = (
       <div>
-        <Button variant="contained" type="submit" color="primary">
+        <Button id="tallenna-event" variant="contained" type="submit" color="primary">
           Tallenna
         </Button>
       </div>
@@ -366,7 +366,7 @@ export default class EventForm extends React.Component {
               <ValidatedDatePicker
                 label="Viimeinen toistumispäivä"
                 onChange={this.handleLastDate}
-                name="startDate"
+                name="lastDate"
                 autoOk
                 cancelLabel="Peruuta"
                 value={this.state.lastDate === '' ? null : this.state.lastDate}
@@ -392,11 +392,11 @@ export default class EventForm extends React.Component {
           errorMessages={['Tapahtuman tyyppi vaaditaan']}
           fullWidth
         >
-          <MenuItem value="kokous">Kokous</MenuItem>
-          <MenuItem value="leiri">Leiri</MenuItem>
-          <MenuItem value="retki">Retki</MenuItem>
-          <MenuItem value="vaellus">Vaellus</MenuItem>
-          <MenuItem value="muu tapahtuma">Muu tapahtuma</MenuItem>
+          <MenuItem id="tyyppi-kokous" value="kokous">Kokous</MenuItem>
+          <MenuItem id="tyyppi-leiri" value="leiri">Leiri</MenuItem>
+          <MenuItem id="tyyppi-retki" value="retki">Retki</MenuItem>
+          <MenuItem id="tyyppi-vaellus" value="vaellus">Vaellus</MenuItem>
+          <MenuItem id="tyyppi-muu-tapahtuma" value="muu tapahtuma">Muu tapahtuma</MenuItem>
         </SelectValidator>
         <br />
 

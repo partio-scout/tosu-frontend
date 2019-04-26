@@ -116,6 +116,7 @@ class EditEvent extends React.Component {
     checked,
     repeatCount,
     repeatFrequency,
+    lastDate,
     type,
     information
   ) => {
@@ -126,8 +127,9 @@ class EditEvent extends React.Component {
       endDate,
       endTime,
       checked,
-      // repeatCount,
-      // repeatFrequency,
+      repeatCount,
+      repeatFrequency,
+      //lastDate,
       type,
       information,
     })
@@ -141,6 +143,7 @@ class EditEvent extends React.Component {
     return (
       <div className={classes.button}>
         <Button
+          id="edit-event"
           size={this.props.minimal ? 'small' : 'medium'}
           onClick={this.handleOpen}
           variant="contained"

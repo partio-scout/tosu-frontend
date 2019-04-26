@@ -425,10 +425,12 @@ class EventCard extends React.Component {
         >
           <CardHeader
             title={
-              <React.Fragment>
-                {title}
-                {event.activities.length === 0 ? warning : null}
-              </React.Fragment>
+              <div id="event-name">
+                <React.Fragment>
+                  {title}
+                  {event.activities.length === 0 ? warning : null}
+                </React.Fragment>
+              </div>
             }
             subheader={subtitle}
             titleTypographyProps={{

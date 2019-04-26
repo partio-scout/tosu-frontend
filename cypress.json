@@ -2,5 +2,7 @@
   "env": {
     "test": "test"
   },
-  "chromeWebSecurity": false
+  "defaultCommandTimeout": 15000,
+  "chromeWebSecurity": false,
+  "pageLoadTimeout": 120000
 }

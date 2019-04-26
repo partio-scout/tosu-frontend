@@ -196,7 +196,7 @@ class NewEvent extends React.Component {
     const { classes } = this.props
     return (
       <Dialog open={this.props.open} onClose={this.handleClose} scroll="body">
-        <DialogTitle>
+        <DialogTitle id="event-form-title">
           Luo uusi tapahtuma
           <IconButton
             onClick={this.handleClose}

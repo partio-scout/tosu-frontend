@@ -78,6 +78,7 @@ class ButtonRow extends React.Component {
     return (
       <React.Fragment>
         <Button
+          id="omat"
           className={classes.button}
           onClick={() => this.selectView('OWN')}
           variant="contained"
@@ -86,6 +87,7 @@ class ButtonRow extends React.Component {
           Omat
         </Button>
         <Button
+          id="kuksa"
           className={classes.button}
           onClick={() => this.selectView('KUKSA')}
           variant="contained"
@@ -109,6 +111,7 @@ class ButtonRow extends React.Component {
           </IconButton>
         ) : (
           <Button
+            id="kalenteri"
             className={classes.button}
             onClick={() => this.selectView('CALENDAR')}
             variant="contained"
@@ -128,6 +131,7 @@ class ButtonRow extends React.Component {
           </IconButton>
         ) : (
           <Button
+            id="uusi-event"
             className={classes.button}
             onClick={this.props.newEvent}
             variant="contained"

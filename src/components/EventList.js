@@ -28,7 +28,7 @@ class EventList extends React.Component {
         {eventsToShow().map(event => {
           odd = !odd
           return (
-            <div key={event.id ? event.id : 0}>
+            <div id="event-list-element" key={event.id ? event.id : 0}>
               {event.kuksaEvent ? (
                 <KuksaEventCard event={event} />
               ) : (
