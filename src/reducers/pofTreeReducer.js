@@ -62,6 +62,21 @@ const disableTasksInFilterIfExists = (root, existingActivityGuids) => {
   })
   return root
 }
+
+const disableTask = (root, taskGUID) => {
+  const newActivities = { ...root.entities.activities }
+  const activity = { ...newActivities[taskGUID], disabled: true }
+  newActivities[taskGUID] = activity
+  return { ...root, entities: { ...root.entities, activities: newActivities } }
+}
+
+const enableTask = (root, taskGUID) => {
+  const newActivities = { ...root.entities.activities }
+  const activity = { ...newActivities[taskGUID], disabled: false }
+  newActivities[taskGUID] = activity
+  return { ...root, entities: { ...root.entities, activities: newActivities } }
+}
+
 const deepStateCopy = state => {
   const stateCopy = { ...state }
   stateCopy.entities = { ...state.entities }
@@ -101,6 +116,12 @@ const reducer = (state = {}, action) => {
     case 'SET_TREE_POF': {
       return updateState(state, action.activities)
     }
+    case 'DISABLE_ACTIVITY': {
+      return disableTask(state, action.taskGUID)
+    }
+    case 'ENABLE_ACTIVITY': {
+      return enableTask(state, action.taskGUID)
+    }
     default: {
       return state
     }
@@ -115,6 +136,16 @@ export const pofTreeInitialization = pofJson => ({
 export const pofTreeUpdate = activities => ({
   type: 'SET_TREE_POF',
   activities: arrayActivityGuidsFromBufferAndEvents(activities),
+})
+
+export const enableActivity = GUID => ({
+  type: 'ENABLE_ACTIVITY',
+  taskGUID: GUID,
+})
+
+export const disableActivity = GUID => ({
+  type: 'DISABLE_ACTIVITY',
+  taskGUID: GUID,
 })
 
 export default reducer

@@ -5,7 +5,7 @@ import Activity from './Activity'
 import convertToSimpleActivity from '../functions/activityConverter'
 import activityService from '../services/activities'
 import { notify } from '../reducers/notificationReducer'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
+import { pofTreeUpdate, enableActivity } from '../reducers/pofTreeReducer'
 import {
   deleteActivityFromBuffer,
   postActivityToBuffer,
@@ -23,9 +23,12 @@ export class Activities extends React.Component {
   deleteActivity = async activity => {
     try {
       if (this.props.bufferzone) {
+        console.log("deleting activity")
         this.props.deleteActivityFromBuffer(activity.id)
+        this.props.updateActivity({...activity, activityBufferId:null})
         await this.props.deleteActivity(activity.id)
-        this.props.pofTreeUpdate(this.props.stateActivities)
+        console.log(this.props.stateActivities)
+        this.props.enableActivity(activity.guid)
       } else {
         this.props.deleteActivityFromEvent(activity.id, activity.eventId)
         this.props.postActivityToBuffer(activity)
@@ -104,6 +107,7 @@ const mapDispatchToProps = {
   deleteActivity,
   postActivityToBuffer,
   updateActivity,
+  enableActivity,
 }
 
 export default connect(

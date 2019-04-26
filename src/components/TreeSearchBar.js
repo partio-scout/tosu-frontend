@@ -6,7 +6,7 @@ import TreeSelect from 'rc-tree-select'
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
 import { postActivityToBuffer } from '../reducers/bufferZoneReducer'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
+import { pofTreeUpdate, disableActivity } from '../reducers/pofTreeReducer'
 import { addStatusMessage } from '../reducers/statusMessageReducer'
 import { selectTaskgroup, emptyTaskgroup } from '../reducers/taskgroupReducer'
 import { createStatusMessage } from '../utils/createStatusMessage'
@@ -44,9 +44,10 @@ class TreeSearchBar extends React.Component {
     if (this.isLeaf(activityGuid)) {
       try {
         await addActivityToRelevantReducers(this.props, { guid: activityGuid })
-        this.props.pofTreeUpdate(this.props.activities)
+        this.props.disableActivity(activityGuid)
         this.props.notify('Aktiviteetti on lisätty!', 'success')
       } catch (exception) {
+        console.log(exception)
         this.props.notify('Aktiviteettialue on täynnä!!')
       }
     }
@@ -210,6 +211,7 @@ TreeSearchBar.propTypes = {
   notify: PropTypes.func.isRequired,
   postActivityToBuffer: PropTypes.func.isRequired,
   addActivity: PropTypes.func.isRequired,
+  disableActivity: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
   addStatusMessage: PropTypes.func.isRequired,
   selectTaskgroup: PropTypes.func.isRequired,
@@ -234,6 +236,7 @@ const mapDispatchToProps = {
   addStatusMessage,
   selectTaskgroup,
   emptyTaskgroup,
+  disableActivity,
 }
 
 export default connect(
