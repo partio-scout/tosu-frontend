@@ -10,7 +10,7 @@ import { API_ROOT } from '../api-config'
 // Reducers
 import { scoutGoogleLogin } from '../reducers/scoutReducer'
 import { setLoading } from '../reducers/loadingReducer'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   bufferZoneInitialization,
@@ -51,12 +51,6 @@ class Login extends React.Component {
       this.props.setLoading(false)
     }
   }
-  /**
-   * Returns an error message if login is unsuccesful
-   */
-  googleLoginFail = async () => {
-    notify('Google-kirjautuminen epäonnistui. Yritä uudestaan.')
-  }
 
   render() {
     const { classes } = this.props
@@ -73,7 +67,11 @@ class Login extends React.Component {
           scope="profile email"
           clientId={this.props.token} // TODO: Maybe get the token out of here
           onSuccess={this.googleLoginSuccess}
-          onFailure={this.googleLoginFail}
+          onFailure={() =>
+            this.props.enqueueSnackbar('Google-kirjautuminen epäonnistui', {
+              variant: 'error',
+            })
+          }
           render={renderProps => (
             <Button
               onClick={renderProps.onClick}
@@ -110,7 +108,7 @@ Login.propTypes = {
   events: PropTypes.arrayOf(PropTypes.object).isRequired,
   activities: PropTypes.arrayOf(PropTypes.object).isRequired,
   tosu: PropTypes.string.isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   pofTreeInitialization: PropTypes.func.isRequired,
   activityInitialization: PropTypes.func.isRequired,
   tosuInitialization: PropTypes.func.isRequired,
@@ -130,7 +128,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  notify,
   pofTreeInitialization,
   pofTreeUpdate,
   eventsInitialization,
@@ -145,4 +142,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(Login))
+)(withStyles(styles)(withSnackbar(Login)))

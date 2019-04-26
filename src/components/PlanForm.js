@@ -1,27 +1,19 @@
 import React from 'react'
-import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
-import Typography from '@material-ui/core/Typography'
 import PlanCard from './PlanCard'
-import { withStyles } from '@material-ui/core'
+import {
+  Dialog,
+  Tab,
+  Tabs,
+  Typography,
+  DialogContent,
+  withStyles,
+} from '@material-ui/core'
 
-const styles = {
-  headline: {
-    width: 600,
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400,
+const styles = theme => ({
+  header: {
+    marginTop: theme.spacing.unit * 3,
   },
-}
-
-function TabContainer(props) {
-  return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
-      {props.children}
-    </Typography>
-  )
-}
+})
 
 class PlanForm extends React.Component {
   state = { value: 0 }
@@ -31,7 +23,10 @@ class PlanForm extends React.Component {
   }
 
   /**
-   *  Creates a new div element, set the HTML content with the providen and retrieves the text property of the element. Provides cross-browser support.
+   *  Creates a new div element,
+   * set the HTML content with the providen and
+   * retrieves the text property of the element.
+   * Provides cross-browser support.
    * @param html html code that is stripped
    */
   stripHtml = html => {
@@ -52,15 +47,16 @@ class PlanForm extends React.Component {
         parentId={parentId}
       />
     ))
+
     return (
-      <div>
-        <Tabs value={value} onChange={this.handleChange}>
+      <Dialog open={this.props.open} onClose={this.props.onClose} scroll="body">
+        <Tabs value={value} onChange={this.handleChange} variant="fullWidth">
           <Tab label="Tiedot" />
           <Tab label="Vinkit" />
         </Tabs>
-        {value === 0 && (
-          <TabContainer>
-            <div>
+        <DialogContent>
+          {value === 0 && (
+            <Typography component="div" className={classes.header}>
               <p>
                 <strong>Paikka: </strong>
                 {activity.place.join(', ')}
@@ -79,11 +75,14 @@ class PlanForm extends React.Component {
                 <br />
                 <strong>Pakollisuus: </strong>
                 {activity.mandatory ? 'Pakollinen ' : 'Ei pakollinen '}
-                <img
-                  src={activity.mandatoryIconUrl}
-                  alt="Pakollinen"
-                  height="16px"
-                />
+                {activity.mandatory ? (
+                  <img
+                    src={activity.mandatoryIconUrl}
+                    alt="Pakollinen"
+                    height="16px"
+                    style={{ marginBottom: -2 }}
+                  />
+                ) : null}
               </p>
               <p>
                 <strong>Tavoite: </strong> {this.stripHtml(activity.ingress)}
@@ -95,20 +94,20 @@ class PlanForm extends React.Component {
                 <strong>Johtajan tehtävät: </strong>
                 {this.stripHtml(activity.leader_tasks)}
               </p>
-            </div>
-          </TabContainer>
-        )}
-        {value === 1 && (
-          <TabContainer>
-            <div>
-              <h2 className={classes.headline}>Toteutusvinkit</h2>
+            </Typography>
+          )}
+          {value === 1 && (
+            <React.Fragment>
+              <Typography variant="h5" gutterBottom className={classes.header}>
+                Toteutusvinkit
+              </Typography>
               {suggestionDetails.length !== 0
                 ? suggestionDetails
                 : 'Ei toteutusvinkkejä'}
-            </div>
-          </TabContainer>
-        )}
-      </div>
+            </React.Fragment>
+          )}
+        </DialogContent>
+      </Dialog>
     )
   }
 }

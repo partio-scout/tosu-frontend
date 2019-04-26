@@ -25,7 +25,7 @@ import {
 
 import Warning from '@material-ui/icons/Warning'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import moment from 'moment-with-locales-es6'
+import moment from 'moment'
 import { Parser } from 'html-to-react'
 import Activities from './Activities'
 import ActivityDragAndDropTarget from './ActivityDragAndDropTarget'
@@ -39,7 +39,7 @@ import {
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally,
 } from '../reducers/eventReducer'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import {
   deleteActivityFromBufferOnlyLocally,
@@ -52,7 +52,7 @@ import SuggestionCard from '../components/SuggestionCard'
 import { addActivity } from '../reducers/activityReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
-const styles = {
+const styles = theme => ({
   activityHeader: {
     margin: 0,
     minHeight: 0,
@@ -61,10 +61,9 @@ const styles = {
     flexFlow: 'row wrap',
   },
   warning: {
-    width: 15,
-    height: 15,
-    padding: 0,
-    marginRight: 7,
+    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing.unit,
+    marginBottom: -4,
     color: '#f14150',
   },
   arrowUp: {
@@ -85,7 +84,10 @@ const styles = {
     marginBottom: 14,
     borderRadius: 4,
   },
-}
+  actions: {
+    paddingLeft: theme.spacing.unit,
+  },
+})
 
 class EventCard extends React.Component {
   constructor(props) {
@@ -121,9 +123,14 @@ class EventCard extends React.Component {
         })
         this.props.addActivity(res)
         this.props.addActivityToEventOnlyLocally(this.props.event.id, res)
-        this.props.notify('Aktiviteetti on lisätty!', 'success')
+        this.props.enqueueSnackbar('Aktiviteetti on lisätty', {
+          variant: 'info',
+        })
       } catch (exception) {
-        this.props.notify('Aktiviteetin lisäämisessä tapahtui virhe!')
+        this.props.enqueueSnackbar(
+          'Aktiviteetin lisäämisessä tapahtui virhe!',
+          { variant: 'error' }
+        )
       }
     }
     this.props.pofTreeUpdate(this.props.activities)
@@ -235,18 +242,17 @@ class EventCard extends React.Component {
     const { event, odd, classes } = this.props
 
     const warning = (
-      <Tooltip title="Tapahtumasta puuttuu aktiviteetti!" disableFocusListener>
+      <Tooltip disableFocusListener title="Tapahtumasta puuttuu aktiviteetti!">
         <Warning className={classes.warning} />
       </Tooltip>
     )
 
-    moment.locale('fi')
     const { title } = event
     const subtitle = this.state.expanded
       ? ''
-      : `${moment(event.startDate, 'YYYY-MM-DD')
-          .locale('fi')
-          .format('ddd D.M.YYYY')} ${event.startTime.substring(0, 5)}`
+      : `${moment(event.startDate, 'YYYY-MM-DD').format(
+          'ddd D.M.YYYY'
+        )} ${event.startTime.substring(0, 5)}`
 
     const taskGroupTree = getRootGroup(this.props.pofTree)
     let selectedTaskGroupPofData = []
@@ -305,7 +311,7 @@ class EventCard extends React.Component {
     )
 
     const touchDeviceNotExpanded = (
-      <CardContent style={this.state.expanded ? {} : { padding: '3px' }}>
+      <CardContent style={this.state.expanded ? {} : { padding: '0 12px' }}>
         <Activities
           activities={event.activities.map(key => this.props.activities[key])}
           bufferzone={false}
@@ -336,12 +342,14 @@ class EventCard extends React.Component {
             />
           </div>
         ) : (
-          <div style={{ clear: 'both' }}>&nbsp;</div>
+          <div style={{ clear: 'both' }} />
         )}
       </CardContent>
     )
     const notExpanded = (
-      <CardContent style={this.state.expanded ? {} : { padding: '3px 10px' }}>
+      <CardContent
+        style={this.state.expanded ? {} : { padding: '0 12px 12px' }}
+      >
         <div className={classes.activityHeader}>
           <Activities
             activities={event.activities.map(key => this.props.activities[key])}
@@ -397,22 +405,17 @@ class EventCard extends React.Component {
           <span className={classes.boldedAttribute}>
             {capitalize(event.type)} alkaa:
           </span>{' '}
-          {moment(event.startDate)
-            .locale('fi')
-            .format('ddd D.M.YYYY')}{' '}
-          kello {event.startTime.substring(0, 5)}
+          {moment(event.startDate).format('ddd D.M.YYYY')} kello{' '}
+          {event.startTime.substring(0, 5)}
         </div>
         <div>
           <span className={classes.boldedAttribute}>
             {capitalize(event.type)} päättyy:
           </span>{' '}
-          {moment(event.endDate)
-            .locale('fi')
-            .format('ddd D.M.YYYY')}{' '}
-          kello {event.endTime.substring(0, 5)}
+          {moment(event.endDate).format('ddd D.M.YYYY')} kello{' '}
+          {event.endTime.substring(0, 5)}
         </div>
         {informationContainer}
-        <br style={{ clear: 'both' }} />
         <Activities
           activities={event.activities.map(key => this.props.activities[key])}
           bufferzone={false}
@@ -445,7 +448,6 @@ class EventCard extends React.Component {
             title={
               <React.Fragment>
                 {title}
-                &nbsp;
                 {event.activities.length === 0 ? warning : null}
               </React.Fragment>
             }
@@ -473,16 +475,16 @@ class EventCard extends React.Component {
           {!isTouchDevice() && !this.state.expanded ? notExpanded : null}
           {this.state.expanded ? expanded : null}
 
-          <CardActions>
+          <CardActions className={classes.actions}>
             <EditEvent
               data={event}
               setNotification={this.props.setNotification}
-              minimal={!this.state.expanded}
+              minimal={true}
             />
             <DeleteEvent
               data={event}
               setNotification={this.props.setNotification}
-              minimal={!this.state.expanded}
+              minimal={true}
             />
           </CardActions>
         </ActivityDragAndDropTarget>
@@ -499,7 +501,7 @@ EventCard.propTypes = {
   status: PropTypes.string.isRequired,
   plans: PropTypes.arrayOf(PropTypes.object).isRequired,
   activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   editEvent: PropTypes.func.isRequired,
   deletePlan: PropTypes.func.isRequired,
   deleteActivityFromEvent: PropTypes.func.isRequired,
@@ -510,8 +512,6 @@ EventCard.propTypes = {
   deleteActivityFromBufferOnlyLocally: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
 }
-
-EventCard.defaultProps = {}
 
 const mapStateToProps = state => ({
   events: state.events,
@@ -524,7 +524,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  notify,
   editEvent,
   deletePlan,
   deleteActivityFromEvent,
@@ -540,4 +539,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(EventCard))
+)(withStyles(styles)(withSnackbar(EventCard)))

@@ -4,12 +4,15 @@ import { Provider } from 'react-redux'
 import axios from 'axios'
 import App from './App'
 import store from './store'
+import { SnackbarProvider } from 'notistack'
 
 axios.defaults.withCredentials = true
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <SnackbarProvider preventDuplicate>
+      <App />
+    </SnackbarProvider>
   </Provider>,
   document.getElementById('root')
 )

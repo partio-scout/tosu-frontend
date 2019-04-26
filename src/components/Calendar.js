@@ -14,17 +14,11 @@ import PropTypes from 'prop-types'
 
 const styles = {
   mobileCalendar: {
-    height: 100,
-    minHeight: 'calc(100vh - 350px)',
-    width: '80vmin',
-    marginBottom: 'calc(100vh - 500px)',
+    height: '98%',
   },
   calendar: {
-    height: '70vmin',
-    minHeight: 500,
-    width: '80vmin',
+    height: '80%',
     paddingTop: 20,
-    marginBottom: 'calc(100vh - 500px)',
   },
 }
 
