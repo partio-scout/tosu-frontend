@@ -52,5 +52,6 @@ describe('Tosu-menu', function() {
     cy.get('button[id="tosu_selection"]').click({ force: true })
     cy.wait(4000)
     cy.get('input[placeholder="Uusi toimintasuunnitelma"]').should('exist')
+    cy.get('button[id="close_button"]').click({ force: true })
   })
 })
