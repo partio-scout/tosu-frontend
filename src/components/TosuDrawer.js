@@ -352,6 +352,7 @@ class TosuDrawer extends React.Component {
           </Typography>
           <IconButton
             color="inherit"
+            id="close_button"
             className={classes.closeButton}
             onClick={() => this.props.setSideBar(false)}
           >
