@@ -278,7 +278,7 @@ class TosuDrawer extends React.Component {
           <TextField
             id="name"
             margin="none"
-            label="Toimintasuunnitema"
+            label="Toimintasuunnitelma"
             value={nameChange ? nameChange.name : ''}
             onChange={event =>
               this.setState({
