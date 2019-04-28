@@ -46,7 +46,6 @@ describe('Creating and deleting events', function() {
     cy.get('[id="info-edit-area"]').should('have.value', 'testtesteditinfo')
   })
 
-  /* should work later
   it('user can modify event information on edit event form', function() {
     cy.wait(6000)
     //create event
@@ -68,5 +67,5 @@ describe('Creating and deleting events', function() {
     cy.get('button[id="tallenna-event"]').click()
     cy.get('button[id="expansion-arrow"]').click()
     cy.get('[id="info-edit-area"]').should('have.value', 'importantinfo')
-  })*/
+  })
 })
