@@ -443,6 +443,7 @@ class EventCard extends React.Component {
             }}
             action={
               <IconButton
+                id="expansion-arrow"
                 onClick={this.handleExpandChange}
                 className={this.state.expanded ? classes.arrowUp : ''}
               >

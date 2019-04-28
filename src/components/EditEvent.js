@@ -116,7 +116,7 @@ class EditEvent extends React.Component {
     checked,
     repeatCount,
     repeatFrequency,
-    lastDate,
+    //lastDate,
     type,
     information
   ) => {
