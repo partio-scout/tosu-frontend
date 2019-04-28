@@ -15,11 +15,11 @@ import { withStyles } from '@material-ui/core'
 const styles = {
   connectDragSource: {
     float: 'left',
-    margin: 4,
+    margin: 3,
   },
   connectDragSourceMinimal: {
     float: 'left',
-    margin: 1,
+    margin: 2,
   },
   dialogCloseButton: {
     backgroundColor: '#ccc',
@@ -125,7 +125,11 @@ class Activity extends Component {
             }
             key={activity.id}
             onClick={this.handleClick}
-            deleteIcon={<Icon id="delete-activity" color="primary">clear</Icon>}
+            deleteIcon={
+              <Icon id="delete-activity" color="primary">
+                clear
+              </Icon>
+            }
             style={this.props.minimal ? { height: 26 } : {}}
             avatar={
               pofActivity.mandatory ? (

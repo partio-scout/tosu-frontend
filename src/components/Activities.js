@@ -24,7 +24,7 @@ export class Activities extends React.Component {
     try {
       if (this.props.bufferzone) {
         this.props.deleteActivityFromBuffer(activity.id)
-        this.props.updateActivity({...activity, activityBufferId:null})
+        this.props.updateActivity({ ...activity, activityBufferId: null })
         await this.props.deleteActivity(activity.id)
         this.props.enableActivity(activity.guid)
       } else {
@@ -51,9 +51,7 @@ export class Activities extends React.Component {
         const pofActivity = convertToSimpleActivity(
           getTask(activity.guid, this.props.pofTree)
         )
-        return pofActivity === null ? (
-          undefined
-        ) : (
+        return pofActivity === null ? null : (
           <Activity
             deleteActivity={this.deleteActivity}
             bufferzone={this.props.bufferzone}
@@ -66,7 +64,7 @@ export class Activities extends React.Component {
         )
       })
     }
-    return <div>{rows}</div>
+    return <div style={{ margin: -2 }}>{rows}</div>
   }
 }
 
