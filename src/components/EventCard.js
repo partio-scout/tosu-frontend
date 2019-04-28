@@ -381,7 +381,7 @@ class EventCard extends React.Component {
     const expanded = (
       <CardContent>
         <div>
-          <span className={classes.boldedAttribute}>
+          <span id="type-and-start" className={classes.boldedAttribute}>
             {capitalize(event.type)} alkaa:
           </span>{' '}
           {moment(event.startDate).format('ddd D.M.YYYY')} kello{' '}
