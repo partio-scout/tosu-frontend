@@ -8,13 +8,20 @@ import {
   DialogContent,
   withStyles,
 } from '@material-ui/core'
-
+/** @module */
 const styles = theme => ({
   header: {
     marginTop: theme.spacing.unit * 3,
   },
 })
-
+/**
+ * Component for adding plans to activities
+ * @param {Object} props
+ * @param {Object} props.activity - pof api activity
+ * @param {Object} props.savedActivity - Our backend activity
+ * @param {(Number|String)} props.parentId - id for parent event
+ * @param {Object} classes
+ */
 class PlanForm extends React.Component {
   state = { value: 0 }
 
@@ -27,6 +34,7 @@ class PlanForm extends React.Component {
    * set the HTML content with the providen and
    * retrieves the text property of the element.
    * Provides cross-browser support.
+   * @method
    * @param html html code that is stripped
    */
   stripHtml = html => {

@@ -1,5 +1,11 @@
 import tosuService from '../services/tosu'
 
+/** @module */
+
+/**
+ * Reducer for tosus
+ *
+ */
 const reducer = (state = {}, action) => {
   var newState = { ...state }
   switch (action.type) {
@@ -81,7 +87,8 @@ const reducer = (state = {}, action) => {
 
 /**
  * Fetch list of Tosus belonging to the scout and save it in the store
- * @returns id of the currently selected Tosu
+ * @method
+ * @return - id of the currently selected Tosu
  */
 export const tosuInitialization = () => async dispatch => {
   const tosuList = await tosuService.getAll()
@@ -101,7 +108,8 @@ export const tosuInitialization = () => async dispatch => {
 
 /**
  * Select new Tosu and update selection in backend
- * @param tosuId - ID of the Tosu to be selected
+ * @method
+ * @param {Number} tosuId - ID of the Tosu to be selected
  */
 export const selectTosu = tosuId => dispatch =>
   tosuService
@@ -116,7 +124,8 @@ export const selectTosu = tosuId => dispatch =>
 
 /**
  * Create new tosu and push to backend
- * @param tosuName - Name for the new tosu
+ * @method
+ * @param {String} tosuName - Name for the new tosu
  */
 export const createTosu = tosuName => async dispatch => {
   try {
@@ -133,7 +142,8 @@ export const createTosu = tosuName => async dispatch => {
 
 /**
  * Update a Tosu
- * @param tosu - Tosu object with new values
+ * @method
+ * @param {Number} tosu - Tosu object with new values
  */
 export const updateTosu = tosu => dispatch =>
   tosuService
@@ -148,7 +158,8 @@ export const updateTosu = tosu => dispatch =>
 
 /**
  * Deletes specified Tosu.
- * @param tosuId - ID of the Tosu to be deleted
+ * @method
+ * @param {Number} tosuId - ID of the Tosu to be deleted
  */
 export const deleteTosu = tosuId => dispatch =>
   tosuService

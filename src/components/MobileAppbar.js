@@ -12,7 +12,13 @@ import StatusMessage from './StatusMessage'
 import { createStatusMessage } from '../utils/createStatusMessage'
 import PropTypesSchema from '../utils/PropTypesSchema'
 import { getTaskGroup, getRootGroup } from '../functions/denormalizations'
+/** @module */
 
+/**
+ * Navigation bar for touch devices
+ * @param {Object} props - see proptypes for more detail
+ *
+ */
 class MobileAppbar extends React.Component {
   state = { showStatusBox: true }
 
@@ -139,7 +145,7 @@ const mapStateToProps = state => ({
 
 MobileAppbar.propTypes = {
   buffer: PropTypesSchema.bufferShape.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.object.isRequired,
   pofTree: PropTypesSchema.pofTreeShape.isRequired,
   taskgroup: PropTypesSchema.taskgroupShape.isRequired,
   status: PropTypes.string.isRequired,

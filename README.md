@@ -115,7 +115,9 @@ rm -rf tosu-frontend
 ```
 
 ## Resources
-
+### JSDOC
+Generate JSDOC with following command:
+```$ npx jsdoc src/ -r```
 ### Backlogs
 
 [Product backlog (Trello)](https://trello.com/b/87G4Y96t/tosu-app)

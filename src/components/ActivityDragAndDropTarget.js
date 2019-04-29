@@ -19,6 +19,8 @@ import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 import { withStyles } from '@material-ui/core'
 
+/** @module */
+
 const styles = {
   pattern: {
     background:
@@ -43,6 +45,11 @@ function collect(connector, monitor) {
   }
 }
 
+/**
+ * Component that accepts DnD actions
+ * @method
+ *
+ */
 function ActivityDragAndDropTarget(props) {
   const { isOver, canDrop, connectDropTarget, odd, event, classes } = props
   const baseColor = event ? (odd ? '#EFEEEE' : '#D6E8F7') : '#FFF'
@@ -91,16 +98,16 @@ ActivityDragAndDropTarget.propTypes = {
   deleteActivityFromEvent: PropTypes.func.isRequired,
   updateActivity: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
-  odd: PropTypes.bool.isRequired,
+  odd: PropTypes.bool,
   isOver: PropTypes.bool.isRequired,
   canDrop: PropTypes.bool.isRequired,
-  event: PropTypesSchema.eventShape.isRequired,
-  className: PropTypes.string.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
-  children: PropTypes.arrayOf(PropTypes.object).isRequired,
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]).isRequired,
 }
 
-ActivityDragAndDropTarget.defaultProps = {}
+ActivityDragAndDropTarget.defaultProps = {
+    odd: false,
+}
 
 export default connect(
   mapStateToProps,

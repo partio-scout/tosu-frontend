@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { scoutLogout } from '../reducers/scoutReducer'
 import { Avatar, Button, Grid, Paper, Typography } from '@material-ui/core'
 import lightBlue from '@material-ui/core/colors/lightBlue'
-
+/** @module */
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -34,7 +34,17 @@ const styles = theme => ({
     backgroundColor: lightBlue[200],
   },
 })
-
+/** 
+ * AccountCard displays account information in popper
+ * @method
+ * @param {Object} props
+ * @param {Object} props.scout - user
+ * @param {Object} props.classes
+ * @param {Function} props.scoutLogout
+ *
+ * @return React component
+ *
+ */
 function AccountCard(props) {
   const { scout, classes } = props
 

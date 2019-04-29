@@ -12,6 +12,8 @@ import { closePopper } from '../reducers/calendarReducer'
 import { withStyles } from '@material-ui/core'
 import PropTypes from 'prop-types'
 
+/** @module */
+
 const styles = {
   mobileCalendar: {
     height: '98%',
@@ -61,6 +63,14 @@ function prepareEventsToCalendarEvents(events, shouldShowKuksaEventsAlso) {
   })
 }
 
+/**
+ * Component for displaying events in calendar
+ *
+ * @param {Object} props
+ * @param {Object} props.events - map of events 
+ * @param props.classes
+ * @param {Function} props.closePopper - closes dialog
+ */
 export class Calendar extends Component {
   constructor(props) {
     super(props)
@@ -104,7 +114,7 @@ const mapStateToProps = state => ({
 
 Calendar.propTypes = {
   closePopper: PropTypes.func.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.object.isRequired,
   mobile: PropTypes.bool.isRequired,
   shouldShowKuksaEventsAlso: PropTypes.bool.isRequired,
 }
