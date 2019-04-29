@@ -1,4 +1,4 @@
-/** @module taskGroupReducer */
+/** @module */
 
 const reducer = (state = null, action) => {
   if (action.type === 'SELECT') {

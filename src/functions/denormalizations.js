@@ -1,5 +1,4 @@
-/** @module Denormalizations
- */
+/** @module*/
 
 /**
  * Get task from pofData

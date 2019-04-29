@@ -1,4 +1,4 @@
-/** @module filterReducer 
+/** @module
  * @deprecated
  * */
 const filterReducer = (state = 'ONLY_START', action) => {

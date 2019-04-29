@@ -1,4 +1,4 @@
-/** @module loadingReducer */
+/** @module */
 
 /**
  * Reducer for appliaction loading state

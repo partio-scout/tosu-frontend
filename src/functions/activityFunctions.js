@@ -1,6 +1,6 @@
 import activityService from '../services/activities'
 
-/** @module activityFunctions */
+/** @module */
 
 /**
  * Add activity to backend buffer, activityReducer and bufferReducer

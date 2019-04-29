@@ -1,4 +1,4 @@
-/** @module calendarReducer*/
+/** @module */
 
 /**
  * Reducer for calendar state

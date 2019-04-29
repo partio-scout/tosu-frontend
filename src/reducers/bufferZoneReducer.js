@@ -1,4 +1,4 @@
-/** @module bufferZoneReducer */
+/** @module */
 
 /**
  * Adds an activity to the buffer

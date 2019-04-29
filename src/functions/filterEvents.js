@@ -1,6 +1,6 @@
 import eventComparer from '../utils/EventCompare'
 
-/** @module filterEvents */
+/** @module */
 
 /**
  * Method that determines the date range of the filter

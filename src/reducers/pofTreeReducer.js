@@ -1,7 +1,7 @@
 import React from 'react'
 import { getActivityList } from './activityReducer'
 
-/** @module pofTreeReducer */
+/** @module */
 // helpers
 /*
  * put all picked activities from events and buffer into a string array made of their guid

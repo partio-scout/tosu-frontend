@@ -2,7 +2,7 @@ import { normalize } from 'normalizr'
 import eventService from '../services/events'
 import { eventSchema } from '../pofTreeSchema'
 
-/** @module tosuChange */
+/** @module */
 
 
 /**

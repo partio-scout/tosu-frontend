@@ -1,6 +1,6 @@
 import tosuService from '../services/tosu'
 
-/** @module tosuReducer */
+/** @module */
 
 /**
  * Reducer for tosus

@@ -1,4 +1,4 @@
-/* @module planReducer */
+/* @module */
 
 /**
  * Reducer for plan state

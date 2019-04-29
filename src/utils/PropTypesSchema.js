@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-//
 
 export const eventShape = PropTypes.shape({
   id: PropTypes.oneOfType([PropTypes.number,PropTypes.string]).isRequired,

@@ -5,7 +5,7 @@ import {
   removeScout,
 } from '../services/googleToken'
 
-/** @module scoutReducer */
+/** @module */
 
 const reducer = (state = null, action) => {
   switch (action.type) {

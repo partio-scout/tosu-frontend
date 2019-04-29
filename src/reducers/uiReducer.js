@@ -1,4 +1,4 @@
-/** @module uiReducer */
+/** @module */
 
 /**
  * Reducer for view changes

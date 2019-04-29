@@ -1,7 +1,7 @@
 import activityService from '../services/activities'
 
 // These functions looked so ugly that I moved them to their own file :3
-/** @module DropActivity */
+/** @module*/
 
 /**
  * Move activity from event to buffer

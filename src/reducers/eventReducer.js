@@ -1,7 +1,7 @@
 import eventService from '../services/events'
 import eventGroupService from '../services/eventgroups'
 
-/** @module eventReducer */
+/** @module*/
 
 /**
  * Add activity to a state event

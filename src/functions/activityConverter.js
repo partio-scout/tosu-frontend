@@ -1,4 +1,4 @@
-/** @module activityConverter */
+/** @module */
 
 /**
  * Methods that convert activities to backend elements

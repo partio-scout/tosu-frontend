@@ -1,6 +1,6 @@
 import activityService from '../services/activities'
 
-/** @module activityReducer */
+/** @module*/
 /*
  * Reducer for backend activities
  * @method
