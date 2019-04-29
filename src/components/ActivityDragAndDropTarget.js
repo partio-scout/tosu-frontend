@@ -95,7 +95,7 @@ ActivityDragAndDropTarget.propTypes = {
   isOver: PropTypes.bool.isRequired,
   canDrop: PropTypes.bool.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
-  children: PropTypes.arrayOf(PropTypes.object).isRequired,
+  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.object]).isRequired,
 }
 
 ActivityDragAndDropTarget.defaultProps = {

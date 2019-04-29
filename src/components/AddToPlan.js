@@ -100,7 +100,11 @@ AddToPlan.propTypes = {
   addEventFromKuksa: PropTypes.func.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
   tosu: PropTypes.object.isRequired,
-  buttonClass: PropTypes.string.isRequired,
+  buttonClass: PropTypes.string,
+}
+
+AddToPlan.defaultProps = {
+    buttonClass: '',
 }
 
 export default connect(

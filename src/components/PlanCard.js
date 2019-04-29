@@ -189,7 +189,6 @@ PlanCard.propTypes = {
   deletePlan: PropTypes.func.isRequired,
   editEvent: PropTypes.func.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
-  deleteActivityFromEventOnlyLocall: PropTypes.func.isRequired,
   updateActivity: PropTypes.func.isRequired,
 }
 

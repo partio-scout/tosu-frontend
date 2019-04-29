@@ -106,8 +106,8 @@ const styles = theme => ({
 class TosuDrawer extends React.Component {
   state = {
     newTosuName: '',
-    nameChange: null,
-    tosuDelete: null,
+    nameChange: false,
+    tosuDelete: false,
   }
 
   /**
@@ -269,7 +269,7 @@ class TosuDrawer extends React.Component {
     const nameChangeDialog = (
       <Dialog
         open={nameChange}
-        onClose={() => this.setState({ nameChange: null })}
+        onClose={() => this.setState({ nameChange: false })}
       >
         <DialogTitle>Muokkaa nimeä</DialogTitle>
         <DialogContent>
@@ -287,7 +287,7 @@ class TosuDrawer extends React.Component {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => this.setState({ nameChange: null })}>
+          <Button onClick={() => this.setState({ nameChange: false })}>
             peruuta
           </Button>
           <Button color="primary" onClick={() => this.handleTosuUpdate()}>
@@ -300,7 +300,7 @@ class TosuDrawer extends React.Component {
     const tosuDeleteDialog = (
       <Dialog
         open={tosuDelete}
-        onClose={() => this.setState({ tosuDelete: null })}
+        onClose={() => this.setState({ tosuDelete: false })}
       >
         <DialogTitle>Vahvistus</DialogTitle>
         <DialogContent>
@@ -309,14 +309,14 @@ class TosuDrawer extends React.Component {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => this.setState({ tosuDelete: null })}>
+          <Button onClick={() => this.setState({ tosuDelete: false })}>
             peruuta
           </Button>
           <Button
             className={classes.confirmDelete}
             onClick={() => {
               this.handledTosuDelete(tosuDelete.id)
-              this.setState({ tosuDelete: null })
+              this.setState({ tosuDelete: false })
             }}
           >
             poista

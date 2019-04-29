@@ -103,7 +103,7 @@ class CalendarEvent extends Component {
       markers.push(
         <span
           className={this.props.classes.calendarActivityMarker}
-          key={activities[i].id}
+          key={activities[i]}
         />
       )
     }
@@ -271,7 +271,7 @@ CalendarEvent.propTypes = {
   openPopper: PropTypes.func.isRequired,
   activities: PropTypes.object.isRequired,
   popperOpen: PropTypes.bool.isRequired,
-  popperEventId: PropTypes.number.isRequired,
+  popperEventId: PropTypes.oneOfType([PropTypes.number,PropTypes.string]).isRequired,
 }
 
 CalendarEvent.defaultProps = {}
