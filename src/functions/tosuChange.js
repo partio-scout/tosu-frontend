@@ -1,9 +1,20 @@
 import { normalize } from 'normalizr'
-
 import eventService from '../services/events'
 import { eventSchema } from '../pofTreeSchema'
 
+/** @module tosuChange */
 
+
+/**
+ * empty buffer
+ * @method
+ * @param {Object} buffer
+ * @param {Number} buffer.id - id of the buffer
+ * @param {Object[]} buffer.activities - activities in buffer
+ * @param {Func} deleteActivity 
+ * @param {Func} deleteActivityFromBuffer
+ *
+ */
 const emptyBuffer = async(buffer, deleteActivityFromBuffer, deleteActivity) => {
     let promises = buffer.activities.map((a) =>(deleteActivityFromBuffer(a)))
     promises = promises.concat(buffer.activities.map(a => deleteActivity(a)))
@@ -16,11 +27,13 @@ const emptyBuffer = async(buffer, deleteActivityFromBuffer, deleteActivity) => {
  * Change tosu in redux state
  *
  * params are the dispatches as named and
+ *
+ * @method
  * @param tosuId - id of the new tosu
  * @param activities - the current activities state
  * @param buffer - the current buffer state
  *
- * This function has some side effects.
+ * @description Change tosu in redux state. This function has some side effects.
  * Do not call again before the 
  * first run has finished.
  * SOLUTION to unstablilty

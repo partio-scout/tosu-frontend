@@ -1,5 +1,9 @@
+/** @module findActivity */
+
+
 /**
  * Find activity from the poftree map
+ * @method
  * @param activity activity that is searched
  * @param pofTree tree where the search is conducted
  */
