@@ -3,6 +3,15 @@ import { normalize } from 'normalizr'
 import eventService from '../services/events'
 import { eventSchema } from '../pofTreeSchema'
 
+
+const emptyBuffer = async(buffer, deleteActivityFromBuffer, deleteActivity) => {
+    let promises = buffer.activities.map((a) =>(deleteActivityFromBuffer(a)))
+    promises = promises.concat(buffer.activities.map(a => deleteActivity(a)))
+    await Promise.all(promises)
+}
+
+
+
 /**
  * Change tosu in redux state
  *
@@ -19,9 +28,12 @@ const tosuChange = async (
   activityInitialization,
   pofTreeUpdate,
   activities,
-  buffer
+  buffer,
+  deleteActivity,
+  deleteActivityFromBuffer,
 ) => {
   setLoading(true)
+  await emptyBuffer(buffer, deleteActivityFromBuffer, deleteActivity)
   await selectTosu(tosuId)
   eventsInitalization({})
   const eventDataRaw = await eventService.getAll(tosuId)
