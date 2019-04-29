@@ -21,7 +21,7 @@ script:
     - npm run test
     - npx cypress run 
 after_script:
-    if: NOT type IN (pull_request)
+    if: branch = master AND NOT type IN (pull_request)
   - bash .scripts/deploy.sh
   - bash ./docker_push
 notifications:
