@@ -30,6 +30,7 @@ import ButtonRow from './components/ButtonRow'
 import Login from './components/Login'
 import EventList from './components/EventList'
 import TosuDrawer from './components/TosuDrawer'
+import ToolbarSpacer from './components/ToolbarSpacer'
 
 // Utils
 import PropTypesSchema from './utils/PropTypesSchema'
@@ -206,7 +207,7 @@ class App extends Component {
               height: '100vh',
             }}
           >
-            <div style={theme.mixins.toolbar} />
+            <ToolbarSpacer />
             <div style={{ padding: theme.spacing.unit * 2 }}>
               <ButtonRow
                 view={view}
