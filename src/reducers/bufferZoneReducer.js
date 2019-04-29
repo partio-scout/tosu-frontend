@@ -1,3 +1,5 @@
+/** @module bufferZoneReducer */
+
 /**
  * Adds an activity to the buffer
  */
@@ -25,7 +27,14 @@ const initBuffer = action => {
   newState.activities = action.buffer.activities.map(activity => activity.id)
   return newState
 }
-
+/**
+ * Reducer for activity buffer
+ * contains ID and list of activity IDs.
+ * @method
+ * @param state - state
+ * @param action - reducer action
+ *
+ */
 const reducer = (state = { id: 0, activities: [] }, action) => {
   switch (action.type) {
     case 'INIT_BUFFER':
@@ -38,14 +47,29 @@ const reducer = (state = { id: 0, activities: [] }, action) => {
       return state
   }
 }
-
+/**
+ * Initialize bufferzone
+ * @method
+ *
+ * @param {Object} buffer - initial buffer
+ * @param {Number} buffer.id - id for the buffer
+ * @param {Number[]} buffer.activities - list of activity id`s 
+ *
+ */
 export const bufferZoneInitialization = buffer => dispatch => {
   dispatch({
     type: 'INIT_BUFFER',
     buffer,
   })
 }
-
+/**
+ * Add activity to buffer
+ * @method
+ *
+ * @param {Object} activity
+ * @param {Number} activity.id - backend id for activity
+ *
+ */
 export const postActivityToBuffer = activity => dispatch => {
   dispatch({
     type: 'ADD_TO_BUFFER',
@@ -53,6 +77,12 @@ export const postActivityToBuffer = activity => dispatch => {
   })
 }
 
+/**
+ * Delete activity from buffer
+ * @method
+ *
+ * @param {Number} activityId
+ */
 export const deleteActivityFromBuffer = activityId => dispatch => {
   dispatch({
     type: 'DELETE_FROM_BUFFER',
@@ -60,12 +90,26 @@ export const deleteActivityFromBuffer = activityId => dispatch => {
   })
 }
 
+/**
+ * Delete activity from buffer
+ * @method
+ * @deprecated
+ * @param {Number} activityId
+ */
 export const deleteActivityFromBufferOnlyLocally = activityId => dispatch =>
   dispatch({
     type: 'DELETE_FROM_BUFFER',
     activityId,
   })
 
+/**
+ * Add activity to buffer
+ * @method
+ * @deprecated
+ * @param {Object} activity
+ * @param {Number} activity.id - backend id for activity
+ *
+ */
 export const postActivityToBufferOnlyLocally = activity => dispatch =>
   dispatch({
     type: 'ADD_TO_BUFFER',

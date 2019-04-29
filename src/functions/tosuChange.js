@@ -19,6 +19,13 @@ const emptyBuffer = async(buffer, deleteActivityFromBuffer, deleteActivity) => {
  * @param tosuId - id of the new tosu
  * @param activities - the current activities state
  * @param buffer - the current buffer state
+ *
+ * This function has some side effects.
+ * Do not call again before the 
+ * first run has finished.
+ * SOLUTION to unstablilty
+ * is to combine eventReducer, bufferReducer and activityReducer
+ * to a single reducer.
  */
 const tosuChange = async (
   tosuId,

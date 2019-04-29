@@ -1,6 +1,8 @@
 import eventService from '../services/events'
 import eventGroupService from '../services/eventgroups'
 
+/** @module eventReducer */
+
 /**
  * Add activity to a state event
  * @param {Object} state - event state object
@@ -130,6 +132,7 @@ const reducer = (state = {}, action) => {
 
 /**
  * Initialize event hashmap
+ * @method
  * @param {Object} events - events in normalized hashmap form
  */
 export const eventsInitialization = events => async dispatch => {
@@ -141,8 +144,8 @@ export const eventsInitialization = events => async dispatch => {
 
 /**
  * Delete event from state and backend
+ * @method
  * @param{Number} eventId - id of the event to be removed
- *
  */
 export const deleteEvent = eventId => dispatch => {
   eventService.deleteEvent(eventId).then(() =>
@@ -154,6 +157,7 @@ export const deleteEvent = eventId => dispatch => {
 }
 /**
  * Delete kuksa event from plan
+ * @method
  * @param {Object} event - kuksa event in plan
  */
 export const deleteSyncedEvent = event => dispatch => {
@@ -175,6 +179,7 @@ export const deleteSyncedEvent = event => dispatch => {
 
 /**
  * Delete all events in an eventgroup
+ * @method
  * @param {Number} eventgroupId
  *
  */
@@ -188,7 +193,9 @@ export const deleteEventGroup = eventGroupId => dispatch => {
 }
 /**
  * Add event to state
+ * @method
  * @param {Object} event - event to add
+ * @param {(Number | String)} - id for the event
  */
 export const addEvent = event => dispatch => {
   eventService.create(event).then(created => {
@@ -202,7 +209,9 @@ export const addEvent = event => dispatch => {
 
 /**
  * Add kuksa event to application events
+ * @method
  * @param {Object} event - event to add
+ * @param {Number} event.id - id for the event
  */
 export const addEventFromKuksa = event => dispatch => {
   eventService.create(event).then(created => {
@@ -221,7 +230,9 @@ export const addEventFromKuksa = event => dispatch => {
 
 /**
  * Edit event in state hashmap
+ * @method
  * @param {Object} event
+ * @param {(Number|String)} event.id - number for user created events string for kuksa
  */
 export const editEvent = event => dispatch =>
   eventService.edit(event).then(modded =>
@@ -233,8 +244,10 @@ export const editEvent = event => dispatch =>
 
 /**
  * Add activity to an event in the state hashmap and backend.
+ * @method
  * @param eventId - id of the target event
  * @param {Object} activity - activity to add
+ * @param {Number} activity.id - id for the activity
  *
  */
 export const addActivityToEvent = (eventId, activity) => dispatch => {
@@ -249,10 +262,9 @@ export const addActivityToEvent = (eventId, activity) => dispatch => {
 
 /**
  * Delete an activity to from event in state and Backend
- * @param eventId
+ * @method
+ * @param {(Number | String)} eventId
  * @param activityId
- *
- *
  */
 export const deleteActivityFromEvent = (activityId, eventId) => dispatch => {
   dispatch({
@@ -261,19 +273,39 @@ export const deleteActivityFromEvent = (activityId, eventId) => dispatch => {
     eventId,
   })
 }
-
+/**
+ * Add activity to an event in state only in frontend.
+ * @method
+ * @param {(Number| String)} eventId - id of the target event
+ * @param {Object} activity - activity to add
+ * @param {Number} activity.id - id for the activity
+ *
+ */
 export const addActivityToEventOnlyLocally = (eventId, activity) => ({
   type: 'ADD_ACTIVITY_TO_EVENT',
   eventId,
   activity,
 })
 
+/**
+ * Delete activity from an event in state only in frontend.
+ * @method
+ * @param {(Number| String)} eventId - id of the target event
+ * @param {Object} activity - activity to add
+ * @param {Number} activity.id - id for the activity
+ *
+ */
 export const deleteActivityFromEventOnlyLocally = (activityId, eventId) => ({
   type: 'DELETE_ACTIVITY_FROM_EVENT',
   activityId,
   eventId,
 })
-
+/**
+ *@method
+ *@deprecated
+ * activities are only id numbers in events now
+ *
+ */
 export const updateActivityInEvents = activity => dispatch => {
   dispatch({ type: 'UPDATE_ACTIVITY', activity })
 }

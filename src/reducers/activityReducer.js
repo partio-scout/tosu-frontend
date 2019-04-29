@@ -1,5 +1,12 @@
 import activityService from '../services/activities'
 
+/** @module activityReducer */
+/*
+ * Reducer for backend activities
+ * @method
+ * @param action - INIT_ACTIVITES, ALTER_ACTIVITY, DELETE_ACTIVITY
+ * Alter activity is used to add or update activity
+ */
 const reducer = (state = {}, action) => {
   const newState = Object.assign({}, state)
   switch (action.type) {
@@ -7,7 +14,6 @@ const reducer = (state = {}, action) => {
       return action.activities
     }
     case 'ALTER_ACTIVITY': {
-      // This can be used to add or update if ID is already known
       newState[action.activity.id] = action.activity
       return newState
     }
@@ -21,9 +27,9 @@ const reducer = (state = {}, action) => {
 }
 /**
  * Init activity state
+ * @method
  * @param eventActivities{Object[]} - list of activities in events
  * @param bufferActivities{Object[]} - list of activities in buffer
- *
  */
 export const activityInitialization = (
   eventActivities,
@@ -41,7 +47,13 @@ export const activityInitialization = (
     activities: initialState,
   })
 }
-
+/**
+ * Add activity to state
+ * @method
+ * @param {Object} activity - activity
+ * @param {Number} activity.id - activity nodebackend id
+ * @param {String} activity.guid - activity pofbackend guid
+ */
 export const addActivity = activity => dispatch => {
   dispatch({
     type: 'ALTER_ACTIVITY',
@@ -49,12 +61,24 @@ export const addActivity = activity => dispatch => {
   })
 }
 
+/**
+ * Update activity in state
+ * @method
+ * @param {Object} activity - activity
+ * @param {Number} activity.id - activity nodebackend id
+ * @param {String} activity.guid - activity pofbackend guid
+ */
 export const updateActivity = activity => dispatch => {
   dispatch({
     type: 'ALTER_ACTIVITY',
     activity,
   })
 }
+/**
+ * Delete activity from state
+ * @method
+ * @param {Number} activityId - id of the activity
+ */
 export const deleteActivity = activityId => async dispatch => {
   await activityService.deleteActivity(activityId)
   dispatch({
