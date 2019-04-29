@@ -169,8 +169,6 @@ const mapStateToProps = state => ({
 })
 
 Activity.propTypes = {
-  notify: PropTypes.func.isRequired,
-  notification: PropTypes.string,
   buffer: PropTypesSchema.bufferShape.isRequired,
   events: PropTypes.shape({}).isRequired,
   connectDragSource: PropTypes.func.isRequired,

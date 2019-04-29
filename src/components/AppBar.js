@@ -5,6 +5,7 @@ import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import { setSideBar } from '../reducers/uiReducer'
 import AccountIcon from './AccountIcon'
+import PropTypes from 'prop-types'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
 const styles = theme => ({

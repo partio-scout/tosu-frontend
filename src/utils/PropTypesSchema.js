@@ -2,16 +2,16 @@ import PropTypes from 'prop-types'
 //
 
 export const eventShape = PropTypes.shape({
-  id: PropTypes.number.isRequired,
+  id: PropTypes.oneOfType([PropTypes.number,PropTypes.string]).isRequired,
   type: PropTypes.string.isRequired,
   startDate: PropTypes.string.isRequired,
   startTime: PropTypes.string.isRequired,
   endDate: PropTypes.string.isRequired,
   endTime: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  kuksaEventId: PropTypes.number,
+  kuksaEventId: PropTypes.string,
   synced: PropTypes.bool,
-  activities: PropTypes.arrayOf(PropTypes.string).isRequired,
+  activities: PropTypes.arrayOf(PropTypes.number).isRequired,
 })
 
 export const pofTreeShape = PropTypes.shape({})
@@ -29,7 +29,7 @@ export const bufferShape = PropTypes.shape({
 })
 
 export const taskgroupShape = PropTypes.shape({
-  value: PropTypes.number.isRequired,
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 })
 
 export const classesShape = PropTypes.shape({

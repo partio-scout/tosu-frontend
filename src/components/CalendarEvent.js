@@ -207,7 +207,7 @@ class CalendarEvent extends Component {
             buttonClass="calendar-button"
             data={event.originalData}
             setNotification={this.props.setNotification}
-            minimal="true"
+            minimal={true}
           />
         </div>
       </div>
@@ -269,8 +269,8 @@ CalendarEvent.propTypes = {
   pofTree: PropTypesSchema.pofTreeShape.isRequired,
   closePopper: PropTypes.func.isRequired,
   openPopper: PropTypes.func.isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  popperOpen: PropTypes.string.isRequired,
+  activities: PropTypes.object.isRequired,
+  popperOpen: PropTypes.bool.isRequired,
   popperEventId: PropTypes.number.isRequired,
 }
 

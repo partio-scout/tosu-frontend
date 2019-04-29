@@ -104,7 +104,7 @@ const mapStateToProps = state => ({
 
 Calendar.propTypes = {
   closePopper: PropTypes.func.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.object.isRequired,
   mobile: PropTypes.bool.isRequired,
   shouldShowKuksaEventsAlso: PropTypes.bool.isRequired,
 }

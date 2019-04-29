@@ -222,7 +222,7 @@ class NewEvent extends React.Component {
 NewEvent.propTypes = {
   addEvent: PropTypes.func.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
-  tosu: PropTypes.string.isRequired,
+  tosu: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({

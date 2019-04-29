@@ -99,7 +99,7 @@ AddToPlan.propTypes = {
   event: PropTypesSchema.eventShape.isRequired,
   addEventFromKuksa: PropTypes.func.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
-  tosu: PropTypes.func.isRequired,
+  tosu: PropTypes.object.isRequired,
   buttonClass: PropTypes.string.isRequired,
 }
 

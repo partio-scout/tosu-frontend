@@ -182,8 +182,8 @@ const mapStateToProps = state => ({
 
 PlanCard.propTypes = {
   plans: PropTypes.arrayOf(PropTypes.object).isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.object.isRequired,
+  activities: PropTypes.object.isRequired,
   initPlans: PropTypes.func.isRequired,
   savePlan: PropTypes.func.isRequired,
   deletePlan: PropTypes.func.isRequired,
