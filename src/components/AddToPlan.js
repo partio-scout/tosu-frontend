@@ -9,6 +9,16 @@ import PropTypesSchema from '../utils/PropTypesSchema'
 
 import { addEventFromKuksa } from '../reducers/eventReducer'
 
+/** @module */
+
+/**
+ * Control for adding kuksaevents to plan(tosu)
+ * 
+ * @param {Object} props 
+ * @param {Object} props.event
+ * @param {(String|Number)} props.event.id - id for the event
+ * @param {String} props.event.title - title for the event 
+ */
 class AddToPlan extends React.Component {
   state = { dialogOpen: false }
 

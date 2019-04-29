@@ -15,10 +15,18 @@ import { getTask } from '../functions/denormalizations'
 import { deleteActivity, updateActivity } from '../reducers/activityReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
+
+/**
+ * Component for listing activities
+ * 
+ * @param {Object} props
+ * @param {Object[]} props.activities
+ */
 export class Activities extends React.Component {
   /**
    * Deletes a given activity and updates the pofTree
-   * @param activity activity that is deleted
+   * @method
+   * @param {Object} activity - activity that is deleted
    */
   deleteActivity = async activity => {
     try {

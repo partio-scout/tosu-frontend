@@ -49,6 +49,8 @@ import { withSnackbar } from 'notistack'
 
 import tosuChange from '../functions/tosuChange'
 
+/** @module */
+
 const styles = theme => ({
   drawerPaper: {
     width: '90vw',
@@ -106,6 +108,10 @@ const styles = theme => ({
   },
 })
 
+/**
+ * Component for creating, updating and deleting tosus
+ * @param {Object} props - see proptypes for more detail
+ */
 class TosuDrawer extends React.Component {
   state = {
     newTosuName: '',

@@ -19,9 +19,11 @@ import {
   Divider,
 } from '@material-ui/core'
 
+/** @module */
 
 /** 
- * Plancard
+ * Component for displaying information about a plan
+ * @param {Object} props - see proptypes for more detail
  */
 class PlanCard extends React.Component {
   state = { expanded: false }
@@ -38,6 +40,7 @@ class PlanCard extends React.Component {
 
   /**
    * Check if suggestions are already saved in store and if not save them
+   * @method
    */
   updateSuggestions = () => {
     const { savedActivity, plans } = this.props
@@ -104,6 +107,7 @@ class PlanCard extends React.Component {
 
   /**
    * Parses the suggestion to string form
+   * @method
    * @param suggestion suggestion in html form
    * @returns content in string form
    */

@@ -17,6 +17,8 @@ import { addActivityToRelevantReducers } from '../functions/activityFunctions'
 import PropTypesSchema from '../utils/PropTypesSchema'
 import { withStyles } from '@material-ui/core'
 
+/** @module */
+
 const styles = {
   treeSearchBar: {
     padding: 10,
@@ -29,6 +31,11 @@ const styles = {
   },
 }
 
+/**
+ * Component for selecting taskgroups and tasks and
+ * moving them to buffer.
+ * @param {Object} props - see proptypes for more detail
+ */
 class TreeSearchBar extends React.Component {
   state = { treePlaceHolder: 'Valitse ensin tarppo' }
 

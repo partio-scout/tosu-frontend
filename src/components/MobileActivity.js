@@ -16,6 +16,8 @@ import PropTypesSchema from '../utils/PropTypesSchema'
 import { withStyles } from '@material-ui/core'
 import { blue, indigo } from '@material-ui/core/colors'
 
+/** @module */
+
 const styles = {
   chip: {
     margin: 4,
@@ -87,7 +89,10 @@ function collect(connector, monitor) {
     isDragging: monitor.isDragging(),
   }
 }
-
+/**
+ * Component for displaying activities on touch devices
+ * @param props - check  proptypes for more detail
+ */
 class Activity extends React.Component {
   state = { open: false }
 

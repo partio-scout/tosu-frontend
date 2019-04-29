@@ -45,6 +45,8 @@ import SuggestionCard from '../components/SuggestionCard'
 import { addActivity } from '../reducers/activityReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
+/** @module */
+
 const styles = theme => ({
   activityHeader: {
     margin: 0,
@@ -82,6 +84,11 @@ const styles = theme => ({
   },
 })
 
+/**
+ * Component that displays event information
+ * @param {Object} props - check proptypes for further details
+ *
+ */
 class EventCard extends React.Component {
   constructor(props) {
     super(props)
@@ -102,7 +109,8 @@ class EventCard extends React.Component {
   }
 
   /**
-   *  Adds the activity to local storage and updates the guid. Also updates the pofTree.
+   *  Adds the activity to local storage and updates the guid. Also updates the pofTree
+   *  @method
    *  @param activityGuid the global identifier of the activity
    */
   onChangeChildren = async activityGuid => {
@@ -127,6 +135,7 @@ class EventCard extends React.Component {
 
   /**
    * Checks whether a given value is part of a pofTree using breath-first-search
+   * @method
    * @param value value that is searched
    */
   isLeaf = value => {
@@ -148,6 +157,7 @@ class EventCard extends React.Component {
   /**
    * Sets a timeout after which it saves the new information.
    * If called too early, it resets the timeout.
+   * @method
    * @param value - New value for event information
    */
   editInformation = value =>
@@ -176,6 +186,7 @@ class EventCard extends React.Component {
   /**
    * Creates a new event with modified information and sends it to
    * eventReducer's editEvent method.
+   * @method
    */
   changeInfo = async () => {
     const moddedEvent = {

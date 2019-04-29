@@ -19,6 +19,8 @@ import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 import { withStyles } from '@material-ui/core'
 
+/** @module */
+
 const styles = {
   pattern: {
     background:
@@ -43,6 +45,11 @@ function collect(connector, monitor) {
   }
 }
 
+/**
+ * Component that accepts DnD actions
+ * @method
+ *
+ */
 function ActivityDragAndDropTarget(props) {
   const { isOver, canDrop, connectDropTarget, odd, event, classes } = props
   const baseColor = event ? (odd ? '#EFEEEE' : '#D6E8F7') : '#FFF'

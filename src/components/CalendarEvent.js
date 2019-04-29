@@ -16,6 +16,8 @@ import { openPopper, closePopper } from '../reducers/calendarReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 import { withStyles } from '@material-ui/core'
 
+/** @module */
+
 const styles = {
   calendarActivityMarker: {
     height: 8,
@@ -87,6 +89,14 @@ export function eventStyleGetter(event) {
   }
 }
 
+/**
+ * Component for displaying events in Calendar
+ * @param {Object} props
+ * @param {Object} props.event
+ * @param {(Number|String)} props.event.id
+ * @param {Function} props.openPopper - opens pop up
+ * @param {Function} props.closePopper - closes pop up
+ */
 class CalendarEvent extends Component {
   state = {
     anchorEl: null,
@@ -145,6 +155,7 @@ class CalendarEvent extends Component {
 
   /**
    * Opens/closes the popper
+   * @method
    * @param event click event
    */
 

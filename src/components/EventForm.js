@@ -18,8 +18,21 @@ import ValidatedDatePicker from '../utils/ValidatedDatePicker'
 import ValidatedTimePicker from '../utils/ValidatedTimePicker'
 import FrequentEventsHandler from '../utils/FrequentEventsHandler'
 import repeatCount from '../utils/repeatCount'
+/** @module */
 
-export default class EventForm extends React.Component {
+/**
+ * Component for filling out event information
+ * @class
+ * @param {Object} props - check proptypes for more detail
+ * @param {Object} props.data - event
+ * @param {Date} props.data.startDate 
+ * @param {Date} props.data.endDate
+ * @param {Time} props.data.startTim
+ * @param {Time} props.data.endTime
+ * @param {String} props.data.type
+ * @param {String} props.data.information
+ */
+class EventForm extends React.Component {
   state = {
     title: this.props.data.title,
     startDate: this.props.data.startDate,
@@ -72,6 +85,7 @@ export default class EventForm extends React.Component {
   }
   /**
    * Converts moment-object to Date
+   * @method
    * @param date date in moment form
    */
   handleStartDate = date => {
@@ -416,3 +430,5 @@ export default class EventForm extends React.Component {
     )
   }
 }
+
+export default EventForm

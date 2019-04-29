@@ -23,7 +23,14 @@ const styles = {
     marginBottom: 10,
   },
 }
-
+/**
+ * Component for storing activities in buffer
+ * @param {Object} props
+ * @param {Object} props.buffer - buffer data structure from reducer
+ * @param {Number[]} props.buffer.activities - list of the id's for the activities in the buffer
+ * @param {Number} props.buffer.id - id for the buffer
+ * @param {Object} props.activities - activity state information from reducer
+ */
 export class BufferZone extends React.Component {
   /**
    * Clears the activities from the buffer

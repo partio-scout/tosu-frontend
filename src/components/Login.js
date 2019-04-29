@@ -23,6 +23,8 @@ import { pofTreeInitialization } from '../reducers/pofTreeReducer'
 import { tosuInitialization } from '../reducers/tosuReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
+/** @module */
+
 const styles = theme => ({
   loginButton: {
     margin: theme.spacing.unit,
@@ -35,10 +37,16 @@ const styles = theme => ({
     background: '#253264',
   },
 })
-
+/**
+ * Component for login buttons and functionality
+ * @param {Object} props - check proptypes for more detail
+ * @param {function} props.initialization - initialization function from App.js to 
+ * bootstrap application after login
+ */
 class Login extends React.Component {
   /**
    * Acknowledges a succesful login and sets credentials for user
+   * @method
    * @param response response from server
    */
   googleLoginSuccess = async response => {

@@ -9,6 +9,8 @@ import AddIcon from '@material-ui/icons/Add'
 import { viewChange } from '../reducers/uiReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
+/** @module */
+
 const styles = theme => ({
   button: {
     marginRight: theme.spacing.unit,
@@ -30,6 +32,10 @@ const styles = theme => ({
   },
 })
 
+/**
+ * Component for navigation in the app
+ * @param {Object} props - check proptypes for further information
+ */
 class ButtonRow extends React.Component {
   state = {
     startDate: moment(),
