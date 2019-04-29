@@ -7,7 +7,6 @@ import { Button, Icon, IconButton, withStyles } from '@material-ui/core'
 import CalendarIcon from '@material-ui/icons/CalendarToday'
 import AddIcon from '@material-ui/icons/Add'
 import { viewChange } from '../reducers/uiReducer'
-import { setLoading } from '../reducers/loadingReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
 const styles = theme => ({
@@ -183,7 +182,6 @@ ButtonRow.propTypes = {
   activities: PropTypes.arrayOf(PropTypes.object).isRequired,
   buffer: PropTypesSchema.bufferShape.isRequired,
   scout: PropTypesSchema.scoutShape.isRequired,
-  setLoading: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
@@ -200,7 +198,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   viewChange,
-  setLoading,
 }
 
 export default connect(
