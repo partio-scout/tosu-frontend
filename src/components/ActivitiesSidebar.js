@@ -5,6 +5,7 @@ import { Divider, Drawer } from '@material-ui/core'
 import TreeSearchBar from './TreeSearchBar'
 import BufferZone from './BufferZone'
 import StatusMessage from './StatusMessage'
+import ToolbarSpacer from './ToolbarSpacer'
 
 const drawerWidth = 400
 
@@ -14,7 +15,6 @@ const styles = theme => ({
     backgroundColor: '#243265',
     margin: '14px 0',
   },
-  toolbar: theme.mixins.toolbar,
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
@@ -36,7 +36,7 @@ function ActivitiesSidebar(props) {
         paper: classes.drawerPaper,
       }}
     >
-      <div className={classes.toolbar} />
+      <ToolbarSpacer />
       <TreeSearchBar />
       <BufferZone />
       <Divider variant="middle" className={classes.divider} />
