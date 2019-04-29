@@ -38,7 +38,8 @@ import {
   deleteTosu,
 } from '../reducers/tosuReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
-import { activityInitialization } from '../reducers/activityReducer'
+import { activityInitialization, deleteActivity } from '../reducers/activityReducer'
+import { deleteActivityFromBuffer} from '../reducers/bufferZoneReducer.js'
 import { setLoading } from '../reducers/loadingReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
 import { withSnackbar } from 'notistack'
@@ -122,7 +123,9 @@ class TosuDrawer extends React.Component {
       this.props.activityInitialization,
       this.props.pofTreeUpdate,
       this.props.activities,
-      this.props.buffer
+      this.props.buffer,
+      this.props.deleteActivity,
+      this.props.deleteActivityFromBuffer,
     )
 
   /**
@@ -391,6 +394,8 @@ const mapDispatchToProps = {
   eventsInitialization,
   activityInitialization,
   pofTreeUpdate,
+  deleteActivity,
+  deleteActivityFromBuffer,
 }
 
 TosuDrawer.propTypes = {
