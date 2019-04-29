@@ -9,12 +9,6 @@ import {
   CardHeader,
   IconButton,
   CardContent,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   Card,
   withStyles,
   Tooltip,
@@ -93,9 +87,6 @@ class EventCard extends React.Component {
     super(props)
     this.state = {
       expanded: false,
-      syncToKuksa: Boolean(props.event.synced), // Initial state of sync or no sync from backend
-      syncDialogOpen: false,
-      newPlans: false,
       information: props.event.information,
       timeout: null,
       saving: false,
@@ -152,22 +143,6 @@ class EventCard extends React.Component {
     child.props.title.props.name.toLowerCase().includes(input.toLowerCase())
   handleExpandChange = () => {
     this.setState({ expanded: !this.state.expanded })
-  }
-
-  handleSyncSwitchClick = async () => {
-    this.setState({ syncDialogOpen: true })
-  }
-
-  handleSyncDialogClose = async () => {
-    this.setState({ syncDialogOpen: false })
-  }
-
-  startSyncingWithKuksa = async () => {
-    // TODO
-  }
-
-  stopSyncingWithKuksa = async () => {
-    // TODO
   }
 
   /**
@@ -247,47 +222,6 @@ class EventCard extends React.Component {
         groupfound.children
       )
     }
-
-    let syncDialogTitle
-    let syncDialogDescription
-    let syncDialogConfirmText
-    let dialogConfirmHandler
-    if (this.state.syncToKuksa) {
-      syncDialogTitle = 'Lopetetaanko tapahtuman synkronointi Kuksaan?'
-      syncDialogDescription =
-        'Tapahtuma poistetaan Kuksasta, mutta jää omaan suunnitelmaasi.'
-      syncDialogConfirmText = 'Lopeta synkronointi'
-      dialogConfirmHandler = this.stopSyncingWithKuksa
-    } else {
-      syncDialogTitle = 'Synkronoidaanko tapahtuma Kuksaan?'
-      syncDialogDescription =
-        'Tapahtuma lähetetään Kuksaan. Tapahtuman muokkaus lähettää muutokset Kuksaan ja Kuksassa tehdyt muutokset synkronoidaan suunnitelmaasi. Aktiviteettejä ei synkronoida.'
-      syncDialogConfirmText = 'Synkronoi tapahtuma'
-
-      dialogConfirmHandler = this.startSyncingWithKuksa
-    }
-
-    const syncConfirmDialog = (
-      <div>
-        <Dialog
-          open={this.state.syncDialogOpen}
-          onClose={this.handleSyncDialogClose}
-        >
-          <DialogTitle>{syncDialogTitle}</DialogTitle>
-          <DialogContent>
-            <DialogContentText>{syncDialogDescription}</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleSyncDialogClose} color="primary">
-              Peruuta
-            </Button>
-            <Button onClick={dialogConfirmHandler} color="primary" autoFocus>
-              {syncDialogConfirmText}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-    )
 
     const touchDeviceNotExpanded = (
       <CardContent style={this.state.expanded ? {} : { padding: '0 12px' }}>
