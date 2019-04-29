@@ -3,14 +3,13 @@ import PropTypes from 'prop-types'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
-import Paper from '@material-ui/core/Paper'
-import { DialogTitle } from '@material-ui/core'
+import { DialogTitle, DialogContent } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 // import eventgroupService from '../services/eventgroups'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import EventForm from './EventForm'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
 
@@ -20,16 +19,6 @@ const styles = theme => ({
   },
   rightIcon: {
     marginLeft: theme.spacing.unit,
-  },
-  iconSmall: {
-    fontSize: 14,
-  },
-  eventForm: {
-    maxWidth: 800,
-    margin: '0 auto',
-  },
-  newFormPaper: {
-    padding: 20,
   },
 })
 
@@ -88,10 +77,14 @@ class EditEvent extends React.Component {
       this.props.editEvent(moddedEvent)
       // await eventService.edit(data);
       this.setState({ open: false })
-      this.props.notify('Tapahtuman muokkaus onnistui!', 'success')
+      this.props.enqueueSnackbar('Tapahtuman muokkaus onnistui', {
+        variant: 'info',
+      })
     } catch (exception) {
       console.error('Error in event PUT:', exception)
-      this.props.notify('Tapahtuman muokkaus epäonnistui!')
+      this.props.enqueueSnackbar('Tapahtuman muokkaus epäonnistui!', {
+        variant: 'error',
+      })
     }
   }
 
@@ -123,7 +116,6 @@ class EditEvent extends React.Component {
     checked,
     repeatCount,
     repeatFrequency,
-    lastDate,
     type,
     information
   ) => {
@@ -136,7 +128,6 @@ class EditEvent extends React.Component {
       checked,
       repeatCount,
       repeatFrequency,
-      //lastDate,
       type,
       information,
     })
@@ -148,33 +139,30 @@ class EditEvent extends React.Component {
     // Never allow modifications to kuksaEvents (not synced)
     const disabled = event.synced || event.kuksaEvent // TODO: Allow editing after Kuksa sync works both ways (remove event.synced check)
     return (
-      <div>
-        {disabled ? null : (
-          <Button
-            size={this.props.minimal ? 'small' : 'medium'}
-            onClick={this.handleOpen}
-            className={classes.button}
-            variant="contained"
-            color="primary"
-          >
-            Muokkaa
-            <Icon className={classes.rightIcon}>edit_icon</Icon>
-          </Button>
-        )}
-        <Dialog open={this.state.open} onClose={this.handleClose}>
+      <div className={classes.button}>
+        <Button
+          id="edit-event"
+          size={this.props.minimal ? 'small' : 'medium'}
+          onClick={this.handleOpen}
+          variant="contained"
+          color="primary"
+          disabled={disabled}
+        >
+          Muokkaa
+          <Icon className={classes.rightIcon}>edit_icon</Icon>
+        </Button>
+        <Dialog open={this.state.open} onClose={this.handleClose} scroll="body">
           <DialogTitle>
             {'Muokataan tapahtumaa'} {this.state.title}
           </DialogTitle>
-          <div className={classes.eventForm}>
-            <Paper className={classes.newFormPaper}>
-              <EventForm
-                submitFunction={this.handleCloseAndSend.bind(this)}
-                close={this.handleClose.bind(this)}
-                update={this.update.bind(this)}
-                data={this.state}
-              />
-            </Paper>
-          </div>
+          <DialogContent>
+            <EventForm
+              submitFunction={this.handleCloseAndSend.bind(this)}
+              close={this.handleClose.bind(this)}
+              update={this.update.bind(this)}
+              data={this.state}
+            />
+          </DialogContent>
         </Dialog>
       </div>
     )
@@ -184,17 +172,15 @@ class EditEvent extends React.Component {
 const mapDispatchToProps = {
   editEvent,
   bufferZoneInitialization,
-  notify,
 }
 
 EditEvent.propTypes = {
   editEvent: PropTypes.func.isRequired,
   bufferZoneInitialization: PropTypes.func.isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
 }
 
-EditEvent.defaultProps = {}
 export default connect(
   null,
   mapDispatchToProps
-)(withStyles(styles)(EditEvent))
+)(withStyles(styles)(withSnackbar(EditEvent)))

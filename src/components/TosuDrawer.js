@@ -1,6 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import {
   Avatar,
@@ -21,11 +22,13 @@ import {
   DialogActions,
   Button,
   TextField,
+  DialogContentText,
 } from '@material-ui/core'
 import AssignmentIcon from '@material-ui/icons/Assignment'
 import DeleteIcon from '@material-ui/icons/Delete'
 import CreateIcon from '@material-ui/icons/Create'
 import AddIcon from '@material-ui/icons/Add'
+import ClearIcon from '@material-ui/icons/Clear'
 
 import { setSideBar } from '../reducers/uiReducer'
 import {
@@ -35,26 +38,30 @@ import {
   deleteTosu,
 } from '../reducers/tosuReducer'
 import { eventsInitialization } from '../reducers/eventReducer'
-import { activityInitialization } from '../reducers/activityReducer'
+import { activityInitialization, deleteActivity } from '../reducers/activityReducer'
+import { deleteActivityFromBuffer} from '../reducers/bufferZoneReducer.js'
 import { setLoading } from '../reducers/loadingReducer'
 import { pofTreeUpdate } from '../reducers/pofTreeReducer'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 
 import tosuChange from '../functions/tosuChange'
 
-const drawerWidth = 400
-
 const styles = theme => ({
   drawerPaper: {
-    width: drawerWidth,
+    width: '90vw',
+    maxWidth: 400,
   },
-  title: {
+  titleContainer: {
     ...theme.mixins.toolbar,
     display: 'flex',
     position: 'relative',
     alignItems: 'center',
     color: theme.palette.primary.contrastText,
     backgroundColor: theme.palette.primary.main,
+  },
+  title: {
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
   },
   tosuList: {
     overflowY: 'auto',
@@ -76,6 +83,13 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'center',
   },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing.unit,
+  },
+  confirmDelete: {
+    color: theme.palette.error.main,
+  },
   iconButton: {
     padding: 10,
   },
@@ -93,6 +107,7 @@ class TosuDrawer extends React.Component {
   state = {
     newTosuName: '',
     nameChange: null,
+    tosuDelete: null,
   }
 
   /**
@@ -108,7 +123,9 @@ class TosuDrawer extends React.Component {
       this.props.activityInitialization,
       this.props.pofTreeUpdate,
       this.props.activities,
-      this.props.buffer
+      this.props.buffer,
+      this.props.deleteActivity,
+      this.props.deleteActivityFromBuffer,
     )
 
   /**
@@ -119,6 +136,9 @@ class TosuDrawer extends React.Component {
     this.props.setSideBar(false)
     this.setState({ newTosuName: '' })
     await this.changeTosu(created.id)
+    this.props.enqueueSnackbar('Uusi toimintasuunnitelma luotu', {
+      variant: 'success',
+    })
   }
 
   /**
@@ -127,6 +147,9 @@ class TosuDrawer extends React.Component {
   handleTosuUpdate = async () => {
     this.props.updateTosu(this.state.nameChange)
     this.setState({ nameChange: null })
+    this.props.enqueueSnackbar('Toimintasuunnitelman nimi päivitetty', {
+      variant: 'success',
+    })
   }
 
   /**
@@ -138,6 +161,9 @@ class TosuDrawer extends React.Component {
       this.props.setSideBar(false)
       await this.changeTosu(tosuId)
     }
+    this.props.enqueueSnackbar('Toimintasuunnitelma vaihdettu', {
+      variant: 'info',
+    })
   }
 
   /**
@@ -167,13 +193,15 @@ class TosuDrawer extends React.Component {
       // Just delete the Tosu because it's not currently selected
       await this.props.deleteTosu(tosuId)
     }
-    this.props.notify('Tosu poistettu', 'success')
+    this.props.enqueueSnackbar('Toimintasuunnitelma poistettu', {
+      variant: 'info',
+    })
   }
 
   render() {
     const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
     const { ui, tosus, loading, classes } = this.props
-    const { newTosuName, nameChange } = this.state
+    const { newTosuName, nameChange, tosuDelete } = this.state
 
     const tosuList = (
       <div className={classes.tosuList}>
@@ -205,7 +233,9 @@ class TosuDrawer extends React.Component {
                     <CreateIcon color="primary" />
                   </IconButton>
                   <Divider className={classes.divider} />
-                  <IconButton onClick={() => this.handledTosuDelete(tosu.id)}>
+                  <IconButton
+                    onClick={() => this.setState({ tosuDelete: tosu })}
+                  >
                     <DeleteIcon color="error" />
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -223,6 +253,9 @@ class TosuDrawer extends React.Component {
           placeholder="Uusi toimintasuunnitelma"
           value={newTosuName}
           onChange={event => this.setState({ newTosuName: event.target.value })}
+          onKeyPress={event => {
+            if (event.key === 'Enter') this.handleTosuCreate()
+          }}
         />
         <IconButton
           className={classes.iconButton}
@@ -254,14 +287,39 @@ class TosuDrawer extends React.Component {
           />
         </DialogContent>
         <DialogActions>
-          <Button
-            color="secondary"
-            onClick={() => this.setState({ nameChange: null })}
-          >
+          <Button onClick={() => this.setState({ nameChange: null })}>
             peruuta
           </Button>
           <Button color="primary" onClick={() => this.handleTosuUpdate()}>
             päivitä
+          </Button>
+        </DialogActions>
+      </Dialog>
+    )
+
+    const tosuDeleteDialog = (
+      <Dialog
+        open={tosuDelete}
+        onClose={() => this.setState({ tosuDelete: null })}
+      >
+        <DialogTitle>Vahvistus</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Haluatko varmasti poistaa kyseisen toimintasuunnitelman?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => this.setState({ tosuDelete: null })}>
+            peruuta
+          </Button>
+          <Button
+            className={classes.confirmDelete}
+            onClick={() => {
+              this.handledTosuDelete(tosuDelete.id)
+              this.setState({ tosuDelete: null })
+            }}
+          >
+            poista
           </Button>
         </DialogActions>
       </Dialog>
@@ -276,15 +334,23 @@ class TosuDrawer extends React.Component {
         onOpen={() => this.props.setSideBar(true)}
         classes={{ paper: classes.drawerPaper }}
       >
-        <div className={classes.title}>
+        <div className={classes.titleContainer}>
           <Typography
             style={{ flexGrow: 1 }}
+            className={classes.title}
             align="center"
             color="inherit"
-            variant="h5"
+            variant="h6"
           >
             TOIMINTASUUNNITELMAT
           </Typography>
+          <IconButton
+            color="inherit"
+            className={classes.closeButton}
+            onClick={() => this.props.setSideBar(false)}
+          >
+            <ClearIcon />
+          </IconButton>
         </div>
         {loading ? (
           <div className={classes.centered}>
@@ -304,6 +370,7 @@ class TosuDrawer extends React.Component {
         )}
         {loading ? null : tosuInput}
         {nameChangeDialog}
+        {tosuDeleteDialog}
       </SwipeableDrawer>
     )
   }
@@ -327,10 +394,15 @@ const mapDispatchToProps = {
   eventsInitialization,
   activityInitialization,
   pofTreeUpdate,
-  notify,
+  deleteActivity,
+  deleteActivityFromBuffer,
+}
+
+TosuDrawer.propTypes = {
+  enqueueSnackbar: PropTypes.func.isRequired,
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(TosuDrawer))
+)(withStyles(styles)(withSnackbar(TosuDrawer)))

@@ -1,4 +1,4 @@
-# Toiminnansuunnittelu
+# Toiminnan suunnittelusovellus
 
 [![Build Status](https://travis-ci.org/partio-scout/tosu-frontend.svg?branch=master)](https://travis-ci.org/partio-scout/tosu-frontend)
 
@@ -73,6 +73,8 @@ rm -rf tosu-frontend
 [Fall 2018 product & sprint backlogs](https://docs.google.com/spreadsheets/d/1s8WgWyk6s9hXbjHSsdBv8X7MHLPGrLpprMkqOl15yBo/)
 
 [Spring 2018 product & sprint backlogs](https://docs.google.com/spreadsheets/d/1cA-ldx-M_ppxSicxjL06BmAjhoNi5I55M5BugoUBD98/edit?usp=drivesdk)
+
+[ Spring 2019 end demo](https://docs.google.com/presentation/d/1gM9LLixv0au1nOW7uaX4Pt0axo0ZnNi-yr2oWLkl0lQ/edit?usp=sharing)
 
 ## License
 

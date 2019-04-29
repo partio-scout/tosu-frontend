@@ -1,7 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import notificationReducer from './reducers/notificationReducer'
 import pofTreeReducer from './reducers/pofTreeReducer'
 import BufferReducer from './reducers/bufferZoneReducer'
 import EventsReducer from './reducers/eventReducer'
@@ -17,7 +16,6 @@ import tosuReducer from './reducers/tosuReducer'
 import uiReducer from './reducers/uiReducer'
 
 const reducer = combineReducers({
-  notification: notificationReducer,
   pofTree: pofTreeReducer,
   buffer: BufferReducer,
   events: EventsReducer,

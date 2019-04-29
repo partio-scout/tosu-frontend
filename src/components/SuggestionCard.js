@@ -7,6 +7,7 @@ import {
   CardContent,
   Typography,
   IconButton,
+  Divider,
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { Parser } from 'html-to-react'
@@ -15,7 +16,7 @@ import { editEvent } from '../reducers/eventReducer'
 import planService from '../services/plan'
 import convertToSimpleActivity from '../functions/activityConverter.js'
 import findActivity from '../functions/findActivity'
-import { notify } from '../reducers/notificationReducer'
+import { withSnackbar } from 'notistack'
 import { updateActivity } from '../reducers/activityReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
@@ -29,7 +30,7 @@ class SuggestionCard extends React.Component {
     convertToSimpleActivity(findActivity(activity, pofTree))
 
   deleteClick = async e => {
-    const { plan, notify, activity } = this.props
+    const { plan, activity } = this.props
     e.preventDefault()
     try {
       await planService.deletePlan(plan.id)
@@ -38,7 +39,9 @@ class SuggestionCard extends React.Component {
       updatedActivity.plans = activity.plans.filter(p => p.id !== plan.id)
       this.props.updateActivity(updatedActivity)
     } catch (exception) {
-      notify('Toteutusvinkin poistaminen ei onnistunut')
+      this.props.enqueueSnackbar('Toteutusvinkin poistaminen epäonnistui', {
+        variant: 'error',
+      })
     }
   }
 
@@ -46,29 +49,25 @@ class SuggestionCard extends React.Component {
     const { plan, activity, pofTree } = this.props
 
     return (
-      <div key={plan.id}>
-        <Card style={{ backgroundColor: '#fafafa', marginTop: '10px' }}>
-          <CardHeader
-            action={
-              <IconButton onClick={this.deleteClick}>
-                <DeleteIcon />
-              </IconButton>
-            }
-            title={plan.title}
-            subheader={
-              <Typography>
-                {this.getSimpleActivity(activity, pofTree).title}
-              </Typography>
-            }
-          />
-
-          <CardContent>
-            <Typography component="p">
-              {Parser().parse(plan.content)}
+      <Card key={plan.id} style={{ marginTop: 16 }}>
+        <CardHeader
+          action={
+            <IconButton onClick={this.deleteClick}>
+              <DeleteIcon />
+            </IconButton>
+          }
+          title={<Typography variant="h6">{plan.title}</Typography>}
+          subheader={
+            <Typography variant="subheading">
+              {this.getSimpleActivity(activity, pofTree).title}
             </Typography>
-          </CardContent>
-        </Card>
-      </div>
+          }
+        />
+        <Divider variant="middle" />
+        <CardContent>
+          <Typography component="p">{Parser().parse(plan.content)}</Typography>
+        </CardContent>
+      </Card>
     )
   }
 }
@@ -76,13 +75,11 @@ class SuggestionCard extends React.Component {
 SuggestionCard.propTypes = {
   pofTree: PropTypesSchema.pofTreeShape.isRequired,
   plans: PropTypes.arrayOf(PropTypes.object).isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   editEvent: PropTypes.func.isRequired,
   deletePlan: PropTypes.func.isRequired,
   updateActivity: PropTypes.func.isRequired,
 }
-
-SuggestionCard.defaultProps = {}
 
 const mapStateToProps = state => ({
   pofTree: state.pofTree,
@@ -90,7 +87,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  notify,
   editEvent,
   deletePlan,
   updateActivity,
@@ -99,4 +95,4 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(SuggestionCard)
+)(withSnackbar(SuggestionCard))

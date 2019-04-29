@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import Activity from './Activity'
 import convertToSimpleActivity from '../functions/activityConverter'
 import activityService from '../services/activities'
-import { notify } from '../reducers/notificationReducer'
-import { pofTreeUpdate } from '../reducers/pofTreeReducer'
+import { pofTreeUpdate, enableActivity } from '../reducers/pofTreeReducer'
+import { withSnackbar } from 'notistack'
 import {
   deleteActivityFromBuffer,
   postActivityToBuffer,
@@ -24,8 +24,9 @@ export class Activities extends React.Component {
     try {
       if (this.props.bufferzone) {
         this.props.deleteActivityFromBuffer(activity.id)
-        this.props.deleteActivity(activity.id)
-        this.props.pofTreeUpdate(this.props.stateActivities)
+        this.props.updateActivity({ ...activity, activityBufferId: null })
+        await this.props.deleteActivity(activity.id)
+        this.props.enableActivity(activity.guid)
       } else {
         this.props.deleteActivityFromEvent(activity.id, activity.eventId)
         this.props.postActivityToBuffer(activity)
@@ -35,12 +36,11 @@ export class Activities extends React.Component {
         )
         this.props.updateActivity(res)
       }
-      this.props.notify('Aktiviteetti poistettu!', 'success')
+      this.props.enqueueSnackbar('Aktiviteetti poistettu', { variant: 'info' })
     } catch (exception) {
-      console.log(exception)
-      this.props.notify(
-        'Aktiviteetin poistossa tapahtui virhe! Yritä uudestaan!'
-      )
+      this.props.enqueueSnackbar('Aktiviteetin poistossa tapahtui virhe!', {
+        variant: 'error',
+      })
     }
   }
 
@@ -51,9 +51,7 @@ export class Activities extends React.Component {
         const pofActivity = convertToSimpleActivity(
           getTask(activity.guid, this.props.pofTree)
         )
-        return pofActivity === null ? (
-          undefined
-        ) : (
+        return pofActivity === null ? null : (
           <Activity
             deleteActivity={this.deleteActivity}
             bufferzone={this.props.bufferzone}
@@ -66,7 +64,7 @@ export class Activities extends React.Component {
         )
       })
     }
-    return <div>{rows}</div>
+    return <div style={{ margin: -2 }}>{rows}</div>
   }
 }
 
@@ -77,7 +75,7 @@ Activities.propTypes = {
   stateActivities: PropTypes.object.isRequired,
   bufferzone: PropTypes.bool.isRequired,
   parentId: PropTypes.number.isRequired,
-  notify: PropTypes.func.isRequired,
+  enqueueSnackbar: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
   deleteActivityFromBuffer: PropTypes.func.isRequired,
   deleteActivityFromEvent: PropTypes.func.isRequired,
@@ -98,16 +96,16 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  notify,
   pofTreeUpdate,
   deleteActivityFromBuffer,
   deleteActivityFromEvent,
   deleteActivity,
   postActivityToBuffer,
   updateActivity,
+  enableActivity,
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Activities)
+)(withSnackbar(Activities))

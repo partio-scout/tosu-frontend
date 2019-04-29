@@ -187,7 +187,7 @@ class CalendarEvent extends Component {
     const activities = (
       <div className={classes.calendarEventActivityWrapper}>
         <Activities
-          activities={event.activities}
+          activities={event.activities.map(key => this.props.activities[key])}
           bufferzone={false}
           parentId={event.id}
         />

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import { DropTarget } from 'react-dnd'
 import ItemTypes from '../ItemTypes'
 import DropActivity from '../functions/DropActivity'
-import { notify } from '../reducers/notificationReducer'
 import {
   postActivityToBufferOnlyLocally,
   deleteActivityFromBufferOnlyLocally,
@@ -71,7 +70,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  notify,
   deleteActivityFromEventOnlyLocally,
   addActivityToEventOnlyLocally,
   deleteActivityFromBufferOnlyLocally,
@@ -92,7 +90,6 @@ ActivityDragAndDropTarget.propTypes = {
   deleteActivityFromBuffer: PropTypes.func.isRequired,
   deleteActivityFromEvent: PropTypes.func.isRequired,
   updateActivity: PropTypes.func.isRequired,
-  notify: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
   odd: PropTypes.bool,
   isOver: PropTypes.bool.isRequired,

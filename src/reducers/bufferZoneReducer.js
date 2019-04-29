@@ -60,13 +60,13 @@ export const deleteActivityFromBuffer = activityId => dispatch => {
   })
 }
 
-export const deleteActivityFromBufferOnlyLocally = activityId => async dispatch =>
+export const deleteActivityFromBufferOnlyLocally = activityId => dispatch =>
   dispatch({
     type: 'DELETE_FROM_BUFFER',
     activityId,
   })
 
-export const postActivityToBufferOnlyLocally = activity => async dispatch =>
+export const postActivityToBufferOnlyLocally = activity => dispatch =>
   dispatch({
     type: 'ADD_TO_BUFFER',
     activity,
