@@ -1,4 +1,4 @@
-/** Module contains functions to pull out certain objects from pofTree object
+/** @module Denormalizations
  */
 
 /**

@@ -1,7 +1,16 @@
 import activityService from '../services/activities'
 
 // These functions looked so ugly that I moved them to their own file :3
+/** @module DropActivity */
 
+/**
+ * Move activity from event to buffer
+ * @method
+ * @param {Object} props - props from parent component
+ * @param {Object} activity - target activity
+ * @param {(Number|String)} parentId 
+ *
+ */
 const moveActivityFromEventToBuffer = async (props, activity, parentId) => {
   const activityId = activity.id
   try {
@@ -25,6 +34,14 @@ const moveActivityFromEventToBuffer = async (props, activity, parentId) => {
   }
 }
 
+/**
+ * Move activity from buffer to event
+ * @method
+ * @param {Object} props - props from parent component
+ * @param {Object} activity - target activity
+ * @param {(Number|String)} targetId 
+ *
+ */
 const moveActivityFromBufferToEvent = async (props, activity, targetId) => {
   const activityId = activity.id
   try {
@@ -43,6 +60,15 @@ const moveActivityFromBufferToEvent = async (props, activity, targetId) => {
   return { error: 'cant move activity' }
 }
 
+/**
+ * Move activity from event to event
+ * @method
+ * @param {Object} props - props from parent component
+ * @param {Object} activity - target activity
+ * @param {(Number|String)} parentId - id of the parent event
+ * @param {(Number|String)} targetId - id of the target event
+ *
+ */
 const moveActivityFromEventToEvent = async (
   props,
   activity,
@@ -69,7 +95,11 @@ const moveActivityFromEventToEvent = async (
   }
   return { error: 'cant move activity' }
 }
-
+/**
+ * Define DnD behaviour
+ * @method
+ *
+ */
 const DropActivity = {
   drop(props, monitor) {
     const item = monitor.getItem()

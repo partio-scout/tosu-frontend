@@ -1,7 +1,10 @@
+/** @module activityConverter */
+
 /**
  * Methods that convert activities to backend elements
- * @param pofActivity activity that converted to a form that can be send to backend. Pof stands for PartioOhjelmaFi
- * @returns a object that can be send to the backend
+ * @method
+ * @param {Object} pofActivity - activity that converted to a form that can be send to backend. Pof stands for PartioOhjelmaFi
+ * @return {Object} -  a object that can be send to the backend
  */
 const convertToBackendActivity = pofActivity => {
   if (pofActivity === undefined || pofActivity === null) {
@@ -9,8 +12,8 @@ const convertToBackendActivity = pofActivity => {
   }
   /**
    * Method that maps the leadership skills of the activity
-   * @param activity activity that will get the mapped data
-   * @param pofActivity activity where the data is mapped from
+   * @param {Object} activity activity that will get the mapped data
+   * @param {Object} pofActivity activity where the data is mapped from
    */
   const johtamistaito = (activity, pofActivity) => {
     try {
@@ -23,8 +26,8 @@ const convertToBackendActivity = pofActivity => {
   }
   /**
    * Method that maps the skill areas of the activity
-   * @param activity activity that will get the mapped data
-   * @param pofActivity activity where the data is mapped from
+   * @param {Object} activity activity that will get the mapped data
+   * @param {Object} pofActivity activity where the data is mapped from
    */
   const taitoalueet = (activity, pofActivity) => {
     try {
@@ -35,8 +38,8 @@ const convertToBackendActivity = pofActivity => {
   }
   /**
    * Method that maps the pedagogical goals of the activity
-   * @param activity activity that will get the mapped data
-   * @param pofActivity activity where the data is mapped from
+   * @param {Object}  activity - activity that will get the mapped data
+   * @param pofActivity - activity where the data is mapped from
    */
   const kasvatustavoitteet = (activity, pofActivity) => {
     try {

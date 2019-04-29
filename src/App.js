@@ -65,7 +65,10 @@ import {
 
 import { POF_ROOT } from './api-config'
 import { pofTreeSchema, eventSchema } from './pofTreeSchema'
-
+/**
+ * The Application core
+ *
+ */
 class App extends Component {
   state = {
     headerVisible: false,
@@ -120,6 +123,9 @@ class App extends Component {
       this.setState({ bufferZoneHeight: height })
     }
   }
+  /**
+   * Init the application state from backend and pofRoot
+   */
   initialization = async () => {
     const pofRequest = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
     const pofData = pofRequest.data

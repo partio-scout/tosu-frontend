@@ -19,6 +19,10 @@ import {
   Divider,
 } from '@material-ui/core'
 
+
+/** 
+ * Plancard
+ */
 class PlanCard extends React.Component {
   state = { expanded: false }
 
@@ -45,9 +49,12 @@ class PlanCard extends React.Component {
 
   /**
    * Saves the suggestions
+   * @method
    * @param suggestion suggestion to be saved
    * @param activityId activity that is linked to the suggestion
    * @param parentId eventId of event that has the activity
+   *
+   * Consider moving this logic to activity reducer 
    */
   saveSuggestion = async (suggestion, activityId, parentId) => {
     const data = {
@@ -72,9 +79,12 @@ class PlanCard extends React.Component {
 
   /**
    * Deletes a suggestion from the backend and from frontend
+   * @method
    * @param id id of suggestion that will be deleted
    * @param activityId id of activity that the suggestion is linked to
    * @param parentId eventId of event that has the activity
+   * 
+   * Consider moving this logic to activiyt reducer
    */
   deleteSuggestion = async (id, activityId, parentId) => {
     try {
