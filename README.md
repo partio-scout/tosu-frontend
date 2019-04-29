@@ -116,10 +116,6 @@ rm -rf tosu-frontend
 
 ## Resources
 
-### Documentation
-
-> TODO: Add documentation
-
 ### Backlogs
 
 [Product backlog (Trello)](https://trello.com/b/87G4Y96t/tosu-app)
