@@ -30,12 +30,10 @@ const createMultipleEvent = () => {
 }
 describe('Creating and deleting recurrent events', function() {
   beforeEach('user logs in', function() {
-    cy.wait(2000)
     resetDatabase()
-    cy.wait(2000)
+    cy.wait(4000)
     cy.request('http://localhost:3001/scouts/testuser')
     cy.visit('http://localhost:3000')
-    cy.wait(2000)
   })
   it('initialize tosu', function() {})
   it('user can delete all same recurrent events', function() {
