@@ -63,7 +63,7 @@ class ButtonRow extends React.Component {
 
   canCreateEvent = tosu => {
     if (!tosu) return false
-    if (Object.entries(tosu) === 0) {
+    if (Object.entries(tosu).length === 0) {
       return false
     } else if (!tosu.selected) {
       return false

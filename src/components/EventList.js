@@ -5,7 +5,9 @@ import EventCard from './EventCard'
 import KuksaEventCard from './KuksaEventCard'
 import filterEvents from '../functions/filterEvents'
 import { eventList } from '../reducers/eventReducer'
-import { withStyles, Typography } from '@material-ui/core'
+import { setSideBar } from '../reducers/uiReducer'
+import { withStyles, Typography, IconButton } from '@material-ui/core'
+import MenuButton from '@material-ui/icons/Menu'
 
 const styles = theme => ({
   eventList: {
@@ -17,7 +19,7 @@ const styles = theme => ({
 class EventList extends React.Component {
   render() {
     const view = this.props.ui.view
-    const { startDate, endDate, events, loading, classes } = this.props
+    const { startDate, endDate, events, loading, tosus, classes } = this.props
 
     const eventsToShow = filterEvents(
       view,
@@ -44,7 +46,17 @@ class EventList extends React.Component {
       <div className={classes.eventList}>
         {eventsToShow.length ? (
           eventsList
-        ) : loading ? null : (
+        ) : loading ? null : Object.entries(tosus).length === 0 ? (
+          <Typography align="center" color="textSecondary">
+            {'Luo ensin toimintasuunnitelma'}
+            <IconButton
+              style={{ marginLeft: 4 }}
+              onClick={() => this.props.setSideBar(true)}
+            >
+              <MenuButton />
+            </IconButton>
+          </Typography>
+        ) : (
           <Typography align="center" color="textSecondary">
             Ei tapahtumia
           </Typography>
@@ -58,6 +70,7 @@ EventList.propTypes = {
   events: PropTypes.arrayOf(PropTypes.object).isRequired,
   filter: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
+  tosus: PropTypes.isRequired,
 }
 
 const mapStateToProps = state => ({
@@ -65,6 +78,14 @@ const mapStateToProps = state => ({
   filter: state.filter,
   ui: state.ui,
   loading: state.loading,
+  tosus: state.tosu,
 })
 
-export default connect(mapStateToProps)(withStyles(styles)(EventList))
+const mapDispatchToProps = {
+  setSideBar,
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(EventList))
