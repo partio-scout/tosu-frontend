@@ -5,6 +5,8 @@ import {
   removeScout,
 } from '../services/googleToken'
 
+/** @module */
+
 const reducer = (state = null, action) => {
   switch (action.type) {
     case 'SCOUT_LOGIN':
@@ -16,6 +18,11 @@ const reducer = (state = null, action) => {
   }
 }
 
+/**
+ * Login using Google token
+ * @method 
+ * @param {Object} token - google login token
+ */
 export const scoutGoogleLogin = token => async dispatch => {
   await scoutService.findOrCreateScout(token).then(scout =>
     dispatch({
@@ -25,11 +32,20 @@ export const scoutGoogleLogin = token => async dispatch => {
   )
 }
 
+/**
+ * Login using saml
+ * @method
+ */
 export const readScout = () => ({
   type: 'SCOUT_LOGIN',
   scout: getScout(),
 })
 
+/**
+ * Logout
+ * @method
+ *
+ */
 export const scoutLogout = () => {
   removeGoogleToken()
   removeScout()

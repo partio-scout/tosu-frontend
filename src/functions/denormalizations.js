@@ -1,3 +1,10 @@
+/** @module*/
+
+/**
+ * Get task from pofData
+ * @param guid - guid of the task
+ * @return task/activity
+ */
 export function getTask(guid, pofData) {
   try {
     const task = Object.assign({}, pofData.entities.activities[guid])
@@ -10,6 +17,14 @@ export function getTask(guid, pofData) {
   }
 }
 
+
+/**
+ * Get Taskgroup (tarppo) from pofdata
+ * @param guid - guid of the taskgroup (tarppo)
+ * @param pofdata - normalized pofdata object
+ * @return taskgroup object
+ *
+ */
 export function getTaskGroup(guid, pofData) {
   try {
     const taskGroup = Object.assign({}, pofData.entities.tarppo[guid])
@@ -26,7 +41,15 @@ export function getTaskGroup(guid, pofData) {
     return null
   }
 }
-
+/**
+ * Get the root taks group. These groups (tarppo) will
+ * show up in the tree search bar.
+ *
+ * @param pofdata - normalized pofdata
+ * @return rootGroup - rootgroup object
+ * @return null - if something unexpected happens
+ *
+ */
 export function getRootGroup(pofData) {
   try {
     const pofTreeKey = Object.keys(pofData.entities.poftree)[0]

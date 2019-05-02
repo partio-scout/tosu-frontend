@@ -11,6 +11,8 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft'
 import { withStyles } from '@material-ui/core/styles'
 import { showKuksaEvents, hideKuksaEvents } from '../reducers/calendarReducer'
 
+/** @module */
+
 const navigate = {
   PREVIOUS: 'PREV',
   NEXT: 'NEXT',
@@ -27,9 +29,15 @@ const styles = theme => ({
   },
 })
 
+/**
+ * Component for Calendar management
+ * @params {Object} props - check proptypes for further details
+ *
+ */
 class Toolbar extends React.Component {
   /**
    * Toggles whether kuksa events are shown
+   * @method
    */
   onSwitchChange = () => {
     if (this.props.switchState) {

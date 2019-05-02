@@ -10,6 +10,8 @@ import {
 } from '@material-ui/core'
 import AccountCard from './AccountCard'
 
+/** @module */
+
 const styles = theme => ({
   circleButton: {
     borderRadius: '50%',
@@ -19,6 +21,15 @@ const styles = theme => ({
   },
 })
 
+/**
+ * AccountIcon 
+ * @method
+ *
+ * @param {Object} props
+ * @param {Object} props.scout - user
+ * @param {Object} props.classes
+ *
+ */
 function AccountIcon(props) {
   const { scout, classes } = props
   const [anchorEl, setAnchorEl] = useState(null)

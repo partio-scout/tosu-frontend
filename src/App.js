@@ -30,6 +30,7 @@ import ButtonRow from './components/ButtonRow'
 import Login from './components/Login'
 import EventList from './components/EventList'
 import TosuDrawer from './components/TosuDrawer'
+import ToolbarSpacer from './components/ToolbarSpacer'
 
 // Utils
 import PropTypesSchema from './utils/PropTypesSchema'
@@ -64,7 +65,10 @@ import {
 
 import { POF_ROOT } from './api-config'
 import { pofTreeSchema, eventSchema } from './pofTreeSchema'
-
+/**
+ * The Application core
+ *
+ */
 class App extends Component {
   state = {
     headerVisible: false,
@@ -119,6 +123,9 @@ class App extends Component {
       this.setState({ bufferZoneHeight: height })
     }
   }
+  /**
+   * Init the application state from backend and pofRoot
+   */
   initialization = async () => {
     const pofRequest = await axios.get(`${POF_ROOT}/filledpof/tarppo`)
     const pofData = pofRequest.data
@@ -206,7 +213,7 @@ class App extends Component {
               height: '100vh',
             }}
           >
-            <div style={theme.mixins.toolbar} />
+            <ToolbarSpacer />
             <div style={{ padding: theme.spacing.unit * 2 }}>
               <ButtonRow
                 view={view}

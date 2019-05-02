@@ -19,7 +19,14 @@ import findActivity from '../functions/findActivity'
 import { withSnackbar } from 'notistack'
 import { updateActivity } from '../reducers/activityReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
+/** @module */
 
+/**
+ * Component for displaying suggestion information in
+ * extended EventCards
+ * @param {Object} props - see proptypes for more detail
+ *
+ */
 class SuggestionCard extends React.Component {
   constructor(props) {
     super(props)

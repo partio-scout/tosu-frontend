@@ -12,14 +12,15 @@ import PlanForm from './PlanForm'
 import PropTypesSchema from '../utils/PropTypesSchema'
 import { withStyles } from '@material-ui/core'
 
+/** @module */
 const styles = {
   connectDragSource: {
     float: 'left',
-    margin: 4,
+    margin: 3,
   },
   connectDragSourceMinimal: {
     float: 'left',
-    margin: 1,
+    margin: 2,
   },
   dialogCloseButton: {
     backgroundColor: '#ccc',
@@ -92,6 +93,16 @@ function collect(connector, monitor) {
   }
 }
 
+/**
+ * Component for displaying activities
+ * @param {Object} props
+ * @param {Object} props.activity - backend activity
+ * @param {Object} props.pofActivity - activity from pof api
+ * @param {(String|Number)} props.parentId - id of the parent event
+ * @param {Function} props.deleteActivity - function that deletes activity from state
+ * @param minimal
+ *
+ */
 class Activity extends Component {
   state = { open: false }
 
@@ -125,7 +136,11 @@ class Activity extends Component {
             }
             key={activity.id}
             onClick={this.handleClick}
-            deleteIcon={<Icon id="delete-activity" color="primary">clear</Icon>}
+            deleteIcon={
+              <Icon id="delete-activity" color="primary">
+                clear
+              </Icon>
+            }
             style={this.props.minimal ? { height: 26 } : {}}
             avatar={
               pofActivity.mandatory ? (
@@ -174,8 +189,11 @@ Activity.propTypes = {
   minimal: PropTypes.bool.isRequired,
   deleteActivity: PropTypes.func.isRequired,
   deleteActivityFromEvent: PropTypes.func.isRequired,
-  deleteActivityFromActivity: PropTypes.func.isRequired,
   deleteActivityFromBuffer: PropTypes.func.isRequired,
+}
+
+Activity.defaultProps = {
+    notification: '',
 }
 
 export default connect(

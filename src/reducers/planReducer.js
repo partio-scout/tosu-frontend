@@ -1,3 +1,9 @@
+/* @module */
+
+/**
+ * Reducer for plan state
+ * @method
+ */
 const reducer = (state = [], action) => {
   switch (action.type) {
     case 'INIT_PLANS':
@@ -30,19 +36,38 @@ const reducer = (state = [], action) => {
       return state
   }
 }
-
+/**
+ * Set initial plans
+ * @method
+ * @param {Object[]} plans - list of plans
+ *
+ */
 export const initPlans = plans => ({
   type: 'INIT_PLANS',
   plans,
 })
 
+
+/**
+ * Save a plan
+ * @method
+ * @param {Object} suggestion
+ * @param {Number] id
+ * @param {SuggestionId}
+ *
+ */
 export const savePlan = (suggestion, id, suggestionId) => ({
   type: 'SAVE_PLAN',
   id,
   suggestion,
   suggestionId,
 })
-
+/**
+ * Delete a plan from sate
+ * @method
+ * @param {Number} id
+ * @param {Number} activityId - id for activity 
+ */
 export const deletePlan = (id, activityId) => ({
   type: 'DELETE_PLAN',
   id,

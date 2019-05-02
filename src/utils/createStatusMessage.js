@@ -2,6 +2,15 @@ import moment from 'moment'
 import { getTask } from '../functions/denormalizations'
 import { eventList } from '../reducers/eventReducer'
 
+/** @module*/
+
+/**
+ * Get arrayActivityGuids from events not really buffer
+ * @method
+ * @param {Object} events - events map
+ * @param {Object} stateActivities - activity map
+ * @param {Object} poftree - poftree 
+ */
 const arrayActivityGuidsFromBufferAndEvents = (
   events,
   stateActivities,
@@ -28,6 +37,12 @@ const arrayActivityGuidsFromBufferAndEvents = (
   return activities
 }
 
+/**
+ * Compose status message of the selected taskgroup
+ * @method
+ * @param {String[]} selectedActivities
+ * @param {Object} taskgroup
+ */
 const composeStatusMessage = (selectedActivities, taskgroup) => {
   // Initialize needed variables
 
@@ -265,7 +280,15 @@ const composeStatusMessage = (selectedActivities, taskgroup) => {
   }
   return status
 }
-
+/**
+ * Create Statusmessage
+ * @method
+ * @param {Object} events - events map
+ * @param {Object} poftree - poftree
+ * @param {Object} taskgroup - (tarppo)
+ * @param {Object} activities - activities map
+ * @return {Object} status
+ */
 const createStatusMessage = (events, pofTree, taskgroup, activities) => {
   const selectedActivities = arrayActivityGuidsFromBufferAndEvents(
     events,

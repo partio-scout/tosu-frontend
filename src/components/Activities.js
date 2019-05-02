@@ -15,16 +15,24 @@ import { getTask } from '../functions/denormalizations'
 import { deleteActivity, updateActivity } from '../reducers/activityReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
+
+/**
+ * Component for listing activities
+ * 
+ * @param {Object} props
+ * @param {Object[]} props.activities
+ */
 export class Activities extends React.Component {
   /**
    * Deletes a given activity and updates the pofTree
-   * @param activity activity that is deleted
+   * @method
+   * @param {Object} activity - activity that is deleted
    */
   deleteActivity = async activity => {
     try {
       if (this.props.bufferzone) {
         this.props.deleteActivityFromBuffer(activity.id)
-        this.props.updateActivity({...activity, activityBufferId:null})
+        this.props.updateActivity({ ...activity, activityBufferId: null })
         await this.props.deleteActivity(activity.id)
         this.props.enableActivity(activity.guid)
       } else {
@@ -51,9 +59,7 @@ export class Activities extends React.Component {
         const pofActivity = convertToSimpleActivity(
           getTask(activity.guid, this.props.pofTree)
         )
-        return pofActivity === null ? (
-          undefined
-        ) : (
+        return pofActivity === null ? null : (
           <Activity
             deleteActivity={this.deleteActivity}
             bufferzone={this.props.bufferzone}
@@ -66,15 +72,15 @@ export class Activities extends React.Component {
         )
       })
     }
-    return <div>{rows}</div>
+    return <div style={{ margin: -2 }}>{rows}</div>
   }
 }
 
 Activities.propTypes = {
   buffer: PropTypesSchema.bufferShape.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.object.isRequired,
   activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  stateActivities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  stateActivities: PropTypes.object.isRequired,
   bufferzone: PropTypes.bool.isRequired,
   parentId: PropTypes.number.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
@@ -82,9 +88,12 @@ Activities.propTypes = {
   deleteActivityFromBuffer: PropTypes.func.isRequired,
   deleteActivityFromEvent: PropTypes.func.isRequired,
   deleteActivity: PropTypes.func.isRequired,
-  minimal: PropTypes.bool.isRequired,
-  className: PropTypes.string.isRequired,
+  minimal: PropTypes.bool,
   pofTree: PropTypesSchema.pofTreeShape.isRequired,
+}
+
+Activities.defaultProps = {
+  minimal: false,
 }
 
 const mapStateToProps = state => ({

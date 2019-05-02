@@ -16,6 +16,8 @@ import { openPopper, closePopper } from '../reducers/calendarReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 import { withStyles } from '@material-ui/core'
 
+/** @module */
+
 const styles = {
   calendarActivityMarker: {
     height: 8,
@@ -87,6 +89,14 @@ export function eventStyleGetter(event) {
   }
 }
 
+/**
+ * Component for displaying events in Calendar
+ * @param {Object} props
+ * @param {Object} props.event
+ * @param {(Number|String)} props.event.id
+ * @param {Function} props.openPopper - opens pop up
+ * @param {Function} props.closePopper - closes pop up
+ */
 class CalendarEvent extends Component {
   state = {
     anchorEl: null,
@@ -103,7 +113,7 @@ class CalendarEvent extends Component {
       markers.push(
         <span
           className={this.props.classes.calendarActivityMarker}
-          key={activities[i].id}
+          key={activities[i]}
         />
       )
     }
@@ -145,6 +155,7 @@ class CalendarEvent extends Component {
 
   /**
    * Opens/closes the popper
+   * @method
    * @param event click event
    */
 
@@ -187,7 +198,7 @@ class CalendarEvent extends Component {
     const activities = (
       <div className={classes.calendarEventActivityWrapper}>
         <Activities
-          activities={event.activities}
+          activities={event.activities.map(key => this.props.activities[key])}
           bufferzone={false}
           parentId={event.id}
         />
@@ -207,7 +218,7 @@ class CalendarEvent extends Component {
             buttonClass="calendar-button"
             data={event.originalData}
             setNotification={this.props.setNotification}
-            minimal="true"
+            minimal={true}
           />
         </div>
       </div>
@@ -269,9 +280,9 @@ CalendarEvent.propTypes = {
   pofTree: PropTypesSchema.pofTreeShape.isRequired,
   closePopper: PropTypes.func.isRequired,
   openPopper: PropTypes.func.isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  popperOpen: PropTypes.string.isRequired,
-  popperEventId: PropTypes.number.isRequired,
+  activities: PropTypes.object.isRequired,
+  popperOpen: PropTypes.bool.isRequired,
+  popperEventId: PropTypes.oneOfType([PropTypes.number,PropTypes.string]).isRequired,
 }
 
 CalendarEvent.defaultProps = {}

@@ -5,6 +5,8 @@ import Done from '@material-ui/icons/Done'
 import Warning from '@material-ui/icons/Warning'
 import { Paper, Typography, Tooltip } from '@material-ui/core'
 
+/** @module */
+
 // Done icon
 const done = <Done />
 
@@ -13,6 +15,7 @@ const smallDone = <Done style={{ width: 15, height: 15, marginRight: 7 }} />
 
 /**
  * Warning icon that returns a tooltiptext with a message
+ * @method
  * @param message Message that shows in the tooltip
  */
 const warning = message => (
@@ -32,6 +35,7 @@ const warning = message => (
 
 /**
  * Shows instructions in the sidebar
+ * @method
  * @param statusMessage message that is displayed
  * @param taskgroup taskgroup the element belongs to
  */
@@ -182,6 +186,7 @@ const Instruction = ({ statusMessage, taskgroup }) => {
 
   /**
    * Information in status box when taskgroup is extra tasks (paussit)
+   * @method
    */
   const extraPlanInformation = () => (
     <div style={{ fontSize: '0.8rem', lineHeight: '1.6rem' }}>
@@ -235,7 +240,13 @@ const Instruction = ({ statusMessage, taskgroup }) => {
     </Paper>
   )
 }
-
+/**
+ * Component that displays statusmessage
+ * @param {Object} props
+ * @param {Object} props.statusMessage - status message from createStatusMessage
+ * @param {Object} props.taskGroup - selected taskgroup (tarppo)
+ *
+ */
 function StatusMessage(props) {
   return (
     <Instruction
@@ -246,13 +257,17 @@ function StatusMessage(props) {
 }
 
 StatusMessage.propTypes = {
-  handleClose: PropTypes.func.isRequired,
-  handleOpen: PropTypes.func.isRequired,
-  statusMessage: PropTypes.func.isRequired,
-  taskgroup: PropTypes.func.isRequired,
+  handleClose: PropTypes.func,
+  handleOpen: PropTypes.func,
+  statusMessage: PropTypes.object.isRequired,
+  taskgroup: PropTypes.object,
 }
 
-StatusMessage.defaultProps = {}
+StatusMessage.defaultProps = {
+    taskgroup: undefined,
+    handleClose: function(){},
+    handleOpen: function(){},
+}
 
 const mapStateToProps = state => ({
   statusMessage: state.statusMessage,

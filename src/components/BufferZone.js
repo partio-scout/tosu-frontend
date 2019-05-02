@@ -20,11 +20,17 @@ const styles = {
   },
   bufferTitle: {
     width: '100%',
-    padding: '0 4px',
     marginBottom: 10,
   },
 }
-
+/**
+ * Component for storing activities in buffer
+ * @param {Object} props
+ * @param {Object} props.buffer - buffer data structure from reducer
+ * @param {Number[]} props.buffer.activities - list of the id's for the activities in the buffer
+ * @param {Number} props.buffer.id - id for the buffer
+ * @param {Object} props.activities - activity state information from reducer
+ */
 export class BufferZone extends React.Component {
   /**
    * Clears the activities from the buffer
@@ -42,7 +48,9 @@ export class BufferZone extends React.Component {
       try {
         await Promise.all(promises)
         this.props.pofTreeUpdate(this.props.activities)
-        this.props.enqueueSnackbar('Aktiviteetit poistettu', { variant: 'info' })
+        this.props.enqueueSnackbar('Aktiviteetit poistettu', {
+          variant: 'info',
+        })
       } catch (exception) {
         console.log(exception)
         this.props.enqueueSnackbar('Kaikkia aktiviteetteja ei voitu poistaa!', {
@@ -53,39 +61,37 @@ export class BufferZone extends React.Component {
   }
 
   render() {
-    const { classes } = this.props
-    if (!this.props.buffer.id) {
+    const { classes, buffer, activities } = this.props
+    if (!buffer.id) {
       return <div />
     }
-    if (this.props.buffer.activities.length === 0) {
-      return <div />
-    }
+
     return (
       <ActivityDragAndDropTarget
         bufferzone
-        parentId={this.props.buffer.id}
+        parentId={buffer.id}
         className={classes.bufferZone}
       >
         <div className={classes.bufferTitle}>
           <Typography variant="h6" inline gutterBottom>
             Aktiviteetit
           </Typography>
-          <Button
-            variant="outlined"
-            size="small"
-            color="primary"
-            onClick={this.clear}
-            style={{ float: 'right' }}
-          >
-            Tyhjennä
-          </Button>
+          {buffer.activities.length === 0 ? null : (
+            <Button
+              variant="outlined"
+              size="small"
+              color="primary"
+              onClick={this.clear}
+              style={{ float: 'right' }}
+            >
+              Tyhjennä
+            </Button>
+          )}
         </div>
         <Activities
-          activities={this.props.buffer.activities.map(
-            id => this.props.activities[id]
-          )}
+          activities={buffer.activities.map(id => activities[id])}
           bufferzone
-          parentId={this.props.buffer.id}
+          parentId={buffer.id}
         />
       </ActivityDragAndDropTarget>
     )
@@ -107,8 +113,8 @@ const mapDispatchToProps = {
 
 BufferZone.propTypes = {
   buffer: PropTypesSchema.bufferShape.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.object.isRequired,
+  activities: PropTypes.object.isRequired,
   deleteActivityFromBuffer: PropTypes.func.isRequired,
   deleteActivity: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,

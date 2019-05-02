@@ -15,6 +15,8 @@ import { Parser } from 'html-to-react'
 
 import AddToPlan from './AddToPlan'
 
+/** @module */
+
 const styles = {
   arrowUp: {
     transform: 'rotate(180deg)',
@@ -30,11 +32,20 @@ const styles = {
   },
 }
 
+/**
+ * Component for displaying events form kuksa.
+ * @param {Object} props
+ * @param {Object} props.event - event from kuksa
+ * @param {Number} props.event.id - id for event
+ * @param {String} props.event.title - title for event 
+ *
+ */
 class KuksaEventCard extends React.Component {
   state = { expanded: false }
 
   /**
    *  Toggles between expanded and not expanded
+   *  @method
    */
   handleExpandChange = () => {
     this.setState({ expanded: !this.state.expanded })

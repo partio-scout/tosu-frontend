@@ -1,5 +1,7 @@
 import React from 'react'
 import { getActivityList } from './activityReducer'
+
+/** @module */
 // helpers
 /*
  * put all picked activities from events and buffer into a string array made of their guid
@@ -10,8 +12,9 @@ const arrayActivityGuidsFromBufferAndEvents = activities => {
 }
 /**
  * Add variables used by TreeSearch component to the pofData
+ * @method
  * @param {object} root - DEEP copy of pofData
- *
+ * @return {Object} poftree with TreeSearch compliant fields
  */
 const fillWithNeededVariable = root => {
   const taskGroupKeys = Object.keys(root.entities.tarppo)
@@ -46,6 +49,7 @@ const fillWithNeededVariable = root => {
 
 /**
  * disable all tasks that are in use
+ * @method
  * @param {object} root - pofData
  * @param {string[]} existingActivityGuids - GUID:s of the activities in use
  * @return {object} pofData - with the correct activities disabled
@@ -62,21 +66,38 @@ const disableTasksInFilterIfExists = (root, existingActivityGuids) => {
   })
   return root
 }
-
+/**
+ * Disable one activity in treeSearchBar
+ * @method
+ * @param {Object} root - pofTree root object
+ * @param {String} taskGUID - guid of the target task
+ * @return {Object} newState - new state
+ */
 const disableTask = (root, taskGUID) => {
   const newActivities = { ...root.entities.activities }
   const activity = { ...newActivities[taskGUID], disabled: true }
   newActivities[taskGUID] = activity
   return { ...root, entities: { ...root.entities, activities: newActivities } }
 }
-
+/**
+ * Enable one activity in TreeSearchBar
+ * @method
+ * @param {Object} root - pofTree root object
+ * @param {String} taskGUID - guid of the target task
+ * @return {Object} newState - newState 
+ */
 const enableTask = (root, taskGUID) => {
   const newActivities = { ...root.entities.activities }
   const activity = { ...newActivities[taskGUID], disabled: false }
   newActivities[taskGUID] = activity
   return { ...root, entities: { ...root.entities, activities: newActivities } }
 }
-
+/**
+ * Create deep copy of the state
+ * @method
+ * @param {Object} state
+ * @return {Object} StateCopy
+ */
 const deepStateCopy = state => {
   const stateCopy = { ...state }
   stateCopy.entities = { ...state.entities }
@@ -94,8 +115,10 @@ const deepStateCopy = state => {
 /**
  * Disable used tasks and lock optional tasks if mandatory tasks
  * are not picked
+ * @method
  * @param state
  * @param {string[]} existingActivityGuids - GUID:s of activities in use
+ * @return {Object} updatedState
  */
 const updateState = (state, existingActivityGuids) => {
   let updatedState = deepStateCopy(state)
@@ -128,21 +151,41 @@ const reducer = (state = {}, action) => {
   }
 }
 
+/**
+ * Initialize pofTree
+ * @method
+ * @param {Object} pofJson - normalized pof json
+ */
 export const pofTreeInitialization = pofJson => ({
   type: 'INIT_TREE_POF',
   pofJson,
 })
 
+/**
+ * Update poftree. Used to disable selected activities in TreeSearch
+ * @method
+ * @param {Object} activities - map of the activities in application state
+ *
+ */
 export const pofTreeUpdate = activities => ({
   type: 'SET_TREE_POF',
   activities: arrayActivityGuidsFromBufferAndEvents(activities),
 })
 
+/**
+ * Enable one activity in TreeSearchBar
+ * @method
+ * @param {String} GUID - guid for the activity
+ */
 export const enableActivity = GUID => ({
   type: 'ENABLE_ACTIVITY',
   taskGUID: GUID,
 })
-
+/**
+ * Disable one activity in TreeSearchBar
+ * @method
+ * @param {String} GUID - guid for the activity 
+ */
 export const disableActivity = GUID => ({
   type: 'DISABLE_ACTIVITY',
   taskGUID: GUID,

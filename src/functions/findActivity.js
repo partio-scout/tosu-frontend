@@ -1,5 +1,9 @@
+/** @module */
+
+
 /**
- * Recursively finds a given activity from the pofTree or returns null if activity is not defined
+ * Find activity from the poftree map
+ * @method
  * @param activity activity that is searched
  * @param pofTree tree where the search is conducted
  */

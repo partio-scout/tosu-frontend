@@ -23,6 +23,8 @@ import { pofTreeInitialization } from '../reducers/pofTreeReducer'
 import { tosuInitialization } from '../reducers/tosuReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
+/** @module */
+
 const styles = theme => ({
   loginButton: {
     margin: theme.spacing.unit,
@@ -35,10 +37,16 @@ const styles = theme => ({
     background: '#253264',
   },
 })
-
+/**
+ * Component for login buttons and functionality
+ * @param {Object} props - check proptypes for more detail
+ * @param {function} props.initialization - initialization function from App.js to 
+ * bootstrap application after login
+ */
 class Login extends React.Component {
   /**
    * Acknowledges a succesful login and sets credentials for user
+   * @method
    * @param response response from server
    */
   googleLoginSuccess = async response => {
@@ -98,17 +106,16 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  scout: PropTypesSchema.scoutShape.isRequired,
+  scout: PropTypesSchema.scoutShape,
   buffer: PropTypesSchema.bufferShape.isRequired,
-  store: PropTypesSchema.storeShape.isRequired,
   scoutGoogleLogin: PropTypes.func.isRequired,
   eventsInitialization: PropTypes.func.isRequired,
   bufferZoneInitialization: PropTypes.func.isRequired,
   pofTreeUpdate: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
-  tosu: PropTypes.string.isRequired,
+  events: PropTypes.object.isRequired,
+  activities: PropTypes.object.isRequired,
+  tosu: PropTypes.object.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
   pofTreeInitialization: PropTypes.func.isRequired,
   activityInitialization: PropTypes.func.isRequired,
@@ -118,7 +125,7 @@ Login.propTypes = {
 }
 
 Login.defaultProps = {
-  scout: PropTypes.shape({ id: '' }),
+  scout: null,
 }
 const mapStateToProps = state => ({
   scout: state.scout,
