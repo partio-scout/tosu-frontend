@@ -36,6 +36,7 @@ function TopBar(props) {
       <Toolbar>
         <IconButton
           color="inherit"
+          id="tosu_selection"
           className={classes.menuButton}
           onClick={() => props.setSideBar(true)}
         >

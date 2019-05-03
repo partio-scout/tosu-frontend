@@ -222,11 +222,12 @@ class TosuDrawer extends React.Component {
 
     const tosuList = (
       <div className={classes.tosuList}>
-        <List>
+        <List id="tosu_list">
           {Object.entries(tosus).map(([property, tosu]) =>
             property === 'selected' ? null : (
               <ListItem
                 key={tosu.id}
+                id="list_item"
                 selected={tosu.selected}
                 onClick={() => this.handleTosuSelect(tosu.id)}
                 button
@@ -243,13 +244,16 @@ class TosuDrawer extends React.Component {
                     </React.Fragment>
                   }
                 />
-                <ListItemSecondaryAction className={classes.actionButtons}>
+                <ListItemSecondaryAction
+                  className={classes.actionButtons}
+                  id="action_buttons"
+                >
                   <IconButton
                     onClick={() =>
                       this.setState({ nameChange: tosu, nameChangeOpen: true })
                     }
                   >
-                    <CreateIcon color="primary" />
+                    <CreateIcon color="primary" id="pencil_button"/>
                   </IconButton>
                   <Divider className={classes.divider} />
                   <IconButton
@@ -257,7 +261,7 @@ class TosuDrawer extends React.Component {
                       this.setState({ tosuDelete: tosu, tosuDeleteOpen: true })
                     }
                   >
-                    <DeleteIcon color="error" />
+                    <DeleteIcon color="error" id="delete_button" />
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
@@ -281,6 +285,7 @@ class TosuDrawer extends React.Component {
         <IconButton
           className={classes.iconButton}
           onClick={() => this.handleTosuCreate()}
+          id="plus_button"
         >
           <AddIcon />
         </IconButton>
@@ -299,7 +304,7 @@ class TosuDrawer extends React.Component {
           <TextField
             id="name"
             margin="none"
-            label="Toimintasuunnitema"
+            label="Toimintasuunnitelma"
             value={nameChange ? nameChange.name : ''}
             onChange={event =>
               this.setState({
@@ -338,7 +343,9 @@ class TosuDrawer extends React.Component {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
+
           <Button
+            id="confirm_cancel"
             onClick={() =>
               this.setState({ tosuDelete: null, tosuDeleteOpen: false })
             }
@@ -347,6 +354,7 @@ class TosuDrawer extends React.Component {
           </Button>
           <Button
             className={classes.confirmDelete}
+            id="confirm_remove"
             onClick={() => {
               this.handledTosuDelete(tosuDelete.id)
               this.setState({ tosuDelete: null, tosuDeleteOpen: false })
@@ -379,6 +387,7 @@ class TosuDrawer extends React.Component {
           </Typography>
           <IconButton
             color="inherit"
+            id="close_button"
             className={classes.closeButton}
             onClick={() => this.props.setSideBar(false)}
           >

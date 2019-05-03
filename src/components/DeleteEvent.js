@@ -134,6 +134,7 @@ class DeleteEvent extends React.Component {
             peruuta
           </Button>
           <Button
+            id="confirm-delete"
             className={classes.redbutton}
             variant="contained"
             onClick={this.deleteEvent}

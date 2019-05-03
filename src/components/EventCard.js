@@ -326,7 +326,7 @@ class EventCard extends React.Component {
     const expanded = (
       <CardContent>
         <div>
-          <span className={classes.boldedAttribute}>
+          <span id="type-and-start" className={classes.boldedAttribute}>
             {capitalize(event.type)} alkaa:
           </span>{' '}
           {moment(event.startDate).format('ddd D.M.YYYY')} kello{' '}
@@ -388,6 +388,7 @@ class EventCard extends React.Component {
             }}
             action={
               <IconButton
+                id="expansion-arrow"
                 onClick={this.handleExpandChange}
                 className={this.state.expanded ? classes.arrowUp : ''}
               >
