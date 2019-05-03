@@ -80,8 +80,8 @@ New test files must have the **.spec.js** filename extension
 
 The tests are run with Travis when the project is pushed to Github. To achieve the goal of end-to-end testing this project uses Docker and Cypress in Travis. We have a three container setup consisting of tosu-frontend, tosu-backend and postgresql. This is started with docker-compose.yml. On startup tosu-backend container will run database migrations if the postgresql-containers database is empty.
 
-After running docker-compose up Travis will run `npx cypress run`. This will use headless electron runner of cypress. If the end-to-end tests fail the Travis build will fail.
-Sometimes the test can pass in local environment but fail while run in CI. This is due to the tests handling differently when run by Chrome than when run in electron runner. Before making pull request you should run the tests using command `npx cypress run` to check if they will pass in the CI-environment.
+After running docker-compose up Travis will run `$npx cypress run`. This will use headless electron runner of cypress. If the end-to-end tests fail the Travis build will fail.
+Sometimes the test can pass in local environment but fail while run in CI. This is due to the tests handling differently when run by Chrome than when run in electron runner. Before making pull request you should run the tests using command `$npx cypress run` to check if they will pass in the CI-environment.
 
 
 The tosu-frontend image contains the production build of the application and serves it using npm/serve on port 3000.
