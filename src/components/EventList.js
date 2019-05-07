@@ -9,6 +9,8 @@ import { setSideBar } from '../reducers/uiReducer'
 import { withStyles, Typography, IconButton } from '@material-ui/core'
 import MenuButton from '@material-ui/icons/Menu'
 
+/** @module */
+
 const styles = theme => ({
   eventList: {
     paddingTop: theme.spacing.unit,
@@ -16,6 +18,16 @@ const styles = theme => ({
   },
 })
 
+/**
+ * Component for listing events in the main and kuksa view
+ * @param {Object} props - check proptypes
+ * @param {Object} props.events - event map
+ * @param {Date} startDate - start of the display filter
+ * @param {Date} endDate - end of the display filter
+ * @param {Boolean} loading - is the application loading
+ * @param {Object} tosus - map of the tosus
+ *
+ */
 class EventList extends React.Component {
   render() {
     const view = this.props.ui.view
@@ -67,15 +79,14 @@ class EventList extends React.Component {
 }
 
 EventList.propTypes = {
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  filter: PropTypes.string.isRequired,
+  events: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
-  tosus: PropTypes.isRequired,
+  tosus: PropTypes.object.isRequired,
+  ui: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({
   events: state.events,
-  filter: state.filter,
   ui: state.ui,
   loading: state.loading,
   tosus: state.tosu,

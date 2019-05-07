@@ -4,6 +4,8 @@ import { withStyles } from '@material-ui/core'
 import { Avatar, Chip } from '@material-ui/core'
 import PropTypes from 'prop-types'
 
+/** @module */
+
 const styles = {
   avatar: {
     size: 28,
@@ -75,6 +77,12 @@ function getItemStyles(currentOffset, startPoint, mandatory) {
   }
 }
 
+/**
+ * Component that displays activity during dragging action
+ * @param {Object} props
+ * @param {Object} props.pofActivity - activity from pof api
+ *
+ */
 function ActivityPreview(props) {
   const { isDragging, currentOffset, startPoint, pofActivity, classes } = props
   if (!isDragging) {

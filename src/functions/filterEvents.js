@@ -1,9 +1,11 @@
 import eventComparer from '../utils/EventCompare'
 
+/** @module */
+
 /**
  * Method that determines the date range of the filter
- * @param start start date. The method only checks if it is defined
- * @param end end date. The method only checks if it is defined
+ * @param {Date} start start date. The method only checks if it is defined
+ * @param {Date} end end date. The method only checks if it is defined
  */
 const determineCase = (start, end) => {
   if (start && end) {

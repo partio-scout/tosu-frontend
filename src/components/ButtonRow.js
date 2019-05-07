@@ -7,8 +7,9 @@ import { Button, Icon, IconButton, withStyles } from '@material-ui/core'
 import CalendarIcon from '@material-ui/icons/CalendarToday'
 import AddIcon from '@material-ui/icons/Add'
 import { viewChange } from '../reducers/uiReducer'
-import { setLoading } from '../reducers/loadingReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
+
+/** @module */
 
 const styles = theme => ({
   button: {
@@ -31,6 +32,10 @@ const styles = theme => ({
   },
 })
 
+/**
+ * Component for navigation in the app
+ * @param {Object} props - check proptypes for further information
+ */
 class ButtonRow extends React.Component {
   state = {
     startDate: moment(),
@@ -174,21 +179,18 @@ ButtonRow.propTypes = {
   viewChange: PropTypes.func.isRequired,
   dateRangeUpdate: PropTypes.func.isRequired,
   view: PropTypes.string.isRequired,
-  filter: PropTypes.string.isRequired,
   newEvent: PropTypes.func.isRequired,
   mobile: PropTypes.bool.isRequired,
-  startDate: PropTypes.string.isRequired,
-  endDate: PropTypes.string.isRequired,
-  tosuMap: PropTypes.string.isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  startDate: PropTypes.string,
+  endDate: PropTypes.string,
+  tosuMap: PropTypes.object.isRequired,
+  activities: PropTypes.object.isRequired,
   buffer: PropTypesSchema.bufferShape.isRequired,
   scout: PropTypesSchema.scoutShape.isRequired,
-  setLoading: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
   ui: state.ui,
-  filter: state.filter,
   startDate: state.startDate,
   endDate: state.endDate,
   tosuMap: state.tosu,
@@ -200,7 +202,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   viewChange,
-  setLoading,
 }
 
 export default connect(

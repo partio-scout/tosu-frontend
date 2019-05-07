@@ -10,7 +10,14 @@ import {
   DialogTitle,
 } from '@material-ui/core'
 import { createTosu } from '../reducers/tosuReducer'
+/** @module */
 
+/**
+ * Dialog for creating tosus
+ * @param {Object} props
+ * @param {Function} props.handleTosuChange - change tosu in state
+ * @param {Function} createTosu - create new tosu in state and backend
+ */
 class TosuDialog extends React.Component {
   state = {
     open: false,

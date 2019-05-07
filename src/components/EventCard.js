@@ -9,12 +9,6 @@ import {
   CardHeader,
   IconButton,
   CardContent,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   Card,
   withStyles,
   Tooltip,
@@ -50,6 +44,8 @@ import { deletePlan } from '../reducers/planReducer'
 import SuggestionCard from '../components/SuggestionCard'
 import { addActivity } from '../reducers/activityReducer'
 import PropTypesSchema from '../utils/PropTypesSchema'
+
+/** @module */
 
 const styles = theme => ({
   activityHeader: {
@@ -88,14 +84,16 @@ const styles = theme => ({
   },
 })
 
+/**
+ * Component that displays event information
+ * @param {Object} props - check proptypes for further details
+ *
+ */
 class EventCard extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       expanded: false,
-      syncToKuksa: Boolean(props.event.synced), // Initial state of sync or no sync from backend
-      syncDialogOpen: false,
-      newPlans: false,
       information: props.event.information,
       timeout: null,
       saving: false,
@@ -111,7 +109,8 @@ class EventCard extends React.Component {
   }
 
   /**
-   *  Adds the activity to local storage and updates the guid. Also updates the pofTree.
+   *  Adds the activity to local storage and updates the guid. Also updates the pofTree
+   *  @method
    *  @param activityGuid the global identifier of the activity
    */
   onChangeChildren = async activityGuid => {
@@ -136,6 +135,7 @@ class EventCard extends React.Component {
 
   /**
    * Checks whether a given value is part of a pofTree using breath-first-search
+   * @method
    * @param value value that is searched
    */
   isLeaf = value => {
@@ -154,25 +154,10 @@ class EventCard extends React.Component {
     this.setState({ expanded: !this.state.expanded })
   }
 
-  handleSyncSwitchClick = async () => {
-    this.setState({ syncDialogOpen: true })
-  }
-
-  handleSyncDialogClose = async () => {
-    this.setState({ syncDialogOpen: false })
-  }
-
-  startSyncingWithKuksa = async () => {
-    // TODO
-  }
-
-  stopSyncingWithKuksa = async () => {
-    // TODO
-  }
-
   /**
    * Sets a timeout after which it saves the new information.
    * If called too early, it resets the timeout.
+   * @method
    * @param value - New value for event information
    */
   editInformation = value =>
@@ -201,6 +186,7 @@ class EventCard extends React.Component {
   /**
    * Creates a new event with modified information and sends it to
    * eventReducer's editEvent method.
+   * @method
    */
   changeInfo = async () => {
     const moddedEvent = {
@@ -247,47 +233,6 @@ class EventCard extends React.Component {
         groupfound.children
       )
     }
-
-    let syncDialogTitle
-    let syncDialogDescription
-    let syncDialogConfirmText
-    let dialogConfirmHandler
-    if (this.state.syncToKuksa) {
-      syncDialogTitle = 'Lopetetaanko tapahtuman synkronointi Kuksaan?'
-      syncDialogDescription =
-        'Tapahtuma poistetaan Kuksasta, mutta jää omaan suunnitelmaasi.'
-      syncDialogConfirmText = 'Lopeta synkronointi'
-      dialogConfirmHandler = this.stopSyncingWithKuksa
-    } else {
-      syncDialogTitle = 'Synkronoidaanko tapahtuma Kuksaan?'
-      syncDialogDescription =
-        'Tapahtuma lähetetään Kuksaan. Tapahtuman muokkaus lähettää muutokset Kuksaan ja Kuksassa tehdyt muutokset synkronoidaan suunnitelmaasi. Aktiviteettejä ei synkronoida.'
-      syncDialogConfirmText = 'Synkronoi tapahtuma'
-
-      dialogConfirmHandler = this.startSyncingWithKuksa
-    }
-
-    const syncConfirmDialog = (
-      <div>
-        <Dialog
-          open={this.state.syncDialogOpen}
-          onClose={this.handleSyncDialogClose}
-        >
-          <DialogTitle>{syncDialogTitle}</DialogTitle>
-          <DialogContent>
-            <DialogContentText>{syncDialogDescription}</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleSyncDialogClose} color="primary">
-              Peruuta
-            </Button>
-            <Button onClick={dialogConfirmHandler} color="primary" autoFocus>
-              {syncDialogConfirmText}
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-    )
 
     const touchDeviceNotExpanded = (
       <CardContent style={this.state.expanded ? {} : { padding: '0 12px' }}>
@@ -381,7 +326,7 @@ class EventCard extends React.Component {
     const expanded = (
       <CardContent>
         <div>
-          <span className={classes.boldedAttribute}>
+          <span id="type-and-start" className={classes.boldedAttribute}>
             {capitalize(event.type)} alkaa:
           </span>{' '}
           {moment(event.startDate).format('ddd D.M.YYYY')} kello{' '}
@@ -443,6 +388,7 @@ class EventCard extends React.Component {
             }}
             action={
               <IconButton
+                id="expansion-arrow"
                 onClick={this.handleExpandChange}
                 className={this.state.expanded ? classes.arrowUp : ''}
               >
@@ -476,12 +422,12 @@ class EventCard extends React.Component {
 
 EventCard.propTypes = {
   buffer: PropTypesSchema.bufferShape.isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.object.isRequired,
   pofTree: PropTypesSchema.pofTreeShape.isRequired,
-  taskgroup: PropTypesSchema.taskgroupShape.isRequired,
-  status: PropTypes.string.isRequired,
+  taskgroup: PropTypesSchema.taskgroupShape,
+  status: PropTypes.object.isRequired,
   plans: PropTypes.arrayOf(PropTypes.object).isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  activities: PropTypes.object.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
   editEvent: PropTypes.func.isRequired,
   deletePlan: PropTypes.func.isRequired,
@@ -491,6 +437,10 @@ EventCard.propTypes = {
   deleteActivityFromEventOnlyLocally: PropTypes.func.isRequired,
   postActivityToBufferOnlyLocally: PropTypes.func.isRequired,
   deleteActivityFromBufferOnlyLocally: PropTypes.func.isRequired,
+}
+
+EventCard.defaultProps = {
+  taskgroup: undefined,
 }
 
 const mapStateToProps = state => ({

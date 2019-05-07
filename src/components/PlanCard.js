@@ -19,6 +19,12 @@ import {
   Divider,
 } from '@material-ui/core'
 
+/** @module */
+
+/** 
+ * Component for displaying information about a plan
+ * @param {Object} props - see proptypes for more detail
+ */
 class PlanCard extends React.Component {
   state = { expanded: false }
 
@@ -34,6 +40,7 @@ class PlanCard extends React.Component {
 
   /**
    * Check if suggestions are already saved in store and if not save them
+   * @method
    */
   updateSuggestions = () => {
     const { savedActivity, plans } = this.props
@@ -45,9 +52,12 @@ class PlanCard extends React.Component {
 
   /**
    * Saves the suggestions
+   * @method
    * @param suggestion suggestion to be saved
    * @param activityId activity that is linked to the suggestion
    * @param parentId eventId of event that has the activity
+   *
+   * Consider moving this logic to activity reducer 
    */
   saveSuggestion = async (suggestion, activityId, parentId) => {
     const data = {
@@ -72,9 +82,12 @@ class PlanCard extends React.Component {
 
   /**
    * Deletes a suggestion from the backend and from frontend
+   * @method
    * @param id id of suggestion that will be deleted
    * @param activityId id of activity that the suggestion is linked to
    * @param parentId eventId of event that has the activity
+   * 
+   * Consider moving this logic to activiyt reducer
    */
   deleteSuggestion = async (id, activityId, parentId) => {
     try {
@@ -94,6 +107,7 @@ class PlanCard extends React.Component {
 
   /**
    * Parses the suggestion to string form
+   * @method
    * @param suggestion suggestion in html form
    * @returns content in string form
    */
@@ -182,14 +196,13 @@ const mapStateToProps = state => ({
 
 PlanCard.propTypes = {
   plans: PropTypes.arrayOf(PropTypes.object).isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  activities: PropTypes.arrayOf(PropTypes.object).isRequired,
+  events: PropTypes.object.isRequired,
+  activities: PropTypes.object.isRequired,
   initPlans: PropTypes.func.isRequired,
   savePlan: PropTypes.func.isRequired,
   deletePlan: PropTypes.func.isRequired,
   editEvent: PropTypes.func.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
-  deleteActivityFromEventOnlyLocall: PropTypes.func.isRequired,
   updateActivity: PropTypes.func.isRequired,
 }
 

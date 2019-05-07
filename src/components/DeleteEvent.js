@@ -12,6 +12,8 @@ import {
 import { withSnackbar } from 'notistack'
 import PropTypesSchema from '../utils/PropTypesSchema'
 
+/** @module */
+
 const styles = theme => ({
   button: {
     marginRight: theme.spacing.unit,
@@ -28,12 +30,18 @@ const styles = theme => ({
   },
 })
 
+/**
+ * DeleteEvent button
+ * @param props - check proptypes for further details
+ *
+ */
 class DeleteEvent extends React.Component {
+
+  state = { open: false }
   /**
    * Deletes a given event and creates a notification acknowledging it. Also closes the dialog box
+   * @method
    */
-  state = { open: false }
-
   deleteEvent = async () => {
     this.handleClose()
     try {
@@ -52,6 +60,7 @@ class DeleteEvent extends React.Component {
   }
   /**
    * Deletes a given eventgroup and creates a notification acknowledging it. Also closes the dialog box
+   * @method
    */
   deleteEventGroup = async () => {
     this.handleClose()
@@ -125,6 +134,7 @@ class DeleteEvent extends React.Component {
             peruuta
           </Button>
           <Button
+            id="confirm-delete"
             className={classes.redbutton}
             variant="contained"
             onClick={this.deleteEvent}

@@ -16,6 +16,8 @@ import {
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 
+/** @module */
+
 const styles = theme => ({
   closeButton: {
     position: 'absolute',
@@ -24,6 +26,12 @@ const styles = theme => ({
   },
 })
 
+/**
+ * Component for creating new events
+ * @param {Object} props
+ * @param {Object} props.tosu - current tosu
+ * @param {Function} props.addEvent - fn for adding event to state
+ */
 class NewEvent extends React.Component {
   state = {
     title: '',
@@ -131,6 +139,7 @@ class NewEvent extends React.Component {
   }
   /**
    * Creates a new eventgroup
+   * @method
    * @returns eventGroup from the http response
    */
   sendEventGroupIdPostRequest = async () => {
@@ -144,6 +153,7 @@ class NewEvent extends React.Component {
   }
   /**
    * Creates a new event and sends it to server. Also creates notification acknowledgeing the creation
+   * @method
    * @param eventData the new event
    */
   sendEventPostRequest = async eventData => {
@@ -222,7 +232,7 @@ class NewEvent extends React.Component {
 NewEvent.propTypes = {
   addEvent: PropTypes.func.isRequired,
   enqueueSnackbar: PropTypes.func.isRequired,
-  tosu: PropTypes.string.isRequired,
+  tosu: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({

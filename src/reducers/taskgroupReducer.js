@@ -1,3 +1,5 @@
+/** @module */
+
 const reducer = (state = null, action) => {
   if (action.type === 'SELECT') {
     return action.taskgroup
@@ -6,12 +8,21 @@ const reducer = (state = null, action) => {
   }
   return state
 }
-
+/**
+ * Select taskgroup
+ * @method
+ * @param {Object} taskgroup - selected taskgroup "tarppo"
+ *
+ */
 export const selectTaskgroup = taskgroup => ({
   type: 'SELECT',
   taskgroup,
 })
-
+/**
+ * Empty the taskgroup selection
+ * @method
+ *
+ */
 export const emptyTaskgroup = () => ({
   type: 'EMPTY',
 })

@@ -1,5 +1,14 @@
 import moment from 'moment'
+/** @module */
 
+/**
+ * Handles frequent envent time conversions
+ * @method
+ * @param {Date} date
+ * @param {Number} repeatFrequency
+ * @param {Number} i - repeat count
+ *
+ */
 const handleFrequentEvent = (date, repeatFrequency, i) => {
   let newDate = moment(date)
 

@@ -13,6 +13,8 @@ import { withSnackbar } from 'notistack'
 import { editEvent } from '../reducers/eventReducer'
 import { bufferZoneInitialization } from '../reducers/bufferZoneReducer'
 
+/** @module */
+
 const styles = theme => ({
   button: {
     marginRight: theme.spacing.unit,
@@ -21,7 +23,11 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
   },
 })
-
+/**
+ * Dialog for editing events
+ * @param {Object} props - check proptypes for further details
+ *
+ */
 class EditEvent extends React.Component {
   constructor(props) {
     super(props)
@@ -61,6 +67,7 @@ class EditEvent extends React.Component {
 
   /**
    * Closes the eventform and sends the changes to eventreducer
+   * @method
    */
   handleCloseAndSend = async () => {
     const moddedEvent = {
