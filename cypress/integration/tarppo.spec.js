@@ -22,7 +22,7 @@ describe('Tarppo menu', function() {
   it('', function() {
     cy.visit('http://localhost:3000')
   })
-
+  /*
   it('user can get additional information', function() {
     cy.wait(4000)
     cy.get('div[role="button"]')
@@ -33,7 +33,7 @@ describe('Tarppo menu', function() {
       .click({ force: true })
     cy.contains('Toteutusvinkit')
   })
-
+*/
   it('closes additional info by pressing the escape key', () => {
     cy.wait(4000)
     cy.get('body').type('{esc}', { force: true })
