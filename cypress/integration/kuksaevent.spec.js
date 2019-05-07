@@ -28,6 +28,7 @@ describe('Creating and deleting kuksa-events', function() {
     cy.get('button[id="verify-add-kuksa"]').click()
     cy.get('button[id="omat"]').click()
     cy.get('button[id="delete-event"]').click()
+    cy.contains('Poista tapahtuma').click()
     cy.contains('Tapahtuma poistettu')
   })
 })
