@@ -26,7 +26,7 @@ const createEvent = () => {
 describe('Creating and deleting events', function() {
   beforeEach('user logs in', function() {
     resetDatabase()
-    cy
+    cy.wait(4000)
     cy.request('http://localhost:3001/scouts/testuser')
     cy.visit('http://localhost:3000')
   })
