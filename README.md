@@ -1,4 +1,4 @@
-# Toiminnan suunnittelusovellus
+# Toiminnansuunnittelu [frontend]
 
 [![Build Status](https://travis-ci.org/partio-scout/tosu-frontend.svg?branch=master)](https://travis-ci.org/partio-scout/tosu-frontend)
 
